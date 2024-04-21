@@ -5,7 +5,8 @@ import LoginScreen from './src/screens/authentication/LoginScreen';
 
 const App = (): React.JSX.Element => {
   return (
-    <SafeAreaView>
+    // eslint-disable-next-line react-native/no-inline-styles
+    <SafeAreaView style={{flex: 1}}>
       <LoginScreen />
     </SafeAreaView>
   );

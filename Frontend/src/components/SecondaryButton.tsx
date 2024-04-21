@@ -8,16 +8,14 @@ function PrimaryButton(_props: ButtonProps) {
   const {onClickMethod, title} = _props;
 
   return (
-    <>
-      <TouchableOpacity
-        onPress={onClickMethod}
-        style={[
-          buttonStyle.buttonContainer,
-          {backgroundColor: primaryColors.darkBlue},
-        ]}>
-        <Text style={[buttonStyle.buttonText]}>{title}</Text>
-      </TouchableOpacity>
-    </>
+    <TouchableOpacity
+      onPress={onClickMethod}
+      style={[
+        buttonStyle.buttonContainer,
+        {backgroundColor: primaryColors.lightBlue},
+      ]}>
+      <Text style={[buttonStyle.buttonText]}>{title}</Text>
+    </TouchableOpacity>
   );
 }
 

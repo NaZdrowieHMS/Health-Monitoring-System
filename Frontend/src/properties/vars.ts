@@ -18,6 +18,22 @@ const fontSize = {
   buttonMobileFontSize: 20,
   baseMobileFontSize: 13,
   baseFontSize: 14,
+  h1MobileFontSize: 50,
+  h2MobileFontSize: 24,
 };
 
+type FontWeight =
+  | 'normal'
+  | 'bold'
+  | '100'
+  | '200'
+  | '300'
+  | '400'
+  | '500'
+  | '600'
+  | '700'
+  | '800'
+  | '900';
+
 export {paddingSize, fontSize, borderRadiusSize};
+export type {FontWeight};
