@@ -1,25 +1,28 @@
-import {StyleSheet} from 'react-native';
-import {fontSize, paddingSize} from '../vars';
-import primaryColors from '../colors';
+import { StyleSheet } from "react-native";
+import { fontSize, paddingSize } from "../vars";
+import primaryColors from "../colors";
 
 const loginScreenStyle = StyleSheet.create({
   container: {
     flex: 1,
-    display: 'flex',
-    flexDirection: 'column',
+    display: "flex",
+    flexDirection: "column",
     padding: paddingSize.big,
-    justifyContent: 'center',
+    justifyContent: "center",
     rowGap: paddingSize.xxBig,
     backgroundColor: primaryColors.white,
   },
   inputContainer: {
     rowGap: paddingSize.big,
   },
+  buttonsContainer: {
+    rowGap: paddingSize.xSmall,
+  },
   h1: {
     fontSize: fontSize.h1MobileFontSize,
     color: primaryColors.darkBlue,
-    textShadowColor: 'rgba(0, 0, 0, 0.25)',
-    textShadowOffset: {width: 2, height: 2},
+    textShadowColor: "rgba(0, 0, 0, 0.25)",
+    textShadowOffset: { width: 2, height: 2 },
     textShadowRadius: 2,
   },
   h2: {

@@ -1,47 +1,49 @@
-import React from 'react';
-import {Keyboard, Text, TouchableWithoutFeedback, View} from 'react-native';
-import PrimaryButton from '../../components/PrimaryButton';
-import TextInputPersonalized from '../../components/TextInputPersonalized';
-import loginScreenStyle from '../../properties/styles/loginScreenStyle';
-import LinkButton from '../../components/LinkButton';
-import primaryColors from '../../properties/colors';
+import React from "react";
+import { Keyboard, ScrollView, StyleSheet, Text, View } from "react-native";
+import PrimaryButton from "../../components/PrimaryButton";
+import TextInputPersonalized from "../../components/TextInputPersonalized";
+import loginScreenStyle from "../../properties/styles/loginScreenStyle";
+import primaryColors from "../../properties/colors";
+import { paddingSize } from "../../properties/vars";
 
-function LoginScreen() {
+const registerScreenStyle = StyleSheet.create({
+  container: {
+    paddingHorizontal: paddingSize.big,
+    paddingVertical: paddingSize.xxBig,
+    rowGap: paddingSize.xxBig,
+    backgroundColor: primaryColors.white,
+    flexGrow: 1,
+    justifyContent: "center",
+  },
+});
+
+function RegisterScreen({ navigation, route }) {
+  const { doctorScreen } = route.params;
+
   const dismissKeyboard = () => {
     Keyboard.dismiss();
   };
 
   return (
-    <TouchableWithoutFeedback onPress={dismissKeyboard}>
-      <View style={loginScreenStyle.container}>
-        <View>
-          <Text style={loginScreenStyle.h1}>Na Zdrowie!</Text>
-          <Text style={loginScreenStyle.h2}>
-            Zarejestruj się na swoje konto
-          </Text>
-        </View>
-        <View style={loginScreenStyle.inputContainer}>
-          <TextInputPersonalized placeholder="login" />
-          <View>
-            <TextInputPersonalized placeholder="password" />
-            <LinkButton
-              title="Zapomniałeś hasła?"
-              color={primaryColors.lightGrey}
-            />
-          </View>
-        </View>
-        <View>
-          <PrimaryButton title="Zaloguj się" />
-          <LinkButton
-            title="Zarejestruj się"
-            color={primaryColors.darkGrey}
-            helperText="Nie masz konta?"
-            fontWeight="bold"
-          />
-        </View>
+    <ScrollView
+      contentContainerStyle={registerScreenStyle.container}
+      onTouchStart={dismissKeyboard}
+    >
+      <View>
+        <Text style={loginScreenStyle.h1}>Na Zdrowie!</Text>
+        <Text style={loginScreenStyle.h2}>Dołącz do nas!</Text>
       </View>
-    </TouchableWithoutFeedback>
+      <View style={loginScreenStyle.inputContainer}>
+        <TextInputPersonalized placeholder="Adres email" />
+        <TextInputPersonalized placeholder="PESEL" />
+        {doctorScreen && <TextInputPersonalized placeholder="Numer PWZ" />}
+        <TextInputPersonalized placeholder="Login" />
+        <TextInputPersonalized placeholder="Hasło" />
+        <TextInputPersonalized placeholder="Powtórz hasło" />
+      </View>
+      <PrimaryButton title="Zarejestruj się" />
+    </ScrollView>
   );
 }
 
-export default LoginScreen;
+export default RegisterScreen;

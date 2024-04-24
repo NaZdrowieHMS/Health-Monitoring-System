@@ -1,12 +1,12 @@
-import React from 'react';
-import {StyleSheet, TextInput} from 'react-native';
-import {borderRadiusSize, fontSize, paddingSize} from '../properties/vars';
-import primaryColors from '../properties/colors';
-import {InputProps} from '../properties/types/InputType';
+import React from "react";
+import { StyleSheet, TextInput } from "react-native";
+import { borderRadiusSize, fontSize, paddingSize } from "../properties/vars";
+import primaryColors from "../properties/colors";
+import { InputProps } from "../properties/types/InputType";
 
 function TextInputPersonalized(props: InputProps) {
-  const {placeholder} = props;
-  const [text, onChangeText] = React.useState('');
+  const { placeholder } = props;
+  const [text, onChangeText] = React.useState("");
 
   const styles = StyleSheet.create({
     input: {
@@ -20,13 +20,15 @@ function TextInputPersonalized(props: InputProps) {
   });
 
   return (
-    <TextInput
-      style={styles.input}
-      onChangeText={onChangeText}
-      value={text}
-      placeholder={placeholder}
-      placeholderTextColor={primaryColors.lightGrey}
-    />
+    <>
+      <TextInput
+        style={styles.input}
+        onChangeText={onChangeText}
+        value={text}
+        placeholder={placeholder}
+        placeholderTextColor={primaryColors.lightGrey}
+      />
+    </>
   );
 }
 
