@@ -1,10 +1,9 @@
+import { PrimaryButton, TextInputPersonalized } from "components/atoms";
+import primaryColors from "properties/colors";
+import loginScreenStyle from "properties/styles/loginScreenStyle";
+import { paddingSize } from "properties/vars";
 import React from "react";
 import { Keyboard, ScrollView, StyleSheet, Text, View } from "react-native";
-import PrimaryButton from "../../components/PrimaryButton";
-import TextInputPersonalized from "../../components/TextInputPersonalized";
-import loginScreenStyle from "../../properties/styles/loginScreenStyle";
-import primaryColors from "../../properties/colors";
-import { paddingSize } from "../../properties/vars";
 
 const registerScreenStyle = StyleSheet.create({
   container: {

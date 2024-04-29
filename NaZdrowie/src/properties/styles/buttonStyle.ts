@@ -1,6 +1,7 @@
-import {StyleSheet} from 'react-native';
-import primaryColors from '../colors';
-import {borderRadiusSize, fontSize, paddingSize} from '../vars';
+import { StyleSheet } from "react-native";
+
+import primaryColors from "../colors";
+import { borderRadiusSize, fontSize, paddingSize } from "../vars";
 
 export const buttonStyle = StyleSheet.create({
   buttonContainer: {
@@ -11,7 +12,7 @@ export const buttonStyle = StyleSheet.create({
   },
   buttonText: {
     color: primaryColors.white,
-    alignSelf: 'center',
+    alignSelf: "center",
     fontSize: fontSize.buttonMobileFontSize,
   },
 });

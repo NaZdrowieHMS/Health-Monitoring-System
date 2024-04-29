@@ -1,10 +1,12 @@
+import {
+  LinkButton,
+  PrimaryButton,
+  TextInputPersonalized,
+} from "components/atoms";
+import primaryColors from "properties/colors";
+import loginScreenStyle from "properties/styles/loginScreenStyle";
 import React from "react";
 import { Keyboard, Text, View } from "react-native";
-import PrimaryButton from "../../components/PrimaryButton";
-import TextInputPersonalized from "../../components/TextInputPersonalized";
-import loginScreenStyle from "../../properties/styles/loginScreenStyle";
-import LinkButton from "../../components/LinkButton";
-import primaryColors from "../../properties/colors";
 
 function LoginScreen({ navigation }) {
   const dismissKeyboard = () => {
