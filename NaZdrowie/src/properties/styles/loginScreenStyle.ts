@@ -1,6 +1,7 @@
 import { StyleSheet } from "react-native";
-import { fontSize, paddingSize } from "../vars";
+
 import primaryColors from "../colors";
+import { fontSize, paddingSize } from "../vars";
 
 const loginScreenStyle = StyleSheet.create({
   container: {

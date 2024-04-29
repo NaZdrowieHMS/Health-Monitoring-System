@@ -1,8 +1,8 @@
+import primaryColors from "properties/colors";
+import { buttonStyle } from "properties/styles/buttonStyle";
+import { ButtonProps } from "properties/types/ButtonTypes";
 import React from "react";
-import { ButtonProps } from "../properties/types/ButtonTypes";
-import { Pressable, Text, TouchableOpacity } from "react-native";
-import primaryColors from "../properties/colors";
-import { buttonStyle } from "../properties/styles/buttonStyle";
+import { Pressable, Text } from "react-native";
 
 function SecondaryButton(_props: ButtonProps) {
   const { handleOnClick, title } = _props;

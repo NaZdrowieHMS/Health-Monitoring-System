@@ -23,17 +23,17 @@ const fontSize = {
 };
 
 type FontWeight =
-  | 'normal'
-  | 'bold'
-  | '100'
-  | '200'
-  | '300'
-  | '400'
-  | '500'
-  | '600'
-  | '700'
-  | '800'
-  | '900';
+  | "normal"
+  | "bold"
+  | "100"
+  | "200"
+  | "300"
+  | "400"
+  | "500"
+  | "600"
+  | "700"
+  | "800"
+  | "900";
 
-export {paddingSize, fontSize, borderRadiusSize};
-export type {FontWeight};
+export { paddingSize, fontSize, borderRadiusSize };
+export type { FontWeight };

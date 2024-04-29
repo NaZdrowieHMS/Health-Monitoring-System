@@ -1,8 +1,8 @@
+import primaryColors from "properties/colors";
+import { InputProps } from "properties/types/InputType";
+import { borderRadiusSize, fontSize, paddingSize } from "properties/vars";
 import React from "react";
 import { StyleSheet, TextInput } from "react-native";
-import { borderRadiusSize, fontSize, paddingSize } from "../properties/vars";
-import primaryColors from "../properties/colors";
-import { InputProps } from "../properties/types/InputType";
 
 function TextInputPersonalized(props: InputProps) {
   const { placeholder } = props;

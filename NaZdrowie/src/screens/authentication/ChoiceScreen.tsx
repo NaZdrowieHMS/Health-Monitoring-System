@@ -1,7 +1,7 @@
+import { PrimaryButton } from "components/atoms";
+import loginScreenStyle from "properties/styles/loginScreenStyle";
 import React from "react";
 import { Keyboard, Text, View } from "react-native";
-import PrimaryButton from "../../components/PrimaryButton";
-import loginScreenStyle from "../../properties/styles/loginScreenStyle";
 
 function ChoiceScreen({ navigation }) {
   const dismissKeyboard = () => {

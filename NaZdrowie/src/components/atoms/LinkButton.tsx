@@ -1,11 +1,11 @@
+import primaryColors from "properties/colors";
+import { ButtonProps } from "properties/types/ButtonTypes";
+import { FontWeight, fontSize, paddingSize } from "properties/vars";
 import React from "react";
-import { ButtonProps } from "../properties/types/ButtonTypes";
 import { Pressable, StyleSheet, Text, View } from "react-native";
-import primaryColors from "../properties/colors";
-import { FontWeight, fontSize, paddingSize } from "../properties/vars";
 
 function LinkButton(
-  _props: ButtonProps & { color: string; fontWeight?: FontWeight }
+  _props: ButtonProps & { color: string; fontWeight?: FontWeight },
 ) {
   const {
     handleOnClick,
@@ -23,8 +23,8 @@ function LinkButton(
       columnGap: paddingSize.xxSmall,
     },
     buttonText: {
-      color: color,
-      fontWeight: fontWeight,
+      color,
+      fontWeight,
       fontSize: fontSize.baseMobileFontSize,
     },
     helperText: {
