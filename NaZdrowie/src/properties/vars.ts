@@ -3,6 +3,7 @@ const paddingSize = {
   xSmall: 8,
   small: 12,
   medium: 16,
+  mediumBig: 24,
   big: 32,
   xBig: 48,
   xxBig: 64,

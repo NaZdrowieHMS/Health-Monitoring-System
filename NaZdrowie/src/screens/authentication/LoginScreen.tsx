@@ -14,7 +14,11 @@ function LoginScreen({ navigation }) {
   };
 
   const navigateToRegisterScreen = () => {
-    navigation.navigate("Choice", { doctorScreen: true });
+    navigation.navigate("Choice");
+  };
+
+  const navigateToMainScreen = () => {
+    navigation.navigate("MainScreen");
   };
 
   return (
@@ -34,7 +38,10 @@ function LoginScreen({ navigation }) {
         </View>
       </View>
       <View style={loginScreenStyle.buttonsContainer}>
-        <PrimaryButton title="Zaloguj się" />
+        <PrimaryButton
+          title="Zaloguj się"
+          handleOnClick={navigateToMainScreen}
+        />
         <LinkButton
           title="Zarejestruj się"
           color={primaryColors.darkGrey}
