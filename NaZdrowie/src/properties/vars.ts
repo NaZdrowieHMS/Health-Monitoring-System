@@ -19,6 +19,7 @@ const fontSize = {
   buttonMobileFontSize: 20,
   baseMobileFontSize: 16,
   baseFontSize: 14,
+  smallFontSize: 12,
   h1MobileFontSize: 50,
   h2MobileFontSize: 24,
 };

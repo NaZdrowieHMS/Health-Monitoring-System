@@ -16,11 +16,15 @@ const registerScreenStyle = StyleSheet.create({
   },
 });
 
-function RegisterScreen({ navigation, route }) {
+const RegisterScreen = ({ navigation, route }) => {
   const { doctorScreen } = route.params;
 
   const dismissKeyboard = () => {
     Keyboard.dismiss();
+  };
+
+  const navigateToLoginScreen = () => {
+    navigation.navigate("Login");
   };
 
   return (
@@ -40,9 +44,12 @@ function RegisterScreen({ navigation, route }) {
         <TextInputPersonalized placeholder="Hasło" />
         <TextInputPersonalized placeholder="Powtórz hasło" />
       </View>
-      <PrimaryButton title="Zarejestruj się" />
+      <PrimaryButton
+        title="Zarejestruj się"
+        handleOnClick={navigateToLoginScreen}
+      />
     </ScrollView>
   );
-}
+};
 
 export default RegisterScreen;

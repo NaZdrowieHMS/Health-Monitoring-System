@@ -1,4 +1,4 @@
-import {GestureResponderEvent} from 'react-native';
+import { GestureResponderEvent } from "react-native";
 
 export interface ButtonProps {
   handleOnClick?: (event: GestureResponderEvent) => void;

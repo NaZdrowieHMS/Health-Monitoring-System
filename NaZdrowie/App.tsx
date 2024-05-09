@@ -3,10 +3,10 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import React from "react";
 import { View } from "react-native";
 
-import MainScreen from "./src/screens/MainScreen";
 import ChoiceScreen from "./src/screens/authentication/ChoiceScreen";
 import LoginScreen from "./src/screens/authentication/LoginScreen";
 import RegisterScreen from "./src/screens/authentication/RegisterScreen";
+import MainScreen from "./src/screens/main/MainScreen";
 
 const Stack = createNativeStackNavigator();
 

@@ -1,9 +1,12 @@
-import HamburgerMenu from "components/atoms/HamburgerMenu";
-import NavbarDescription from "components/atoms/NavbarDescription";
+import { NavbarDescription, HamburgerMenu } from "components/atoms";
 import primaryColors from "properties/colors";
 import { fontSize, paddingSize } from "properties/vars";
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
+
+type NavparProps = {
+  navbarDescriptionType?: string;
+};
 
 const navbarStyle = StyleSheet.create({
   container: {
@@ -20,16 +23,18 @@ const navbarStyle = StyleSheet.create({
   },
 });
 
-function Navbar() {
+const Navbar: React.FC<NavparProps> = (props: NavparProps) => {
+  const { navbarDescriptionType } = props;
+
   return (
     <View>
       <View style={navbarStyle.container}>
         <Text style={navbarStyle.text}>Na zdrowie</Text>
         <HamburgerMenu />
       </View>
-      <NavbarDescription />
+      <NavbarDescription title={navbarDescriptionType} />
     </View>
   );
-}
+};
 
 export default Navbar;

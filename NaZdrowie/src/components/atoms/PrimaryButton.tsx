@@ -1,11 +1,11 @@
 import primaryColors from "properties/colors";
 import { buttonStyle } from "properties/styles/buttonStyle";
-import { ButtonProps } from "properties/types/ButtonTypes";
+import { ButtonProps } from "properties/types/ButtonProps";
 import React from "react";
 import { Pressable, Text } from "react-native";
 
-function PrimaryButton(_props: ButtonProps) {
-  const { handleOnClick, title } = _props;
+const PrimaryButton: React.FC<ButtonProps> = (props: ButtonProps) => {
+  const { handleOnClick, title } = props;
 
   return (
     <>
@@ -20,6 +20,6 @@ function PrimaryButton(_props: ButtonProps) {
       </Pressable>
     </>
   );
-}
+};
 
 export default PrimaryButton;

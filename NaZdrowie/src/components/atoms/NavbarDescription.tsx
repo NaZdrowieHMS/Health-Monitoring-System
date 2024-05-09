@@ -3,6 +3,10 @@ import { fontSize, paddingSize } from "properties/vars";
 import React from "react";
 import { Text, StyleSheet } from "react-native";
 
+type NavbarDescriptionProps = {
+  title?: string;
+};
+
 const navbarDescriptionStyle = StyleSheet.create({
   text: {
     paddingHorizontal: paddingSize.medium,
@@ -13,9 +17,16 @@ const navbarDescriptionStyle = StyleSheet.create({
   },
 });
 
-function NavbarDescription() {
-  // TODO blue navigation under main navbar
-  return <Text style={navbarDescriptionStyle.text}>Aktywne konwersacje</Text>;
-}
+const NavbarDescription: React.FC<NavbarDescriptionProps> = (
+  props: NavbarDescriptionProps,
+) => {
+  const { title } = props;
+
+  return title ? (
+    <Text style={navbarDescriptionStyle.text}>{title}</Text>
+  ) : (
+    <></>
+  );
+};
 
 export default NavbarDescription;

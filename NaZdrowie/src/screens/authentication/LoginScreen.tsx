@@ -8,7 +8,7 @@ import loginScreenStyle from "properties/styles/loginScreenStyle";
 import React from "react";
 import { Keyboard, Text, View } from "react-native";
 
-function LoginScreen({ navigation }) {
+const LoginScreen = ({ navigation }) => {
   const dismissKeyboard = () => {
     Keyboard.dismiss();
   };
@@ -52,6 +52,6 @@ function LoginScreen({ navigation }) {
       </View>
     </View>
   );
-}
+};
 
 export default LoginScreen;
