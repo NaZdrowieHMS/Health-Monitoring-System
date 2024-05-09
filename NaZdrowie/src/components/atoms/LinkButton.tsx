@@ -1,12 +1,12 @@
 import primaryColors from "properties/colors";
-import { ButtonProps } from "properties/types/ButtonTypes";
+import { ButtonProps } from "properties/types/ButtonProps";
 import { FontWeight, fontSize, paddingSize } from "properties/vars";
 import React from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
-function LinkButton(
-  _props: ButtonProps & { color: string; fontWeight?: FontWeight },
-) {
+const LinkButton: React.FC<
+  ButtonProps & { color: string; fontWeight?: FontWeight }
+> = (props: ButtonProps & { color: string; fontWeight?: FontWeight }) => {
   const {
     handleOnClick,
     title,
@@ -14,7 +14,7 @@ function LinkButton(
     fontWeight,
     helperText,
     helperTextColor,
-  } = _props;
+  } = props;
 
   const buttonStyle = StyleSheet.create({
     buttonContainer: {
@@ -41,6 +41,6 @@ function LinkButton(
       </Pressable>
     </View>
   );
-}
+};
 
 export default LinkButton;

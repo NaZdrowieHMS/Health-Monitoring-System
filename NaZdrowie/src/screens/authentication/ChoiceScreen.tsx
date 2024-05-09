@@ -3,7 +3,7 @@ import loginScreenStyle from "properties/styles/loginScreenStyle";
 import React from "react";
 import { Keyboard, Text, View } from "react-native";
 
-function ChoiceScreen({ navigation }) {
+const ChoiceScreen = ({ navigation }) => {
   const dismissKeyboard = () => {
     Keyboard.dismiss();
   };
@@ -34,6 +34,6 @@ function ChoiceScreen({ navigation }) {
       </View>
     </View>
   );
-}
+};
 
 export default ChoiceScreen;

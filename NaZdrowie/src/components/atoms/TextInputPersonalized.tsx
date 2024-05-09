@@ -1,10 +1,10 @@
 import primaryColors from "properties/colors";
-import { InputProps } from "properties/types/InputType";
+import { InputProps } from "properties/types/InputProps";
 import { borderRadiusSize, fontSize, paddingSize } from "properties/vars";
 import React from "react";
 import { StyleSheet, TextInput } from "react-native";
 
-function TextInputPersonalized(props: InputProps) {
+const TextInputPersonalized: React.FC<InputProps> = (props: InputProps) => {
   const { placeholder } = props;
   const [text, onChangeText] = React.useState("");
 
@@ -30,6 +30,6 @@ function TextInputPersonalized(props: InputProps) {
       />
     </>
   );
-}
+};
 
 export default TextInputPersonalized;
