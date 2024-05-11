@@ -5,7 +5,7 @@ import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 
 type NavparProps = {
-  navbarDescriptionType?: string;
+  navbarDescriptionTitle?: string;
 };
 
 const navbarStyle = StyleSheet.create({
@@ -24,7 +24,7 @@ const navbarStyle = StyleSheet.create({
 });
 
 const Navbar: React.FC<NavparProps> = (props: NavparProps) => {
-  const { navbarDescriptionType } = props;
+  const { navbarDescriptionTitle } = props;
 
   return (
     <View>
@@ -32,7 +32,7 @@ const Navbar: React.FC<NavparProps> = (props: NavparProps) => {
         <Text style={navbarStyle.text}>Na zdrowie</Text>
         <HamburgerMenu />
       </View>
-      <NavbarDescription title={navbarDescriptionType} />
+      <NavbarDescription title={navbarDescriptionTitle} />
     </View>
   );
 };

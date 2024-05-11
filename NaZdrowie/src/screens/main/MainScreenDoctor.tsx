@@ -1,31 +1,26 @@
 import { LinkButton, PrimaryButton } from "components/atoms";
 import { ListCard } from "components/molecules";
 import primaryColors from "properties/colors";
-import { paddingSize } from "properties/vars";
 import React from "react";
-import { View, StyleSheet, ScrollView } from "react-native";
+import { View, ScrollView } from "react-native";
 
-const MainScreenDoctor = () => {
-  const mainStyle = StyleSheet.create({
-    container: {
-      backgroundColor: primaryColors.babyBlue,
-      paddingHorizontal: paddingSize.medium,
-      paddingVertical: paddingSize.mediumBig,
-      rowGap: paddingSize.mediumBig,
-    },
-    buttonContainer: {
-      paddingHorizontal: paddingSize.mediumBig,
-      rowGap: paddingSize.small,
-    },
-  });
+import { mainStyle } from "./MainScreen";
+
+const MainScreenDoctor = ({ navigation }) => {
+  const navigateToAllPatientsScreen = () => {
+    navigation.navigate("AllPatients");
+  };
 
   return (
     <ScrollView contentContainerStyle={mainStyle.container}>
       <View style={mainStyle.buttonContainer}>
+        <PrimaryButton
+          handleOnClick={navigateToAllPatientsScreen}
+          title="Moi pacjenci"
+        />
         <PrimaryButton title="Czaty z pacjentami" />
-        <PrimaryButton title="Moi pacjenci" />
-        <PrimaryButton title="Znajdź nowego pacjenta" />
         <PrimaryButton title="Wygeneruj kod QR" />
+        <PrimaryButton title="Znajdź nowego pacjenta" />
       </View>
       <ListCard
         title="Ostatnio leczeni pacjenci"

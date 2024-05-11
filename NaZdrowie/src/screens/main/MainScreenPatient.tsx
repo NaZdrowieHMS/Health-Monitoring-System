@@ -1,24 +1,12 @@
 import { LinkButton, PrimaryButton } from "components/atoms";
 import { CommentsCard, ListCard } from "components/molecules";
 import primaryColors from "properties/colors";
-import { paddingSize } from "properties/vars";
 import React from "react";
-import { View, StyleSheet, ScrollView } from "react-native";
+import { View, ScrollView } from "react-native";
 
-const MainScreenPatient = () => {
-  const mainStyle = StyleSheet.create({
-    container: {
-      backgroundColor: primaryColors.babyBlue,
-      paddingHorizontal: paddingSize.medium,
-      paddingVertical: paddingSize.mediumBig,
-      rowGap: paddingSize.mediumBig,
-    },
-    buttonContainer: {
-      paddingHorizontal: paddingSize.mediumBig,
-      rowGap: paddingSize.small,
-    },
-  });
+import { mainStyle } from "./MainScreen";
 
+const MainScreenPatient = ({ navigation }) => {
   return (
     <ScrollView contentContainerStyle={mainStyle.container}>
       <View style={mainStyle.buttonContainer}>
