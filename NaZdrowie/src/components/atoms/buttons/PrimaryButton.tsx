@@ -8,17 +8,15 @@ const PrimaryButton: React.FC<ButtonProps> = (props: ButtonProps) => {
   const { handleOnClick, title } = props;
 
   return (
-    <>
-      <Pressable
-        onPress={handleOnClick}
-        style={[
-          buttonStyle.buttonContainer,
-          { backgroundColor: primaryColors.darkBlue },
-        ]}
-      >
-        <Text style={[buttonStyle.buttonText]}>{title}</Text>
-      </Pressable>
-    </>
+    <Pressable
+      onPress={handleOnClick}
+      style={[
+        buttonStyle.buttonContainer,
+        { backgroundColor: primaryColors.darkBlue },
+      ]}
+    >
+      <Text style={[buttonStyle.buttonText]}>{title}</Text>
+    </Pressable>
   );
 };
 

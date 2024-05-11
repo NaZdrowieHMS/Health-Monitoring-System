@@ -5,45 +5,46 @@ import { borderRadiusSize, fontSize, paddingSize } from "properties/vars";
 import React from "react";
 import { Text, View, StyleSheet } from "react-native";
 
+const listCardStyle = StyleSheet.create({
+  container: {
+    backgroundColor: primaryColors.white,
+    flexGrow: 1,
+    paddingHorizontal: paddingSize.medium,
+    paddingVertical: paddingSize.mediumBig,
+    rowGap: paddingSize.medium,
+    borderRadius: borderRadiusSize.small,
+    shadowOffset: {
+      width: 4,
+      height: 4,
+    },
+    shadowOpacity: 0.25,
+  },
+  title: {
+    fontSize: fontSize.buttonMobileFontSize,
+    color: primaryColors.darkBlue,
+  },
+  comment: {
+    display: "flex",
+    rowGap: paddingSize.xSmall,
+  },
+  text: {
+    fontSize: fontSize.baseMobileFontSize,
+    color: primaryColors.darkGrey,
+  },
+  date: {
+    color: primaryColors.lightBlue,
+  },
+  author: {
+    fontSize: fontSize.smallFontSize,
+  },
+  floatRight: {
+    flexDirection: "row",
+    justifyContent: "flex-end",
+  },
+});
+
 const ListCard: React.FC<CommentsCardProps> = (props: CommentsCardProps) => {
   const { title, data } = props;
-  const listCardStyle = StyleSheet.create({
-    container: {
-      backgroundColor: primaryColors.white,
-      flexGrow: 1,
-      paddingHorizontal: paddingSize.medium,
-      paddingVertical: paddingSize.mediumBig,
-      rowGap: paddingSize.medium,
-      borderRadius: borderRadiusSize.small,
-      shadowOffset: {
-        width: 4,
-        height: 4,
-      },
-      shadowOpacity: 0.25,
-    },
-    title: {
-      fontSize: fontSize.buttonMobileFontSize,
-      color: primaryColors.darkBlue,
-    },
-    comment: {
-      display: "flex",
-      rowGap: paddingSize.xSmall,
-    },
-    text: {
-      fontSize: fontSize.baseMobileFontSize,
-      color: primaryColors.darkGrey,
-    },
-    date: {
-      color: primaryColors.lightBlue,
-    },
-    author: {
-      fontSize: fontSize.smallFontSize,
-    },
-    floatRight: {
-      flexDirection: "row",
-      justifyContent: "flex-end",
-    },
-  });
 
   return (
     <View style={listCardStyle.container}>
