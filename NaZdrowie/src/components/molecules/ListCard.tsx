@@ -1,3 +1,4 @@
+import { LinkButton } from "components/atoms";
 import primaryColors from "properties/colors";
 import { ListCardProps } from "properties/types/ListCardProps";
 import { borderRadiusSize, fontSize, paddingSize } from "properties/vars";
@@ -35,10 +36,14 @@ const listCardStyle = StyleSheet.create({
   text: {
     fontSize: fontSize.baseMobileFontSize,
   },
+  floatRight: {
+    flexDirection: "row",
+    justifyContent: "flex-end",
+  },
 });
 
 const ListCard: React.FC<ListCardProps> = (props: ListCardProps) => {
-  const { title, data } = props;
+  const { title, data, handleSeeMore } = props;
 
   return (
     <View style={listCardStyle.container}>
@@ -51,6 +56,14 @@ const ListCard: React.FC<ListCardProps> = (props: ListCardProps) => {
           </View>
         </View>
       ))}
+      {handleSeeMore && (
+        <View style={listCardStyle.floatRight}>
+          <LinkButton
+            title="Zobacz więcej..."
+            color={primaryColors.lightBlue}
+          />
+        </View>
+      )}
     </View>
   );
 };

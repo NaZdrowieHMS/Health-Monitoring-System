@@ -1,6 +1,9 @@
 import { LinkButton, Comment } from "components/atoms";
 import primaryColors from "properties/colors";
-import { CommentsCardProps } from "properties/types/CommentsCardProps";
+import {
+  CommentData,
+  CommentsCardProps,
+} from "properties/types/CommentsCardProps";
 import { borderRadiusSize, fontSize, paddingSize } from "properties/vars";
 import React from "react";
 import { Text, View, StyleSheet } from "react-native";
@@ -23,21 +26,31 @@ const listCardStyle = StyleSheet.create({
     fontSize: fontSize.buttonMobileFontSize,
     color: primaryColors.darkBlue,
   },
+  secondaryTitle: {
+    fontSize: fontSize.baseMobileFontSize,
+    color: primaryColors.darkBlue,
+  },
   floatRight: {
     flexDirection: "row",
     justifyContent: "flex-end",
   },
 });
 
-const CommentsCard: React.FC<CommentsCardProps> = (
-  props: CommentsCardProps,
-) => {
-  const { title, data } = props;
+const CommentsCardForDoctor: React.FC<
+  CommentsCardProps & { dataOthers: CommentData[] }
+> = (props: CommentsCardProps & { dataOthers: CommentData[] }) => {
+  const { title, data, dataOthers } = props;
 
   return (
     <View style={listCardStyle.container}>
       <Text style={listCardStyle.title}>{title}</Text>
+      <Text style={listCardStyle.secondaryTitle}>Twoje komentarze</Text>
+      {/* TODO Comment input */}
       {data.map((item, index) => (
+        <Comment item={item} index={index} />
+      ))}
+      <Text style={listCardStyle.secondaryTitle}>Pozostałe komentarze</Text>
+      {dataOthers.map((item, index) => (
         <Comment item={item} index={index} />
       ))}
       <View style={listCardStyle.floatRight}>
@@ -47,4 +60,4 @@ const CommentsCard: React.FC<CommentsCardProps> = (
   );
 };
 
-export default CommentsCard;
+export default CommentsCardForDoctor;
