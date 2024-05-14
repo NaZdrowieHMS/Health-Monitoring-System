@@ -48,7 +48,7 @@ const PatientScreen = ({ navigation }) => {
             {
               date: "01.01.2024",
               text: "Lorem ipsum tralala",
-              author: "Kazimierz Trąbalski",
+              author: "Jolanta Biel",
             },
           ]}
           dataOthers={[
