@@ -1,5 +1,5 @@
 import { FontWeight } from "properties/vars";
-import { ButtonProps } from "react-native";
+import { ButtonProps, GestureResponderEvent } from "react-native";
 
 type ListCardElement = {
   text: string;
@@ -11,4 +11,5 @@ type ListCardElement = {
 export type ListCardProps = {
   title: string;
   data: ListCardElement[];
+  handleSeeMore?: (event: GestureResponderEvent) => void;
 };

@@ -19,11 +19,18 @@ const allPatientsStyle = StyleSheet.create({
 });
 
 const AllPatientsScreen = ({ navigation }) => {
+  const navigateToPatientScreen = () => {
+    navigation.navigate("Patient");
+  };
+
   return (
     <View style={{ flex: 1 }}>
       <Navbar navbarDescriptionTitle="Moi pacjenci" />
       <ScrollView contentContainerStyle={allPatientsStyle.container}>
-        <UserButton title="Alicja Jakaśtam" />
+        <UserButton
+          title="Alicja Jakaśtam"
+          handleOnClick={navigateToPatientScreen}
+        />
       </ScrollView>
     </View>
   );
