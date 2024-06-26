@@ -3,7 +3,8 @@
     "baseUrl": ".",
     "paths": {
       "components/*": ["src/components/*"],
-      "properties/*": ["src/properties/*"]
+      "properties/*": ["src/properties/*"],
+      "services/*": ["src/services/*"]
     }
   },
   "extends": "expo/tsconfig.base"

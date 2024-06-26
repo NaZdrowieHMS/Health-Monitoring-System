@@ -18,7 +18,9 @@ const patientStyle = StyleSheet.create({
   },
 });
 
-const PatientScreen = ({ navigation }) => {
+const PatientScreen = ({ route, navigation }) => {
+  const { patientId } = route.params;
+
   const navigateToAllReferals = () => {
     // TODO
   };
@@ -29,7 +31,7 @@ const PatientScreen = ({ navigation }) => {
 
   return (
     <View style={{ flex: 1 }}>
-      <Navbar navbarDescriptionTitle="Alicja Jakaśtam" />
+      <Navbar navbarDescriptionTitle={"Alicja Jakaśtam " + patientId} />
       <ScrollView contentContainerStyle={patientStyle.container}>
         <View style={patientStyle.buttonContainer}>
           <PrimaryButton title="Diagnozuj z AI" />
