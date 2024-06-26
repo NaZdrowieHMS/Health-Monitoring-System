@@ -1,10 +1,9 @@
 import { LinkButton, PrimaryButton } from "components/atoms";
 import { CommentsCard, ListCard } from "components/molecules";
 import primaryColors from "properties/colors";
+import { mainStyle } from "properties/styles/mainStyle";
 import React from "react";
 import { View, ScrollView } from "react-native";
-
-import { mainStyle } from "./MainScreen";
 
 const MainScreenPatient = ({ navigation }) => {
   return (

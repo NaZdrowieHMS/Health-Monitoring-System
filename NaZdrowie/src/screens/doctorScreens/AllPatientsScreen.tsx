@@ -4,6 +4,7 @@ import primaryColors from "properties/colors";
 import { paddingSize } from "properties/vars";
 import React from "react";
 import { View, StyleSheet, ScrollView } from "react-native";
+import { getAllPatients } from "services/doctorScreenData";
 
 const allPatientsStyle = StyleSheet.create({
   container: {
@@ -19,18 +20,25 @@ const allPatientsStyle = StyleSheet.create({
 });
 
 const AllPatientsScreen = ({ navigation }) => {
-  const navigateToPatientScreen = () => {
-    navigation.navigate("Patient");
+  const navigateToPatientScreen = (patientId: number) => {
+    navigation.navigate("Patient", {
+      patientId,
+    });
   };
+
+  const allPatientsData = getAllPatients().map((patient) => (
+    <UserButton
+      key={patient.patientId}
+      title={patient.patientName}
+      handleOnClick={() => navigateToPatientScreen(patient.patientId)}
+    />
+  ));
 
   return (
     <View style={{ flex: 1 }}>
       <Navbar navbarDescriptionTitle="Moi pacjenci" />
       <ScrollView contentContainerStyle={allPatientsStyle.container}>
-        <UserButton
-          title="Alicja Jakaśtam"
-          handleOnClick={navigateToPatientScreen}
-        />
+        {allPatientsData}
       </ScrollView>
     </View>
   );

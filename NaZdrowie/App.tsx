@@ -17,12 +17,36 @@ const App = (): React.JSX.Element => {
     <View style={{ flex: 1 }}>
       <NavigationContainer>
         <Stack.Navigator>
-          <Stack.Screen name="Login" component={LoginScreen} />
-          <Stack.Screen name="Register" component={RegisterScreen} />
-          <Stack.Screen name="Choice" component={ChoiceScreen} />
-          <Stack.Screen name="MainScreen" component={MainScreen} />
-          <Stack.Screen name="AllPatients" component={AllPatientsScreen} />
-          <Stack.Screen name="Patient" component={PatientScreen} />
+          <Stack.Screen
+            name="Login"
+            options={{ title: "Logowanie" }}
+            component={LoginScreen}
+          />
+          <Stack.Screen
+            name="Register"
+            component={RegisterScreen}
+            options={{ title: "Rejestracja" }}
+          />
+          <Stack.Screen
+            name="Choice"
+            component={ChoiceScreen}
+            options={{ title: "Logowanie" }}
+          />
+          <Stack.Screen
+            name="MainScreen"
+            component={MainScreen}
+            options={{ title: "Strona główna" }}
+          />
+          <Stack.Screen
+            name="AllPatients"
+            component={AllPatientsScreen}
+            options={{ title: "Moi pacjenci" }}
+          />
+          <Stack.Screen
+            name="Patient"
+            component={PatientScreen}
+            options={{ title: "Dane pacjenta" }}
+          />
         </Stack.Navigator>
       </NavigationContainer>
     </View>
