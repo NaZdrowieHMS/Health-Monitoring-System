@@ -1,8 +1,9 @@
 import { UserButton } from "components/atoms";
+import { UserButtonElement } from "components/atoms/buttons/UserButton";
 import { Navbar } from "components/molecules";
 import primaryColors from "properties/colors";
 import { paddingSize } from "properties/vars";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { View, StyleSheet, ScrollView } from "react-native";
 import { getAllPatients } from "services/doctorScreenData";
 
@@ -20,19 +21,32 @@ const allPatientsStyle = StyleSheet.create({
 });
 
 const AllPatientsScreen = ({ navigation }) => {
+  const [allPatientsData, setAllPatientsData] = useState<UserButtonElement[]>(
+    [],
+  );
+
+  useEffect(() => {
+    setAllPatients();
+  }, []);
+
   const navigateToPatientScreen = (patientId: number) => {
     navigation.navigate("Patient", {
       patientId,
     });
   };
 
-  const allPatientsData = getAllPatients().map((patient) => (
-    <UserButton
-      key={patient.patientId}
-      title={patient.patientName}
-      handleOnClick={() => navigateToPatientScreen(patient.patientId)}
-    />
-  ));
+  const setAllPatients = () =>
+    getAllPatients().then((data) => {
+      setAllPatientsData(
+        data.map((patient) => (
+          <UserButton
+            key={patient.id}
+            title={patient.name}
+            handleOnClick={() => navigateToPatientScreen(patient.id)}
+          />
+        )),
+      );
+    });
 
   return (
     <View style={{ flex: 1 }}>

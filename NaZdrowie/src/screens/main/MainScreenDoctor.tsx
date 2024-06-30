@@ -2,36 +2,78 @@ import { LinkButton, PrimaryButton } from "components/atoms";
 import { ListCard } from "components/molecules";
 import primaryColors from "properties/colors";
 import { mainStyle } from "properties/styles/mainStyle";
-import React from "react";
+import {
+  PatientData,
+  ResultsData,
+} from "properties/types/DoctorScreenDataProps";
+import { ListCardElement } from "properties/types/ListCardProps";
+import React, { useEffect, useState } from "react";
 import { View, ScrollView } from "react-native";
 import { getLatestPatients, getLatestResults } from "services/doctorScreenData";
 
 const MainScreenDoctor = ({ navigation }) => {
+  const [latestPatientsData, setLatestPatientsData] = useState<
+    ListCardElement[]
+  >([]);
+
+  const [latestResultsData, setLatestResultsData] = useState<ListCardElement[]>(
+    [],
+  );
+
+  useEffect(() => {
+    setLatestPatients();
+    setLatestResults(1);
+  }, []);
+
   const navigateToAllPatientsScreen = () => {
     navigation.navigate("AllPatients");
   };
 
-  const latestPatientsData = getLatestPatients().map((patient) => ({
-    text: patient.patientName,
+  const setLatestPatients = async () => {
+    try {
+      const data = await getLatestPatients();
+      const formattedPatients = data.map(formatPatientData);
+      setLatestPatientsData(formattedPatients);
+    } catch (error) {
+      console.error("Error fetching latest patients:", error);
+    }
+  };
+
+  const formatPatientData = (patient: PatientData) => ({
+    text: patient.name,
     buttons: [
       <LinkButton
-        key={patient.patientId}
+        key={patient.id}
         title="Przejdź"
         color={primaryColors.lightBlue}
       />,
     ],
-  }));
+  });
 
-  const latestResultsData = getLatestResults().map((entry) => ({
-    text: `${entry.patientName}: ${entry.resultName}`,
+  const setLatestResults = async (doctorId: number) => {
+    try {
+      const data = await getLatestResults(doctorId);
+      const formattedResults = data.map(formatResultEntry);
+      setLatestResultsData(formattedResults);
+    } catch (error) {
+      console.error("Error fetching latest results:", error);
+    }
+  };
+
+  const formatResultEntry = (
+    entry: ResultsData & {
+      patient: PatientData;
+    },
+  ) => ({
+    text: `${entry.patient.name}: ${entry.test_type}`,
     buttons: [
       <LinkButton
-        key={entry.resultId}
+        key={entry.id}
         title="Podgląd"
         color={primaryColors.lightBlue}
       />,
     ],
-  }));
+  });
 
   return (
     <ScrollView contentContainerStyle={mainStyle.container}>

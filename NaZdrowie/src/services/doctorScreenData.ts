@@ -1,53 +1,40 @@
+import axios from "axios";
 import {
   PatientData,
   ResultsData,
 } from "properties/types/DoctorScreenDataProps";
 
-export const getLatestPatients: () => PatientData[] = () => {
-  return [
-    { patientId: 1, patientName: "Alicja Kowalska" },
-    { patientId: 2, patientName: "Zuzanna Mikulska" },
-    { patientId: 5, patientName: "Alicja Balala" },
-    { patientId: 7, patientName: "Alicja Balala" },
-  ];
+const API_URL = "http://localhost:5001/api/";
+
+export const getLatestPatients: () => Promise<PatientData[]> = async () => {
+  try {
+    const response = await axios.get(`${API_URL}patients`);
+    return response.data.data;
+  } catch (error) {
+    console.error("Error fetching data:", error);
+  }
 };
 
-export const getLatestResults: () => (ResultsData & PatientData)[] = () => {
-  return [
-    {
-      patientId: 1,
-      patientName: "Alicja Kowalska",
-      resultId: 2,
-      resultName: "USG piersi",
-    },
-    {
-      patientId: 2,
-      patientName: "Zuzanna Mikulska",
-      resultId: 3,
-      resultName: "Mammografia",
-    },
-    {
-      patientId: 5,
-      patientName: "Alicja Balala",
-      resultId: 4,
-      resultName: "USG piersi",
-    },
-    {
-      patientId: 7,
-      patientName: "Alicja Balala",
-      resultId: 4,
-      resultName: "USG piersi",
-    },
-  ];
+export const getLatestResults: (doctorId: number) => Promise<
+  (ResultsData & {
+    patient: PatientData;
+  })[]
+> = async (doctorId: number) => {
+  try {
+    const response = await axios.get(
+      `${API_URL}doctors/${doctorId}/unviewed-results`,
+    );
+    return response.data.data;
+  } catch (error) {
+    console.error("Error fetching data:", error);
+  }
 };
 
-export const getAllPatients: () => PatientData[] = () => {
-  return [
-    { patientId: 1, patientName: "Alicja Kowalska" },
-    { patientId: 2, patientName: "Zuzanna Mikulska" },
-    { patientId: 5, patientName: "Alicja Balala" },
-    { patientId: 6, patientName: "Alicja Kajak" },
-    { patientId: 7, patientName: "Alicja Tarara" },
-    { patientId: 9, patientName: "Alicja Balala" },
-  ];
+export const getAllPatients: () => Promise<PatientData[]> = async () => {
+  try {
+    const response = await axios.get(`${API_URL}patients`);
+    return response.data.data;
+  } catch (error) {
+    console.error("Error fetching data:", error);
+  }
 };

@@ -1,9 +1,16 @@
 export type PatientData = {
-  patientId: number;
-  patientName: string;
+  id: number;
+  name: string;
+  surname: string;
+  email: string;
+  pesel: string;
 };
 
 export type ResultsData = {
-  resultId: number;
-  resultName: string;
+  id: number;
+  content: {
+    data: string;
+    type: string;
+  };
+  test_type: string;
 };

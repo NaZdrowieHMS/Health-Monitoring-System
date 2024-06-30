@@ -1,6 +1,8 @@
 import { Navbar } from "components/molecules";
-import React from "react";
-import { View } from "react-native";
+import React, { useEffect, useState } from "react";
+import { View, Text } from "react-native";
+
+import { smokeTest } from "services/doctorScreenData";
 
 import MainScreenDoctor from "./MainScreenDoctor";
 import MainScreenPatient from "./MainScreenPatient";

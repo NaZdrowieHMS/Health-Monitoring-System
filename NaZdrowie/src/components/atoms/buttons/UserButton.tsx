@@ -5,6 +5,8 @@ import { borderRadiusSize, fontSize } from "properties/vars";
 import React from "react";
 import { Pressable, StyleSheet, Text } from "react-native";
 
+export type UserButtonElement = ReturnType<typeof UserButton>;
+
 export const userButtonStyle = StyleSheet.create({
   buttonContainer: {
     backgroundColor: primaryColors.white,
