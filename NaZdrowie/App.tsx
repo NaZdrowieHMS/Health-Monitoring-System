@@ -2,7 +2,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import React from "react";
 import { View } from "react-native";
-import PatientScreen from "src/screens/doctorScreens/PatientScreen";
+import PatientDetailsScreen from "src/screens/doctorScreens/PatientDetailsScreen";
 
 import ChoiceScreen from "./src/screens/authentication/ChoiceScreen";
 import LoginScreen from "./src/screens/authentication/LoginScreen";
@@ -44,7 +44,7 @@ const App = (): React.JSX.Element => {
           />
           <Stack.Screen
             name="Patient"
-            component={PatientScreen}
+            component={PatientDetailsScreen}
             options={{ title: "Dane pacjenta" }}
           />
         </Stack.Navigator>
