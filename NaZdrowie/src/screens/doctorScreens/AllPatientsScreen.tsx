@@ -5,7 +5,8 @@ import primaryColors from "properties/colors";
 import { paddingSize } from "properties/vars";
 import React, { useEffect, useState } from "react";
 import { View, StyleSheet, ScrollView } from "react-native";
-import { getAllPatients } from "services/doctorScreenData";
+import { CurrentUserData } from "services/config";
+import { getAllPatients } from "services/doctorData";
 
 const allPatientsStyle = StyleSheet.create({
   container: {
@@ -26,7 +27,7 @@ const AllPatientsScreen = ({ navigation }) => {
   );
 
   useEffect(() => {
-    setAllPatients();
+    setAllPatients(CurrentUserData.id);
   }, []);
 
   const navigateToPatientScreen = (patientId: number) => {
@@ -35,8 +36,8 @@ const AllPatientsScreen = ({ navigation }) => {
     });
   };
 
-  const setAllPatients = () =>
-    getAllPatients().then((data) => {
+  const setAllPatients = (doctorId: number) =>
+    getAllPatients(doctorId).then((data) => {
       setAllPatientsData(
         data.map((patient) => (
           <UserButton

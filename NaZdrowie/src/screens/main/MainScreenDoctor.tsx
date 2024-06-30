@@ -2,14 +2,12 @@ import { LinkButton, PrimaryButton } from "components/atoms";
 import { ListCard } from "components/molecules";
 import primaryColors from "properties/colors";
 import { mainStyle } from "properties/styles/mainStyle";
-import {
-  PatientData,
-  ResultsData,
-} from "properties/types/DoctorScreenDataProps";
 import { ListCardElement } from "properties/types/ListCardProps";
+import { PatientData, ResultsData } from "properties/types/PatientDataProps";
 import React, { useEffect, useState } from "react";
 import { View, ScrollView } from "react-native";
-import { getLatestPatients, getLatestResults } from "services/doctorScreenData";
+import { CurrentUserData } from "services/config";
+import { getLatestPatients, getLatestResults } from "services/doctorData";
 
 const MainScreenDoctor = ({ navigation }) => {
   const [latestPatientsData, setLatestPatientsData] = useState<
@@ -21,17 +19,17 @@ const MainScreenDoctor = ({ navigation }) => {
   );
 
   useEffect(() => {
-    setLatestPatients();
-    setLatestResults(1);
+    setLatestPatients(CurrentUserData.id);
+    setLatestResults(CurrentUserData.id);
   }, []);
 
   const navigateToAllPatientsScreen = () => {
     navigation.navigate("AllPatients");
   };
 
-  const setLatestPatients = async () => {
+  const setLatestPatients = async (doctorId: number) => {
     try {
-      const data = await getLatestPatients();
+      const data = await getLatestPatients(doctorId);
       const formattedPatients = data.map(formatPatientData);
       setLatestPatientsData(formattedPatients);
     } catch (error) {

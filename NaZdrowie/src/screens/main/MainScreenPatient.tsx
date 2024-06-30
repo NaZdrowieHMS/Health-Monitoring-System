@@ -2,10 +2,85 @@ import { LinkButton, PrimaryButton } from "components/atoms";
 import { CommentsCard, ListCard } from "components/molecules";
 import primaryColors from "properties/colors";
 import { mainStyle } from "properties/styles/mainStyle";
-import React from "react";
+import { CommentData } from "properties/types/CommentsCardProps";
+import { ListCardElement } from "properties/types/ListCardProps";
+import {
+  PatientHealthComment,
+  PatientReferral,
+  PatientResult,
+} from "properties/types/PatientDataProps";
+import React, { useEffect, useState } from "react";
 import { View, ScrollView } from "react-native";
+import {
+  getHealthComments,
+  getReferrals,
+  getResults,
+} from "services/patientData";
+import { formatDate } from "services/utils";
 
 const MainScreenPatient = ({ navigation }) => {
+  const [healthCommentsData, setHealthCommentsData] = useState<CommentData[]>(
+    [],
+  );
+
+  const [referralsData, setReferralsData] = useState<ListCardElement[]>([]);
+  const [resultsData, setResultssData] = useState<ListCardElement[]>([]);
+
+  useEffect(() => {
+    setHealthComments(4);
+    setReferrals(4);
+    setResults(3);
+  }, []);
+
+  const setHealthComments = async (patientId: number) => {
+    try {
+      const data = await getHealthComments(patientId);
+      const formattedComments = data.map(formatCommentsData);
+      setHealthCommentsData(formattedComments);
+    } catch (error) {
+      console.error("Error fetching latest patients:", error);
+    }
+  };
+
+  const formatCommentsData = (comment: PatientHealthComment) => ({
+    date: formatDate(comment.modified_date),
+    text: comment.content,
+    author: `${comment.doctor.name} ${comment.doctor.surname}`,
+  });
+
+  const setReferrals = async (patientId: number) => {
+    try {
+      const data = await getReferrals(patientId);
+      const formattedReferrals = data.map(formatReferralsData);
+      setReferralsData(formattedReferrals);
+    } catch (error) {
+      console.error("Error fetching latest patients:", error);
+    }
+  };
+
+  const formatReferralsData = (referral: PatientReferral) => ({
+    text: referral.test_type,
+    buttons: [
+      <LinkButton title="Podgląd" color={primaryColors.lightBlue} />,
+      <LinkButton title="Załącz wynik" color={primaryColors.lightBlue} />,
+    ],
+  });
+
+  const setResults = async (patientId: number) => {
+    try {
+      const data = await getResults(patientId);
+      const formattedResults = data.map(formatResultsData);
+      setResultssData(formattedResults);
+    } catch (error) {
+      console.error("Error fetching latest patients:", error);
+    }
+  };
+
+  const formatResultsData = (result: PatientResult) => ({
+    text: result.test_type,
+    buttons: [<LinkButton title="Podgląd" color={primaryColors.lightBlue} />],
+  });
+
   return (
     <ScrollView contentContainerStyle={mainStyle.container}>
       <View style={mainStyle.buttonContainer}>
@@ -14,53 +89,9 @@ const MainScreenPatient = ({ navigation }) => {
         <PrimaryButton title="Załącz wynik badania" />
         <PrimaryButton title="Dodaj lekarza kodem QR" />
       </View>
-      <CommentsCard
-        title="Moje zdrowie"
-        data={[
-          {
-            date: "12.03.2024",
-            text: "Lorem ipsum tralala",
-            author: "Jolanta Biel",
-          },
-          {
-            date: "01.01.2024",
-            text: "Lorem ipsum tralala",
-            author: "Kazimierz Trąbalski",
-          },
-        ]}
-      />
-      <ListCard
-        title="Moje skierowania"
-        data={[
-          {
-            text: "USG piersi",
-            buttons: [
-              <LinkButton title="Podgląd" color={primaryColors.lightBlue} />,
-              <LinkButton
-                title="Załącz wynik"
-                color={primaryColors.lightBlue}
-              />,
-            ],
-          },
-        ]}
-      />
-      <ListCard
-        title="Moje wyniki"
-        data={[
-          {
-            text: "Tomografia",
-            buttons: [
-              <LinkButton title="Podgląd" color={primaryColors.lightBlue} />,
-            ],
-          },
-          {
-            text: "USG piersi",
-            buttons: [
-              <LinkButton title="Podgląd" color={primaryColors.lightBlue} />,
-            ],
-          },
-        ]}
-      />
+      <CommentsCard title="Moje zdrowie" data={healthCommentsData} />
+      <ListCard title="Moje skierowania" data={referralsData} />
+      <ListCard title="Moje wyniki" data={resultsData} />
     </ScrollView>
   );
 };
