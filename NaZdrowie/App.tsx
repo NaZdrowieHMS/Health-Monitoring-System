@@ -2,6 +2,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import React from "react";
 import { View } from "react-native";
+import AiDiagnosis from "src/screens/doctorScreens/AiDiagnosis";
 import PatientDetailsScreen from "src/screens/doctorScreens/PatientDetailsScreen";
 
 import ChoiceScreen from "./src/screens/authentication/ChoiceScreen";
@@ -46,6 +47,11 @@ const App = (): React.JSX.Element => {
             name="Patient"
             component={PatientDetailsScreen}
             options={{ title: "Dane pacjenta" }}
+          />
+          <Stack.Screen
+            name="AiDiagnosis"
+            component={AiDiagnosis}
+            options={{ title: "Diagnozuj z AI" }}
           />
         </Stack.Navigator>
       </NavigationContainer>

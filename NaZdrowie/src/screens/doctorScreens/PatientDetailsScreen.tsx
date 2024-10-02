@@ -63,6 +63,12 @@ const PatientScreen = ({ route, navigation }) => {
     // TODO
   };
 
+  const navigateToAiDiagnosis = () => {
+    navigation.navigate("AiDiagnosis", {
+      patientId,
+    });
+  };
+
   const setReferrals = async (patientId: number) => {
     try {
       const data = await getReferrals(patientId);
@@ -133,7 +139,10 @@ const PatientScreen = ({ route, navigation }) => {
       />
       <ScrollView contentContainerStyle={patientStyle.container}>
         <View style={patientStyle.buttonContainer}>
-          <PrimaryButton title="Diagnozuj z AI" />
+          <PrimaryButton
+            handleOnClick={navigateToAiDiagnosis}
+            title="Diagnozuj z AI"
+          />
           <PrimaryButton title="Czat z pacjentem" />
           <PrimaryButton title="Załącz wynik badania" />
           <PrimaryButton title="Wystaw skierowanie" />

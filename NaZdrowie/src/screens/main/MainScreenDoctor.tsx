@@ -38,7 +38,7 @@ const MainScreenDoctor = ({ navigation }) => {
   };
 
   const formatPatientData = (patient: PatientData) => ({
-    text: patient.name,
+    text: `${patient.name} ${patient.surname}`,
     buttons: [
       <LinkButton
         key={patient.id}
