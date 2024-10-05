@@ -4,12 +4,13 @@ import primaryColors from "properties/colors";
 import { mainStyle } from "properties/styles/mainStyle";
 import { ListCardElement } from "properties/types/ListCardProps";
 import { PatientData, ResultsData } from "properties/types/PatientDataProps";
-import React, { useEffect, useState } from "react";
+import React, {useContext, useEffect, useState} from "react";
 import { View, ScrollView } from "react-native";
-import { CurrentUserData } from "services/config";
 import { getLatestPatients, getLatestResults } from "services/doctorData";
+import {UserContext} from "services/UserProvider";
 
 const MainScreenDoctor = ({ navigation }) => {
+  const [currentUserData, _] = useContext(UserContext);
   const [latestPatientsData, setLatestPatientsData] = useState<
     ListCardElement[]
   >([]);
@@ -19,8 +20,8 @@ const MainScreenDoctor = ({ navigation }) => {
   );
 
   useEffect(() => {
-    setLatestPatients(CurrentUserData.id);
-    setLatestResults(CurrentUserData.id);
+    setLatestPatients(currentUserData.id);
+    setLatestResults(currentUserData.id);
   }, []);
 
   const navigateToAllPatientsScreen = () => {

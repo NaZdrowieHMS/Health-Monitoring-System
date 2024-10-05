@@ -1,12 +1,18 @@
 import primaryColors from "properties/colors";
 import { InputProps } from "properties/types/InputProps";
 import { borderRadiusSize, fontSize, paddingSize } from "properties/vars";
-import React from "react";
+import React, {useEffect} from "react";
 import { StyleSheet, TextInput } from "react-native";
 
 const TextInputPersonalized: React.FC<InputProps> = (props: InputProps) => {
-  const { placeholder } = props;
+  const { placeholder, onChange } = props;
   const [text, onChangeText] = React.useState("");
+
+  useEffect(() => {
+    if (onChange !== undefined) {
+      onChange(text);
+    }
+  }, [text])
 
   const styles = StyleSheet.create({
     input: {
