@@ -3,10 +3,10 @@ import { UserButtonElement } from "components/atoms/buttons/UserButton";
 import { Navbar } from "components/molecules";
 import primaryColors from "properties/colors";
 import { paddingSize } from "properties/vars";
-import React, { useEffect, useState } from "react";
+import React, {useContext, useEffect, useState} from "react";
 import { View, StyleSheet, ScrollView } from "react-native";
-import { CurrentUserData } from "services/config";
 import { getAllPatients } from "services/doctorData";
+import {UserContext} from "services/UserProvider";
 
 const allPatientsStyle = StyleSheet.create({
   container: {
@@ -22,12 +22,13 @@ const allPatientsStyle = StyleSheet.create({
 });
 
 const AllPatientsScreen = ({ navigation }) => {
+  const [currentUserData, _] = useContext(UserContext)
   const [allPatientsData, setAllPatientsData] = useState<UserButtonElement[]>(
     [],
   );
 
   useEffect(() => {
-    setAllPatients(CurrentUserData.id);
+    setAllPatients(currentUserData.id);
   }, []);
 
   const navigateToPatientScreen = (patientId: number) => {

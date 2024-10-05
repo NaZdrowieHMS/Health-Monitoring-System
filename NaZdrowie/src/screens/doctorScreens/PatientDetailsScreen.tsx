@@ -10,9 +10,8 @@ import {
   PatientResult,
 } from "properties/types/PatientDataProps";
 import { paddingSize } from "properties/vars";
-import React, { useEffect, useState } from "react";
+import React, {useContext, useEffect, useState} from "react";
 import { View, StyleSheet, ScrollView } from "react-native";
-import { CurrentUserData } from "services/config";
 import {
   getHealthComments,
   getPatient,
@@ -20,6 +19,7 @@ import {
   getResults,
 } from "services/patientData";
 import { formatDate } from "services/utils";
+import {UserContext} from "services/UserProvider";
 
 const patientStyle = StyleSheet.create({
   container: {
@@ -36,6 +36,7 @@ const patientStyle = StyleSheet.create({
 
 const PatientScreen = ({ route, navigation }) => {
   const { patientId } = route.params;
+  const [currentUserData, _] = useContext(UserContext);
 
   const [referralsData, setReferralsData] = useState<ListCardElement[]>([]);
   const [resultsData, setResultssData] = useState<ListCardElement[]>([]);
@@ -112,10 +113,10 @@ const PatientScreen = ({ route, navigation }) => {
     try {
       const data = await getHealthComments(patientId);
       const currentDotorComments = data.filter(
-        (comment) => comment.doctor.id === CurrentUserData.id,
+        (comment) => comment.doctor.id === currentUserData.id,
       );
       const otherDotorsComments = data.filter(
-        (comment) => comment.doctor.id !== CurrentUserData.id,
+        (comment) => comment.doctor.id !== currentUserData.id,
       );
       setCurrentDotorCommentsData(currentDotorComments.map(formatCommentsData));
       setOtherDotorsCommentsData(otherDotorsComments.map(formatCommentsData));
