@@ -6,6 +6,7 @@ const primaryColors = {
   darkGrey: "#343434",
   babyBlue: "#EFF2F8",
   lightGreen: "#20DB01",
+  red: "#ED1B24",
 };
 
 export default primaryColors;
