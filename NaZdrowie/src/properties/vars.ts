@@ -17,6 +17,7 @@ const borderRadiusSize = {
 
 const fontSize = {
   buttonMobileFontSize: 20,
+  secondaryTitleFontSize: 18,
   baseMobileFontSize: 16,
   baseFontSize: 14,
   smallFontSize: 12,
