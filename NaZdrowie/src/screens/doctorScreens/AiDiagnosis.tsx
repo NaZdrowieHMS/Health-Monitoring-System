@@ -59,7 +59,7 @@ const AiDiagnosis = ({ route, navigation }) => {
     }
   };
 
-  const startAiDiagnosis = () => {};
+  // const startAiDiagnosis = () => {};
 
   return (
     <View style={{ flex: 1 }}>

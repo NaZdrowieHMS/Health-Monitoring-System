@@ -1,10 +1,10 @@
 import { Navbar } from "components/molecules";
-import React, {useContext} from "react";
+import React, { useContext } from "react";
 import { View } from "react-native";
+import { UserContext } from "services/UserProvider";
 
 import MainScreenDoctor from "./MainScreenDoctor";
 import MainScreenPatient from "./MainScreenPatient";
-import {UserContext} from "services/UserProvider";
 
 const MainScreen = ({ navigation }) => {
   //TODO get this information from server based on user token

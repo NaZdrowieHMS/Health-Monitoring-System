@@ -5,9 +5,9 @@ import {
 } from "components/atoms";
 import primaryColors from "properties/colors";
 import loginScreenStyle from "properties/styles/loginScreenStyle";
-import React, {useContext} from "react";
+import React, { useContext } from "react";
 import { Keyboard, Text, View } from "react-native";
-import {UserContext} from "services/UserProvider";
+import { UserContext } from "services/UserProvider";
 
 const LoginScreen = ({ navigation }) => {
   const [login, setLogin] = React.useState("");
@@ -22,7 +22,10 @@ const LoginScreen = ({ navigation }) => {
   };
 
   const navigateToMainScreen = () => {
-    login !== "patient" ? setUser({ id: 1, isDoctor: true }) : setUser({ id: 2, isDoctor: false });
+    // eslint-disable-next-line no-unused-expressions
+    login !== "patient"
+      ? setUser({ id: 1, isDoctor: true })
+      : setUser({ id: 2, isDoctor: false });
     navigation.navigate("MainScreen");
   };
 
@@ -33,10 +36,7 @@ const LoginScreen = ({ navigation }) => {
         <Text style={loginScreenStyle.h2}>Zaloguj się na swoje konto</Text>
       </View>
       <View style={loginScreenStyle.inputContainer}>
-        <TextInputPersonalized
-          placeholder="login"
-          onChange={setLogin}
-        />
+        <TextInputPersonalized placeholder="login" onChange={setLogin} />
         <View style={loginScreenStyle.buttonsContainer}>
           <TextInputPersonalized placeholder="password" />
           <LinkButton
