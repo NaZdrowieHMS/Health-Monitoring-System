@@ -10,8 +10,9 @@ import {
   PatientResult,
 } from "properties/types/PatientDataProps";
 import { paddingSize } from "properties/vars";
-import React, {useContext, useEffect, useState} from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { View, StyleSheet, ScrollView } from "react-native";
+import { UserContext } from "services/UserProvider";
 import {
   getHealthComments,
   getPatient,
@@ -19,7 +20,6 @@ import {
   getResults,
 } from "services/patientData";
 import { formatDate } from "services/utils";
-import {UserContext} from "services/UserProvider";
 
 const patientStyle = StyleSheet.create({
   container: {
@@ -36,7 +36,7 @@ const patientStyle = StyleSheet.create({
 
 const PatientScreen = ({ route, navigation }) => {
   const { patientId } = route.params;
-  const [currentUserData, _] = useContext(UserContext);
+  const [currentUserData] = useContext(UserContext);
 
   const [referralsData, setReferralsData] = useState<ListCardElement[]>([]);
   const [resultsData, setResultssData] = useState<ListCardElement[]>([]);

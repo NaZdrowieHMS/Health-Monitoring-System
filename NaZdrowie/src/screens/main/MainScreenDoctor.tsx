@@ -1,13 +1,13 @@
 import { LinkButton, PrimaryButton } from "components/atoms";
-import { ListCard } from "components/molecules";
+import { ListCard, Overlay } from "components/molecules";
 import primaryColors from "properties/colors";
 import { mainStyle } from "properties/styles/mainStyle";
 import { ListCardElement } from "properties/types/ListCardProps";
 import { PatientData, ResultsData } from "properties/types/PatientDataProps";
-import React, {useContext, useEffect, useState} from "react";
-import { View, ScrollView } from "react-native";
+import React, { useContext, useEffect, useState } from "react";
+import { View, ScrollView, Text } from "react-native";
+import { UserContext } from "services/UserProvider";
 import { getLatestPatients, getLatestResults } from "services/doctorData";
-import {UserContext} from "services/UserProvider";
 
 const MainScreenDoctor = ({ navigation }) => {
   const [currentUserData, _] = useContext(UserContext);
@@ -18,11 +18,15 @@ const MainScreenDoctor = ({ navigation }) => {
   const [latestResultsData, setLatestResultsData] = useState<ListCardElement[]>(
     [],
   );
+  const [isModalVisible, setIsModalVisible] = React.useState(false);
 
   useEffect(() => {
     setLatestPatients(currentUserData.id);
     setLatestResults(currentUserData.id);
   }, []);
+
+  const handleLatestResultsPreview = () =>
+    setIsModalVisible(() => !isModalVisible);
 
   const navigateToAllPatientsScreen = () => {
     navigation.navigate("AllPatients");
@@ -70,6 +74,7 @@ const MainScreenDoctor = ({ navigation }) => {
         key={entry.id}
         title="Podgląd"
         color={primaryColors.lightBlue}
+        handleOnClick={handleLatestResultsPreview}
       />,
     ],
   });
@@ -87,6 +92,21 @@ const MainScreenDoctor = ({ navigation }) => {
       </View>
       <ListCard title="Ostatnio leczeni pacjenci" data={latestPatientsData} />
       <ListCard title="Ostatnio załączone badania" data={latestResultsData} />
+      {/* TODO: remove it from here and make proper modals in proper files */}
+      <Overlay isVisible={isModalVisible}>
+        <Overlay.Container>
+          <Overlay.Header
+            title="Siemano"
+            handleClose={handleLatestResultsPreview}
+          />
+          <Overlay.Body>
+            <Text>Blalala</Text>
+          </Overlay.Body>
+          <Overlay.Footer>
+            <PrimaryButton title="Bla bla bla" />
+          </Overlay.Footer>
+        </Overlay.Container>
+      </Overlay>
     </ScrollView>
   );
 };
