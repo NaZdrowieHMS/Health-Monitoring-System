@@ -1,7 +1,7 @@
 import primaryColors from "properties/colors";
-import { InputProps } from "properties/types/InputProps";
+import { InputProps } from "properties/types";
 import { borderRadiusSize, fontSize, paddingSize } from "properties/vars";
-import React, {useEffect} from "react";
+import React, { useEffect } from "react";
 import { StyleSheet, TextInput } from "react-native";
 
 const TextInputPersonalized: React.FC<InputProps> = (props: InputProps) => {
@@ -12,7 +12,7 @@ const TextInputPersonalized: React.FC<InputProps> = (props: InputProps) => {
     if (onChange !== undefined) {
       onChange(text);
     }
-  }, [text])
+  }, [text]);
 
   const styles = StyleSheet.create({
     input: {

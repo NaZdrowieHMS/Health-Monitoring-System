@@ -1,14 +1,16 @@
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { RootStackParamList } from "App";
 import { LinkButton, PrimaryButton } from "components/atoms";
 import { CommentsCardForDoctor, ListCard, Navbar } from "components/molecules";
 import primaryColors from "properties/colors";
-import { CommentData } from "properties/types/CommentsCardProps";
-import { ListCardElement } from "properties/types/ListCardProps";
 import {
   PatientData,
   PatientHealthComment,
   PatientReferral,
   PatientResult,
-} from "properties/types/PatientDataProps";
+  CommentData,
+  ListCardElement,
+} from "properties/types";
 import { paddingSize } from "properties/vars";
 import React, { useContext, useEffect, useState } from "react";
 import { View, StyleSheet, ScrollView } from "react-native";
@@ -34,7 +36,10 @@ const patientStyle = StyleSheet.create({
   },
 });
 
-const PatientScreen = ({ route, navigation }) => {
+const PatientDetailsScreen = ({
+  route,
+  navigation,
+}: NativeStackScreenProps<RootStackParamList, "PatientDetails">) => {
   const { patientId } = route.params;
   const [currentUserData] = useContext(UserContext);
 
@@ -168,4 +173,4 @@ const PatientScreen = ({ route, navigation }) => {
   );
 };
 
-export default PatientScreen;
+export default PatientDetailsScreen;

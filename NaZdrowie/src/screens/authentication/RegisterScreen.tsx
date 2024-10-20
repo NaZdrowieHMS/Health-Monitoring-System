@@ -1,3 +1,5 @@
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { RootStackParamList } from "App";
 import { PrimaryButton, TextInputPersonalized } from "components/atoms";
 import primaryColors from "properties/colors";
 import loginScreenStyle from "properties/styles/loginScreenStyle";
@@ -16,7 +18,10 @@ const registerScreenStyle = StyleSheet.create({
   },
 });
 
-const RegisterScreen = ({ navigation, route }) => {
+const RegisterScreen = ({
+  navigation,
+  route,
+}: NativeStackScreenProps<RootStackParamList, "Register">) => {
   const { doctorScreen } = route.params;
 
   const dismissKeyboard = () => {

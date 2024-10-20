@@ -1,5 +1,5 @@
 import primaryColors from "properties/colors";
-import { CommentData } from "properties/types/CommentsCardProps";
+import { CommentData } from "properties/types";
 import { fontSize, paddingSize } from "properties/vars";
 import React from "react";
 import { Text, View, StyleSheet } from "react-native";

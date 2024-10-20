@@ -1,5 +1,6 @@
-import { UserButton } from "components/atoms";
-import { UserButtonElement } from "components/atoms/buttons/UserButton";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { RootStackParamList } from "App";
+import { UserButton, UserButtonElement } from "components/atoms";
 import { Navbar } from "components/molecules";
 import primaryColors from "properties/colors";
 import { paddingSize } from "properties/vars";
@@ -21,7 +22,9 @@ const allPatientsStyle = StyleSheet.create({
   },
 });
 
-const AllPatientsScreen = ({ navigation }) => {
+const AllPatientsScreen = ({
+  navigation,
+}: NativeStackScreenProps<RootStackParamList, "AllPatients">) => {
   const [currentUserData, _] = useContext(UserContext);
   const [allPatientsData, setAllPatientsData] = useState<UserButtonElement[]>(
     [],
@@ -32,7 +35,7 @@ const AllPatientsScreen = ({ navigation }) => {
   }, []);
 
   const navigateToPatientScreen = (patientId: number) => {
-    navigation.navigate("Patient", {
+    navigation.navigate("PatientDetails", {
       patientId,
     });
   };

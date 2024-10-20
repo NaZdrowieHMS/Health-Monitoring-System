@@ -1,6 +1,6 @@
 import primaryColors from "properties/colors";
 import { buttonStyle } from "properties/styles/buttonStyle";
-import { ButtonProps } from "properties/types/ButtonProps";
+import { ButtonProps } from "properties/types";
 import { borderRadiusSize, fontSize } from "properties/vars";
 import React from "react";
 import { Pressable, StyleSheet, Text } from "react-native";

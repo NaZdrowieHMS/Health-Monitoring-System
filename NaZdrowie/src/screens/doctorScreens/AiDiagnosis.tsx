@@ -1,3 +1,5 @@
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { RootStackParamList } from "App";
 import { LinkButton, PrimaryButton } from "components/atoms";
 import {
   AiAnalysisResultCard,
@@ -6,8 +8,8 @@ import {
   Navbar,
 } from "components/molecules";
 import primaryColors from "properties/colors";
+import { PatientData, PatientResult } from "properties/types";
 import { ListCardElement } from "properties/types/ListCardProps";
-import { PatientData, PatientResult } from "properties/types/PatientDataProps";
 import { paddingSize } from "properties/vars";
 import React, { useEffect, useState } from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
@@ -22,7 +24,10 @@ const patientStyle = StyleSheet.create({
   },
 });
 
-const AiDiagnosis = ({ route, navigation }) => {
+const AiDiagnosis = ({
+  route,
+  navigation,
+}: NativeStackScreenProps<RootStackParamList, "AiDiagnosis">) => {
   const { patientId } = route.params;
   const [resultsData, setResultssData] = useState<ListCardElement[]>([]);
   const [patientData, setPatientData] = useState<PatientData>(null);

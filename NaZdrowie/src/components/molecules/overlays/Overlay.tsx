@@ -13,15 +13,9 @@ import RNModal from "react-native-modal";
 type ModalProps = {
   isVisible: boolean;
   children: React.ReactNode;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  [x: string]: any;
 };
 
-export const Overlay = ({
-  isVisible = false,
-  children,
-  ...props
-}: ModalProps) => {
+const Overlay = ({ isVisible = false, children, ...props }: ModalProps) => {
   return (
     <RNModal
       isVisible={isVisible}
@@ -98,3 +92,5 @@ Overlay.Header = ModalHeader;
 Overlay.Container = ModalContainer;
 Overlay.Body = ModalBody;
 Overlay.Footer = ModalFooter;
+
+export default Overlay;

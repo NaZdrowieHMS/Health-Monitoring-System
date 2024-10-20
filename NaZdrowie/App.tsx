@@ -2,17 +2,30 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import React from "react";
 import { View } from "react-native";
+import {
+  LoginScreen,
+  RegisterScreen,
+  ChoiceScreen,
+} from "screens/authentication";
+import {
+  AllPatientsScreen,
+  PatientDetailsScreen,
+  AiDiagnosis,
+} from "screens/doctorScreens";
+import { MainScreen } from "screens/main";
 import { UserProvider } from "services/UserProvider";
-import AiDiagnosis from "src/screens/doctorScreens/AiDiagnosis";
-import PatientDetailsScreen from "src/screens/doctorScreens/PatientDetailsScreen";
-
-import ChoiceScreen from "./src/screens/authentication/ChoiceScreen";
-import LoginScreen from "./src/screens/authentication/LoginScreen";
-import RegisterScreen from "./src/screens/authentication/RegisterScreen";
-import AllPatientsScreen from "./src/screens/doctorScreens/AllPatientsScreen";
-import MainScreen from "./src/screens/main/MainScreen";
 
 const Stack = createNativeStackNavigator();
+
+export type RootStackParamList = {
+  Login: undefined;
+  Register: { doctorScreen: boolean };
+  Choice: undefined;
+  MainScreen: undefined;
+  AllPatients: undefined;
+  PatientDetails: { patientId: number };
+  AiDiagnosis: { patientId: number };
+};
 
 const App = (): React.JSX.Element => {
   return (
@@ -22,8 +35,8 @@ const App = (): React.JSX.Element => {
           <Stack.Navigator>
             <Stack.Screen
               name="Login"
-              options={{ title: "Logowanie" }}
               component={LoginScreen}
+              options={{ title: "Logowanie" }}
             />
             <Stack.Screen
               name="Register"
@@ -46,7 +59,7 @@ const App = (): React.JSX.Element => {
               options={{ title: "Moi pacjenci" }}
             />
             <Stack.Screen
-              name="Patient"
+              name="PatientDetails"
               component={PatientDetailsScreen}
               options={{ title: "Dane pacjenta" }}
             />
