@@ -1,14 +1,16 @@
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { RootStackParamList } from "App";
 import { LinkButton, PrimaryButton } from "components/atoms";
 import { CommentsCard, ListCard } from "components/molecules";
 import primaryColors from "properties/colors";
 import { mainStyle } from "properties/styles/mainStyle";
-import { CommentData } from "properties/types/CommentsCardProps";
-import { ListCardElement } from "properties/types/ListCardProps";
 import {
   PatientHealthComment,
   PatientReferral,
   PatientResult,
-} from "properties/types/PatientDataProps";
+  CommentData,
+  ListCardElement,
+} from "properties/types";
 import React, { useEffect, useState } from "react";
 import { View, ScrollView } from "react-native";
 import {
@@ -18,7 +20,9 @@ import {
 } from "services/patientData";
 import { formatDate } from "services/utils";
 
-const MainScreenPatient = ({ navigation }) => {
+const MainScreenPatient = ({
+  navigation,
+}: NativeStackScreenProps<RootStackParamList, "MainScreen">) => {
   const [healthCommentsData, setHealthCommentsData] = useState<CommentData[]>(
     [],
   );

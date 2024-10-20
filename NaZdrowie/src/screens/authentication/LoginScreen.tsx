@@ -1,3 +1,5 @@
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { RootStackParamList } from "App";
 import {
   LinkButton,
   PrimaryButton,
@@ -9,8 +11,10 @@ import React, { useContext } from "react";
 import { Keyboard, Text, View } from "react-native";
 import { UserContext } from "services/UserProvider";
 
-const LoginScreen = ({ navigation }) => {
-  const [login, setLogin] = React.useState("");
+const LoginScreen = ({
+  navigation,
+}: NativeStackScreenProps<RootStackParamList, "Login">) => {
+  const [login, setLogin] = React.useState<string>("");
   const [_, setUser] = useContext(UserContext);
 
   const dismissKeyboard = () => {

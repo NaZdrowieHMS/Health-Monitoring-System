@@ -20,7 +20,7 @@ const aiResultCardStyle = StyleSheet.create({
   },
 });
 
-const AiAnalysisResultCard = () => {
+const AiAnalysisResultCard: React.FC<object> = () => {
   const mockedAiResults = [
     {
       diagnosis: "Nowotwór piersi",

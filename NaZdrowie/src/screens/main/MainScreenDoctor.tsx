@@ -1,15 +1,18 @@
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { RootStackParamList } from "App";
 import { LinkButton, PrimaryButton } from "components/atoms";
 import { ListCard, Overlay } from "components/molecules";
 import primaryColors from "properties/colors";
 import { mainStyle } from "properties/styles/mainStyle";
-import { ListCardElement } from "properties/types/ListCardProps";
-import { PatientData, ResultsData } from "properties/types/PatientDataProps";
+import { PatientData, ResultsData, ListCardElement } from "properties/types";
 import React, { useContext, useEffect, useState } from "react";
 import { View, ScrollView, Text } from "react-native";
 import { UserContext } from "services/UserProvider";
 import { getLatestPatients, getLatestResults } from "services/doctorData";
 
-const MainScreenDoctor = ({ navigation }) => {
+const MainScreenDoctor = ({
+  navigation,
+}: NativeStackScreenProps<RootStackParamList, "MainScreen">) => {
   const [currentUserData, _] = useContext(UserContext);
   const [latestPatientsData, setLatestPatientsData] = useState<
     ListCardElement[]
@@ -18,7 +21,7 @@ const MainScreenDoctor = ({ navigation }) => {
   const [latestResultsData, setLatestResultsData] = useState<ListCardElement[]>(
     [],
   );
-  const [isModalVisible, setIsModalVisible] = React.useState(false);
+  const [isModalVisible, setIsModalVisible] = React.useState<boolean>(false);
 
   useEffect(() => {
     setLatestPatients(currentUserData.id);

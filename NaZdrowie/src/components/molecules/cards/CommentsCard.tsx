@@ -1,7 +1,7 @@
 import { LinkButton, Comment } from "components/atoms";
 import primaryColors from "properties/colors";
 import cardStyle from "properties/styles/cardStyle";
-import { CommentsCardProps } from "properties/types/CommentsCardProps";
+import { CommentsCardProps } from "properties/types";
 import React from "react";
 import { Text, View } from "react-native";
 

@@ -2,7 +2,7 @@ import { LinkButton } from "components/atoms";
 import AiSelectCheckbox from "components/atoms/AiCheckbox";
 import primaryColors from "properties/colors";
 import cardStyle from "properties/styles/cardStyle";
-import { ListCardProps } from "properties/types/ListCardProps";
+import { ListCardProps } from "properties/types";
 import { fontSize, paddingSize } from "properties/vars";
 import React from "react";
 import { Text, View, StyleSheet } from "react-native";

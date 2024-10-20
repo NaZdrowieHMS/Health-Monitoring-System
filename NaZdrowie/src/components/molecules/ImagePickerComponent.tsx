@@ -1,11 +1,11 @@
 import * as FileSystem from "expo-file-system";
 import * as ImagePicker from "expo-image-picker";
-import { AiResults } from "properties/types/AiDataProps";
+import { AiResults } from "properties/types";
 import React, { useEffect, useState } from "react";
 import { View, Button, Image, Text } from "react-native";
 import { getAiPrediction } from "services/aiData";
 
-const ImagePickerComponent = () => {
+const ImagePickerComponent: React.FC<object> = () => {
   const [imageUri, setImageUri] = useState(null);
   const [base64String, setBase64String] = useState(null);
   const [aiData, setAiData] = useState<AiResults | null>(null);
