@@ -44,7 +44,7 @@ const ModalHeader = ({
   <View style={styles.header}>
     <Text style={styles.text}>{title}</Text>
     <Pressable onPress={handleClose}>
-      <Text style={styles.text}>×</Text>
+      <Text style={[styles.text, { fontSize: fontSize.xFontSize }]}>×</Text>
     </Pressable>
   </View>
 );
@@ -82,9 +82,11 @@ const styles = StyleSheet.create({
     color: primaryColors.darkBlue,
   },
   body: {
-    paddingTop: paddingSize.medium,
+    paddingTop: paddingSize.mediumBig,
     justifyContent: "center",
-    paddingBottom: paddingSize.medium,
+    paddingBottom: paddingSize.mediumBig,
+    display: "flex",
+    rowGap: paddingSize.mediumBig,
   },
 });
 

@@ -23,6 +23,7 @@ const fontSize = {
   smallFontSize: 12,
   h1MobileFontSize: 50,
   h2MobileFontSize: 24,
+  xFontSize: 28,
 };
 
 type FontWeight =
