@@ -8,7 +8,7 @@ export const buttonStyle = StyleSheet.create({
     elevation: paddingSize.xSmall,
     borderRadius: borderRadiusSize.big,
     paddingVertical: paddingSize.medium,
-    paddingHorizontal: paddingSize.small,
+    paddingHorizontal: paddingSize.mediumBig,
   },
   buttonText: {
     color: primaryColors.white,

@@ -1,9 +1,30 @@
+import { PrimaryButton } from "components/atoms";
 import * as FileSystem from "expo-file-system";
 import * as ImagePicker from "expo-image-picker";
+import primaryColors from "properties/colors";
 import { AiResults } from "properties/types";
+import { paddingSize, borderRadiusSize, fontSize } from "properties/vars";
 import React, { useEffect, useState } from "react";
-import { View, Button, Image, Text } from "react-native";
+import { View, Image, Text, StyleSheet } from "react-native";
 import { getAiPrediction } from "services/aiData";
+
+const styles = StyleSheet.create({
+  input: {
+    borderWidth: 1,
+    paddingHorizontal: paddingSize.xSmall,
+    paddingVertical: paddingSize.xxSmall,
+    borderRadius: borderRadiusSize.medium,
+    borderColor: primaryColors.lightGrey,
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
+  text: {
+    fontSize: fontSize.baseMobileFontSize,
+    color: primaryColors.darkGrey,
+  },
+});
 
 const ImagePickerComponent: React.FC<object> = () => {
   const [imageUri, setImageUri] = useState(null);
@@ -41,8 +62,13 @@ const ImagePickerComponent: React.FC<object> = () => {
   }, [base64String]);
 
   return (
-    <View style={{}}>
-      <Button title="Select Image" onPress={selectImage} />
+    <View style={styles.input}>
+      <Text style={styles.text}>Wynik badania</Text>
+      <PrimaryButton
+        title="Załącz plik"
+        handleOnClick={selectImage}
+        fontSize={fontSize.baseMobileFontSize}
+      />
       {imageUri && (
         <Image
           source={{ uri: imageUri }}

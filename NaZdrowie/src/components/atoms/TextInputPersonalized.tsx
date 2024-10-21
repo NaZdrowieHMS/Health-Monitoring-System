@@ -4,6 +4,17 @@ import { borderRadiusSize, fontSize, paddingSize } from "properties/vars";
 import React, { useEffect } from "react";
 import { StyleSheet, TextInput } from "react-native";
 
+const styles = StyleSheet.create({
+  input: {
+    borderWidth: 1,
+    padding: paddingSize.small,
+    borderRadius: borderRadiusSize.medium,
+    fontSize: fontSize.baseMobileFontSize,
+    color: primaryColors.darkGrey,
+    borderColor: primaryColors.lightGrey,
+  },
+});
+
 const TextInputPersonalized: React.FC<InputProps> = (props: InputProps) => {
   const { placeholder, onChange } = props;
   const [text, onChangeText] = React.useState("");
@@ -13,17 +24,6 @@ const TextInputPersonalized: React.FC<InputProps> = (props: InputProps) => {
       onChange(text);
     }
   }, [text]);
-
-  const styles = StyleSheet.create({
-    input: {
-      borderWidth: 1,
-      padding: paddingSize.small,
-      borderRadius: borderRadiusSize.medium,
-      fontSize: fontSize.baseMobileFontSize,
-      color: primaryColors.darkGrey,
-      borderColor: primaryColors.lightGrey,
-    },
-  });
 
   return (
     <>

@@ -2,6 +2,7 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "App";
 import { LinkButton, PrimaryButton } from "components/atoms";
 import { CommentsCardForDoctor, ListCard, Navbar } from "components/molecules";
+import ResultsFormOverlay from "components/molecules/overlays/ResultsFormOverlay";
 import primaryColors from "properties/colors";
 import {
   PatientData,
@@ -53,6 +54,9 @@ const PatientDetailsScreen = ({
   const [otherDotorsCommentsData, setOtherDotorsCommentsData] = useState<
     CommentData[]
   >([]);
+
+  const [formResultsPreview, setFormResultsPreview] =
+    React.useState<boolean>(false);
 
   useEffect(() => {
     setReferrals(patientId);
@@ -150,7 +154,10 @@ const PatientDetailsScreen = ({
             title="Diagnozuj z AI"
           />
           <PrimaryButton title="Czat z pacjentem" />
-          <PrimaryButton title="Załącz wynik badania" />
+          <PrimaryButton
+            title="Załącz wynik badania"
+            handleOnClick={() => setFormResultsPreview(true)}
+          />
           <PrimaryButton title="Wystaw skierowanie" />
         </View>
         <CommentsCardForDoctor
@@ -169,6 +176,10 @@ const PatientDetailsScreen = ({
           handleSeeMore={navigateToAllResults}
         />
       </ScrollView>
+      <ResultsFormOverlay
+        isVisible={formResultsPreview}
+        handleClose={() => setFormResultsPreview(false)}
+      />
     </View>
   );
 };

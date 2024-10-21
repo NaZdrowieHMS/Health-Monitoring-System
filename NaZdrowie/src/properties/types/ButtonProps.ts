@@ -5,4 +5,5 @@ export interface ButtonProps {
   title: string;
   helperText?: string;
   helperTextColor?: string;
+  fontSize?: number;
 }

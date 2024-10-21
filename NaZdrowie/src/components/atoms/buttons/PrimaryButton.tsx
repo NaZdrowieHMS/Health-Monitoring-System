@@ -15,7 +15,14 @@ const PrimaryButton: React.FC<ButtonProps> = (props: ButtonProps) => {
         { backgroundColor: primaryColors.darkBlue },
       ]}
     >
-      <Text style={[buttonStyle.buttonText]}>{title}</Text>
+      <Text
+        style={[
+          buttonStyle.buttonText,
+          props.fontSize ? { fontSize: props.fontSize } : {},
+        ]}
+      >
+        {title}
+      </Text>
     </Pressable>
   );
 };
