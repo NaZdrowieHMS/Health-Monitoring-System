@@ -85,7 +85,7 @@ const PatientDetailsScreen = ({
       const formattedReferrals = data.map(formatReferralsData);
       setReferralsData(formattedReferrals);
     } catch (error) {
-      console.error("Error fetching latest patients:", error);
+      console.error("Error fetching referrals:", error);
     }
   };
 
@@ -100,7 +100,7 @@ const PatientDetailsScreen = ({
       const formattedResults = data.map(formatResultsData);
       setResultssData(formattedResults);
     } catch (error) {
-      console.error("Error fetching latest patients:", error);
+      console.error("Error fetching results:", error);
     }
   };
 
@@ -114,7 +114,7 @@ const PatientDetailsScreen = ({
       const data = await getPatient(patientId);
       setPatientData(data);
     } catch (error) {
-      console.error("Error fetching latest patients:", error);
+      console.error("Error fetching patient data:", error);
     }
   };
 
@@ -130,7 +130,7 @@ const PatientDetailsScreen = ({
       setCurrentDotorCommentsData(currentDotorComments.map(formatCommentsData));
       setOtherDotorsCommentsData(otherDotorsComments.map(formatCommentsData));
     } catch (error) {
-      console.error("Error fetching latest patients:", error);
+      console.error("Error fetching health comments:", error);
     }
   };
 
