@@ -19,7 +19,7 @@ const CommentsOverlay: React.FC<{
         <Overlay.Body>
           <View style={cardStyle.container}>
             {comments.map((item, index) => (
-              <Comment item={item} index={index} />
+              <Comment item={item} index={index} key={index} />
             ))}
           </View>
         </Overlay.Body>

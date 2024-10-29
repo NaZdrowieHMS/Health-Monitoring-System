@@ -19,7 +19,7 @@ const CommentsCard: React.FC<CommentsCardProps> = (
     <View style={cardStyle.container}>
       <Text style={cardStyle.title}>{title}</Text>
       {data.map((item, index) => (
-        <Comment item={item} index={index} />
+        <Comment item={item} index={index} key={index} />
       ))}
       <View style={cardStyle.floatRight}>
         <LinkButton
