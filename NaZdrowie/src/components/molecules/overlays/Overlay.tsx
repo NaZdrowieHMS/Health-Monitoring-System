@@ -30,11 +30,11 @@ const Overlay = ({ isVisible = false, children, ...props }: ModalProps) => {
   );
 };
 
-const ModalContainer = ({ children }: { children: React.ReactNode }) => (
+const OverlayContainer = ({ children }: { children: React.ReactNode }) => (
   <View style={styles.container}>{children}</View>
 );
 
-const ModalHeader = ({
+const OverlayHeader = ({
   title,
   handleClose,
 }: {
@@ -49,11 +49,11 @@ const ModalHeader = ({
   </View>
 );
 
-const ModalBody = ({ children }: { children?: React.ReactNode }) => (
+const OverlayBody = ({ children }: { children?: React.ReactNode }) => (
   <View style={styles.body}>{children}</View>
 );
 
-const ModalFooter = ({ children }: { children?: React.ReactNode }) => (
+const OverlayFooter = ({ children }: { children?: React.ReactNode }) => (
   <View>{children}</View>
 );
 
@@ -90,9 +90,9 @@ const styles = StyleSheet.create({
   },
 });
 
-Overlay.Header = ModalHeader;
-Overlay.Container = ModalContainer;
-Overlay.Body = ModalBody;
-Overlay.Footer = ModalFooter;
+Overlay.Header = OverlayHeader;
+Overlay.Container = OverlayContainer;
+Overlay.Body = OverlayBody;
+Overlay.Footer = OverlayFooter;
 
 export default Overlay;
