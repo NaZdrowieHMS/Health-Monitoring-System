@@ -17,33 +17,33 @@ type ResultsDataContent = {
 export type ResultsData = {
   id: number;
   content: ResultsDataContent;
-  test_type: string;
+  testType: string;
 };
 
 export type PatientHealthComment = {
   id: number;
-  patient_id: number;
+  patientId: number;
   doctor: DoctorData;
-  modified_date: string;
+  modifiedDate: string;
   content: string;
 };
 
 export type PatientReferral = {
-  referral_id: number;
-  comment_id: number;
-  doctor_id: number;
-  patient_id: number;
-  test_type: string;
-  referral_number: string;
+  referralId: number;
+  commentId: number;
+  doctorId: number;
+  patientId: number;
+  testType: string;
+  referralNumber: string;
   completed: boolean;
-  comment_content: string;
+  commentContent: string;
 };
 
 export type PatientResult = {
   id: number;
-  patient_id: number;
-  test_type: string;
+  patientId: number;
+  testType: string;
   content: ResultsDataContent;
-  ai_selected: boolean;
+  aiSelected: boolean;
   viewed: boolean;
 };

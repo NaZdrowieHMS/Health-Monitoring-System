@@ -47,7 +47,7 @@ const MainScreenPatient = ({
   };
 
   const formatCommentsData = (comment: PatientHealthComment) => ({
-    date: formatDate(comment.modified_date),
+    date: formatDate(comment.modifiedDate),
     text: comment.content,
     author: `${comment.doctor.name} ${comment.doctor.surname}`,
   });
@@ -63,7 +63,7 @@ const MainScreenPatient = ({
   };
 
   const formatReferralsData = (referral: PatientReferral) => ({
-    text: referral.test_type,
+    text: referral.testType,
     buttons: [
       <LinkButton title="Podgląd" color={primaryColors.lightBlue} />,
       <LinkButton title="Załącz wynik" color={primaryColors.lightBlue} />,
@@ -81,7 +81,7 @@ const MainScreenPatient = ({
   };
 
   const formatResultsData = (result: PatientResult) => ({
-    text: result.test_type,
+    text: result.testType,
     buttons: [<LinkButton title="Podgląd" color={primaryColors.lightBlue} />],
   });
 

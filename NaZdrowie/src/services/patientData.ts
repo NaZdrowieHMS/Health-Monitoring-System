@@ -13,9 +13,9 @@ export const getHealthComments: (
 ) => Promise<PatientHealthComment[]> = async (patientId: number) => {
   try {
     const response = await axios.get(`${API_URL}patients/${patientId}/health`);
-    return response.data.data;
+    return response.data;
   } catch (error) {
-    console.error("Error fetching data:", error);
+    console.error("[getHealthComments] Error fetching data:", error);
   }
 };
 
@@ -26,9 +26,9 @@ export const getReferrals: (
     const response = await axios.get(
       `${API_URL}patients/${patientId}/referrals`,
     );
-    return response.data.data;
+    return response.data;
   } catch (error) {
-    console.error("Error fetching data:", error);
+    console.error("[getReferrals] Error fetching data:", error);
   }
 };
 
@@ -37,9 +37,9 @@ export const getResults: (
 ) => Promise<PatientResult[]> = async (patientId: number) => {
   try {
     const response = await axios.get(`${API_URL}patients/${patientId}/results`);
-    return response.data.data;
+    return response.data;
   } catch (error) {
-    console.error("Error fetching data:", error);
+    console.error("[getResults] Error fetching data:", error);
   }
 };
 
@@ -47,9 +47,9 @@ export const getPatient: (patientId: number) => Promise<PatientData> = async (
   patientId: number,
 ) => {
   try {
-    const response = await axios.get(`${API_URL}patients/${patientId}`);
+    const response = await axios.get(`${API_URL}patients/${patientId}/results`);
     return response.data.data;
   } catch (error) {
-    console.error("Error fetching data:", error);
+    console.error("[getPatient] Error fetching data:", error);
   }
 };
