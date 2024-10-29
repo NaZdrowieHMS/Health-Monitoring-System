@@ -85,12 +85,12 @@ const PatientDetailsScreen = ({
       const formattedReferrals = data.map(formatReferralsData);
       setReferralsData(formattedReferrals);
     } catch (error) {
-      console.error("Error fetching latest patients:", error);
+      console.error("Error fetching referrals:", error);
     }
   };
 
   const formatReferralsData = (referral: PatientReferral) => ({
-    text: referral.test_type,
+    text: referral.testType,
     buttons: [<LinkButton title="Podgląd" color={primaryColors.lightBlue} />],
   });
 
@@ -100,12 +100,12 @@ const PatientDetailsScreen = ({
       const formattedResults = data.map(formatResultsData);
       setResultssData(formattedResults);
     } catch (error) {
-      console.error("Error fetching latest patients:", error);
+      console.error("Error fetching results:", error);
     }
   };
 
   const formatResultsData = (result: PatientResult) => ({
-    text: result.test_type,
+    text: result.testType,
     buttons: [<LinkButton title="Przejdź" color={primaryColors.lightBlue} />],
   });
 
@@ -114,7 +114,7 @@ const PatientDetailsScreen = ({
       const data = await getPatient(patientId);
       setPatientData(data);
     } catch (error) {
-      console.error("Error fetching latest patients:", error);
+      console.error("Error fetching patient data:", error);
     }
   };
 
@@ -130,12 +130,12 @@ const PatientDetailsScreen = ({
       setCurrentDotorCommentsData(currentDotorComments.map(formatCommentsData));
       setOtherDotorsCommentsData(otherDotorsComments.map(formatCommentsData));
     } catch (error) {
-      console.error("Error fetching latest patients:", error);
+      console.error("Error fetching health comments:", error);
     }
   };
 
   const formatCommentsData = (comment: PatientHealthComment) => ({
-    date: formatDate(comment.modified_date),
+    date: formatDate(comment.modifiedDate),
     text: comment.content,
     author: `${comment.doctor.name} ${comment.doctor.surname}`,
   });

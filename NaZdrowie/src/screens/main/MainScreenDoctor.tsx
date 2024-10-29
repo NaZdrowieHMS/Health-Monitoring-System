@@ -67,7 +67,7 @@ const MainScreenDoctor = ({
       patient: PatientData;
     },
   ) => ({
-    text: `${entry.patient.name}: ${entry.test_type}`,
+    text: `${entry.patient.name}: ${entry.testType}`,
     buttons: [
       <LinkButton
         key={entry.id}

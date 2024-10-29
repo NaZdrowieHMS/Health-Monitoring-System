@@ -39,7 +39,9 @@ const ListCard: React.FC<ListCardProps> = (props: ListCardProps) => {
             <Text style={listCardStyle.text}>{item.text}</Text>
           </View>
           <View style={listCardStyle.elementButtons}>
-            {item.buttons.map((ButtonElement, buttonIndex) => ButtonElement)}
+            {item.buttons.map((ButtonElement, buttonIndex) => (
+              <View key={buttonIndex}>{ButtonElement}</View>
+            ))}
           </View>
         </View>
       ))}

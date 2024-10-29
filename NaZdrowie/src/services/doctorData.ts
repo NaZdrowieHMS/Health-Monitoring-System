@@ -10,9 +10,9 @@ export const getLatestPatients: (
     const response = await axios.get(
       `${API_URL}doctors/${doctorId}/all-patients`,
     );
-    return response.data.data;
+    return response.data;
   } catch (error) {
-    console.error("Error fetching data:", error);
+    console.error("[getLatestPatients] Error fetching data:", error);
   }
 };
 
@@ -21,13 +21,14 @@ export const getLatestResults: (doctorId: number) => Promise<
     patient: PatientData;
   })[]
 > = async (doctorId: number) => {
+  // return []; // while no unviewed-results endpoint is present
   try {
     const response = await axios.get(
       `${API_URL}doctors/${doctorId}/unviewed-results`,
     );
-    return response.data.data;
+    return response.data;
   } catch (error) {
-    console.error("Error fetching data:", error);
+    console.error("[getLatestResults] Error fetching data:", error);
   }
 };
 
@@ -38,8 +39,8 @@ export const getAllPatients: (
     const response = await axios.get(
       `${API_URL}doctors/${doctorId}/all-patients`,
     );
-    return response.data.data;
+    return response.data;
   } catch (error) {
-    console.error("Error fetching data:", error);
+    console.error("[getAllPatients] Error fetching data:", error);
   }
 };

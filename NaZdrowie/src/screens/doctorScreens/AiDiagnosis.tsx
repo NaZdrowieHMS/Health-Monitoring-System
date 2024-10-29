@@ -49,9 +49,9 @@ const AiDiagnosis = ({
 
   const formatResultsData = (result: PatientResult) => ({
     checkbox: {
-      checkboxStatus: result.ai_selected,
+      checkboxStatus: result.aiSelected,
     },
-    text: result.test_type,
+    text: result.testType,
     buttons: [<LinkButton title="Podgląd" color={primaryColors.lightBlue} />],
   });
 
