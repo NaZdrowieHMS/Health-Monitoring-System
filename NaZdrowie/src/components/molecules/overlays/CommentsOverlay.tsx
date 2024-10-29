@@ -2,7 +2,7 @@ import { Comment } from "components/atoms";
 import cardStyle from "properties/styles/cardStyle";
 import { CommentData } from "properties/types";
 import React from "react";
-import { View } from "react-native";
+import { ScrollView } from "react-native";
 
 import Overlay from "./Overlay";
 
@@ -17,11 +17,11 @@ const CommentsOverlay: React.FC<{
       <Overlay.Container>
         <Overlay.Header title={title} handleClose={handleClose} />
         <Overlay.Body>
-          <View style={cardStyle.container}>
+          <ScrollView style={cardStyle.container}>
             {comments.map((item, index) => (
               <Comment item={item} index={index} key={index} />
             ))}
-          </View>
+          </ScrollView>
         </Overlay.Body>
       </Overlay.Container>
     </Overlay>

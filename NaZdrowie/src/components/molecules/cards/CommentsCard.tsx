@@ -5,15 +5,10 @@ import { CommentsCardProps } from "properties/types";
 import React from "react";
 import { Text, View } from "react-native";
 
-import CommentsOverlay from "../overlays/CommentsOverlay";
-
 const CommentsCard: React.FC<CommentsCardProps> = (
   props: CommentsCardProps,
 ) => {
-  const { title, data } = props;
-
-  const [commentsOverlayPreview, setCommentsOverlayPreview] =
-    React.useState<boolean>(false);
+  const { title, data, handleSeeMore } = props;
 
   return (
     <View style={cardStyle.container}>
@@ -25,15 +20,9 @@ const CommentsCard: React.FC<CommentsCardProps> = (
         <LinkButton
           title="Zobacz więcej..."
           color={primaryColors.lightBlue}
-          handleOnClick={() => setCommentsOverlayPreview(true)}
+          handleOnClick={handleSeeMore}
         />
       </View>
-      <CommentsOverlay
-        isVisible={commentsOverlayPreview}
-        handleClose={() => setCommentsOverlayPreview(false)}
-        comments={data}
-        title="Komentarze do badania"
-      />
     </View>
   );
 };

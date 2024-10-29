@@ -2,6 +2,7 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "App";
 import { LinkButton, PrimaryButton } from "components/atoms";
 import { CommentsCard, ListCard } from "components/molecules";
+import CommentsOverlay from "components/molecules/overlays/CommentsOverlay";
 import primaryColors from "properties/colors";
 import { mainStyle } from "properties/styles/mainStyle";
 import {
@@ -29,6 +30,8 @@ const MainScreenPatient = ({
 
   const [referralsData, setReferralsData] = useState<ListCardElement[]>([]);
   const [resultsData, setResultssData] = useState<ListCardElement[]>([]);
+  const [commentsOverlayPreview, setCommentsOverlayPreview] =
+    React.useState<boolean>(false);
 
   useEffect(() => {
     setHealthComments(4);
@@ -93,9 +96,19 @@ const MainScreenPatient = ({
         <PrimaryButton title="Załącz wynik badania" />
         <PrimaryButton title="Dodaj lekarza kodem QR" />
       </View>
-      <CommentsCard title="Moje zdrowie" data={healthCommentsData} />
+      <CommentsCard
+        title="Moje zdrowie"
+        data={healthCommentsData}
+        handleSeeMore={() => setCommentsOverlayPreview(true)}
+      />
       <ListCard title="Moje skierowania" data={referralsData} />
       <ListCard title="Moje wyniki" data={resultsData} />
+      <CommentsOverlay
+        isVisible={commentsOverlayPreview}
+        handleClose={() => setCommentsOverlayPreview(false)}
+        comments={healthCommentsData}
+        title="Komentarze do badania"
+      />
     </ScrollView>
   );
 };
