@@ -1,18 +1,36 @@
-import React, { createContext, useState } from "react";
+import React, {
+  createContext,
+  Dispatch,
+  SetStateAction,
+  useState,
+} from "react";
 
-const UserContext = createContext([]);
+type UserData = {
+  id: number;
+  isDoctor: boolean;
+};
 
-const UserProvider = ({ children }) => {
-  const [user, setUser] = useState({
+type UserProviderDispatch = {
+  // maybe a better name?
+  currentUser: UserData;
+  setCurrentUser: Dispatch<SetStateAction<{ id: number; isDoctor: boolean }>>;
+};
+
+const UserContext = createContext<UserProviderDispatch | null>(null);
+
+const UserProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
+  const [currentUser, setCurrentUser] = useState<UserData>({
     id: 2,
     isDoctor: false,
   });
 
   return (
-    <UserContext.Provider value={[user, setUser]}>
+    <UserContext.Provider value={{ currentUser, setCurrentUser }}>
       {children}
     </UserContext.Provider>
   );
 };
 
-export { UserContext, UserProvider };
+export { UserContext, UserProvider, UserData };

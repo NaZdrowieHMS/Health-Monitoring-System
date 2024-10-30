@@ -42,7 +42,7 @@ const PatientDetailsScreen = ({
   navigation,
 }: NativeStackScreenProps<RootStackParamList, "PatientDetails">) => {
   const { patientId } = route.params;
-  const [currentUserData] = useContext(UserContext);
+  const { currentUser } = useContext(UserContext);
 
   const [referralsData, setReferralsData] = useState<ListCardElement[]>([]);
   const [resultsData, setResultssData] = useState<ListCardElement[]>([]);
@@ -122,10 +122,10 @@ const PatientDetailsScreen = ({
     try {
       const data = await getHealthComments(patientId);
       const currentDotorComments = data.filter(
-        (comment) => comment.doctor.id === currentUserData.id,
+        (comment) => comment.doctor.id === currentUser.id,
       );
       const otherDotorsComments = data.filter(
-        (comment) => comment.doctor.id !== currentUserData.id,
+        (comment) => comment.doctor.id !== currentUser.id,
       );
       setCurrentDotorCommentsData(currentDotorComments.map(formatCommentsData));
       setOtherDotorsCommentsData(otherDotorsComments.map(formatCommentsData));

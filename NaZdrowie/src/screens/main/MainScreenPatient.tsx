@@ -12,8 +12,9 @@ import {
   CommentData,
   ListCardElement,
 } from "properties/types";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { View, ScrollView } from "react-native";
+import { UserContext } from "services/UserProvider";
 import {
   getHealthComments,
   getReferrals,
@@ -32,11 +33,12 @@ const MainScreenPatient = ({
   const [resultsData, setResultssData] = useState<ListCardElement[]>([]);
   const [commentsOverlayPreview, setCommentsOverlayPreview] =
     React.useState<boolean>(false);
+  const { currentUser } = useContext(UserContext);
 
   useEffect(() => {
-    setHealthComments(4);
-    setReferrals(4);
-    setResults(3);
+    setHealthComments(currentUser.id);
+    setReferrals(currentUser.id);
+    setResults(currentUser.id);
   }, []);
 
   const setHealthComments = async (patientId: number) => {

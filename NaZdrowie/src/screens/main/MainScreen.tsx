@@ -13,8 +13,8 @@ const MainScreen = ({
   route,
 }: NativeStackScreenProps<RootStackParamList, "MainScreen">) => {
   //TODO get this information from server based on user token
-  const [currentUserData, _] = useContext(UserContext);
-  const doctorScreen = currentUserData.isDoctor;
+  const { currentUser } = useContext(UserContext);
+  const doctorScreen = currentUser.isDoctor;
 
   return (
     <View style={{ flex: 1 }}>

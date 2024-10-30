@@ -13,7 +13,7 @@ import { getLatestPatients, getLatestResults } from "services/doctorData";
 const MainScreenDoctor = ({
   navigation,
 }: NativeStackScreenProps<RootStackParamList, "MainScreen">) => {
-  const [currentUserData, _] = useContext(UserContext);
+  const { currentUser } = useContext(UserContext);
   const [latestPatientsData, setLatestPatientsData] = useState<
     ListCardElement[]
   >([]);
@@ -23,8 +23,8 @@ const MainScreenDoctor = ({
   );
 
   useEffect(() => {
-    setLatestPatients(currentUserData.id);
-    setLatestResults(currentUserData.id);
+    setLatestPatients(currentUser.id);
+    setLatestResults(currentUser.id);
   }, []);
 
   const navigateToAllPatientsScreen = () => {
