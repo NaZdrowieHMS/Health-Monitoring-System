@@ -12,3 +12,4 @@ export {
   PatientReferral,
   PatientResult,
 } from "./PatientDataProps";
+export { ObjectCardProps, ObjectCardElement } from "./ObjectCardProps";

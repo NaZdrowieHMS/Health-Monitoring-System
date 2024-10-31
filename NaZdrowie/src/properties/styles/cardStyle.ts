@@ -1,5 +1,5 @@
 import primaryColors from "properties/colors";
-import { paddingSize, borderRadiusSize, fontSize } from "properties/vars";
+import { borderRadiusSize, fontSize, paddingSize } from "properties/vars";
 import { StyleSheet } from "react-native";
 
 const cardStyle = StyleSheet.create({
@@ -10,13 +10,22 @@ const cardStyle = StyleSheet.create({
     paddingVertical: paddingSize.mediumBig,
     rowGap: paddingSize.mediumBig,
     borderRadius: borderRadiusSize.small,
+    // borderColor: primaryColors.gainsboroGrey,
+    // borderWidth: 1,                  // to check with IOS!!!
     shadowOffset: {
-      width: 4,
-      height: 4,
+      width: 0,
+      height: -4,
     },
     shadowOpacity: 0.25,
+    shadowRadius: 4,
+    shadowColor: primaryColors.black,
+    elevation: 3,
   },
   title: {
+    fontSize: fontSize.buttonMobileFontSize,
+    color: primaryColors.darkBlue,
+  },
+  key: {
     fontSize: fontSize.buttonMobileFontSize,
     color: primaryColors.darkBlue,
   },
@@ -25,5 +34,4 @@ const cardStyle = StyleSheet.create({
     justifyContent: "flex-end",
   },
 });
-
-export default cardStyle;
+export { cardStyle };

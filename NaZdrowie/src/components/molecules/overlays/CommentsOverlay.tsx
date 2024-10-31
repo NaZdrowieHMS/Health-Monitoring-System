@@ -1,5 +1,5 @@
 import { Comment } from "components/atoms";
-import cardStyle from "properties/styles/cardStyle";
+import { cardStyle } from "properties/styles";
 import { CommentData } from "properties/types";
 import React from "react";
 import { ScrollView } from "react-native";

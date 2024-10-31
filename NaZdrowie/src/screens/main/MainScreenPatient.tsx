@@ -2,9 +2,12 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "App";
 import { LinkButton, PrimaryButton } from "components/atoms";
 import { CommentsCard, ListCard } from "components/molecules";
-import CommentsOverlay from "components/molecules/overlays/CommentsOverlay";
+import {
+  CommentsOverlay,
+  ReferralOverviewOverlay,
+} from "components/molecules/overlays";
 import primaryColors from "properties/colors";
-import { mainStyle } from "properties/styles/mainStyle";
+import { mainStyle } from "properties/styles";
 import {
   PatientHealthComment,
   PatientReferral,
@@ -33,6 +36,8 @@ const MainScreenPatient = ({
   const [resultsData, setResultssData] = useState<ListCardElement[]>([]);
   const [commentsOverlayPreview, setCommentsOverlayPreview] =
     React.useState<boolean>(false);
+  const [referralOverviewData, setReferralOverviewData] =
+    React.useState<PatientReferral>(null);
   const { currentUser } = useContext(UserContext);
 
   useEffect(() => {
@@ -67,12 +72,17 @@ const MainScreenPatient = ({
     }
   };
 
-  const formatReferralsData = (referral: PatientReferral) => ({
+  const formatReferralsData = (referral: PatientReferral, id: number) => ({
     text: referral.testType,
     buttons: [
-      <LinkButton title="Podgląd" color={primaryColors.lightBlue} />,
+      <LinkButton
+        title="Podgląd"
+        color={primaryColors.lightBlue}
+        handleOnClick={() => setReferralOverviewData(referral)}
+      />,
       <LinkButton title="Załącz wynik" color={primaryColors.lightBlue} />,
     ],
+    data: referral,
   });
 
   const setResults = async (patientId: number) => {
@@ -110,6 +120,11 @@ const MainScreenPatient = ({
         handleClose={() => setCommentsOverlayPreview(false)}
         comments={healthCommentsData}
         title="Komentarze do badania"
+      />
+      <ReferralOverviewOverlay
+        isVisible={referralOverviewData !== null}
+        handleClose={() => setReferralOverviewData(null)}
+        referral={referralOverviewData}
       />
     </ScrollView>
   );

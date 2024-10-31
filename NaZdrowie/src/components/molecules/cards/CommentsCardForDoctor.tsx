@@ -1,6 +1,6 @@
 import { LinkButton, Comment } from "components/atoms";
 import primaryColors from "properties/colors";
-import cardStyle from "properties/styles/cardStyle";
+import { cardStyle } from "properties/styles";
 import { CommentData, CommentsCardProps } from "properties/types";
 import { fontSize } from "properties/vars";
 import React from "react";

@@ -1,7 +1,6 @@
-import { LinkButton } from "components/atoms";
-import AiSelectCheckbox from "components/atoms/AiCheckbox";
+import { LinkButton, PersonalizedCheckbox } from "components/atoms";
 import primaryColors from "properties/colors";
-import cardStyle from "properties/styles/cardStyle";
+import { cardStyle } from "properties/styles";
 import { ListCardProps } from "properties/types";
 import { fontSize, paddingSize } from "properties/vars";
 import React from "react";
@@ -34,7 +33,9 @@ const ListCard: React.FC<ListCardProps> = (props: ListCardProps) => {
         <View style={listCardStyle.element} key={index}>
           <View style={listCardStyle.element}>
             {item.checkbox && (
-              <AiSelectCheckbox checkboxStatus={item.checkbox.checkboxStatus} />
+              <PersonalizedCheckbox
+                checkboxStatus={item.checkbox.checkboxStatus}
+              />
             )}
             <Text style={listCardStyle.text}>{item.text}</Text>
           </View>

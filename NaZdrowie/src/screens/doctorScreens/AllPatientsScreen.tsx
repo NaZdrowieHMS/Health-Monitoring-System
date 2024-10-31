@@ -25,7 +25,7 @@ const allPatientsStyle = StyleSheet.create({
 const AllPatientsScreen = ({
   navigation,
 }: NativeStackScreenProps<RootStackParamList, "AllPatients">) => {
-  const  {currentUser } = useContext(UserContext);
+  const { currentUser } = useContext(UserContext);
   const [allPatientsData, setAllPatientsData] = useState<UserButtonElement[]>(
     [],
   );

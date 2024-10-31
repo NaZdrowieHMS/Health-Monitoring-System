@@ -25,20 +25,24 @@ const listCardStyle = StyleSheet.create({
   },
 });
 
-const Comment: React.FC<{ item: CommentData } & { index: number }> = (
-  props: { item: CommentData } & { index: number },
+const Comment: React.FC<
+  { item: CommentData } & { index: number; dontShowAuthor?: boolean }
+> = (
+  props: { item: CommentData } & { index: number; dontShowAuthor?: boolean },
 ) => {
-  const { index, item } = props;
+  const { index, item, dontShowAuthor } = props;
 
   return (
     <View style={listCardStyle.comment} key={index}>
       <Text style={[listCardStyle.text, listCardStyle.date]}>{item.date}</Text>
       <Text style={listCardStyle.text}>{item.text}</Text>
-      <View style={listCardStyle.floatRight}>
-        <Text style={[listCardStyle.text, listCardStyle.author]}>
-          ~ {item.author}
-        </Text>
-      </View>
+      {!dontShowAuthor && (
+        <View style={listCardStyle.floatRight}>
+          <Text style={[listCardStyle.text, listCardStyle.author]}>
+            ~ {item.author}
+          </Text>
+        </View>
+      )}
     </View>
   );
 };

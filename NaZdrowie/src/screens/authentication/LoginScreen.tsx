@@ -3,10 +3,10 @@ import { RootStackParamList } from "App";
 import {
   LinkButton,
   PrimaryButton,
-  TextInputPersonalized,
+  PersonalizedTextInput,
 } from "components/atoms";
 import primaryColors from "properties/colors";
-import loginScreenStyle from "properties/styles/loginScreenStyle";
+import { loginScreenStyle } from "properties/styles";
 import React, { useContext } from "react";
 import { Keyboard, Text, View } from "react-native";
 import { UserContext } from "services/UserProvider";
@@ -48,9 +48,9 @@ const LoginScreen = ({
         <Text style={loginScreenStyle.h2}>Zaloguj się na swoje konto</Text>
       </View>
       <View style={loginScreenStyle.inputContainer}>
-        <TextInputPersonalized placeholder="login" onChange={setLogin} />
+        <PersonalizedTextInput placeholder="login" onChange={setLogin} />
         <View style={loginScreenStyle.buttonsContainer}>
-          <TextInputPersonalized placeholder="password" />
+          <PersonalizedTextInput placeholder="password" />
           <LinkButton
             title="Zapomniałeś hasła?"
             color={primaryColors.lightGrey}

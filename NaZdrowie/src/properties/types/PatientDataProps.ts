@@ -37,6 +37,7 @@ export type PatientReferral = {
   referralNumber: string;
   completed: boolean;
   commentContent: string;
+  modifiedDate: string;
 };
 
 export type PatientResult = {

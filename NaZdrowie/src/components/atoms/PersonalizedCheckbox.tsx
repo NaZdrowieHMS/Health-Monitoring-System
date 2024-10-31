@@ -2,7 +2,7 @@ import { Checkbox } from "expo-checkbox";
 import primaryColors from "properties/colors";
 import React, { useState } from "react";
 
-const AiSelectCheckbox: React.FC<{ checkboxStatus: boolean }> = ({
+const PersonalizedCheckbox: React.FC<{ checkboxStatus: boolean }> = ({
   checkboxStatus,
 }: {
   checkboxStatus: boolean;
@@ -18,4 +18,4 @@ const AiSelectCheckbox: React.FC<{ checkboxStatus: boolean }> = ({
   );
 };
 
-export default AiSelectCheckbox;
+export default PersonalizedCheckbox;
