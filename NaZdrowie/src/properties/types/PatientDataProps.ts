@@ -13,13 +13,6 @@ type ResultDataContent = {
   type: string;
 };
 
-export type Comment = {
-  id: number;
-  doctor: Author;
-  modifiedDate: string;
-  content: string;
-};
-
 export type PatientReferral = {
   referralId: number;
   patientId: number;
@@ -37,4 +30,11 @@ export type PatientResult = {
   testType: string;
   content: ResultDataContent;
   createdDate: string;
+};
+
+export type ResultUpload = {
+  patientId: number;
+  refferalId?: number;
+  testType: string;
+  content: ResultDataContent;
 };

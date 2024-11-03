@@ -6,6 +6,7 @@ export interface ButtonProps {
   helperText?: string;
   helperTextColor?: string;
   fontSize?: number;
+  disabled?: boolean;
 }
 
 export interface IconButtonProps {
