@@ -10,11 +10,9 @@ const cardStyle = StyleSheet.create({
     paddingVertical: paddingSize.mediumBig,
     rowGap: paddingSize.mediumBig,
     borderRadius: borderRadiusSize.small,
-    // borderColor: primaryColors.gainsboroGrey,
-    // borderWidth: 1,                  // to check with IOS!!!
     shadowOffset: {
       width: 0,
-      height: -4,
+      height: 4,
     },
     shadowOpacity: 0.25,
     shadowRadius: 4,

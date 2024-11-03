@@ -12,7 +12,7 @@ export const userButtonStyle = StyleSheet.create({
     backgroundColor: primaryColors.white,
     borderRadius: borderRadiusSize.medium,
     shadowOffset: {
-      width: 4,
+      width: 0,
       height: 4,
     },
     shadowOpacity: 0.25,

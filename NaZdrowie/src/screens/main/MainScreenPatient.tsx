@@ -9,7 +9,7 @@ import {
 import primaryColors from "properties/colors";
 import { mainStyle } from "properties/styles";
 import {
-  PatientHealthComment,
+  Comment,
   PatientReferral,
   PatientResult,
   CommentData,
@@ -56,7 +56,7 @@ const MainScreenPatient = ({
     }
   };
 
-  const formatCommentsData = (comment: PatientHealthComment) => ({
+  const formatCommentsData = (comment: Comment) => ({
     date: formatDate(comment.modifiedDate),
     text: comment.content,
     author: `${comment.doctor.name} ${comment.doctor.surname}`,
@@ -102,10 +102,10 @@ const MainScreenPatient = ({
   return (
     <ScrollView contentContainerStyle={mainStyle.container}>
       <View style={mainStyle.buttonContainer}>
-        <PrimaryButton title="Czaty z lekarzami" />
         <PrimaryButton title="Wypełnij formularz zdrowia" />
         <PrimaryButton title="Załącz wynik badania" />
-        <PrimaryButton title="Dodaj lekarza kodem QR" />
+        <PrimaryButton title="Dodaj lekarza" />
+        <PrimaryButton title="Czaty z lekarzami" />
       </View>
       <CommentsCard
         title="Moje zdrowie"
@@ -118,7 +118,7 @@ const MainScreenPatient = ({
         isVisible={commentsOverlayPreview}
         handleClose={() => setCommentsOverlayPreview(false)}
         comments={healthCommentsData}
-        title="Komentarze do badania"
+        title="Moje zdrowie"
       />
       {referralOverviewData && (
         <ReferralOverviewOverlay

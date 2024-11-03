@@ -1,5 +1,5 @@
 import axios from "axios";
-import { PatientData, ResultsData } from "properties/types/PatientDataProps";
+import { PatientData, PatientResult } from "properties/types/PatientDataProps";
 
 import { API_URL } from "./config";
 
@@ -15,14 +15,14 @@ export const getLatestPatients: (
 };
 
 export const getLatestResults: (doctorId: number) => Promise<
-  (ResultsData & {
+  (PatientResult & {
     patient: PatientData;
   })[]
 > = async (doctorId: number) => {
   // return []; // while no unviewed-results endpoint is present
   try {
     const response = await axios.get(
-      `${API_URL}doctors/${doctorId}/unviewed-results`,
+      `${API_URL}doctors/${doctorId}/results/unviewed`,
     );
     return response.data;
   } catch (error) {

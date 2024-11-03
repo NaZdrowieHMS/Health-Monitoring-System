@@ -9,7 +9,7 @@ import {
 import primaryColors from "properties/colors";
 import {
   PatientData,
-  PatientHealthComment,
+  Comment,
   PatientReferral,
   PatientResult,
   CommentData,
@@ -145,7 +145,7 @@ export const PatientDetailsScreen = ({
     }
   };
 
-  const formatCommentsData = (comment: PatientHealthComment) => ({
+  const formatCommentsData = (comment: Comment) => ({
     date: formatDate(comment.modifiedDate),
     text: comment.content,
     author: `${comment.doctor.name} ${comment.doctor.surname}`,

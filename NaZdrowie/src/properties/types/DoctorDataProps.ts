@@ -7,7 +7,7 @@ export type DoctorData = {
   pwz: string;
 };
 
-export type DoctorDataShort = {
+export type Author = {
   id: number;
   name: string;
   surname: string;

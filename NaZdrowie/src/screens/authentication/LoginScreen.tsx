@@ -36,7 +36,7 @@ const LoginScreen = ({
     } else if (login !== "patient") {
       setCurrentUser({ id: 1, isDoctor: true });
     } else {
-      setCurrentUser({ id: 2, isDoctor: false });
+      setCurrentUser({ id: 3, isDoctor: false });
     }
     navigation.navigate("MainScreen");
   };
