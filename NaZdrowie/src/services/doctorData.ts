@@ -1,13 +1,12 @@
-import axios from "axios";
 import { PatientData, PatientResult } from "properties/types/PatientDataProps";
 
-import { API_URL } from "./config";
+import axiosInstance from "./axios";
 
 export const getLatestPatients: (
   doctorId: number,
 ) => Promise<PatientData[]> = async (doctorId: number) => {
   try {
-    const response = await axios.get(`${API_URL}doctors/${doctorId}/patients`);
+    const response = await axiosInstance.get(`/doctors/${doctorId}/patients`);
     return response.data;
   } catch (error) {
     console.error("[getLatestPatients] Error fetching data:", error);
@@ -21,8 +20,8 @@ export const getLatestResults: (doctorId: number) => Promise<
 > = async (doctorId: number) => {
   // return []; // while no unviewed-results endpoint is present
   try {
-    const response = await axios.get(
-      `${API_URL}doctors/${doctorId}/results/unviewed`,
+    const response = await axiosInstance.get(
+      `/doctors/${doctorId}/results/unviewed`,
     );
     return response.data;
   } catch (error) {
@@ -34,7 +33,7 @@ export const getAllPatients: (
   doctorId: number,
 ) => Promise<PatientData[]> = async (doctorId: number) => {
   try {
-    const response = await axios.get(`${API_URL}doctors/${doctorId}/patients`);
+    const response = await axiosInstance.get(`/doctors/${doctorId}/patients`);
     return response.data;
   } catch (error) {
     console.error("[getAllPatients] Error fetching data:", error);
