@@ -2,7 +2,9 @@ import Feather from "@expo/vector-icons/Feather";
 import { IconButtonProps } from "properties/types";
 import { Pressable } from "react-native";
 
-const EditButton: React.FC<IconButtonProps> = (props: IconButtonProps) => {
+export const EditButton: React.FC<IconButtonProps> = (
+  props: IconButtonProps,
+) => {
   const { handleOnClick, size, color } = props;
   return (
     <Pressable onPress={handleOnClick}>
@@ -14,5 +16,3 @@ const EditButton: React.FC<IconButtonProps> = (props: IconButtonProps) => {
     </Pressable>
   );
 };
-
-export default EditButton;

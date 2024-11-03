@@ -1,5 +1,5 @@
 import { Comment } from "components/atoms";
-import EditButton from "components/atoms/buttons/EditButton";
+import { EditButton } from "components/atoms/buttons/EditButton";
 import { cardStyle } from "properties/styles";
 import { ObjectCardElement, PatientReferral } from "properties/types";
 import React from "react";
@@ -50,18 +50,18 @@ const ReferralOverviewOverlay: React.FC<{
               <Text style={cardStyle.title}>Komentarz</Text>
               {isDoctor && <EditButton handleOnClick={editComment} />}
             </View>
-            {(referral.Comment && (
+            {(referral.comment && (
               <Comment
                 item={{
-                  text: referral.Comment.content,
-                  date: formatDate(referral.Comment.modifiedDate),
+                  text: referral.comment.content,
+                  date: formatDate(referral.comment.modifiedDate),
                   author: "", // this data will not be used
                 }}
                 index={0}
                 dontShowAuthor
               />
             )) ||
-              (!referral.Comment && <Text>Brak komentarza</Text>)}
+              (!referral.comment && <Text>Brak komentarza</Text>)}
           </View>
         </Overlay.Footer>
       </Overlay.Container>
