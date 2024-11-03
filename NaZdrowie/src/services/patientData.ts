@@ -59,9 +59,7 @@ export const sendResult: (
   resultUpload: ResultUpload,
 ) => Promise<string> = async (resultUpload: ResultUpload) => {
   try {
-    const response = await axios.post(`${API_URL}results`, {
-      result: resultUpload,
-    });
+    const response = await axios.post(`${API_URL}api/result`, resultUpload);
     return response.data;
   } catch (error) {
     console.error("[sendResult] Result not added", error);
