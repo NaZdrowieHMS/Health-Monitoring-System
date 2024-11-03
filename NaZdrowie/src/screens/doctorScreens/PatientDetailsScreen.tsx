@@ -9,11 +9,11 @@ import {
 import primaryColors from "properties/colors";
 import {
   PatientData,
-  Comment,
   PatientReferral,
   PatientResult,
   CommentData,
   ListCardElement,
+  DoctorComment,
 } from "properties/types";
 import { paddingSize } from "properties/vars";
 import React, { useContext, useEffect, useState } from "react";
@@ -145,7 +145,7 @@ export const PatientDetailsScreen = ({
     }
   };
 
-  const formatCommentsData = (comment: Comment) => ({
+  const formatCommentsData = (comment: DoctorComment) => ({
     date: formatDate(comment.modifiedDate),
     text: comment.content,
     author: `${comment.doctor.name} ${comment.doctor.surname}`,
@@ -190,6 +190,7 @@ export const PatientDetailsScreen = ({
       <ResultsFormOverlay
         isVisible={formResultsPreview}
         handleClose={() => setFormResultsPreview(false)}
+        patientId={patientId}
       />
       {referralOverviewData && (
         <ReferralOverviewOverlay

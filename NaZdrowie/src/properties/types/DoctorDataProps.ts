@@ -12,3 +12,10 @@ export type Author = {
   name: string;
   surname: string;
 };
+
+export type DoctorComment = {
+  id: number;
+  doctor: Author;
+  modifiedDate: string;
+  content: string;
+};

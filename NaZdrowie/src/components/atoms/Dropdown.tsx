@@ -30,14 +30,15 @@ export interface DropdownItem {
 interface DropdownProps {
   items: DropdownItem[];
   placeholderLabel: string;
+  setValue: (string) => void;
 }
 
 const Dropdown: React.FC<DropdownProps> = (props: DropdownProps) => {
-  const { items, placeholderLabel } = props;
+  const { items, placeholderLabel, setValue } = props;
 
   return (
     <RNPickerSelect
-      onValueChange={(value) => console.log(value)}
+      onValueChange={(value) => setValue(value)}
       style={styles}
       items={items}
       placeholder={{
