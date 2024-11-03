@@ -4,7 +4,7 @@ import { LinkButton, PrimaryButton } from "components/atoms";
 import { ListCard } from "components/molecules";
 import primaryColors from "properties/colors";
 import { mainStyle } from "properties/styles/mainStyle";
-import { PatientData, ResultsData, ListCardElement } from "properties/types";
+import { PatientData, PatientResult, ListCardElement } from "properties/types";
 import React, { useContext, useEffect, useState } from "react";
 import { View, ScrollView } from "react-native";
 import { UserContext } from "services/UserProvider";
@@ -63,7 +63,7 @@ const MainScreenDoctor = ({
   };
 
   const formatResultEntry = (
-    entry: ResultsData & {
+    entry: PatientResult & {
       patient: PatientData;
     },
   ) => ({

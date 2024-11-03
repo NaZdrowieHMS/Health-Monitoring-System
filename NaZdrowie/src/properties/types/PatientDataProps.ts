@@ -1,4 +1,4 @@
-import { DoctorData, DoctorDataShort } from "./DoctorDataProps";
+import { Author } from "./DoctorDataProps";
 
 export type PatientData = {
   id: number;
@@ -6,24 +6,16 @@ export type PatientData = {
   surname: string;
   email: string;
   pesel: string;
-  // last_updated: string;
 };
 
-type ResultsDataContent = {
+type ResultDataContent = {
   data: string;
   type: string;
 };
 
-export type ResultsData = {
+export type Comment = {
   id: number;
-  content: ResultsDataContent;
-  testType: string;
-};
-
-export type PatientHealthComment = {
-  id: number;
-  patientId: number;
-  doctor: DoctorData;
+  doctor: Author;
   modifiedDate: string;
   content: string;
 };
@@ -34,22 +26,15 @@ export type PatientReferral = {
   testType: string;
   referralNumber: string;
   completed: boolean;
-  doctor: DoctorDataShort;
-  Comment: ReferralComment; // change to "comments" after backend endpoitn change
+  doctor: Author;
+  comment: Comment;
   createdDate: string;
-};
-
-export type ReferralComment = {
-  doctorAuthor: DoctorDataShort;
-  modifiedDate: string;
-  content: string;
 };
 
 export type PatientResult = {
   id: number;
   patientId: number;
   testType: string;
-  content: ResultsDataContent;
-  aiSelected: boolean;
-  viewed: boolean;
+  content: ResultDataContent;
+  createdDate: string;
 };

@@ -48,7 +48,7 @@ export const AiDiagnosis = ({
 
   const formatResultsData = (result: PatientResult) => ({
     checkbox: {
-      checkboxStatus: result.aiSelected,
+      checkboxStatus: true, // TODO
     },
     text: result.testType,
     buttons: [<LinkButton title="Podgląd" color={primaryColors.lightBlue} />],
@@ -73,7 +73,6 @@ export const AiDiagnosis = ({
         }
       />
       <ScrollView contentContainerStyle={patientStyle.container}>
-        <ImagePickerComponent />
         <ListCard
           title="Załączone badania"
           data={resultsData}

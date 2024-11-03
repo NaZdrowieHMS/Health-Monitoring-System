@@ -1,16 +1,16 @@
 import axios from "axios";
 import {
   PatientData,
-  PatientHealthComment,
   PatientReferral,
   PatientResult,
+  Comment,
 } from "properties/types/PatientDataProps";
 
 import { API_URL } from "./config";
 
 export const getHealthComments: (
   patientId: number,
-) => Promise<PatientHealthComment[]> = async (patientId: number) => {
+) => Promise<Comment[]> = async (patientId: number) => {
   try {
     const response = await axios.get(`${API_URL}patients/${patientId}/health`);
     return response.data;
@@ -47,7 +47,7 @@ export const getPatient: (patientId: number) => Promise<PatientData> = async (
   patientId: number,
 ) => {
   try {
-    const response = await axios.get(`${API_URL}patients/${patientId}/results`);
+    const response = await axios.get(`${API_URL}patients/${patientId}`);
     return response.data.data;
   } catch (error) {
     console.error("[getPatient] Error fetching data:", error);
