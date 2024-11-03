@@ -22,7 +22,7 @@ const allPatientsStyle = StyleSheet.create({
   },
 });
 
-const AllPatientsScreen = ({
+export const AllPatientsScreen = ({
   navigation,
 }: NativeStackScreenProps<RootStackParamList, "AllPatients">) => {
   const { currentUser } = useContext(UserContext);
@@ -62,5 +62,3 @@ const AllPatientsScreen = ({
     </View>
   );
 };
-
-export default AllPatientsScreen;

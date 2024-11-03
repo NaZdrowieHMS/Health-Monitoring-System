@@ -72,7 +72,7 @@ const MainScreenPatient = ({
     }
   };
 
-  const formatReferralsData = (referral: PatientReferral, id: number) => ({
+  const formatReferralsData = (referral: PatientReferral) => ({
     text: referral.testType,
     buttons: [
       <LinkButton
@@ -82,7 +82,6 @@ const MainScreenPatient = ({
       />,
       <LinkButton title="Załącz wynik" color={primaryColors.lightBlue} />,
     ],
-    data: referral,
   });
 
   const setResults = async (patientId: number) => {

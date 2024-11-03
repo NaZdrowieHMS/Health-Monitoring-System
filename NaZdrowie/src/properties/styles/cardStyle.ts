@@ -26,12 +26,17 @@ const cardStyle = StyleSheet.create({
     color: primaryColors.darkBlue,
   },
   key: {
-    fontSize: fontSize.buttonMobileFontSize,
+    fontSize: fontSize.baseMobileFontSize,
     color: primaryColors.darkBlue,
   },
   floatRight: {
     flexDirection: "row",
     justifyContent: "flex-end",
+  },
+  rowSpread: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
   },
 });
 export { cardStyle };

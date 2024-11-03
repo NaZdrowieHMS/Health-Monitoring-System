@@ -4,7 +4,7 @@ import { ButtonProps } from "properties/types";
 import React from "react";
 import { Pressable, Text } from "react-native";
 
-const PrimaryButton: React.FC<ButtonProps> = (props: ButtonProps) => {
+export const PrimaryButton: React.FC<ButtonProps> = (props: ButtonProps) => {
   const { handleOnClick, title } = props;
 
   return (
@@ -26,5 +26,3 @@ const PrimaryButton: React.FC<ButtonProps> = (props: ButtonProps) => {
     </Pressable>
   );
 };
-
-export default PrimaryButton;

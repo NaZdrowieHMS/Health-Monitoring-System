@@ -2,7 +2,10 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "App";
 import { LinkButton, PrimaryButton } from "components/atoms";
 import { CommentsCardForDoctor, ListCard, Navbar } from "components/molecules";
-import { ResultsFormOverlay } from "components/molecules/overlays";
+import {
+  ReferralOverviewOverlay,
+  ResultsFormOverlay,
+} from "components/molecules/overlays";
 import primaryColors from "properties/colors";
 import {
   PatientData,
@@ -37,7 +40,7 @@ const patientStyle = StyleSheet.create({
   },
 });
 
-const PatientDetailsScreen = ({
+export const PatientDetailsScreen = ({
   route,
   navigation,
 }: NativeStackScreenProps<RootStackParamList, "PatientDetails">) => {
@@ -57,6 +60,8 @@ const PatientDetailsScreen = ({
 
   const [formResultsPreview, setFormResultsPreview] =
     React.useState<boolean>(false);
+  const [referralOverviewData, setReferralOverviewData] =
+    React.useState<PatientReferral>(null);
 
   useEffect(() => {
     setReferrals(patientId);
@@ -91,7 +96,13 @@ const PatientDetailsScreen = ({
 
   const formatReferralsData = (referral: PatientReferral) => ({
     text: referral.testType,
-    buttons: [<LinkButton title="Podgląd" color={primaryColors.lightBlue} />],
+    buttons: [
+      <LinkButton
+        title="Podgląd"
+        color={primaryColors.lightBlue}
+        handleOnClick={() => setReferralOverviewData(referral)}
+      />,
+    ],
   });
 
   const setResults = async (patientId: number) => {
@@ -180,8 +191,12 @@ const PatientDetailsScreen = ({
         isVisible={formResultsPreview}
         handleClose={() => setFormResultsPreview(false)}
       />
+      <ReferralOverviewOverlay
+        isVisible={referralOverviewData !== null}
+        handleClose={() => setReferralOverviewData(null)}
+        referral={referralOverviewData}
+        isDoctor
+      />
     </View>
   );
 };
-
-export default PatientDetailsScreen;

@@ -23,7 +23,7 @@ const patientStyle = StyleSheet.create({
   },
 });
 
-const AiDiagnosis = ({
+export const AiDiagnosis = ({
   route,
   navigation,
 }: NativeStackScreenProps<RootStackParamList, "AiDiagnosis">) => {
@@ -84,5 +84,3 @@ const AiDiagnosis = ({
     </View>
   );
 };
-
-export default AiDiagnosis;

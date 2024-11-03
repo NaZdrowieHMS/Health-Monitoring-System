@@ -7,9 +7,7 @@ export const getLatestPatients: (
   doctorId: number,
 ) => Promise<PatientData[]> = async (doctorId: number) => {
   try {
-    const response = await axios.get(
-      `${API_URL}doctors/${doctorId}/all-patients`,
-    );
+    const response = await axios.get(`${API_URL}doctors/${doctorId}/patients`);
     return response.data;
   } catch (error) {
     console.error("[getLatestPatients] Error fetching data:", error);
@@ -36,9 +34,7 @@ export const getAllPatients: (
   doctorId: number,
 ) => Promise<PatientData[]> = async (doctorId: number) => {
   try {
-    const response = await axios.get(
-      `${API_URL}doctors/${doctorId}/all-patients`,
-    );
+    const response = await axios.get(`${API_URL}doctors/${doctorId}/patients`);
     return response.data;
   } catch (error) {
     console.error("[getAllPatients] Error fetching data:", error);
