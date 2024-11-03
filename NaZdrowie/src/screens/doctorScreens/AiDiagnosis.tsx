@@ -1,12 +1,7 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "App";
 import { LinkButton, PrimaryButton } from "components/atoms";
-import {
-  AiAnalysisResultCard,
-  ImagePickerComponent,
-  ListCard,
-  Navbar,
-} from "components/molecules";
+import { AiAnalysisResultCard, ListCard, Navbar } from "components/molecules";
 import primaryColors from "properties/colors";
 import { PatientData, PatientResult, ListCardElement } from "properties/types";
 import { paddingSize } from "properties/vars";

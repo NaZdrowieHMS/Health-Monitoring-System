@@ -9,11 +9,11 @@ import {
 import primaryColors from "properties/colors";
 import { mainStyle } from "properties/styles";
 import {
-  Comment,
   PatientReferral,
   PatientResult,
   CommentData,
   ListCardElement,
+  DoctorComment,
 } from "properties/types";
 import React, { useContext, useEffect, useState } from "react";
 import { View, ScrollView } from "react-native";
@@ -56,7 +56,7 @@ const MainScreenPatient = ({
     }
   };
 
-  const formatCommentsData = (comment: Comment) => ({
+  const formatCommentsData = (comment: DoctorComment) => ({
     date: formatDate(comment.modifiedDate),
     text: comment.content,
     author: `${comment.doctor.name} ${comment.doctor.surname}`,

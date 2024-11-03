@@ -5,14 +5,19 @@ import React from "react";
 import { Pressable, Text } from "react-native";
 
 export const PrimaryButton: React.FC<ButtonProps> = (props: ButtonProps) => {
-  const { handleOnClick, title } = props;
+  const { handleOnClick, title, disabled } = props;
 
   return (
     <Pressable
+      disabled={disabled}
       onPress={handleOnClick}
       style={[
         buttonStyle.buttonContainer,
-        { backgroundColor: primaryColors.darkBlue },
+        {
+          backgroundColor: !disabled
+            ? primaryColors.darkBlue
+            : primaryColors.lightGrey,
+        },
       ]}
     >
       <Text
