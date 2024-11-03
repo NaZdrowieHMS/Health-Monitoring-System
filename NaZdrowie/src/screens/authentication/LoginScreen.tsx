@@ -3,10 +3,10 @@ import { RootStackParamList } from "App";
 import {
   LinkButton,
   PrimaryButton,
-  TextInputPersonalized,
+  PersonalizedTextInput,
 } from "components/atoms";
 import primaryColors from "properties/colors";
-import loginScreenStyle from "properties/styles/loginScreenStyle";
+import { loginScreenStyle } from "properties/styles";
 import React, { useContext } from "react";
 import { Keyboard, Text, View } from "react-native";
 import { UserContext } from "services/UserProvider";
@@ -15,7 +15,7 @@ const LoginScreen = ({
   navigation,
 }: NativeStackScreenProps<RootStackParamList, "Login">) => {
   const [login, setLogin] = React.useState<string>("");
-  const [_, setUser] = useContext(UserContext);
+  const { setCurrentUser } = useContext(UserContext);
 
   const dismissKeyboard = () => {
     Keyboard.dismiss();
@@ -26,10 +26,18 @@ const LoginScreen = ({
   };
 
   const navigateToMainScreen = () => {
-    // eslint-disable-next-line no-unused-expressions
-    login !== "patient"
-      ? setUser({ id: 1, isDoctor: true })
-      : setUser({ id: 2, isDoctor: false });
+    const userInfo = login.split("-");
+    if (userInfo.length === 2 && userInfo[1].length > 0) {
+      // temporary solution to try out different data
+      setCurrentUser({
+        id: parseInt(userInfo[1], 10),
+        isDoctor: userInfo[0] !== "p",
+      });
+    } else if (login !== "patient") {
+      setCurrentUser({ id: 1, isDoctor: true });
+    } else {
+      setCurrentUser({ id: 2, isDoctor: false });
+    }
     navigation.navigate("MainScreen");
   };
 
@@ -40,9 +48,9 @@ const LoginScreen = ({
         <Text style={loginScreenStyle.h2}>Zaloguj się na swoje konto</Text>
       </View>
       <View style={loginScreenStyle.inputContainer}>
-        <TextInputPersonalized placeholder="login" onChange={setLogin} />
+        <PersonalizedTextInput placeholder="login" onChange={setLogin} />
         <View style={loginScreenStyle.buttonsContainer}>
-          <TextInputPersonalized placeholder="password" />
+          <PersonalizedTextInput placeholder="password" />
           <LinkButton
             title="Zapomniałeś hasła?"
             color={primaryColors.lightGrey}

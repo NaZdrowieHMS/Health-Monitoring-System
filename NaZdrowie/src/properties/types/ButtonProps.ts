@@ -7,3 +7,9 @@ export interface ButtonProps {
   helperTextColor?: string;
   fontSize?: number;
 }
+
+export interface IconButtonProps {
+  handleOnClick: (event: GestureResponderEvent) => void;
+  size?: number;
+  color?: string;
+}

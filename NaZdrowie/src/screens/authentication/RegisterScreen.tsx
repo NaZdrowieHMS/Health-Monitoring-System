@@ -1,8 +1,8 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "App";
-import { PrimaryButton, TextInputPersonalized } from "components/atoms";
+import { PrimaryButton, PersonalizedTextInput } from "components/atoms";
 import primaryColors from "properties/colors";
-import loginScreenStyle from "properties/styles/loginScreenStyle";
+import { loginScreenStyle } from "properties/styles";
 import { paddingSize } from "properties/vars";
 import React from "react";
 import { Keyboard, ScrollView, StyleSheet, Text, View } from "react-native";
@@ -42,12 +42,12 @@ const RegisterScreen = ({
         <Text style={loginScreenStyle.h2}>Dołącz do nas!</Text>
       </View>
       <View style={loginScreenStyle.inputContainer}>
-        <TextInputPersonalized placeholder="Adres email" />
-        <TextInputPersonalized placeholder="PESEL" />
-        {doctorScreen && <TextInputPersonalized placeholder="Numer PWZ" />}
-        <TextInputPersonalized placeholder="Login" />
-        <TextInputPersonalized placeholder="Hasło" />
-        <TextInputPersonalized placeholder="Powtórz hasło" />
+        <PersonalizedTextInput placeholder="Adres email" />
+        <PersonalizedTextInput placeholder="PESEL" />
+        {doctorScreen && <PersonalizedTextInput placeholder="Numer PWZ" />}
+        <PersonalizedTextInput placeholder="Login" />
+        <PersonalizedTextInput placeholder="Hasło" />
+        <PersonalizedTextInput placeholder="Powtórz hasło" />
       </View>
       <PrimaryButton
         title="Zarejestruj się"

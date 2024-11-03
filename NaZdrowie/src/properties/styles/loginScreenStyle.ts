@@ -31,5 +31,4 @@ const loginScreenStyle = StyleSheet.create({
     color: primaryColors.darkGrey,
   },
 });
-
-export default loginScreenStyle;
+export { loginScreenStyle };

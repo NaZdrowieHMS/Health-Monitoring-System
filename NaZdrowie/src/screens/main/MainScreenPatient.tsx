@@ -2,9 +2,12 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "App";
 import { LinkButton, PrimaryButton } from "components/atoms";
 import { CommentsCard, ListCard } from "components/molecules";
-import CommentsOverlay from "components/molecules/overlays/CommentsOverlay";
+import {
+  CommentsOverlay,
+  ReferralOverviewOverlay,
+} from "components/molecules/overlays";
 import primaryColors from "properties/colors";
-import { mainStyle } from "properties/styles/mainStyle";
+import { mainStyle } from "properties/styles";
 import {
   PatientHealthComment,
   PatientReferral,
@@ -12,8 +15,9 @@ import {
   CommentData,
   ListCardElement,
 } from "properties/types";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { View, ScrollView } from "react-native";
+import { UserContext } from "services/UserProvider";
 import {
   getHealthComments,
   getReferrals,
@@ -32,11 +36,14 @@ const MainScreenPatient = ({
   const [resultsData, setResultssData] = useState<ListCardElement[]>([]);
   const [commentsOverlayPreview, setCommentsOverlayPreview] =
     React.useState<boolean>(false);
+  const [referralOverviewData, setReferralOverviewData] =
+    React.useState<PatientReferral>(null);
+  const { currentUser } = useContext(UserContext);
 
   useEffect(() => {
-    setHealthComments(4);
-    setReferrals(4);
-    setResults(3);
+    setHealthComments(currentUser.id);
+    setReferrals(currentUser.id);
+    setResults(currentUser.id);
   }, []);
 
   const setHealthComments = async (patientId: number) => {
@@ -68,7 +75,11 @@ const MainScreenPatient = ({
   const formatReferralsData = (referral: PatientReferral) => ({
     text: referral.testType,
     buttons: [
-      <LinkButton title="Podgląd" color={primaryColors.lightBlue} />,
+      <LinkButton
+        title="Podgląd"
+        color={primaryColors.lightBlue}
+        handleOnClick={() => setReferralOverviewData(referral)}
+      />,
       <LinkButton title="Załącz wynik" color={primaryColors.lightBlue} />,
     ],
   });
@@ -109,6 +120,13 @@ const MainScreenPatient = ({
         comments={healthCommentsData}
         title="Komentarze do badania"
       />
+      {referralOverviewData && (
+        <ReferralOverviewOverlay
+          isVisible={referralOverviewData !== null}
+          handleClose={() => setReferralOverviewData(null)}
+          referral={referralOverviewData}
+        />
+      )}
     </ScrollView>
   );
 };

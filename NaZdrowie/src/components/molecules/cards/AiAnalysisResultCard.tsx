@@ -1,6 +1,6 @@
 import { LinkButton } from "components/atoms";
 import primaryColors from "properties/colors";
-import cardStyle from "properties/styles/cardStyle";
+import { cardStyle } from "properties/styles";
 import { fontSize, paddingSize } from "properties/vars";
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";

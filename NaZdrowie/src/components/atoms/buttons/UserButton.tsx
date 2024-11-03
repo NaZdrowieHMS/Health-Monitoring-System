@@ -26,7 +26,7 @@ export const userButtonStyle = StyleSheet.create({
   },
 });
 
-const UserButton: React.FC<ButtonProps & { online?: boolean }> = (
+export const UserButton: React.FC<ButtonProps & { online?: boolean }> = (
   props: ButtonProps & { online?: boolean },
 ) => {
   const { handleOnClick, title, online } = props;
@@ -54,5 +54,3 @@ const UserButton: React.FC<ButtonProps & { online?: boolean }> = (
     </Pressable>
   );
 };
-
-export default UserButton;

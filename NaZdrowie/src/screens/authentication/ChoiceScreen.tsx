@@ -1,7 +1,7 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "App";
 import { PrimaryButton } from "components/atoms";
-import loginScreenStyle from "properties/styles/loginScreenStyle";
+import { loginScreenStyle } from "properties/styles";
 import React from "react";
 import { Keyboard, Text, View } from "react-native";
 

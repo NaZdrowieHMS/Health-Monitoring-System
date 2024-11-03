@@ -1,14 +1,9 @@
-export { AiResults } from "./AiDataProps";
-export { ButtonProps } from "./ButtonProps";
-export { CommentData, CommentsCardProps } from "./CommentsCardProps";
-export { UserData } from "./ConfigProps";
-export { DoctorData } from "./DoctorDataProps";
-export { InputProps } from "./InputProps";
-export { ListCardElement, ListCardProps } from "./ListCardProps";
-export {
-  PatientData,
-  ResultsData,
-  PatientHealthComment,
-  PatientReferral,
-  PatientResult,
-} from "./PatientDataProps";
+export * from "./AiDataProps";
+export * from "./ButtonProps";
+export * from "./CommentsCardProps";
+export * from "./ConfigProps";
+export * from "./DoctorDataProps";
+export * from "./InputProps";
+export * from "./ListCardProps";
+export * from "./ObjectCardProps";
+export * from "./PatientDataProps";

@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const TextInputPersonalized: React.FC<InputProps> = (props: InputProps) => {
+const PersonalizedTextInput: React.FC<InputProps> = (props: InputProps) => {
   const { placeholder, onChange } = props;
   const [text, onChangeText] = React.useState("");
 
@@ -38,4 +38,4 @@ const TextInputPersonalized: React.FC<InputProps> = (props: InputProps) => {
   );
 };
 
-export default TextInputPersonalized;
+export default PersonalizedTextInput;

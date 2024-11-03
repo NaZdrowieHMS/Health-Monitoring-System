@@ -4,7 +4,7 @@ import { FontWeight, fontSize, paddingSize } from "properties/vars";
 import React from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
-const LinkButton: React.FC<
+export const LinkButton: React.FC<
   ButtonProps & { color: string; fontWeight?: FontWeight }
 > = (props: ButtonProps & { color: string; fontWeight?: FontWeight }) => {
   const {
@@ -42,5 +42,3 @@ const LinkButton: React.FC<
     </View>
   );
 };
-
-export default LinkButton;

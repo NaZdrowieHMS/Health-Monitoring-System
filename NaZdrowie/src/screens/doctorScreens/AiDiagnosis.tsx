@@ -8,8 +8,7 @@ import {
   Navbar,
 } from "components/molecules";
 import primaryColors from "properties/colors";
-import { PatientData, PatientResult } from "properties/types";
-import { ListCardElement } from "properties/types/ListCardProps";
+import { PatientData, PatientResult, ListCardElement } from "properties/types";
 import { paddingSize } from "properties/vars";
 import React, { useEffect, useState } from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
@@ -24,7 +23,7 @@ const patientStyle = StyleSheet.create({
   },
 });
 
-const AiDiagnosis = ({
+export const AiDiagnosis = ({
   route,
   navigation,
 }: NativeStackScreenProps<RootStackParamList, "AiDiagnosis">) => {
@@ -85,5 +84,3 @@ const AiDiagnosis = ({
     </View>
   );
 };
-
-export default AiDiagnosis;
