@@ -191,12 +191,14 @@ export const PatientDetailsScreen = ({
         isVisible={formResultsPreview}
         handleClose={() => setFormResultsPreview(false)}
       />
-      <ReferralOverviewOverlay
-        isVisible={referralOverviewData !== null}
-        handleClose={() => setReferralOverviewData(null)}
-        referral={referralOverviewData}
-        isDoctor
-      />
+      {referralOverviewData && (
+        <ReferralOverviewOverlay
+          isVisible={referralOverviewData !== null}
+          handleClose={() => setReferralOverviewData(null)}
+          referral={referralOverviewData}
+          isDoctor
+        />
+      )}
     </View>
   );
 };

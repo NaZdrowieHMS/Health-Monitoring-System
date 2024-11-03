@@ -120,11 +120,13 @@ const MainScreenPatient = ({
         comments={healthCommentsData}
         title="Komentarze do badania"
       />
-      <ReferralOverviewOverlay
-        isVisible={referralOverviewData !== null}
-        handleClose={() => setReferralOverviewData(null)}
-        referral={referralOverviewData}
-      />
+      {referralOverviewData && (
+        <ReferralOverviewOverlay
+          isVisible={referralOverviewData !== null}
+          handleClose={() => setReferralOverviewData(null)}
+          referral={referralOverviewData}
+        />
+      )}
     </ScrollView>
   );
 };
