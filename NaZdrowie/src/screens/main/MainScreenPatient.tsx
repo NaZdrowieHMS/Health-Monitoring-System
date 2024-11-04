@@ -6,6 +6,7 @@ import {
   CommentsOverlay,
   ReferralOverviewOverlay,
 } from "components/molecules/overlays";
+import HealthFormFillOverlay from "components/molecules/overlays/HealthFormFillOverlay";
 import primaryColors from "properties/colors";
 import { mainStyle } from "properties/styles";
 import {
@@ -15,6 +16,7 @@ import {
   ListCardElement,
   DoctorComment,
 } from "properties/types";
+import { healthFormItems } from "properties/types/HealthFormProps";
 import React, { useContext, useEffect, useState } from "react";
 import { View, ScrollView } from "react-native";
 import { UserContext } from "services/UserProvider";
@@ -39,6 +41,7 @@ const MainScreenPatient = ({
   const [referralOverviewData, setReferralOverviewData] =
     React.useState<PatientReferral>(null);
   const { currentUser } = useContext(UserContext);
+  const [healthForm, setHealthForm] = React.useState<boolean>(false);
 
   useEffect(() => {
     setHealthComments(currentUser.id);
@@ -102,7 +105,12 @@ const MainScreenPatient = ({
   return (
     <ScrollView contentContainerStyle={mainStyle.container}>
       <View style={mainStyle.buttonContainer}>
-        <PrimaryButton title="Wypełnij formularz zdrowia" />
+        <PrimaryButton
+          title="Wypełnij formularz zdrowia"
+          handleOnClick={() => {
+            setHealthForm(true);
+          }}
+        />
         <PrimaryButton title="Załącz wynik badania" />
         <PrimaryButton title="Dodaj lekarza" />
         <PrimaryButton title="Czaty z lekarzami" />
@@ -127,6 +135,13 @@ const MainScreenPatient = ({
           referral={referralOverviewData}
         />
       )}
+      <HealthFormFillOverlay
+        healthFormData={{ patientId: currentUser.id, content: healthFormItems }}
+        isVisible={healthForm}
+        handleClose={() => {
+          setHealthForm(false);
+        }}
+      />
     </ScrollView>
   );
 };

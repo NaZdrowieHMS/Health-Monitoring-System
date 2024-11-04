@@ -2,6 +2,8 @@ import primaryColors from "properties/colors";
 import { borderRadiusSize, fontSize, paddingSize } from "properties/vars";
 import { StyleSheet } from "react-native";
 
+import { generalStyle } from "./generalStyle";
+
 const cardStyle = StyleSheet.create({
   container: {
     backgroundColor: primaryColors.white,
@@ -10,14 +12,8 @@ const cardStyle = StyleSheet.create({
     paddingVertical: paddingSize.mediumBig,
     rowGap: paddingSize.mediumBig,
     borderRadius: borderRadiusSize.small,
-    shadowOffset: {
-      width: 0,
-      height: 4,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    shadowColor: primaryColors.black,
     elevation: 3,
+    ...generalStyle.shadow,
   },
   title: {
     fontSize: fontSize.buttonMobileFontSize,
