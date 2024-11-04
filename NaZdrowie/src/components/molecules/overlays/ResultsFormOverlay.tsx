@@ -1,32 +1,44 @@
 import { Dropdown, PrimaryButton } from "components/atoms";
 import { DropdownItem } from "components/atoms/Dropdown";
 import primaryColors from "properties/colors";
-import { fontSize } from "properties/vars";
+import { borderRadiusSize, fontSize, paddingSize } from "properties/vars";
 import React, { useState } from "react";
-import { Text, View } from "react-native";
+import { Text, View, StyleSheet } from "react-native";
 import { sendResult } from "services/patientData";
 
-import Overlay from "./Overlay";
+import { Overlay } from ".";
 import ImagePickerComponent from "../ImagePickerComponent";
 
-const ResultsFormOverlay: React.FC<{
+const resultFormStyle = StyleSheet.create({
+  input: {
+    borderWidth: 1,
+    padding: paddingSize.medium,
+    borderRadius: borderRadiusSize.medium,
+    fontSize: fontSize.baseMobileFontSize,
+    color: primaryColors.darkGrey,
+    borderColor: primaryColors.lightGrey,
+  },
+});
+
+export const ResultsFormOverlay: React.FC<{
   patientId: number;
-  refferalId?: number;
+  referralId?: number;
+  referralTestType?: string;
   isVisible: boolean;
   handleClose: () => void;
-}> = ({ patientId, refferalId, isVisible, handleClose }) => {
+}> = ({ patientId, referralId, referralTestType, isVisible, handleClose }) => {
   const resultItems: DropdownItem[] = [
     { label: "USG piersi", value: "USG piersi" },
     { label: "Mammografia", value: "Mammografia" },
   ];
 
   const [base64Data, setBase64Data] = useState<string>();
+  const [dataType, setDataType] = useState<string>();
   const [testType, setTestType] = useState<string>();
-  const [resultType, setResultType] = useState<string>();
 
   const closeAndCleanData = () => {
     setBase64Data(null);
-    setResultType(null);
+    setDataType(null);
     setTestType(null);
     handleClose();
   };
@@ -34,13 +46,14 @@ const ResultsFormOverlay: React.FC<{
   const handleSendResults = () => {
     sendResult({
       patientId,
-      refferalId,
-      testType,
+      referralId,
+      testType: testType ? testType : referralTestType,
       content: {
         data: base64Data,
-        type: resultType,
+        type: dataType,
       },
     });
+    closeAndCleanData();
   };
 
   return (
@@ -48,15 +61,20 @@ const ResultsFormOverlay: React.FC<{
       <Overlay.Container>
         <Overlay.Header title="Załącz wyniki" handleClose={closeAndCleanData} />
         <Overlay.Body>
-          <Dropdown
-            items={resultItems}
-            placeholderLabel="Wybierz typ badania"
-            setValue={setResultType}
-          />
+          {!referralTestType && (
+            <Dropdown
+              items={resultItems}
+              placeholderLabel="Wybierz typ badania"
+              setValue={setTestType}
+            />
+          )}
+          {referralTestType && (
+            <Text style={resultFormStyle.input}>{referralTestType}</Text>
+          )}
           <View>
             <ImagePickerComponent
               setBase64Data={setBase64Data}
-              setContentType={setTestType}
+              setContentType={setDataType}
             />
             <Text
               style={{
@@ -71,7 +89,10 @@ const ResultsFormOverlay: React.FC<{
         <Overlay.Footer>
           <PrimaryButton
             title="Prześlij"
-            disabled={base64Data == null || resultType == null}
+            disabled={
+              base64Data == null ||
+              (testType == null && referralTestType == null)
+            }
             handleOnClick={handleSendResults}
           />
         </Overlay.Footer>
@@ -79,5 +100,3 @@ const ResultsFormOverlay: React.FC<{
     </Overlay>
   );
 };
-
-export default ResultsFormOverlay;

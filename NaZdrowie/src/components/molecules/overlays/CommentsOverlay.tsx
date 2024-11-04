@@ -4,9 +4,9 @@ import { CommentData } from "properties/types";
 import React from "react";
 import { ScrollView } from "react-native";
 
-import Overlay from "./Overlay";
+import { Overlay } from ".";
 
-const CommentsOverlay: React.FC<{
+export const CommentsOverlay: React.FC<{
   isVisible: boolean;
   handleClose: () => void;
   comments: CommentData[];
@@ -27,5 +27,3 @@ const CommentsOverlay: React.FC<{
     </Overlay>
   );
 };
-
-export default CommentsOverlay;
