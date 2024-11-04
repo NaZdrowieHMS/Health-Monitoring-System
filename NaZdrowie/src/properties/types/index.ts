@@ -7,3 +7,4 @@ export * from "./InputProps";
 export * from "./ListCardProps";
 export * from "./ObjectCardProps";
 export * from "./PatientDataProps";
+export * from "./HealthFormProps";

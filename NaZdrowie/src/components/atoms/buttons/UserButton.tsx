@@ -1,5 +1,6 @@
 import primaryColors from "properties/colors";
 import { buttonStyle } from "properties/styles/buttonStyle";
+import { generalStyle } from "properties/styles/generalStyle";
 import { ButtonProps } from "properties/types";
 import { borderRadiusSize, fontSize } from "properties/vars";
 import React from "react";
@@ -11,11 +12,7 @@ export const userButtonStyle = StyleSheet.create({
   buttonContainer: {
     backgroundColor: primaryColors.white,
     borderRadius: borderRadiusSize.medium,
-    shadowOffset: {
-      width: 0,
-      height: 4,
-    },
-    shadowOpacity: 0.25,
+    ...generalStyle.shadow,
   },
   buttonText: {
     color: primaryColors.darkGrey,
