@@ -18,7 +18,6 @@ export const getLatestResults: (doctorId: number) => Promise<
     patient: PatientData;
   })[]
 > = async (doctorId: number) => {
-  // return []; // while no unviewed-results endpoint is present
   try {
     const response = await axiosInstance.get(
       `/doctors/${doctorId}/results/unviewed`,
