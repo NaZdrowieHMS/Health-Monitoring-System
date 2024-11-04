@@ -14,7 +14,7 @@ type ResultDataContent = {
 };
 
 export type PatientReferral = {
-  referralId: number;
+  id: number;
   patientId: number;
   testType: string;
   referralNumber: string;
@@ -34,7 +34,7 @@ export type PatientResult = {
 
 export type ResultUpload = {
   patientId: number;
-  refferalId?: number;
+  referralId?: number;
   testType: string;
   content: ResultDataContent;
 };

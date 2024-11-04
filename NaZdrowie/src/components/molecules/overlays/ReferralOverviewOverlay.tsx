@@ -6,10 +6,10 @@ import React from "react";
 import { View, Text } from "react-native";
 import { formatDate } from "services/utils";
 
-import Overlay from "./Overlay";
+import { Overlay } from ".";
 import ObjectCard from "../cards/ObjectCard";
 
-const ReferralOverviewOverlay: React.FC<{
+export const ReferralOverviewOverlay: React.FC<{
   isVisible: boolean;
   handleClose: () => void;
   referral: PatientReferral;
@@ -31,7 +31,7 @@ const ReferralOverviewOverlay: React.FC<{
   ];
 
   const editComment = () => {
-    console.log(referral.referralId);
+    console.log(referral.id);
   };
 
   return (
@@ -68,5 +68,3 @@ const ReferralOverviewOverlay: React.FC<{
     </Overlay>
   );
 };
-
-export default ReferralOverviewOverlay;

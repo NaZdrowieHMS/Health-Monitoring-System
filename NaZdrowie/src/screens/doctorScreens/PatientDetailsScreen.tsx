@@ -1,11 +1,13 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "App";
 import { LinkButton, PrimaryButton } from "components/atoms";
-import { CommentsCardForDoctor, ListCard, Navbar } from "components/molecules";
 import {
+  CommentsCardForDoctor,
+  ListCard,
+  Navbar,
   ReferralOverviewOverlay,
   ResultsFormOverlay,
-} from "components/molecules/overlays";
+} from "components/molecules";
 import primaryColors from "properties/colors";
 import {
   PatientData,
