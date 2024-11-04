@@ -4,7 +4,7 @@ import { CommentData } from "properties/types";
 import React from "react";
 import { ScrollView } from "react-native";
 
-import { Overlay } from ".";
+import { Overlay } from "./Overlay";
 
 export const CommentsOverlay: React.FC<{
   isVisible: boolean;

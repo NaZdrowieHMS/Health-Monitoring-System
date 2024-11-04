@@ -10,7 +10,7 @@ import { fontSize, paddingSize } from "properties/vars";
 import React from "react";
 import { ScrollView, Text, View, StyleSheet } from "react-native";
 
-import { Overlay } from ".";
+import { Overlay } from "./Overlay";
 
 const healthFormStyle = StyleSheet.create({
   text: {

@@ -6,7 +6,7 @@ import React from "react";
 import { View, Text } from "react-native";
 import { formatDate } from "services/utils";
 
-import { Overlay } from ".";
+import { Overlay } from "./Overlay";
 import ObjectCard from "../cards/ObjectCard";
 
 export const ReferralOverviewOverlay: React.FC<{

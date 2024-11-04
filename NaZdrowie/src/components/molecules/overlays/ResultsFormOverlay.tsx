@@ -6,7 +6,7 @@ import React, { useState } from "react";
 import { Text, View, StyleSheet } from "react-native";
 import { sendResult } from "services/patientData";
 
-import { Overlay } from ".";
+import { Overlay } from "./Overlay";
 import ImagePickerComponent from "../ImagePickerComponent";
 
 const resultFormStyle = StyleSheet.create({
