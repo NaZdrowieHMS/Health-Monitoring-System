@@ -1,4 +1,4 @@
-import { Author } from "./DoctorDataProps";
+import { Author, DoctorComment } from "./DoctorDataProps";
 
 export type PatientData = {
   id: number;
@@ -20,7 +20,7 @@ export type PatientReferral = {
   referralNumber: string;
   completed: boolean;
   doctor: Author;
-  comment: Comment;
+  comment: DoctorComment;
   createdDate: string;
 };
 
