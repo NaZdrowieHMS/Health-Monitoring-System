@@ -15,7 +15,11 @@ type ModalProps = {
   children: React.ReactNode;
 };
 
-const Overlay = ({ isVisible = false, children, ...props }: ModalProps) => {
+export const Overlay = ({
+  isVisible = false,
+  children,
+  ...props
+}: ModalProps) => {
   return (
     <RNModal
       isVisible={isVisible}
@@ -94,5 +98,3 @@ Overlay.Header = OverlayHeader;
 Overlay.Container = OverlayContainer;
 Overlay.Body = OverlayBody;
 Overlay.Footer = OverlayFooter;
-
-export default Overlay;

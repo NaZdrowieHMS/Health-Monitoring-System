@@ -1,12 +1,16 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "App";
 import { LinkButton, PrimaryButton } from "components/atoms";
-import { CommentsCard, ListCard } from "components/molecules";
 import {
+  CommentsCard,
+  ListCard,
+  HealthFormFillOverlay,
   CommentsOverlay,
   ReferralOverviewOverlay,
 } from "components/molecules/overlays";
 import HealthFormFillOverlay from "components/molecules/overlays/HealthFormFillOverlay";
+import  { ResultsFormOverlay,
+} from "components/molecules";
 import primaryColors from "properties/colors";
 import { mainStyle } from "properties/styles";
 import {
@@ -15,6 +19,7 @@ import {
   CommentData,
   ListCardElement,
   DoctorComment,
+  healthFormItems,
 } from "properties/types";
 import { healthFormItems } from "properties/types/HealthFormProps";
 import React, { useContext, useEffect, useState } from "react";
@@ -42,6 +47,11 @@ const MainScreenPatient = ({
     React.useState<PatientReferral>(null);
   const { currentUser } = useContext(UserContext);
   const [healthForm, setHealthForm] = React.useState<boolean>(false);
+  const [formResultsPreview, setFormResultsPreview] = React.useState<{
+    isVisible: boolean;
+    referralId?: number;
+    testType?: string;
+  }>({ isVisible: false, referralId: null, testType: null });
 
   useEffect(() => {
     setHealthComments(currentUser.id);
@@ -77,14 +87,32 @@ const MainScreenPatient = ({
 
   const formatReferralsData = (referral: PatientReferral) => ({
     text: referral.testType,
-    buttons: [
-      <LinkButton
-        title="Podgląd"
-        color={primaryColors.lightBlue}
-        handleOnClick={() => setReferralOverviewData(referral)}
-      />,
-      <LinkButton title="Załącz wynik" color={primaryColors.lightBlue} />,
-    ],
+    buttons: !referral.completed
+      ? [
+          <LinkButton
+            title="Podgląd"
+            color={primaryColors.lightBlue}
+            handleOnClick={() => setReferralOverviewData(referral)}
+          />,
+          <LinkButton
+            title="Załącz wynik"
+            color={primaryColors.lightBlue}
+            handleOnClick={() =>
+              setFormResultsPreview({
+                isVisible: true,
+                referralId: referral.id,
+                testType: referral.testType,
+              })
+            }
+          />,
+        ]
+      : [
+          <LinkButton
+            title="Podgląd"
+            color={primaryColors.lightBlue}
+            handleOnClick={() => setReferralOverviewData(referral)}
+          />,
+        ],
   });
 
   const setResults = async (patientId: number) => {
@@ -111,7 +139,16 @@ const MainScreenPatient = ({
             setHealthForm(true);
           }}
         />
-        <PrimaryButton title="Załącz wynik badania" />
+        <PrimaryButton
+          title="Załącz wynik badania"
+          handleOnClick={() =>
+            setFormResultsPreview({
+              isVisible: true,
+              referralId: null,
+              testType: null,
+            })
+          }
+        />
         <PrimaryButton title="Dodaj lekarza" />
         <PrimaryButton title="Czaty z lekarzami" />
       </View>
@@ -141,6 +178,19 @@ const MainScreenPatient = ({
         handleClose={() => {
           setHealthForm(false);
         }}
+      />
+      <ResultsFormOverlay
+        isVisible={formResultsPreview.isVisible}
+        handleClose={() =>
+          setFormResultsPreview({
+            isVisible: false,
+            referralId: null,
+            testType: null,
+          })
+        }
+        patientId={currentUser.id}
+        referralId={formResultsPreview.referralId}
+        referralTestType={formResultsPreview.testType}
       />
     </ScrollView>
   );

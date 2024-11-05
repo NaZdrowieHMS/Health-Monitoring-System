@@ -56,9 +56,7 @@ export const sendResult: (
   resultUpload: ResultUpload,
 ) => Promise<string> = async (resultUpload: ResultUpload) => {
   try {
-    const response = await axiosInstance.post(`results`, {
-      result: resultUpload,
-    });
+    const response = await axiosInstance.post(`results`, resultUpload);
     return response.data;
   } catch (error) {
     console.error("[sendResult] Result not added", error);

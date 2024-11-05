@@ -10,7 +10,7 @@ import { fontSize, paddingSize } from "properties/vars";
 import React from "react";
 import { ScrollView, Text, View, StyleSheet } from "react-native";
 
-import Overlay from "./Overlay";
+import { Overlay } from "./Overlay";
 
 const healthFormStyle = StyleSheet.create({
   text: {
@@ -19,7 +19,7 @@ const healthFormStyle = StyleSheet.create({
   },
 });
 
-const HealthFormFillOverlay: React.FC<{
+export const HealthFormFillOverlay: React.FC<{
   healthFormData: HealthFormProps;
   isVisible: boolean;
   handleClose: () => void;
@@ -63,5 +63,3 @@ const HealthFormFillOverlay: React.FC<{
     </Overlay>
   );
 };
-
-export default HealthFormFillOverlay;

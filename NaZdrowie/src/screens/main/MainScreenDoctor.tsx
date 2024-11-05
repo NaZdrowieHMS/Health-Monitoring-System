@@ -31,6 +31,12 @@ const MainScreenDoctor = ({
     navigation.navigate("AllPatients");
   };
 
+  const navigateToPatientScreen = (patientId: number) => {
+    navigation.navigate("PatientDetails", {
+      patientId,
+    });
+  };
+
   const setLatestPatients = async (doctorId: number) => {
     try {
       const data = await getLatestPatients(doctorId);
@@ -48,6 +54,9 @@ const MainScreenDoctor = ({
         key={patient.id}
         title="Przejdź"
         color={primaryColors.lightBlue}
+        handleOnClick={() => {
+          navigateToPatientScreen(patient.id);
+        }}
       />,
     ],
   });
