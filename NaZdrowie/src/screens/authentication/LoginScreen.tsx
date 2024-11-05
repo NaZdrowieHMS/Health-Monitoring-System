@@ -9,7 +9,7 @@ import primaryColors from "properties/colors";
 import { loginScreenStyle } from "properties/styles";
 import React, { useContext } from "react";
 import { Keyboard, Text, View } from "react-native";
-import { UserContext } from "services/UserProvider";
+import { UserContext } from "services/context";
 
 const LoginScreen = ({
   navigation,

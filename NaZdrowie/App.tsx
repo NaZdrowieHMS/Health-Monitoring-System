@@ -14,7 +14,7 @@ import {
   AiDiagnosis,
 } from "screens/doctorScreens";
 import { MainScreen } from "screens/main";
-import { UserProvider } from "services/UserProvider";
+import { UserProvider } from "services/context";
 
 const queryClient = new QueryClient({
   defaultOptions: {
