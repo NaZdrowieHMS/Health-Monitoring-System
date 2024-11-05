@@ -3,6 +3,7 @@ import { RootStackParamList } from "App";
 import { LinkButton, PrimaryButton } from "components/atoms";
 import {
   CommentsCardForDoctor,
+  HealthFormResultOverlay,
   ListCard,
   Navbar,
   ReferralOverviewOverlay,
@@ -16,6 +17,7 @@ import {
   CommentData,
   ListCardElement,
   DoctorComment,
+  HealthFormDisplayData,
 } from "properties/types";
 import { paddingSize } from "properties/vars";
 import React, { useContext, useEffect, useState } from "react";
@@ -23,6 +25,7 @@ import { View, StyleSheet, ScrollView } from "react-native";
 import { UserContext } from "services/UserProvider";
 import {
   getHealthComments,
+  getLatestHealthForm,
   getPatient,
   getReferrals,
   getResults,
@@ -64,6 +67,13 @@ export const PatientDetailsScreen = ({
     React.useState<boolean>(false);
   const [referralOverviewData, setReferralOverviewData] =
     React.useState<PatientReferral>(null);
+  const [healthFormResultData, setHealthFormResultData] = React.useState<{
+    isVisible: boolean;
+    data: HealthFormDisplayData | null;
+  }>({
+    isVisible: false,
+    data: null,
+  });
 
   useEffect(() => {
     setReferrals(patientId);
@@ -110,7 +120,22 @@ export const PatientDetailsScreen = ({
   const setResults = async (patientId: number) => {
     try {
       const data = await getResults(patientId);
+      const formData = await getLatestHealthForm(patientId);
       const formattedResults = data.map(formatResultsData);
+      if (formData != null) {
+        formattedResults.push({
+          text: `Formularz zdrowia ${formatDate(formData.createDate)}`,
+          buttons: [
+            <LinkButton
+              title="Podgląd"
+              color={primaryColors.lightBlue}
+              handleOnClick={() =>
+                setHealthFormResultData({ isVisible: true, data: formData })
+              }
+            />,
+          ],
+        });
+      }
       setResultssData(formattedResults);
     } catch (error) {
       console.error("Error fetching results:", error);
@@ -200,6 +225,15 @@ export const PatientDetailsScreen = ({
           handleClose={() => setReferralOverviewData(null)}
           referral={referralOverviewData}
           isDoctor
+        />
+      )}
+      {healthFormResultData.data && (
+        <HealthFormResultOverlay
+          healthFormData={healthFormResultData.data}
+          isVisible={healthFormResultData.isVisible}
+          handleClose={() =>
+            setHealthFormResultData({ isVisible: false, data: null })
+          }
         />
       )}
     </View>

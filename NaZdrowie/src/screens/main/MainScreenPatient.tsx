@@ -8,6 +8,7 @@ import {
   CommentsOverlay,
   ReferralOverviewOverlay,
   ResultsFormOverlay,
+  HealthFormResultOverlay,
 } from "components/molecules";
 import primaryColors from "properties/colors";
 import { mainStyle } from "properties/styles";
@@ -18,12 +19,14 @@ import {
   ListCardElement,
   DoctorComment,
   healthFormItems,
+  HealthFormDisplayData,
 } from "properties/types";
 import React, { useContext, useEffect, useState } from "react";
 import { View, ScrollView } from "react-native";
 import { UserContext } from "services/UserProvider";
 import {
   getHealthComments,
+  getLatestHealthForm,
   getReferrals,
   getResults,
 } from "services/patientData";
@@ -49,6 +52,13 @@ const MainScreenPatient = ({
     referralId?: number;
     testType?: string;
   }>({ isVisible: false, referralId: null, testType: null });
+  const [healthFormResultData, setHealthFormResultData] = React.useState<{
+    isVisible: boolean;
+    data: HealthFormDisplayData | null;
+  }>({
+    isVisible: false,
+    data: null,
+  });
 
   useEffect(() => {
     setHealthComments(currentUser.id);
@@ -115,7 +125,22 @@ const MainScreenPatient = ({
   const setResults = async (patientId: number) => {
     try {
       const data = await getResults(patientId);
+      const formData = await getLatestHealthForm(patientId);
       const formattedResults = data.map(formatResultsData);
+      if (formData != null) {
+        formattedResults.push({
+          text: `Formularz zdrowia ${formatDate(formData.createDate)}`,
+          buttons: [
+            <LinkButton
+              title="Podgląd"
+              color={primaryColors.lightBlue}
+              handleOnClick={() =>
+                setHealthFormResultData({ isVisible: true, data: formData })
+              }
+            />,
+          ],
+        });
+      }
       setResultssData(formattedResults);
     } catch (error) {
       console.error("Error fetching latest patients:", error);
@@ -189,6 +214,15 @@ const MainScreenPatient = ({
         referralId={formResultsPreview.referralId}
         referralTestType={formResultsPreview.testType}
       />
+      {healthFormResultData.data && (
+        <HealthFormResultOverlay
+          healthFormData={healthFormResultData.data}
+          isVisible={healthFormResultData.isVisible}
+          handleClose={() =>
+            setHealthFormResultData({ isVisible: false, data: null })
+          }
+        />
+      )}
     </ScrollView>
   );
 };

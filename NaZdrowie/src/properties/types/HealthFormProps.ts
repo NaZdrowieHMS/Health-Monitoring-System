@@ -1,3 +1,5 @@
+import { ObjectCardElement } from "./ObjectCardProps";
+
 export enum HealthFormItemType {
   Input,
   Choice,
@@ -34,3 +36,10 @@ export const healthFormItems: HealthFormItem[] = [
     type: HealthFormItemType.Choice,
   },
 ];
+
+export type HealthFormDisplayData = {
+  id: number;
+  patientId: number;
+  createDate: string;
+  content: ObjectCardElement[];
+};

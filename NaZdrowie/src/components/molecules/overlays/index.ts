@@ -4,3 +4,4 @@ export * from "./HealthFormFillOverlay";
 export * from "./ReferralOverviewOverlay";
 export * from "./ResultsFormOverlay";
 export * from "./ResultsPreviewOverlay";
+export * from "./HealthFormResultOverlay";
