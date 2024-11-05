@@ -1,4 +1,4 @@
-import { DoctorComment } from "properties/types";
+import { DoctorComment, HealthFormDisplayData } from "properties/types";
 import {
   PatientData,
   PatientReferral,
@@ -60,5 +60,19 @@ export const sendResult: (
     return response.data;
   } catch (error) {
     console.error("[sendResult] Result not added", error);
+  }
+};
+
+export const getLatestHealthForm: (
+  patientId: number,
+) => Promise<HealthFormDisplayData | null> = async (patientId: number) => {
+  try {
+    const response = await axiosInstance.get(
+      `patients/${patientId}/forms/latest`,
+    );
+    return response.data;
+  } catch (error) {
+    console.error("[getLatestHealthForm] Error fetching data:", error);
+    return null;
   }
 };
