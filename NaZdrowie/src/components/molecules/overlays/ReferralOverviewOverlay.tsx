@@ -10,11 +10,10 @@ import { Overlay } from "./Overlay";
 import ObjectCard from "../cards/ObjectCard";
 
 export const ReferralOverviewOverlay: React.FC<{
-  isVisible: boolean;
   handleClose: () => void;
   referral: PatientReferral;
   isDoctor?: boolean;
-}> = ({ isVisible, handleClose, referral, isDoctor }) => {
+}> = ({ handleClose, referral, isDoctor }) => {
   const referralInfo: ObjectCardElement[] = [
     {
       key: "Data wystawienia",
@@ -35,7 +34,7 @@ export const ReferralOverviewOverlay: React.FC<{
   };
 
   return (
-    <Overlay isVisible={isVisible}>
+    <Overlay>
       <Overlay.Container>
         <Overlay.Header
           title={"Skierowanie nr " + referral.referralNumber}

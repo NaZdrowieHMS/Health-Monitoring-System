@@ -3,7 +3,7 @@ import { RootStackParamList } from "App";
 import { Navbar } from "components/molecules";
 import React, { useContext } from "react";
 import { View } from "react-native";
-import { UserContext } from "services/UserProvider";
+import { UserContext } from "services/context";
 
 import MainScreenDoctor from "./MainScreenDoctor";
 import MainScreenPatient from "./MainScreenPatient";

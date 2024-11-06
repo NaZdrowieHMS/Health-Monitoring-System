@@ -7,7 +7,7 @@ import { mainStyle } from "properties/styles/mainStyle";
 import { PatientData, PatientResult, ListCardElement } from "properties/types";
 import React, { useContext, useEffect, useState } from "react";
 import { View, ScrollView } from "react-native";
-import { UserContext } from "services/UserProvider";
+import { UserContext } from "services/context";
 import { getLatestPatients, getLatestResults } from "services/doctorData";
 
 const MainScreenDoctor = ({

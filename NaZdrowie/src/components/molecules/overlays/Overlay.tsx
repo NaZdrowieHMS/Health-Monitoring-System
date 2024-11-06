@@ -1,6 +1,6 @@
 import primaryColors from "properties/colors";
 import { borderRadiusSize, fontSize, paddingSize } from "properties/vars";
-import React from "react";
+import { ReactNode } from "react";
 import {
   StyleSheet,
   View,
@@ -10,19 +10,14 @@ import {
 } from "react-native";
 import RNModal from "react-native-modal";
 
-type ModalProps = {
-  isVisible: boolean;
-  children: React.ReactNode;
+type OverlayProps = {
+  children: ReactNode;
 };
 
-export const Overlay = ({
-  isVisible = false,
-  children,
-  ...props
-}: ModalProps) => {
+export const Overlay = ({ children, ...props }: OverlayProps) => {
   return (
     <RNModal
-      isVisible={isVisible}
+      isVisible
       animationInTiming={500}
       animationOutTiming={500}
       backdropTransitionInTiming={800}
@@ -34,7 +29,7 @@ export const Overlay = ({
   );
 };
 
-const OverlayContainer = ({ children }: { children: React.ReactNode }) => (
+const OverlayContainer = ({ children }: { children: ReactNode }) => (
   <View style={styles.container}>{children}</View>
 );
 
@@ -53,11 +48,11 @@ const OverlayHeader = ({
   </View>
 );
 
-const OverlayBody = ({ children }: { children?: React.ReactNode }) => (
+const OverlayBody = ({ children }: { children?: ReactNode }) => (
   <View style={styles.body}>{children}</View>
 );
 
-const OverlayFooter = ({ children }: { children?: React.ReactNode }) => (
+const OverlayFooter = ({ children }: { children?: ReactNode }) => (
   <View>{children}</View>
 );
 

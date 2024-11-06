@@ -14,7 +14,7 @@ import {
   AiDiagnosis,
 } from "screens/doctorScreens";
 import { MainScreen } from "screens/main";
-import { UserProvider } from "services/UserProvider";
+import { UserProvider, OverlayProvider } from "services/context";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -40,49 +40,51 @@ export type RootStackParamList = {
 const App = (): React.JSX.Element => {
   return (
     <QueryClientProvider client={queryClient}>
-      <UserProvider>
-        <View style={{ flex: 1 }}>
-          <NavigationContainer>
-            <Stack.Navigator>
-              <Stack.Screen
-                name="Login"
-                component={LoginScreen}
-                options={{ title: "Logowanie" }}
-              />
-              <Stack.Screen
-                name="Register"
-                component={RegisterScreen}
-                options={{ title: "Rejestracja" }}
-              />
-              <Stack.Screen
-                name="Choice"
-                component={ChoiceScreen}
-                options={{ title: "Logowanie" }}
-              />
-              <Stack.Screen
-                name="MainScreen"
-                component={MainScreen}
-                options={{ title: "Strona główna" }}
-              />
-              <Stack.Screen
-                name="AllPatients"
-                component={AllPatientsScreen}
-                options={{ title: "Moi pacjenci" }}
-              />
-              <Stack.Screen
-                name="PatientDetails"
-                component={PatientDetailsScreen}
-                options={{ title: "Dane pacjenta" }}
-              />
-              <Stack.Screen
-                name="AiDiagnosis"
-                component={AiDiagnosis}
-                options={{ title: "Diagnozuj z AI" }}
-              />
-            </Stack.Navigator>
-          </NavigationContainer>
-        </View>
-      </UserProvider>
+      <OverlayProvider>
+        <UserProvider>
+          <View style={{ flex: 1 }}>
+            <NavigationContainer>
+              <Stack.Navigator>
+                <Stack.Screen
+                  name="Login"
+                  component={LoginScreen}
+                  options={{ title: "Logowanie" }}
+                />
+                <Stack.Screen
+                  name="Register"
+                  component={RegisterScreen}
+                  options={{ title: "Rejestracja" }}
+                />
+                <Stack.Screen
+                  name="Choice"
+                  component={ChoiceScreen}
+                  options={{ title: "Logowanie" }}
+                />
+                <Stack.Screen
+                  name="MainScreen"
+                  component={MainScreen}
+                  options={{ title: "Strona główna" }}
+                />
+                <Stack.Screen
+                  name="AllPatients"
+                  component={AllPatientsScreen}
+                  options={{ title: "Moi pacjenci" }}
+                />
+                <Stack.Screen
+                  name="PatientDetails"
+                  component={PatientDetailsScreen}
+                  options={{ title: "Dane pacjenta" }}
+                />
+                <Stack.Screen
+                  name="AiDiagnosis"
+                  component={AiDiagnosis}
+                  options={{ title: "Diagnozuj z AI" }}
+                />
+              </Stack.Navigator>
+            </NavigationContainer>
+          </View>
+        </UserProvider>
+      </OverlayProvider>
     </QueryClientProvider>
   );
 };

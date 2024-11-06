@@ -22,7 +22,7 @@ import {
 import { paddingSize } from "properties/vars";
 import React, { useContext, useEffect, useState } from "react";
 import { View, StyleSheet, ScrollView } from "react-native";
-import { UserContext } from "services/UserProvider";
+import { UserContext, useOverlay } from "services/context";
 import {
   getHealthComments,
   getLatestHealthForm,
@@ -51,6 +51,7 @@ export const PatientDetailsScreen = ({
 }: NativeStackScreenProps<RootStackParamList, "PatientDetails">) => {
   const { patientId } = route.params;
   const { currentUser } = useContext(UserContext);
+  const { showOverlay, hideOverlay } = useOverlay();
 
   const [referralsData, setReferralsData] = useState<ListCardElement[]>([]);
   const [resultsData, setResultssData] = useState<ListCardElement[]>([]);
@@ -62,18 +63,6 @@ export const PatientDetailsScreen = ({
   const [otherDotorsCommentsData, setOtherDotorsCommentsData] = useState<
     CommentData[]
   >([]);
-
-  const [formResultsPreview, setFormResultsPreview] =
-    React.useState<boolean>(false);
-  const [referralOverviewData, setReferralOverviewData] =
-    React.useState<PatientReferral>(null);
-  const [healthFormResultData, setHealthFormResultData] = React.useState<{
-    isVisible: boolean;
-    data: HealthFormDisplayData | null;
-  }>({
-    isVisible: false,
-    data: null,
-  });
 
   useEffect(() => {
     setReferrals(patientId);
@@ -112,10 +101,19 @@ export const PatientDetailsScreen = ({
       <LinkButton
         title="Podgląd"
         color={primaryColors.lightBlue}
-        handleOnClick={() => setReferralOverviewData(referral)}
+        handleOnClick={() => openReferralOverviewOverlay(referral)}
       />,
     ],
   });
+
+  const openReferralOverviewOverlay = (referral: PatientReferral) => {
+    showOverlay(() => (
+      <ReferralOverviewOverlay
+        handleClose={() => hideOverlay()}
+        referral={referral}
+      />
+    ));
+  };
 
   const setResults = async (patientId: number) => {
     try {
@@ -129,9 +127,7 @@ export const PatientDetailsScreen = ({
             <LinkButton
               title="Podgląd"
               color={primaryColors.lightBlue}
-              handleOnClick={() =>
-                setHealthFormResultData({ isVisible: true, data: formData })
-              }
+              handleOnClick={() => openHealthFormResultOverlay(formData)}
             />,
           ],
         });
@@ -140,6 +136,15 @@ export const PatientDetailsScreen = ({
     } catch (error) {
       console.error("Error fetching results:", error);
     }
+  };
+
+  const openHealthFormResultOverlay = (data: HealthFormDisplayData) => {
+    showOverlay(() => (
+      <HealthFormResultOverlay
+        healthFormData={data}
+        handleClose={() => hideOverlay()}
+      />
+    ));
   };
 
   const formatResultsData = (result: PatientResult) => ({
@@ -172,6 +177,15 @@ export const PatientDetailsScreen = ({
     }
   };
 
+  const openResultsFormOverlay = () => {
+    showOverlay(() => (
+      <ResultsFormOverlay
+        handleClose={() => hideOverlay()}
+        patientId={currentUser.id}
+      />
+    ));
+  };
+
   const formatCommentsData = (comment: DoctorComment) => ({
     date: formatDate(comment.modifiedDate),
     text: comment.content,
@@ -194,7 +208,7 @@ export const PatientDetailsScreen = ({
           <PrimaryButton title="Czat z pacjentem" />
           <PrimaryButton
             title="Załącz wynik badania"
-            handleOnClick={() => setFormResultsPreview(true)}
+            handleOnClick={() => openResultsFormOverlay()}
           />
           <PrimaryButton title="Wystaw skierowanie" />
         </View>
@@ -214,28 +228,6 @@ export const PatientDetailsScreen = ({
           handleSeeMore={navigateToAllResults}
         />
       </ScrollView>
-      <ResultsFormOverlay
-        isVisible={formResultsPreview}
-        handleClose={() => setFormResultsPreview(false)}
-        patientId={patientId}
-      />
-      {referralOverviewData && (
-        <ReferralOverviewOverlay
-          isVisible={referralOverviewData !== null}
-          handleClose={() => setReferralOverviewData(null)}
-          referral={referralOverviewData}
-          isDoctor
-        />
-      )}
-      {healthFormResultData.data && (
-        <HealthFormResultOverlay
-          healthFormData={healthFormResultData.data}
-          isVisible={healthFormResultData.isVisible}
-          handleClose={() =>
-            setHealthFormResultData({ isVisible: false, data: null })
-          }
-        />
-      )}
     </View>
   );
 };

@@ -16,12 +16,11 @@ const cardStyle = StyleSheet.create({
 });
 
 export const HealthFormResultOverlay: React.FC<{
-  isVisible: boolean;
   handleClose: () => void;
   healthFormData: HealthFormDisplayData;
-}> = ({ isVisible, handleClose, healthFormData }) => {
+}> = ({ handleClose, healthFormData }) => {
   return (
-    <Overlay isVisible={isVisible}>
+    <Overlay>
       <Overlay.Container>
         <Overlay.Header
           title={"Formularz zdrowia " + formatDate(healthFormData.createDate)}

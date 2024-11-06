@@ -6,7 +6,7 @@ import primaryColors from "properties/colors";
 import { paddingSize } from "properties/vars";
 import React, { useContext, useEffect, useState } from "react";
 import { View, StyleSheet, ScrollView } from "react-native";
-import { UserContext } from "services/UserProvider";
+import { UserContext } from "services/context";
 import { getAllPatients } from "services/doctorData";
 
 const allPatientsStyle = StyleSheet.create({

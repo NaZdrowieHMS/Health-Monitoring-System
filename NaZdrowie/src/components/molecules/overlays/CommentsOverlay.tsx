@@ -7,13 +7,12 @@ import { ScrollView } from "react-native";
 import { Overlay } from "./Overlay";
 
 export const CommentsOverlay: React.FC<{
-  isVisible: boolean;
   handleClose: () => void;
   comments: CommentData[];
   title: string;
-}> = ({ isVisible, handleClose, comments, title }) => {
+}> = ({ handleClose, comments, title }) => {
   return (
-    <Overlay isVisible={isVisible}>
+    <Overlay>
       <Overlay.Container>
         <Overlay.Header title={title} handleClose={handleClose} />
         <Overlay.Body>
