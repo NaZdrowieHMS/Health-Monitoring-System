@@ -23,7 +23,7 @@ import {
 } from "properties/types";
 import React, { useContext, useEffect, useState } from "react";
 import { View, ScrollView } from "react-native";
-import { UserContext } from "services/context";
+import { useOverlay, UserContext } from "services/context";
 import {
   getHealthComments,
   getLatestHealthForm,
@@ -35,30 +35,14 @@ import { formatDate } from "services/utils";
 const MainScreenPatient = ({
   navigation,
 }: NativeStackScreenProps<RootStackParamList, "MainScreen">) => {
+  const { currentUser } = useContext(UserContext);
+  const { showOverlay, hideOverlay } = useOverlay();
   const [healthCommentsData, setHealthCommentsData] = useState<CommentData[]>(
     [],
   );
 
   const [referralsData, setReferralsData] = useState<ListCardElement[]>([]);
   const [resultsData, setResultssData] = useState<ListCardElement[]>([]);
-  const [commentsOverlayPreview, setCommentsOverlayPreview] =
-    React.useState<boolean>(false);
-  const [referralOverviewData, setReferralOverviewData] =
-    React.useState<PatientReferral>(null);
-  const { currentUser } = useContext(UserContext);
-  const [healthForm, setHealthForm] = React.useState<boolean>(false);
-  const [formResultsPreview, setFormResultsPreview] = React.useState<{
-    isVisible: boolean;
-    referralId?: number;
-    testType?: string;
-  }>({ isVisible: false, referralId: null, testType: null });
-  const [healthFormResultData, setHealthFormResultData] = React.useState<{
-    isVisible: boolean;
-    data: HealthFormDisplayData | null;
-  }>({
-    isVisible: false,
-    data: null,
-  });
 
   useEffect(() => {
     setHealthComments(currentUser.id);
@@ -82,6 +66,17 @@ const MainScreenPatient = ({
     author: `${comment.doctor.name} ${comment.doctor.surname}`,
   });
 
+  const openCommentsOverlay = (healthCommentsData: CommentData[]) => {
+    showOverlay(() => (
+      <CommentsOverlay
+        isVisible={healthCommentsData.length > 0} // to be deleted
+        handleClose={() => hideOverlay()}
+        comments={healthCommentsData}
+        title="Moje zdrowie"
+      />
+    ));
+  };
+
   const setReferrals = async (patientId: number) => {
     try {
       const data = await getReferrals(patientId);
@@ -99,17 +94,13 @@ const MainScreenPatient = ({
           <LinkButton
             title="Podgląd"
             color={primaryColors.lightBlue}
-            handleOnClick={() => setReferralOverviewData(referral)}
+            handleOnClick={() => openReferralOverview(referral)}
           />,
           <LinkButton
             title="Załącz wynik"
             color={primaryColors.lightBlue}
             handleOnClick={() =>
-              setFormResultsPreview({
-                isVisible: true,
-                referralId: referral.id,
-                testType: referral.testType,
-              })
+              openResultsFormOverlay(referral.id, referral.testType)
             }
           />,
         ]
@@ -117,10 +108,20 @@ const MainScreenPatient = ({
           <LinkButton
             title="Podgląd"
             color={primaryColors.lightBlue}
-            handleOnClick={() => setReferralOverviewData(referral)}
+            handleOnClick={() => openReferralOverview(referral)}
           />,
         ],
   });
+
+  const openReferralOverview = (referral: PatientReferral) => {
+    showOverlay(() => (
+      <ReferralOverviewOverlay
+        isVisible={referral !== null} // to be changed
+        handleClose={() => hideOverlay()}
+        referral={referral}
+      />
+    ));
+  };
 
   const setResults = async (patientId: number) => {
     try {
@@ -134,9 +135,7 @@ const MainScreenPatient = ({
             <LinkButton
               title="Podgląd"
               color={primaryColors.lightBlue}
-              handleOnClick={() =>
-                setHealthFormResultData({ isVisible: true, data: formData })
-              }
+              handleOnClick={() => openHealthFormResultOverlay(formData)}
             />,
           ],
         });
@@ -152,24 +151,52 @@ const MainScreenPatient = ({
     buttons: [<LinkButton title="Podgląd" color={primaryColors.lightBlue} />],
   });
 
+  const openResultsFormOverlay = (referralId: number, testType: string) => {
+    showOverlay(() => (
+      <ResultsFormOverlay
+        isVisible={referralId !== 555} // to be deleted
+        handleClose={() => hideOverlay()}
+        patientId={currentUser.id}
+        referralId={referralId}
+        referralTestType={testType}
+      />
+    ));
+  };
+
+  const openHealthFormFillOverlay = () => {
+    showOverlay(() => (
+      <HealthFormFillOverlay
+        healthFormData={{ patientId: currentUser.id, content: healthFormItems }}
+        isVisible={currentUser.id !== 300} // to be deleted
+        handleClose={() => {
+          hideOverlay();
+        }}
+      />
+    ));
+  };
+
+  const openHealthFormResultOverlay = (data: HealthFormDisplayData) => {
+    showOverlay(() => (
+      <HealthFormResultOverlay
+        healthFormData={data}
+        isVisible={data !== undefined}
+        handleClose={() => hideOverlay()}
+      />
+    ));
+  };
+
   return (
     <ScrollView contentContainerStyle={mainStyle.container}>
       <View style={mainStyle.buttonContainer}>
         <PrimaryButton
           title="Wypełnij formularz zdrowia"
           handleOnClick={() => {
-            setHealthForm(true);
+            openHealthFormFillOverlay();
           }}
         />
         <PrimaryButton
           title="Załącz wynik badania"
-          handleOnClick={() =>
-            setFormResultsPreview({
-              isVisible: true,
-              referralId: null,
-              testType: null,
-            })
-          }
+          handleOnClick={() => openResultsFormOverlay(null, null)}
         />
         <PrimaryButton title="Dodaj lekarza" />
         <PrimaryButton title="Czaty z lekarzami" />
@@ -177,52 +204,10 @@ const MainScreenPatient = ({
       <CommentsCard
         title="Moje zdrowie"
         data={healthCommentsData}
-        handleSeeMore={() => setCommentsOverlayPreview(true)}
+        handleSeeMore={() => openCommentsOverlay(healthCommentsData)}
       />
       <ListCard title="Moje skierowania" data={referralsData} />
       <ListCard title="Moje wyniki" data={resultsData} />
-      <CommentsOverlay
-        isVisible={commentsOverlayPreview}
-        handleClose={() => setCommentsOverlayPreview(false)}
-        comments={healthCommentsData}
-        title="Moje zdrowie"
-      />
-      {referralOverviewData && (
-        <ReferralOverviewOverlay
-          isVisible={referralOverviewData !== null}
-          handleClose={() => setReferralOverviewData(null)}
-          referral={referralOverviewData}
-        />
-      )}
-      <HealthFormFillOverlay
-        healthFormData={{ patientId: currentUser.id, content: healthFormItems }}
-        isVisible={healthForm}
-        handleClose={() => {
-          setHealthForm(false);
-        }}
-      />
-      <ResultsFormOverlay
-        isVisible={formResultsPreview.isVisible}
-        handleClose={() =>
-          setFormResultsPreview({
-            isVisible: false,
-            referralId: null,
-            testType: null,
-          })
-        }
-        patientId={currentUser.id}
-        referralId={formResultsPreview.referralId}
-        referralTestType={formResultsPreview.testType}
-      />
-      {healthFormResultData.data && (
-        <HealthFormResultOverlay
-          healthFormData={healthFormResultData.data}
-          isVisible={healthFormResultData.isVisible}
-          handleClose={() =>
-            setHealthFormResultData({ isVisible: false, data: null })
-          }
-        />
-      )}
     </ScrollView>
   );
 };
