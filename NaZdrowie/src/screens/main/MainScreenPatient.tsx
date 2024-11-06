@@ -94,7 +94,7 @@ const MainScreenPatient = ({
           <LinkButton
             title="Podgląd"
             color={primaryColors.lightBlue}
-            handleOnClick={() => openReferralOverview(referral)}
+            handleOnClick={() => openReferralOverviewOverlay(referral)}
           />,
           <LinkButton
             title="Załącz wynik"
@@ -108,12 +108,12 @@ const MainScreenPatient = ({
           <LinkButton
             title="Podgląd"
             color={primaryColors.lightBlue}
-            handleOnClick={() => openReferralOverview(referral)}
+            handleOnClick={() => openReferralOverviewOverlay(referral)}
           />,
         ],
   });
 
-  const openReferralOverview = (referral: PatientReferral) => {
+  const openReferralOverviewOverlay = (referral: PatientReferral) => {
     showOverlay(() => (
       <ReferralOverviewOverlay
         isVisible={referral !== null} // to be changed
@@ -151,7 +151,7 @@ const MainScreenPatient = ({
     buttons: [<LinkButton title="Podgląd" color={primaryColors.lightBlue} />],
   });
 
-  const openResultsFormOverlay = (referralId: number, testType: string) => {
+  const openResultsFormOverlay = (referralId?: number, testType?: string) => {
     showOverlay(() => (
       <ResultsFormOverlay
         isVisible={referralId !== 555} // to be deleted
@@ -196,7 +196,7 @@ const MainScreenPatient = ({
         />
         <PrimaryButton
           title="Załącz wynik badania"
-          handleOnClick={() => openResultsFormOverlay(null, null)}
+          handleOnClick={() => openResultsFormOverlay()}
         />
         <PrimaryButton title="Dodaj lekarza" />
         <PrimaryButton title="Czaty z lekarzami" />
