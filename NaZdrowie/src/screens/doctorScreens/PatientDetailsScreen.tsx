@@ -109,7 +109,6 @@ export const PatientDetailsScreen = ({
   const openReferralOverviewOverlay = (referral: PatientReferral) => {
     showOverlay(() => (
       <ReferralOverviewOverlay
-        isVisible={referral !== null} // to be changed
         handleClose={() => hideOverlay()}
         referral={referral}
       />
@@ -143,7 +142,6 @@ export const PatientDetailsScreen = ({
     showOverlay(() => (
       <HealthFormResultOverlay
         healthFormData={data}
-        isVisible={data !== undefined}
         handleClose={() => hideOverlay()}
       />
     ));
@@ -182,7 +180,6 @@ export const PatientDetailsScreen = ({
   const openResultsFormOverlay = () => {
     showOverlay(() => (
       <ResultsFormOverlay
-        isVisible={currentUser.id !== 555} // to be deleted
         handleClose={() => hideOverlay()}
         patientId={currentUser.id}
       />

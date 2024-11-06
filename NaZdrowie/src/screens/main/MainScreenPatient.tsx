@@ -69,7 +69,6 @@ const MainScreenPatient = ({
   const openCommentsOverlay = (healthCommentsData: CommentData[]) => {
     showOverlay(() => (
       <CommentsOverlay
-        isVisible={healthCommentsData.length > 0} // to be deleted
         handleClose={() => hideOverlay()}
         comments={healthCommentsData}
         title="Moje zdrowie"
@@ -116,7 +115,6 @@ const MainScreenPatient = ({
   const openReferralOverviewOverlay = (referral: PatientReferral) => {
     showOverlay(() => (
       <ReferralOverviewOverlay
-        isVisible={referral !== null} // to be changed
         handleClose={() => hideOverlay()}
         referral={referral}
       />
@@ -154,7 +152,6 @@ const MainScreenPatient = ({
   const openResultsFormOverlay = (referralId?: number, testType?: string) => {
     showOverlay(() => (
       <ResultsFormOverlay
-        isVisible={referralId !== 555} // to be deleted
         handleClose={() => hideOverlay()}
         patientId={currentUser.id}
         referralId={referralId}
@@ -167,7 +164,6 @@ const MainScreenPatient = ({
     showOverlay(() => (
       <HealthFormFillOverlay
         healthFormData={{ patientId: currentUser.id, content: healthFormItems }}
-        isVisible={currentUser.id !== 300} // to be deleted
         handleClose={() => {
           hideOverlay();
         }}
@@ -179,7 +175,6 @@ const MainScreenPatient = ({
     showOverlay(() => (
       <HealthFormResultOverlay
         healthFormData={data}
-        isVisible={data !== undefined}
         handleClose={() => hideOverlay()}
       />
     ));

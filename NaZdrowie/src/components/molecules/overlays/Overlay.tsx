@@ -11,18 +11,13 @@ import {
 import RNModal from "react-native-modal";
 
 type OverlayProps = {
-  isVisible: boolean;
   children: ReactNode;
 };
 
-export const Overlay = ({
-  isVisible = false,
-  children,
-  ...props
-}: OverlayProps) => {
+export const Overlay = ({ children, ...props }: OverlayProps) => {
   return (
     <RNModal
-      isVisible={isVisible}
+      isVisible
       animationInTiming={500}
       animationOutTiming={500}
       backdropTransitionInTiming={800}

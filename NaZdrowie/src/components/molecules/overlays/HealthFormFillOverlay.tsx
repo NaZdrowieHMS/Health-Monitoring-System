@@ -21,11 +21,10 @@ const healthFormStyle = StyleSheet.create({
 
 export const HealthFormFillOverlay: React.FC<{
   healthFormData: HealthFormProps;
-  isVisible: boolean;
   handleClose: () => void;
-}> = ({ isVisible, handleClose, healthFormData }) => {
+}> = ({ handleClose, healthFormData }) => {
   return (
-    <Overlay isVisible={isVisible}>
+    <Overlay>
       <Overlay.Container>
         <Overlay.Header
           title="Wypełnij formularz zdrowia"

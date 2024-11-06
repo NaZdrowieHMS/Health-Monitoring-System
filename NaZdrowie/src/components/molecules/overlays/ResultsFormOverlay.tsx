@@ -24,9 +24,8 @@ export const ResultsFormOverlay: React.FC<{
   patientId: number;
   referralId?: number;
   referralTestType?: string;
-  isVisible: boolean;
   handleClose: () => void;
-}> = ({ patientId, referralId, referralTestType, isVisible, handleClose }) => {
+}> = ({ patientId, referralId, referralTestType, handleClose }) => {
   const resultItems: DropdownItem[] = [
     { label: "USG piersi", value: "USG piersi" },
     { label: "Mammografia", value: "Mammografia" },
@@ -57,7 +56,7 @@ export const ResultsFormOverlay: React.FC<{
   };
 
   return (
-    <Overlay isVisible={isVisible}>
+    <Overlay>
       <Overlay.Container>
         <Overlay.Header title="Załącz wyniki" handleClose={closeAndCleanData} />
         <Overlay.Body>
