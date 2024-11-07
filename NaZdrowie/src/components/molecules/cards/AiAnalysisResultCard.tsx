@@ -1,24 +1,9 @@
 import { LinkButton } from "components/atoms";
 import primaryColors from "properties/colors";
-import { cardStyle } from "properties/styles";
-import { fontSize, paddingSize } from "properties/vars";
+import { aiResultCardStyle, cardStyle, generalStyle } from "properties/styles";
+import { paddingSize } from "properties/vars";
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
-
-const aiResultCardStyle = StyleSheet.create({
-  secondaryTitle: {
-    fontSize: fontSize.secondaryTitleFontSize,
-  },
-  basicText: {
-    fontSize: fontSize.baseMobileFontSize,
-  },
-  element: {
-    display: "flex",
-    flexDirection: "row",
-    columnGap: paddingSize.small,
-    justifyContent: "space-between",
-  },
-});
+import { View, Text } from "react-native";
 
 const AiAnalysisResultCard: React.FC<object> = () => {
   const mockedAiResults = [
@@ -61,7 +46,7 @@ const AiAnalysisResultCard: React.FC<object> = () => {
           >
             {`${result.diagnosis} ${result.precision}%`}
           </Text>
-          <Text style={aiResultCardStyle.basicText}>
+          <Text style={generalStyle.basicText}>
             Na podstawie cokolwiek się dzieje i tak
           </Text>
         </View>
@@ -71,10 +56,8 @@ const AiAnalysisResultCard: React.FC<object> = () => {
         W celu polepszenia dokładności analizy
       </Text>
       {mockedAiRefferals.map((refferal, index) => (
-        <View style={aiResultCardStyle.element} key={index}>
-          <Text
-            style={aiResultCardStyle.basicText}
-          >{`• ${refferal.name}`}</Text>
+        <View style={cardStyle.cardElement} key={index}>
+          <Text style={generalStyle.basicText}>{`• ${refferal.name}`}</Text>
           <LinkButton title="Zleć" color={primaryColors.lightBlue} />
         </View>
       ))}

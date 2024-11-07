@@ -16,14 +16,13 @@ const borderRadiusSize = {
 };
 
 const fontSize = {
-  buttonMobileFontSize: 20,
-  secondaryTitleFontSize: 18,
-  baseMobileFontSize: 16,
-  baseFontSize: 14,
   smallFontSize: 12,
-  h1MobileFontSize: 50,
-  h2MobileFontSize: 24,
+  baseFontSize: 16,
+  secondaryTitleFontSize: 18,
+  buttonFontSize: 20,
+  h2FontSize: 24,
   xFontSize: 32,
+  h1FontSize: 50,
 };
 
 type FontWeight =

@@ -4,7 +4,7 @@ import { StyleSheet } from "react-native";
 
 import { generalStyle } from "./generalStyle";
 
-const cardStyle = StyleSheet.create({
+export const cardStyle = StyleSheet.create({
   container: {
     backgroundColor: primaryColors.white,
     flexGrow: 1,
@@ -16,11 +16,11 @@ const cardStyle = StyleSheet.create({
     ...generalStyle.shadow,
   },
   title: {
-    fontSize: fontSize.buttonMobileFontSize,
+    fontSize: fontSize.buttonFontSize,
     color: primaryColors.darkBlue,
   },
   key: {
-    fontSize: fontSize.baseMobileFontSize,
+    fontSize: fontSize.baseFontSize,
     color: primaryColors.darkBlue,
   },
   floatRight: {
@@ -32,5 +32,28 @@ const cardStyle = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
   },
+  cardElement: {
+    display: "flex",
+    flexDirection: "row",
+    columnGap: paddingSize.small,
+    justifyContent: "space-between",
+  },
+  elementButtons: {
+    display: "flex",
+    flexDirection: "row",
+    columnGap: paddingSize.xSmall,
+  },
 });
-export { cardStyle };
+
+export const aiResultCardStyle = StyleSheet.create({
+  secondaryTitle: {
+    fontSize: fontSize.secondaryTitleFontSize,
+  },
+});
+
+export const commentsCardForDoctorStyle = StyleSheet.create({
+  secondaryTitle: {
+    fontSize: fontSize.baseFontSize,
+    color: primaryColors.darkBlue,
+  },
+});

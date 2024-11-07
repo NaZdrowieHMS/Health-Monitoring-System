@@ -1,9 +1,4 @@
-export {
-  CommentsCard,
-  CommentsCardForDoctor,
-  ListCard,
-  AiAnalysisResultCard,
-} from "./cards";
-export { default as Navbar } from "./Navbar";
-export { default as ImagePickerComponent } from "./ImagePickerComponent";
+export * from "./cards";
+export * from "./Navbar";
+export * from "./PersonalizedImagePicker";
 export * from "./overlays";

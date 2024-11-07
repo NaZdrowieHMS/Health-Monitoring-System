@@ -1,24 +1,14 @@
 import { Dropdown, PrimaryButton } from "components/atoms";
 import { DropdownItem } from "components/atoms/Dropdown";
 import primaryColors from "properties/colors";
-import { borderRadiusSize, fontSize, paddingSize } from "properties/vars";
+import { resultFormOverlayStyle } from "properties/styles";
+import { fontSize } from "properties/vars";
 import React, { useState } from "react";
-import { Text, View, StyleSheet } from "react-native";
+import { Text, View } from "react-native";
 import { sendResult } from "services/patientData";
 
 import { Overlay } from "./Overlay";
-import ImagePickerComponent from "../ImagePickerComponent";
-
-const resultFormStyle = StyleSheet.create({
-  input: {
-    borderWidth: 1,
-    padding: paddingSize.medium,
-    borderRadius: borderRadiusSize.medium,
-    fontSize: fontSize.baseMobileFontSize,
-    color: primaryColors.darkGrey,
-    borderColor: primaryColors.lightGrey,
-  },
-});
+import { PersonalizedImagePicker } from "../PersonalizedImagePicker";
 
 export const ResultsFormOverlay: React.FC<{
   patientId: number;
@@ -68,17 +58,17 @@ export const ResultsFormOverlay: React.FC<{
             />
           )}
           {referralTestType && (
-            <Text style={resultFormStyle.input}>{referralTestType}</Text>
+            <Text style={resultFormOverlayStyle.input}>{referralTestType}</Text>
           )}
           <View>
-            <ImagePickerComponent
+            <PersonalizedImagePicker
               setBase64Data={setBase64Data}
               setContentType={setDataType}
             />
             <Text
               style={{
                 color: primaryColors.darkGrey,
-                fontSize: fontSize.baseMobileFontSize,
+                fontSize: fontSize.baseFontSize,
               }}
             >
               Dozwolone formaty: png, jpg, ...

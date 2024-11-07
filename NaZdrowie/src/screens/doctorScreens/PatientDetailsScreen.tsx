@@ -10,6 +10,7 @@ import {
   ResultsFormOverlay,
 } from "components/molecules";
 import primaryColors from "properties/colors";
+import { mainStyle } from "properties/styles";
 import {
   PatientData,
   PatientReferral,
@@ -19,9 +20,8 @@ import {
   DoctorComment,
   HealthFormDisplayData,
 } from "properties/types";
-import { paddingSize } from "properties/vars";
 import React, { useContext, useEffect, useState } from "react";
-import { View, StyleSheet, ScrollView } from "react-native";
+import { View, ScrollView } from "react-native";
 import { UserContext, useOverlay } from "services/context";
 import {
   getHealthComments,
@@ -31,19 +31,6 @@ import {
   getResults,
 } from "services/patientData";
 import { formatDate } from "services/utils";
-
-const patientStyle = StyleSheet.create({
-  container: {
-    backgroundColor: primaryColors.babyBlue,
-    paddingHorizontal: paddingSize.medium,
-    paddingVertical: paddingSize.mediumBig,
-    rowGap: paddingSize.mediumBig,
-  },
-  buttonContainer: {
-    paddingHorizontal: paddingSize.mediumBig,
-    rowGap: paddingSize.small,
-  },
-});
 
 export const PatientDetailsScreen = ({
   route,
@@ -199,8 +186,8 @@ export const PatientDetailsScreen = ({
           `${patientData?.name} ${patientData?.surname}` || ""
         }
       />
-      <ScrollView contentContainerStyle={patientStyle.container}>
-        <View style={patientStyle.buttonContainer}>
+      <ScrollView contentContainerStyle={mainStyle.container}>
+        <View style={mainStyle.buttonContainer}>
           <PrimaryButton
             handleOnClick={navigateToAiDiagnosis}
             title="Diagnozuj z AI"

@@ -1,4 +1,5 @@
 import primaryColors from "properties/colors";
+import { fontSize } from "properties/vars";
 import { StyleSheet } from "react-native";
 
 export const generalStyle = StyleSheet.create({
@@ -10,5 +11,9 @@ export const generalStyle = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 4,
     shadowColor: primaryColors.black,
+  },
+  basicText: {
+    color: primaryColors.darkGrey,
+    fontSize: fontSize.baseFontSize,
   },
 });

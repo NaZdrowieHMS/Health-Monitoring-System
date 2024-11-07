@@ -13,6 +13,17 @@ export const buttonStyle = StyleSheet.create({
   buttonText: {
     color: primaryColors.white,
     alignSelf: "center",
-    fontSize: fontSize.buttonMobileFontSize,
+    fontSize: fontSize.buttonFontSize,
+  },
+});
+
+export const linkButtonStyle = StyleSheet.create({
+  buttonContainer: {
+    display: "flex",
+    flexDirection: "row",
+    columnGap: paddingSize.xxSmall,
+  },
+  buttonText: {
+    fontSize: fontSize.baseFontSize,
   },
 });

@@ -1,26 +1,5 @@
-import primaryColors from "properties/colors";
-import { paddingSize, borderRadiusSize, fontSize } from "properties/vars";
-import { StyleSheet } from "react-native";
+import { dropdownStyle } from "properties/styles";
 import RNPickerSelect from "react-native-picker-select";
-
-const styles = StyleSheet.create({
-  inputIOS: {
-    borderWidth: 1,
-    padding: paddingSize.medium,
-    borderRadius: borderRadiusSize.medium,
-    fontSize: fontSize.baseMobileFontSize,
-    color: primaryColors.darkGrey,
-    borderColor: primaryColors.lightGrey,
-  },
-  inputAndroid: {
-    borderWidth: 1,
-    padding: paddingSize.medium,
-    borderRadius: borderRadiusSize.medium,
-    fontSize: fontSize.baseMobileFontSize,
-    color: primaryColors.darkGrey,
-    borderColor: primaryColors.lightGrey,
-  },
-});
 
 export interface DropdownItem {
   label: string;
@@ -39,7 +18,7 @@ const Dropdown: React.FC<DropdownProps> = (props: DropdownProps) => {
   return (
     <RNPickerSelect
       onValueChange={(value) => setValue(value)}
-      style={styles}
+      style={dropdownStyle}
       items={items}
       placeholder={{
         label: placeholderLabel,

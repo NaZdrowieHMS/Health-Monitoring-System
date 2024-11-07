@@ -1,17 +1,9 @@
 import { LinkButton, Comment } from "components/atoms";
 import primaryColors from "properties/colors";
-import { cardStyle } from "properties/styles";
+import { cardStyle, commentsCardForDoctorStyle } from "properties/styles";
 import { CommentData, CommentsCardProps } from "properties/types";
-import { fontSize } from "properties/vars";
 import React from "react";
-import { Text, View, StyleSheet } from "react-native";
-
-const listCardStyle = StyleSheet.create({
-  secondaryTitle: {
-    fontSize: fontSize.baseMobileFontSize,
-    color: primaryColors.darkBlue,
-  },
-});
+import { Text, View } from "react-native";
 
 const CommentsCardForDoctor: React.FC<
   CommentsCardProps & { dataOthers: CommentData[] }
@@ -21,12 +13,16 @@ const CommentsCardForDoctor: React.FC<
   return (
     <View style={cardStyle.container}>
       <Text style={cardStyle.title}>{title}</Text>
-      <Text style={listCardStyle.secondaryTitle}>Twoje komentarze</Text>
+      <Text style={commentsCardForDoctorStyle.secondaryTitle}>
+        Twoje komentarze
+      </Text>
       {/* TODO Comment input */}
       {data.map((item, index) => (
         <Comment item={item} index={index} key={index} />
       ))}
-      <Text style={listCardStyle.secondaryTitle}>Pozostałe komentarze</Text>
+      <Text style={commentsCardForDoctorStyle.secondaryTitle}>
+        Pozostałe komentarze
+      </Text>
       {dataOthers.map((item, index) => (
         <Comment item={item} index={index} key={index} />
       ))}

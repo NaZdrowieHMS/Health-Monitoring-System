@@ -3,20 +3,11 @@ import { RootStackParamList } from "App";
 import { LinkButton, PrimaryButton } from "components/atoms";
 import { AiAnalysisResultCard, ListCard, Navbar } from "components/molecules";
 import primaryColors from "properties/colors";
+import { mainStyle } from "properties/styles";
 import { PatientData, PatientResult, ListCardElement } from "properties/types";
-import { paddingSize } from "properties/vars";
 import React, { useEffect, useState } from "react";
-import { ScrollView, StyleSheet, View } from "react-native";
+import { ScrollView, View } from "react-native";
 import { getPatient, getResults } from "services/patientData";
-
-const patientStyle = StyleSheet.create({
-  container: {
-    backgroundColor: primaryColors.babyBlue,
-    paddingHorizontal: paddingSize.medium,
-    paddingVertical: paddingSize.mediumBig,
-    rowGap: paddingSize.mediumBig,
-  },
-});
 
 export const AiDiagnosis = ({
   route,
@@ -67,7 +58,7 @@ export const AiDiagnosis = ({
           `${patientData?.name} ${patientData?.surname}` || ""
         }
       />
-      <ScrollView contentContainerStyle={patientStyle.container}>
+      <ScrollView contentContainerStyle={mainStyle.container}>
         <ListCard
           title="Załączone badania"
           data={resultsData}

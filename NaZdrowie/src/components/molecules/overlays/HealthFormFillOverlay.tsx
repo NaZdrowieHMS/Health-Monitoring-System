@@ -3,21 +3,13 @@ import {
   PersonalizedTextInput,
   PrimaryButton,
 } from "components/atoms";
-import primaryColors from "properties/colors";
-import { cardStyle } from "properties/styles";
+import { healthFormFillOverlayStyle, cardStyle } from "properties/styles";
 import { HealthFormItemType, HealthFormProps } from "properties/types";
-import { fontSize, paddingSize } from "properties/vars";
+import { paddingSize } from "properties/vars";
 import React from "react";
-import { ScrollView, Text, View, StyleSheet } from "react-native";
+import { ScrollView, Text, View } from "react-native";
 
 import { Overlay } from "./Overlay";
-
-const healthFormStyle = StyleSheet.create({
-  text: {
-    fontSize: fontSize.secondaryTitleFontSize,
-    color: primaryColors.darkBlue,
-  },
-});
 
 export const HealthFormFillOverlay: React.FC<{
   healthFormData: HealthFormProps;
@@ -42,7 +34,9 @@ export const HealthFormFillOverlay: React.FC<{
                   paddingVertical: paddingSize.xSmall,
                 }}
               >
-                <Text style={healthFormStyle.text}>{item.title}</Text>
+                <Text style={healthFormFillOverlayStyle.text}>
+                  {item.title}
+                </Text>
                 {item.type === HealthFormItemType.Input && (
                   <View style={{ paddingTop: paddingSize.xxSmall }}>
                     <PersonalizedTextInput placeholder={item.placeholder} />

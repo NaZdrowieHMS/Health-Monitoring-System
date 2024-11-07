@@ -1,19 +1,8 @@
 import primaryColors from "properties/colors";
+import { inputStyle } from "properties/styles";
 import { InputProps } from "properties/types";
-import { borderRadiusSize, fontSize, paddingSize } from "properties/vars";
 import React, { useEffect } from "react";
-import { StyleSheet, TextInput } from "react-native";
-
-const styles = StyleSheet.create({
-  input: {
-    borderWidth: 1,
-    padding: paddingSize.small,
-    borderRadius: borderRadiusSize.medium,
-    fontSize: fontSize.baseMobileFontSize,
-    color: primaryColors.darkGrey,
-    borderColor: primaryColors.lightGrey,
-  },
-});
+import { TextInput } from "react-native";
 
 const PersonalizedTextInput: React.FC<InputProps> = (props: InputProps) => {
   const { placeholder, onChange } = props;
@@ -28,7 +17,7 @@ const PersonalizedTextInput: React.FC<InputProps> = (props: InputProps) => {
   return (
     <>
       <TextInput
-        style={styles.input}
+        style={inputStyle.input}
         onChangeText={onChangeText}
         value={text}
         placeholder={placeholder}

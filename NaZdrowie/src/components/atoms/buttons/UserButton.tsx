@@ -1,6 +1,5 @@
 import primaryColors from "properties/colors";
-import { buttonStyle } from "properties/styles/buttonStyle";
-import { generalStyle } from "properties/styles/generalStyle";
+import { buttonStyle, generalStyle } from "properties/styles";
 import { ButtonProps } from "properties/types";
 import { borderRadiusSize, fontSize } from "properties/vars";
 import React from "react";
@@ -14,12 +13,8 @@ export const userButtonStyle = StyleSheet.create({
     borderRadius: borderRadiusSize.medium,
     ...generalStyle.shadow,
   },
-  buttonText: {
-    color: primaryColors.darkGrey,
-    fontSize: fontSize.baseMobileFontSize,
-  },
   onlineText: {
-    fontSize: fontSize.baseMobileFontSize,
+    fontSize: fontSize.baseFontSize,
   },
 });
 
@@ -33,7 +28,7 @@ export const UserButton: React.FC<ButtonProps & { online?: boolean }> = (
       style={[buttonStyle.buttonContainer, userButtonStyle.buttonContainer]}
       onPress={handleOnClick}
     >
-      <Text style={userButtonStyle.buttonText}>{title}</Text>
+      <Text style={generalStyle.basicText}>{title}</Text>
       {online != null && (
         <Text
           style={[
