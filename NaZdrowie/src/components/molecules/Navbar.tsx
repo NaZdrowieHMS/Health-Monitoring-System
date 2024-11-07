@@ -1,29 +1,13 @@
 import { NavbarDescription, HamburgerMenu } from "components/atoms";
-import primaryColors from "properties/colors";
-import { fontSize, paddingSize } from "properties/vars";
+import { navbarStyle } from "properties/styles";
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text } from "react-native";
 
 type NavparProps = {
   navbarDescriptionTitle?: string;
 };
 
-const navbarStyle = StyleSheet.create({
-  container: {
-    paddingHorizontal: paddingSize.medium,
-    paddingVertical: paddingSize.mediumBig,
-    backgroundColor: primaryColors.white,
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between",
-  },
-  text: {
-    fontSize: fontSize.h2MobileFontSize,
-    color: primaryColors.darkBlue,
-  },
-});
-
-const Navbar: React.FC<NavparProps> = (props: NavparProps) => {
+export const Navbar: React.FC<NavparProps> = (props: NavparProps) => {
   const { navbarDescriptionTitle } = props;
 
   return (
@@ -36,5 +20,3 @@ const Navbar: React.FC<NavparProps> = (props: NavparProps) => {
     </View>
   );
 };
-
-export default Navbar;

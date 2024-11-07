@@ -3,7 +3,7 @@ import { StyleSheet } from "react-native";
 import primaryColors from "../colors";
 import { fontSize, paddingSize } from "../vars";
 
-const loginScreenStyle = StyleSheet.create({
+export const authenticationScreenStyle = StyleSheet.create({
   container: {
     flex: 1,
     display: "flex",
@@ -20,15 +20,25 @@ const loginScreenStyle = StyleSheet.create({
     rowGap: paddingSize.xSmall,
   },
   h1: {
-    fontSize: fontSize.h1MobileFontSize,
+    fontSize: fontSize.h1FontSize,
     color: primaryColors.darkBlue,
     textShadowColor: "rgba(0, 0, 0, 0.25)",
     textShadowOffset: { width: 2, height: 2 },
     textShadowRadius: 2,
   },
   h2: {
-    fontSize: fontSize.h2MobileFontSize,
+    fontSize: fontSize.h2FontSize,
     color: primaryColors.darkGrey,
   },
 });
-export { loginScreenStyle };
+
+export const registerScreenStyle = StyleSheet.create({
+  container: {
+    paddingHorizontal: paddingSize.big,
+    paddingVertical: paddingSize.xxBig,
+    rowGap: paddingSize.xxBig,
+    backgroundColor: primaryColors.white,
+    flexGrow: 1,
+    justifyContent: "center",
+  },
+});

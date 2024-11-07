@@ -1,5 +1,5 @@
 import primaryColors from "properties/colors";
-import { paddingSize } from "properties/vars";
+import { fontSize, paddingSize } from "properties/vars";
 import { StyleSheet } from "react-native";
 
 export const mainStyle = StyleSheet.create({
@@ -12,5 +12,27 @@ export const mainStyle = StyleSheet.create({
   buttonContainer: {
     paddingHorizontal: paddingSize.mediumBig,
     rowGap: paddingSize.small,
+  },
+});
+
+export const navbarStyle = StyleSheet.create({
+  container: {
+    paddingHorizontal: paddingSize.medium,
+    paddingVertical: paddingSize.mediumBig,
+    backgroundColor: primaryColors.white,
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  text: {
+    fontSize: fontSize.h2FontSize,
+    color: primaryColors.darkBlue,
+  },
+  navbarDescriptionText: {
+    paddingHorizontal: paddingSize.medium,
+    paddingVertical: paddingSize.mediumBig,
+    backgroundColor: primaryColors.darkBlue,
+    fontSize: fontSize.titleFontSize,
+    color: primaryColors.white,
   },
 });

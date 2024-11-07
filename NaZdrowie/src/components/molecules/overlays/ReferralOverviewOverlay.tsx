@@ -1,6 +1,6 @@
 import { Comment } from "components/atoms";
 import { EditButton } from "components/atoms/buttons/EditButton";
-import { cardStyle } from "properties/styles";
+import { cardStyle, generalStyle } from "properties/styles";
 import { ObjectCardElement, PatientReferral } from "properties/types";
 import React from "react";
 import { View, Text } from "react-native";
@@ -41,12 +41,12 @@ export const ReferralOverviewOverlay: React.FC<{
           handleClose={handleClose}
         />
         <Overlay.Body>
-          <ObjectCard data={referralInfo} keyStyle={cardStyle.key} />
+          <ObjectCard data={referralInfo} keyStyle={generalStyle.keyText} />
         </Overlay.Body>
         <Overlay.Footer>
           <View style={cardStyle.container}>
             <View style={cardStyle.rowSpread}>
-              <Text style={cardStyle.title}>Komentarz</Text>
+              <Text style={generalStyle.titleText}>Komentarz</Text>
               {isDoctor && <EditButton handleOnClick={editComment} />}
             </View>
             {(referral.comment && (

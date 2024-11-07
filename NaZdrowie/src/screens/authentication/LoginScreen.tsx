@@ -6,7 +6,7 @@ import {
   PersonalizedTextInput,
 } from "components/atoms";
 import primaryColors from "properties/colors";
-import { loginScreenStyle } from "properties/styles";
+import { authenticationScreenStyle } from "properties/styles";
 import React, { useContext } from "react";
 import { Keyboard, Text, View } from "react-native";
 import { UserContext } from "services/context";
@@ -42,14 +42,19 @@ const LoginScreen = ({
   };
 
   return (
-    <View style={loginScreenStyle.container} onTouchStart={dismissKeyboard}>
+    <View
+      style={authenticationScreenStyle.container}
+      onTouchStart={dismissKeyboard}
+    >
       <View>
-        <Text style={loginScreenStyle.h1}>Na Zdrowie!</Text>
-        <Text style={loginScreenStyle.h2}>Zaloguj się na swoje konto</Text>
+        <Text style={authenticationScreenStyle.h1}>Na Zdrowie!</Text>
+        <Text style={authenticationScreenStyle.h2}>
+          Zaloguj się na swoje konto
+        </Text>
       </View>
-      <View style={loginScreenStyle.inputContainer}>
+      <View style={authenticationScreenStyle.inputContainer}>
         <PersonalizedTextInput placeholder="login" onChange={setLogin} />
-        <View style={loginScreenStyle.buttonsContainer}>
+        <View style={authenticationScreenStyle.buttonsContainer}>
           <PersonalizedTextInput placeholder="password" />
           <LinkButton
             title="Zapomniałeś hasła?"
@@ -57,7 +62,7 @@ const LoginScreen = ({
           />
         </View>
       </View>
-      <View style={loginScreenStyle.buttonsContainer}>
+      <View style={authenticationScreenStyle.buttonsContainer}>
         <PrimaryButton
           title="Zaloguj się"
           handleOnClick={navigateToMainScreen}

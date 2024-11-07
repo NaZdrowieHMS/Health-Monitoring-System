@@ -1,5 +1,5 @@
 import primaryColors from "properties/colors";
-import { buttonStyle } from "properties/styles/buttonStyle";
+import { buttonStyle } from "properties/styles";
 import { ButtonProps } from "properties/types";
 import React from "react";
 import { Pressable, Text } from "react-native";

@@ -1,12 +1,13 @@
 import primaryColors from "properties/colors";
+import { generalStyle, linkButtonStyle } from "properties/styles";
 import { ButtonProps } from "properties/types";
-import { FontWeight, fontSize, paddingSize } from "properties/vars";
+import { FontWeight } from "properties/vars";
 import React from "react";
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { Pressable, Text, View } from "react-native";
 
 export const LinkButton: React.FC<
-  ButtonProps & { color: string; fontWeight?: FontWeight }
-> = (props: ButtonProps & { color: string; fontWeight?: FontWeight }) => {
+  ButtonProps & { color?: string; fontWeight?: FontWeight }
+> = (props: ButtonProps & { color?: string; fontWeight?: FontWeight }) => {
   const {
     handleOnClick,
     title,
@@ -16,28 +17,25 @@ export const LinkButton: React.FC<
     helperTextColor,
   } = props;
 
-  const buttonStyle = StyleSheet.create({
-    buttonContainer: {
-      display: "flex",
-      flexDirection: "row",
-      columnGap: paddingSize.xxSmall,
-    },
-    buttonText: {
-      color,
-      fontWeight,
-      fontSize: fontSize.baseMobileFontSize,
-    },
-    helperText: {
-      color: helperTextColor || primaryColors.darkGrey,
-      fontSize: fontSize.baseMobileFontSize,
-    },
-  });
-
   return (
-    <View style={buttonStyle.buttonContainer}>
-      <Text style={buttonStyle.helperText}>{helperText}</Text>
+    <View style={linkButtonStyle.buttonContainer}>
+      <Text
+        style={[
+          generalStyle.basicText,
+          { color: helperTextColor || primaryColors.darkGrey },
+        ]}
+      >
+        {helperText}
+      </Text>
       <Pressable onPress={handleOnClick}>
-        <Text style={buttonStyle.buttonText}>{title}</Text>
+        <Text
+          style={[
+            generalStyle.basicText,
+            { color: color || primaryColors.lightBlue, fontWeight },
+          ]}
+        >
+          {title}
+        </Text>
       </Pressable>
     </View>
   );

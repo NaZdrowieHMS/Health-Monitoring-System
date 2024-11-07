@@ -1,22 +1,12 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "App";
 import { PrimaryButton, PersonalizedTextInput } from "components/atoms";
-import primaryColors from "properties/colors";
-import { loginScreenStyle } from "properties/styles";
-import { paddingSize } from "properties/vars";
+import {
+  authenticationScreenStyle,
+  registerScreenStyle,
+} from "properties/styles";
 import React from "react";
-import { Keyboard, ScrollView, StyleSheet, Text, View } from "react-native";
-
-const registerScreenStyle = StyleSheet.create({
-  container: {
-    paddingHorizontal: paddingSize.big,
-    paddingVertical: paddingSize.xxBig,
-    rowGap: paddingSize.xxBig,
-    backgroundColor: primaryColors.white,
-    flexGrow: 1,
-    justifyContent: "center",
-  },
-});
+import { Keyboard, ScrollView, Text, View } from "react-native";
 
 const RegisterScreen = ({
   navigation,
@@ -38,10 +28,10 @@ const RegisterScreen = ({
       onTouchStart={dismissKeyboard}
     >
       <View>
-        <Text style={loginScreenStyle.h1}>Na Zdrowie!</Text>
-        <Text style={loginScreenStyle.h2}>Dołącz do nas!</Text>
+        <Text style={authenticationScreenStyle.h1}>Na Zdrowie!</Text>
+        <Text style={authenticationScreenStyle.h2}>Dołącz do nas!</Text>
       </View>
-      <View style={loginScreenStyle.inputContainer}>
+      <View style={authenticationScreenStyle.inputContainer}>
         <PersonalizedTextInput placeholder="Adres email" />
         <PersonalizedTextInput placeholder="PESEL" />
         {doctorScreen && <PersonalizedTextInput placeholder="Numer PWZ" />}

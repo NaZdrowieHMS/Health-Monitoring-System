@@ -1,19 +1,10 @@
-import primaryColors from "properties/colors";
+import { generalStyle } from "properties/styles";
 import { HealthFormDisplayData } from "properties/types";
-import { fontSize } from "properties/vars";
 import React from "react";
-import { StyleSheet } from "react-native";
 import { formatDate } from "services/utils";
 
 import { Overlay } from "./Overlay";
 import ObjectCard from "../cards/ObjectCard";
-
-const cardStyle = StyleSheet.create({
-  key: {
-    fontSize: fontSize.baseMobileFontSize,
-    color: primaryColors.darkBlue,
-  },
-});
 
 export const HealthFormResultOverlay: React.FC<{
   handleClose: () => void;
@@ -27,7 +18,10 @@ export const HealthFormResultOverlay: React.FC<{
           handleClose={handleClose}
         />
         <Overlay.Body>
-          <ObjectCard data={healthFormData.content} keyStyle={cardStyle.key} />
+          <ObjectCard
+            data={healthFormData.content}
+            keyStyle={generalStyle.keyText}
+          />
         </Overlay.Body>
         <Overlay.Footer />
       </Overlay.Container>

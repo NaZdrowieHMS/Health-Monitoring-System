@@ -1,10 +1,10 @@
 import primaryColors from "properties/colors";
-import { borderRadiusSize, fontSize, paddingSize } from "properties/vars";
+import { borderRadiusSize, paddingSize } from "properties/vars";
 import { StyleSheet } from "react-native";
 
 import { generalStyle } from "./generalStyle";
 
-const cardStyle = StyleSheet.create({
+export const cardStyle = StyleSheet.create({
   container: {
     backgroundColor: primaryColors.white,
     flexGrow: 1,
@@ -15,14 +15,6 @@ const cardStyle = StyleSheet.create({
     elevation: 3,
     ...generalStyle.shadow,
   },
-  title: {
-    fontSize: fontSize.buttonMobileFontSize,
-    color: primaryColors.darkBlue,
-  },
-  key: {
-    fontSize: fontSize.baseMobileFontSize,
-    color: primaryColors.darkBlue,
-  },
   floatRight: {
     flexDirection: "row",
     justifyContent: "flex-end",
@@ -32,5 +24,15 @@ const cardStyle = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
   },
+  cardElement: {
+    display: "flex",
+    flexDirection: "row",
+    columnGap: paddingSize.small,
+    justifyContent: "space-between",
+  },
+  elementButtons: {
+    display: "flex",
+    flexDirection: "row",
+    columnGap: paddingSize.xSmall,
+  },
 });
-export { cardStyle };

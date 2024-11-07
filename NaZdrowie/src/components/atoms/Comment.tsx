@@ -1,29 +1,7 @@
-import primaryColors from "properties/colors";
+import { commentStyle, generalStyle } from "properties/styles";
 import { CommentData } from "properties/types";
-import { fontSize, paddingSize } from "properties/vars";
 import React from "react";
-import { Text, View, StyleSheet } from "react-native";
-
-const listCardStyle = StyleSheet.create({
-  comment: {
-    display: "flex",
-    rowGap: paddingSize.xSmall,
-  },
-  text: {
-    fontSize: fontSize.baseMobileFontSize,
-    color: primaryColors.darkGrey,
-  },
-  date: {
-    color: primaryColors.lightBlue,
-  },
-  author: {
-    fontSize: fontSize.smallFontSize,
-  },
-  floatRight: {
-    flexDirection: "row",
-    justifyContent: "flex-end",
-  },
-});
+import { Text, View } from "react-native";
 
 const Comment: React.FC<
   { item: CommentData } & { index: number; dontShowAuthor?: boolean }
@@ -33,12 +11,14 @@ const Comment: React.FC<
   const { index, item, dontShowAuthor } = props;
 
   return (
-    <View style={listCardStyle.comment} key={index}>
-      <Text style={[listCardStyle.text, listCardStyle.date]}>{item.date}</Text>
-      <Text style={listCardStyle.text}>{item.text}</Text>
+    <View style={commentStyle.comment} key={index}>
+      <Text style={[generalStyle.basicText, commentStyle.date]}>
+        {item.date}
+      </Text>
+      <Text style={generalStyle.basicText}>{item.text}</Text>
       {!dontShowAuthor && (
-        <View style={listCardStyle.floatRight}>
-          <Text style={[listCardStyle.text, listCardStyle.author]}>
+        <View style={commentStyle.floatRight}>
+          <Text style={[generalStyle.basicText, commentStyle.author]}>
             ~ {item.author}
           </Text>
         </View>

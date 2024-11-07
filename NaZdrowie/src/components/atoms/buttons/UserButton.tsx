@@ -1,27 +1,10 @@
 import primaryColors from "properties/colors";
-import { buttonStyle } from "properties/styles/buttonStyle";
-import { generalStyle } from "properties/styles/generalStyle";
+import { buttonStyle, generalStyle, userButtonStyle } from "properties/styles";
 import { ButtonProps } from "properties/types";
-import { borderRadiusSize, fontSize } from "properties/vars";
 import React from "react";
-import { Pressable, StyleSheet, Text } from "react-native";
+import { Pressable, Text } from "react-native";
 
 export type UserButtonElement = ReturnType<typeof UserButton>;
-
-export const userButtonStyle = StyleSheet.create({
-  buttonContainer: {
-    backgroundColor: primaryColors.white,
-    borderRadius: borderRadiusSize.medium,
-    ...generalStyle.shadow,
-  },
-  buttonText: {
-    color: primaryColors.darkGrey,
-    fontSize: fontSize.baseMobileFontSize,
-  },
-  onlineText: {
-    fontSize: fontSize.baseMobileFontSize,
-  },
-});
 
 export const UserButton: React.FC<ButtonProps & { online?: boolean }> = (
   props: ButtonProps & { online?: boolean },
@@ -33,11 +16,11 @@ export const UserButton: React.FC<ButtonProps & { online?: boolean }> = (
       style={[buttonStyle.buttonContainer, userButtonStyle.buttonContainer]}
       onPress={handleOnClick}
     >
-      <Text style={userButtonStyle.buttonText}>{title}</Text>
+      <Text style={generalStyle.basicText}>{title}</Text>
       {online != null && (
         <Text
           style={[
-            userButtonStyle.onlineText,
+            generalStyle.basicText,
             {
               color: online
                 ? primaryColors.lightGreen

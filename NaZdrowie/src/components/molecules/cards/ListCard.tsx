@@ -1,45 +1,27 @@
 import { LinkButton, PersonalizedCheckbox } from "components/atoms";
 import primaryColors from "properties/colors";
-import { cardStyle } from "properties/styles";
+import { cardStyle, generalStyle } from "properties/styles";
 import { ListCardProps } from "properties/types";
-import { fontSize, paddingSize } from "properties/vars";
 import React from "react";
-import { Text, View, StyleSheet } from "react-native";
-
-const listCardStyle = StyleSheet.create({
-  element: {
-    display: "flex",
-    flexDirection: "row",
-    columnGap: paddingSize.small,
-    justifyContent: "space-between",
-  },
-  elementButtons: {
-    display: "flex",
-    flexDirection: "row",
-    columnGap: paddingSize.xSmall,
-  },
-  text: {
-    fontSize: fontSize.baseMobileFontSize,
-  },
-});
+import { Text, View } from "react-native";
 
 const ListCard: React.FC<ListCardProps> = (props: ListCardProps) => {
   const { title, data, handleSeeMore, extraButton } = props;
 
   return (
     <View style={cardStyle.container}>
-      <Text style={cardStyle.title}>{title}</Text>
+      <Text style={generalStyle.titleText}>{title}</Text>
       {data.map((item, index) => (
-        <View style={listCardStyle.element} key={index}>
-          <View style={listCardStyle.element}>
+        <View style={cardStyle.cardElement} key={index}>
+          <View style={cardStyle.cardElement}>
             {item.checkbox && (
               <PersonalizedCheckbox
                 checkboxStatus={item.checkbox.checkboxStatus}
               />
             )}
-            <Text style={listCardStyle.text}>{item.text}</Text>
+            <Text style={generalStyle.basicText}>{item.text}</Text>
           </View>
-          <View style={listCardStyle.elementButtons}>
+          <View style={cardStyle.elementButtons}>
             {item.buttons.map((ButtonElement, buttonIndex) => (
               <View key={buttonIndex}>{ButtonElement}</View>
             ))}
@@ -48,10 +30,7 @@ const ListCard: React.FC<ListCardProps> = (props: ListCardProps) => {
       ))}
       {handleSeeMore && (
         <View style={cardStyle.floatRight}>
-          <LinkButton
-            title="Zobacz więcej..."
-            color={primaryColors.lightBlue}
-          />
+          <LinkButton title="Zobacz więcej..." />
         </View>
       )}
 

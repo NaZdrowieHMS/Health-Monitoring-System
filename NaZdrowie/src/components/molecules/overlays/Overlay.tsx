@@ -1,13 +1,7 @@
-import primaryColors from "properties/colors";
-import { borderRadiusSize, fontSize, paddingSize } from "properties/vars";
+import { generalStyle, overlayStyle } from "properties/styles";
+import { fontSize } from "properties/vars";
 import { ReactNode } from "react";
-import {
-  StyleSheet,
-  View,
-  Text,
-  Pressable,
-  GestureResponderEvent,
-} from "react-native";
+import { View, Text, Pressable, GestureResponderEvent } from "react-native";
 import RNModal from "react-native-modal";
 
 type OverlayProps = {
@@ -30,7 +24,7 @@ export const Overlay = ({ children, ...props }: OverlayProps) => {
 };
 
 const OverlayContainer = ({ children }: { children: ReactNode }) => (
-  <View style={styles.container}>{children}</View>
+  <View style={overlayStyle.container}>{children}</View>
 );
 
 const OverlayHeader = ({
@@ -40,54 +34,23 @@ const OverlayHeader = ({
   title: string;
   handleClose: (event: GestureResponderEvent) => void;
 }) => (
-  <View style={styles.header}>
-    <Text style={styles.text}>{title}</Text>
+  <View style={overlayStyle.header}>
+    <Text style={generalStyle.titleText}>{title}</Text>
     <Pressable onPress={handleClose}>
-      <Text style={[styles.text, { fontSize: fontSize.xFontSize }]}>×</Text>
+      <Text style={[generalStyle.titleText, { fontSize: fontSize.xFontSize }]}>
+        ×
+      </Text>
     </Pressable>
   </View>
 );
 
 const OverlayBody = ({ children }: { children?: ReactNode }) => (
-  <View style={styles.body}>{children}</View>
+  <View style={overlayStyle.body}>{children}</View>
 );
 
 const OverlayFooter = ({ children }: { children?: ReactNode }) => (
   <View>{children}</View>
 );
-
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: primaryColors.white,
-    borderRadius: borderRadiusSize.small,
-    borderWidth: 2,
-    borderColor: primaryColors.babyBlue,
-    padding: paddingSize.mediumBig,
-  },
-  header: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    color: primaryColors.darkBlue,
-    paddingBottom: paddingSize.medium,
-    borderBottomWidth: 1,
-    borderBottomRightRadius: borderRadiusSize.small,
-    borderBottomColor: primaryColors.lightGrey,
-  },
-  text: {
-    textAlign: "center",
-    fontSize: fontSize.buttonMobileFontSize,
-    color: primaryColors.darkBlue,
-  },
-  body: {
-    paddingTop: paddingSize.mediumBig,
-    justifyContent: "center",
-    paddingBottom: paddingSize.mediumBig,
-    display: "flex",
-    rowGap: paddingSize.mediumBig,
-  },
-});
 
 Overlay.Header = OverlayHeader;
 Overlay.Container = OverlayContainer;

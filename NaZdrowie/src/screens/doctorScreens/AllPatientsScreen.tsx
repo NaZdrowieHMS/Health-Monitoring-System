@@ -2,25 +2,11 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "App";
 import { UserButton, UserButtonElement } from "components/atoms";
 import { Navbar } from "components/molecules";
-import primaryColors from "properties/colors";
-import { paddingSize } from "properties/vars";
+import { mainStyle } from "properties/styles";
 import React, { useContext, useEffect, useState } from "react";
-import { View, StyleSheet, ScrollView } from "react-native";
+import { View, ScrollView } from "react-native";
 import { UserContext } from "services/context";
 import { getAllPatients } from "services/doctorData";
-
-const allPatientsStyle = StyleSheet.create({
-  container: {
-    backgroundColor: primaryColors.babyBlue,
-    paddingHorizontal: paddingSize.medium,
-    paddingVertical: paddingSize.mediumBig,
-    rowGap: paddingSize.mediumBig,
-  },
-  buttonContainer: {
-    paddingHorizontal: paddingSize.mediumBig,
-    rowGap: paddingSize.small,
-  },
-});
 
 export const AllPatientsScreen = ({
   navigation,
@@ -56,7 +42,7 @@ export const AllPatientsScreen = ({
   return (
     <View style={{ flex: 1 }}>
       <Navbar navbarDescriptionTitle="Moi pacjenci" />
-      <ScrollView contentContainerStyle={allPatientsStyle.container}>
+      <ScrollView contentContainerStyle={mainStyle.container}>
         {allPatientsData}
       </ScrollView>
     </View>
