@@ -1,7 +1,7 @@
 import { Dropdown, PrimaryButton } from "components/atoms";
 import { DropdownItem } from "components/atoms/Dropdown";
 import primaryColors from "properties/colors";
-import { resultFormOverlayStyle } from "properties/styles";
+import { generalStyle, inputStyle } from "properties/styles";
 import { fontSize } from "properties/vars";
 import React, { useState } from "react";
 import { Text, View } from "react-native";
@@ -58,19 +58,14 @@ export const ResultsFormOverlay: React.FC<{
             />
           )}
           {referralTestType && (
-            <Text style={resultFormOverlayStyle.input}>{referralTestType}</Text>
+            <Text style={inputStyle.input}>{referralTestType}</Text>
           )}
           <View>
             <PersonalizedImagePicker
               setBase64Data={setBase64Data}
               setContentType={setDataType}
             />
-            <Text
-              style={{
-                color: primaryColors.darkGrey,
-                fontSize: fontSize.baseFontSize,
-              }}
-            >
+            <Text style={generalStyle.basicText}>
               Dozwolone formaty: png, jpg, ...
             </Text>
           </View>

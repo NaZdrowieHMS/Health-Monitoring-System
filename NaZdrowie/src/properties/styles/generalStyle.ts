@@ -16,4 +16,16 @@ export const generalStyle = StyleSheet.create({
     color: primaryColors.darkGrey,
     fontSize: fontSize.baseFontSize,
   },
+  titleText: {
+    fontSize: fontSize.titleFontSize,
+    color: primaryColors.darkBlue,
+  },
+  keyText: {
+    fontSize: fontSize.baseFontSize,
+    color: primaryColors.darkBlue,
+  },
+  secondaryTitle: {
+    fontSize: fontSize.secondaryTitleFontSize,
+    color: primaryColors.darkBlue,
+  },
 });

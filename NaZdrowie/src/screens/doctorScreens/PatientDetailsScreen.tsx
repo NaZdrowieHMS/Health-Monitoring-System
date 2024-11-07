@@ -9,7 +9,6 @@ import {
   ReferralOverviewOverlay,
   ResultsFormOverlay,
 } from "components/molecules";
-import primaryColors from "properties/colors";
 import { mainStyle } from "properties/styles";
 import {
   PatientData,
@@ -87,7 +86,6 @@ export const PatientDetailsScreen = ({
     buttons: [
       <LinkButton
         title="Podgląd"
-        color={primaryColors.lightBlue}
         handleOnClick={() => openReferralOverviewOverlay(referral)}
       />,
     ],
@@ -113,7 +111,6 @@ export const PatientDetailsScreen = ({
           buttons: [
             <LinkButton
               title="Podgląd"
-              color={primaryColors.lightBlue}
               handleOnClick={() => openHealthFormResultOverlay(formData)}
             />,
           ],
@@ -136,7 +133,7 @@ export const PatientDetailsScreen = ({
 
   const formatResultsData = (result: PatientResult) => ({
     text: result.testType,
-    buttons: [<LinkButton title="Przejdź" color={primaryColors.lightBlue} />],
+    buttons: [<LinkButton title="Przejdź" />],
   });
 
   const setPatient = async (patientId: number) => {

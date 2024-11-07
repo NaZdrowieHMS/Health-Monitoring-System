@@ -10,7 +10,7 @@ const ListCard: React.FC<ListCardProps> = (props: ListCardProps) => {
 
   return (
     <View style={cardStyle.container}>
-      <Text style={cardStyle.title}>{title}</Text>
+      <Text style={generalStyle.titleText}>{title}</Text>
       {data.map((item, index) => (
         <View style={cardStyle.cardElement} key={index}>
           <View style={cardStyle.cardElement}>
@@ -30,10 +30,7 @@ const ListCard: React.FC<ListCardProps> = (props: ListCardProps) => {
       ))}
       {handleSeeMore && (
         <View style={cardStyle.floatRight}>
-          <LinkButton
-            title="Zobacz więcej..."
-            color={primaryColors.lightBlue}
-          />
+          <LinkButton title="Zobacz więcej..." />
         </View>
       )}
 

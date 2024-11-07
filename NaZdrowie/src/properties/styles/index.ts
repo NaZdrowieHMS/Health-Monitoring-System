@@ -7,4 +7,3 @@ export * from "./generalStyle";
 export * from "./imagePickerStyle";
 export * from "./inputStyle";
 export * from "./overlayStyle";
-export * from "./doctorScreenStyle";

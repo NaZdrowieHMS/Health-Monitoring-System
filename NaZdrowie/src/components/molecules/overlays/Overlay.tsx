@@ -1,4 +1,4 @@
-import { overlayStyle } from "properties/styles";
+import { generalStyle, overlayStyle } from "properties/styles";
 import { fontSize } from "properties/vars";
 import { ReactNode } from "react";
 import { View, Text, Pressable, GestureResponderEvent } from "react-native";
@@ -35,9 +35,9 @@ const OverlayHeader = ({
   handleClose: (event: GestureResponderEvent) => void;
 }) => (
   <View style={overlayStyle.header}>
-    <Text style={overlayStyle.text}>{title}</Text>
+    <Text style={generalStyle.titleText}>{title}</Text>
     <Pressable onPress={handleClose}>
-      <Text style={[overlayStyle.text, { fontSize: fontSize.xFontSize }]}>
+      <Text style={[generalStyle.titleText, { fontSize: fontSize.xFontSize }]}>
         ×
       </Text>
     </Pressable>

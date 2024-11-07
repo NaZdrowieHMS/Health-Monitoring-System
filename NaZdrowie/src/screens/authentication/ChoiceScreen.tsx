@@ -1,7 +1,7 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "App";
 import { PrimaryButton } from "components/atoms";
-import { loginScreenStyle } from "properties/styles";
+import { authenticationScreenStyle } from "properties/styles";
 import React from "react";
 import { Keyboard, Text, View } from "react-native";
 
@@ -21,12 +21,15 @@ const ChoiceScreen = ({
   };
 
   return (
-    <View style={loginScreenStyle.container} onTouchStart={dismissKeyboard}>
+    <View
+      style={authenticationScreenStyle.container}
+      onTouchStart={dismissKeyboard}
+    >
       <View>
-        <Text style={loginScreenStyle.h1}>Na Zdrowie!</Text>
-        <Text style={loginScreenStyle.h2}>Dołącz do nas!</Text>
+        <Text style={authenticationScreenStyle.h1}>Na Zdrowie!</Text>
+        <Text style={authenticationScreenStyle.h2}>Dołącz do nas!</Text>
       </View>
-      <View style={loginScreenStyle.inputContainer}>
+      <View style={authenticationScreenStyle.inputContainer}>
         <PrimaryButton
           handleOnClick={navigateToPatientRegisterScreen}
           title="Jestem pacjentem"

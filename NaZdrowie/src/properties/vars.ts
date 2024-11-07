@@ -19,7 +19,7 @@ const fontSize = {
   smallFontSize: 12,
   baseFontSize: 16,
   secondaryTitleFontSize: 18,
-  buttonFontSize: 20,
+  titleFontSize: 20,
   h2FontSize: 24,
   xFontSize: 32,
   h1FontSize: 50,

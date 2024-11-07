@@ -7,7 +7,7 @@ import { generalStyle } from "./generalStyle";
 export const inputStyle = StyleSheet.create({
   input: {
     borderWidth: 1,
-    padding: paddingSize.small,
+    padding: paddingSize.medium,
     borderRadius: borderRadiusSize.medium,
     borderColor: primaryColors.lightGrey,
     ...generalStyle.basicText,

@@ -1,6 +1,6 @@
 import { LinkButton } from "components/atoms";
 import primaryColors from "properties/colors";
-import { aiResultCardStyle, cardStyle, generalStyle } from "properties/styles";
+import { cardStyle, generalStyle } from "properties/styles";
 import { paddingSize } from "properties/vars";
 import React from "react";
 import { View, Text } from "react-native";
@@ -28,14 +28,14 @@ const AiAnalysisResultCard: React.FC<object> = () => {
   ];
   return (
     <View style={cardStyle.container}>
-      <Text style={cardStyle.title}>
+      <Text style={generalStyle.titleText}>
         Wyniki ostatnio przeprowadzonej analizy AI
       </Text>
       {mockedAiResults.map((result, index) => (
         <View key={index} style={{ rowGap: paddingSize.mediumBig }}>
           <Text
             style={[
-              aiResultCardStyle.secondaryTitle,
+              generalStyle.secondaryTitle,
               {
                 color:
                   result.precision < 50
@@ -51,21 +51,18 @@ const AiAnalysisResultCard: React.FC<object> = () => {
           </Text>
         </View>
       ))}
-      <Text style={cardStyle.title}>Zalecane badania</Text>
-      <Text style={aiResultCardStyle.secondaryTitle}>
+      <Text style={generalStyle.titleText}>Zalecane badania</Text>
+      <Text style={generalStyle.secondaryTitle}>
         W celu polepszenia dokładności analizy
       </Text>
       {mockedAiRefferals.map((refferal, index) => (
         <View style={cardStyle.cardElement} key={index}>
           <Text style={generalStyle.basicText}>{`• ${refferal.name}`}</Text>
-          <LinkButton title="Zleć" color={primaryColors.lightBlue} />
+          <LinkButton title="Zleć" />
         </View>
       ))}
 
-      <LinkButton
-        title="Historia przeprowadzonych analiz"
-        color={primaryColors.lightBlue}
-      />
+      <LinkButton title="Historia przeprowadzonych analiz" />
     </View>
   );
 };

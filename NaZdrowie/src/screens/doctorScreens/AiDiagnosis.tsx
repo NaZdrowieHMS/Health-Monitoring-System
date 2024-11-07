@@ -37,7 +37,7 @@ export const AiDiagnosis = ({
       checkboxStatus: true, // TODO
     },
     text: result.testType,
-    buttons: [<LinkButton title="Podgląd" color={primaryColors.lightBlue} />],
+    buttons: [<LinkButton title="Podgląd" />],
   });
 
   const setPatient = async (patientId: number) => {

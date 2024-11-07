@@ -1,4 +1,4 @@
-import { healthFormResultOverlayStyle } from "properties/styles";
+import { generalStyle } from "properties/styles";
 import { HealthFormDisplayData } from "properties/types";
 import React from "react";
 import { formatDate } from "services/utils";
@@ -20,7 +20,7 @@ export const HealthFormResultOverlay: React.FC<{
         <Overlay.Body>
           <ObjectCard
             data={healthFormData.content}
-            keyStyle={healthFormResultOverlayStyle.key}
+            keyStyle={generalStyle.keyText}
           />
         </Overlay.Body>
         <Overlay.Footer />

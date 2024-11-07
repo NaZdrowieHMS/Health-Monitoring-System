@@ -32,7 +32,7 @@ export const navbarStyle = StyleSheet.create({
     paddingHorizontal: paddingSize.medium,
     paddingVertical: paddingSize.mediumBig,
     backgroundColor: primaryColors.darkBlue,
-    fontSize: fontSize.buttonFontSize,
+    fontSize: fontSize.titleFontSize,
     color: primaryColors.white,
   },
 });

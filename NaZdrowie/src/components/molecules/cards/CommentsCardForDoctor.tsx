@@ -1,6 +1,6 @@
 import { LinkButton, Comment } from "components/atoms";
 import primaryColors from "properties/colors";
-import { cardStyle, commentsCardForDoctorStyle } from "properties/styles";
+import { cardStyle, generalStyle } from "properties/styles";
 import { CommentData, CommentsCardProps } from "properties/types";
 import React from "react";
 import { Text, View } from "react-native";
@@ -12,22 +12,18 @@ const CommentsCardForDoctor: React.FC<
 
   return (
     <View style={cardStyle.container}>
-      <Text style={cardStyle.title}>{title}</Text>
-      <Text style={commentsCardForDoctorStyle.secondaryTitle}>
-        Twoje komentarze
-      </Text>
+      <Text style={generalStyle.titleText}>{title}</Text>
+      <Text style={generalStyle.keyText}>Twoje komentarze</Text>
       {/* TODO Comment input */}
       {data.map((item, index) => (
         <Comment item={item} index={index} key={index} />
       ))}
-      <Text style={commentsCardForDoctorStyle.secondaryTitle}>
-        Pozostałe komentarze
-      </Text>
+      <Text style={generalStyle.keyText}>Pozostałe komentarze</Text>
       {dataOthers.map((item, index) => (
         <Comment item={item} index={index} key={index} />
       ))}
       <View style={cardStyle.floatRight}>
-        <LinkButton title="Zobacz więcej..." color={primaryColors.lightBlue} />
+        <LinkButton title="Zobacz więcej..." />
       </View>
     </View>
   );

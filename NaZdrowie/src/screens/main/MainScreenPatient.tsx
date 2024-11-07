@@ -10,7 +10,6 @@ import {
   ResultsFormOverlay,
   HealthFormResultOverlay,
 } from "components/molecules";
-import primaryColors from "properties/colors";
 import { mainStyle } from "properties/styles";
 import {
   PatientReferral,
@@ -92,12 +91,10 @@ const MainScreenPatient = ({
       ? [
           <LinkButton
             title="Podgląd"
-            color={primaryColors.lightBlue}
             handleOnClick={() => openReferralOverviewOverlay(referral)}
           />,
           <LinkButton
             title="Załącz wynik"
-            color={primaryColors.lightBlue}
             handleOnClick={() =>
               openResultsFormOverlay(referral.id, referral.testType)
             }
@@ -106,7 +103,6 @@ const MainScreenPatient = ({
       : [
           <LinkButton
             title="Podgląd"
-            color={primaryColors.lightBlue}
             handleOnClick={() => openReferralOverviewOverlay(referral)}
           />,
         ],
@@ -132,7 +128,6 @@ const MainScreenPatient = ({
           buttons: [
             <LinkButton
               title="Podgląd"
-              color={primaryColors.lightBlue}
               handleOnClick={() => openHealthFormResultOverlay(formData)}
             />,
           ],
@@ -146,7 +141,7 @@ const MainScreenPatient = ({
 
   const formatResultsData = (result: PatientResult) => ({
     text: result.testType,
-    buttons: [<LinkButton title="Podgląd" color={primaryColors.lightBlue} />],
+    buttons: [<LinkButton title="Podgląd" />],
   });
 
   const openResultsFormOverlay = (referralId?: number, testType?: string) => {

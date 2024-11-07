@@ -53,7 +53,6 @@ const MainScreenDoctor = ({
       <LinkButton
         key={patient.id}
         title="Przejdź"
-        color={primaryColors.lightBlue}
         handleOnClick={() => {
           navigateToPatientScreen(patient.id);
         }}
@@ -77,13 +76,7 @@ const MainScreenDoctor = ({
     },
   ) => ({
     text: `${entry.patient.name}: ${entry.testType}`,
-    buttons: [
-      <LinkButton
-        key={entry.id}
-        title="Podgląd"
-        color={primaryColors.lightBlue}
-      />,
-    ],
+    buttons: [<LinkButton key={entry.id} title="Podgląd" />],
   });
 
   return (

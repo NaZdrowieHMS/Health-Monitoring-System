@@ -3,7 +3,7 @@ import {
   PersonalizedTextInput,
   PrimaryButton,
 } from "components/atoms";
-import { healthFormFillOverlayStyle, cardStyle } from "properties/styles";
+import { cardStyle, generalStyle } from "properties/styles";
 import { HealthFormItemType, HealthFormProps } from "properties/types";
 import { paddingSize } from "properties/vars";
 import React from "react";
@@ -34,9 +34,7 @@ export const HealthFormFillOverlay: React.FC<{
                   paddingVertical: paddingSize.xSmall,
                 }}
               >
-                <Text style={healthFormFillOverlayStyle.text}>
-                  {item.title}
-                </Text>
+                <Text style={generalStyle.secondaryTitle}>{item.title}</Text>
                 {item.type === HealthFormItemType.Input && (
                   <View style={{ paddingTop: paddingSize.xxSmall }}>
                     <PersonalizedTextInput placeholder={item.placeholder} />
