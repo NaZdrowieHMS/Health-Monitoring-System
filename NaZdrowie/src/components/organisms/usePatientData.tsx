@@ -11,43 +11,32 @@ import {
   DoctorComment,
   HealthFormDisplayData,
   healthFormItems,
-  ListCardElement,
   PatientReferral,
   PatientResult,
+  UserData,
 } from "properties/types";
-import { useContext, useState } from "react";
-import { useOverlay, UserContext } from "services/context";
+import { useOverlay } from "services/context";
 import {
-  getHealthComments,
-  getReferrals,
-  getResults,
-  getLatestHealthForm,
+  useFetchHealthComments,
+  useFetchReferrals,
+  useFetchResults,
+  useFetchLatestHealthForm,
 } from "services/patientData";
 import { formatDate } from "services/utils";
 
-export const usePatientData = () => {
+export const usePatientData = (currentUser: UserData) => {
   const { showOverlay, hideOverlay } = useOverlay();
-  const [healthCommentsData, setHealthCommentsData] = useState<CommentData[]>(
-    [],
-  );
-  const [referralsData, setReferralsData] = useState<ListCardElement[]>([]);
-  const [resultsData, setResultssData] = useState<ListCardElement[]>([]);
 
-  const setHealthComments = async (patientId: number) => {
-    try {
-      const data = await getHealthComments(patientId);
-      const formattedComments = data.map(formatCommentsData);
-      setHealthCommentsData(formattedComments);
-    } catch (error) {
-      console.error("Error fetching latest patients:", error);
-    }
-  };
-
-  const formatCommentsData = (comment: DoctorComment) => ({
+  // handling health comment data
+  const formatCommentsData = (comment: DoctorComment): CommentData => ({
     date: formatDate(comment.modifiedDate),
     text: comment.content,
     author: `${comment.doctor.name} ${comment.doctor.surname}`,
   });
+
+  const healthComments = useFetchHealthComments(currentUser, (data) =>
+    data.map(formatCommentsData),
+  );
 
   const openCommentsOverlay = (healthCommentsData: CommentData[]) => {
     showOverlay(() => (
@@ -59,16 +48,7 @@ export const usePatientData = () => {
     ));
   };
 
-  const setReferrals = async (patientId: number) => {
-    try {
-      const data = await getReferrals(patientId);
-      const formattedReferrals = data.map(formatReferralsData);
-      setReferralsData(formattedReferrals);
-    } catch (error) {
-      console.error("Error fetching latest patients:", error);
-    }
-  };
-
+  // handling referral data
   const formatReferralsData = (referral: PatientReferral) => ({
     text: referral.testType,
     buttons: !referral.completed
@@ -96,6 +76,10 @@ export const usePatientData = () => {
         ],
   });
 
+  const referrals = useFetchReferrals(currentUser, (data) =>
+    data.map(formatReferralsData),
+  );
+
   const openReferralOverviewOverlay = (referral: PatientReferral) => {
     showOverlay(() => (
       <ReferralOverviewOverlay
@@ -105,32 +89,29 @@ export const usePatientData = () => {
     ));
   };
 
-  const setResults = async (patientId: number) => {
-    try {
-      const data = await getResults(patientId);
-      const formData = await getLatestHealthForm(patientId);
-      const formattedResults = data.map(formatResultsData);
-      if (formData != null) {
-        formattedResults.push({
-          text: `Formularz zdrowia ${formatDate(formData.createDate)}`,
-          buttons: [
-            <LinkButton
-              title="Podgląd"
-              handleOnClick={() => openHealthFormResultOverlay(formData)}
-            />,
-          ],
-        });
-      }
-      setResultssData(formattedResults);
-    } catch (error) {
-      console.error("Error fetching latest patients:", error);
-    }
-  };
-
+  // handling results + health forms
   const formatResultsData = (result: PatientResult) => ({
     text: result.testType,
     buttons: [<LinkButton title="Podgląd" />],
   });
+
+  const results = useFetchResults(currentUser, (data) =>
+    data.map(formatResultsData),
+  );
+  const latestHealthForm = useFetchLatestHealthForm(currentUser, (data) => {
+    return {
+      text: `Formularz zdrowia ${formatDate(data.createDate)}`,
+      buttons: [
+        <LinkButton
+          title="Podgląd"
+          handleOnClick={() => openHealthFormResultOverlay(data)}
+        />,
+      ],
+    };
+  });
+  if (results.isSuccess && latestHealthForm.data) {
+    results.data?.push(latestHealthForm.data);
+  }
 
   const openResultsFormOverlay = (
     patientId: number,
@@ -168,12 +149,9 @@ export const usePatientData = () => {
   };
 
   return {
-    referralsData,
-    resultsData,
-    healthCommentsData,
-    setHealthComments,
-    setReferrals,
-    setResults,
+    healthComments,
+    referrals,
+    results,
     openHealthFormFillOverlay,
     openResultsFormOverlay,
     openCommentsOverlay,

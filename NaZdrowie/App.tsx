@@ -14,6 +14,7 @@ import {
   AiDiagnosis,
 } from "screens/doctorScreens";
 import { MainScreen } from "screens/main";
+import axiosInstance from "services/axios";
 import { UserProvider, OverlayProvider } from "services/context";
 
 const queryClient = new QueryClient({
@@ -22,6 +23,13 @@ const queryClient = new QueryClient({
       retry: 2,
       retryDelay: 2000,
       staleTime: 60_000,
+      queryFn: async ({ queryKey }) => {
+        const lastKey = queryKey[queryKey.length - 1];
+        if (typeof lastKey === "string") {
+          const { data } = await axiosInstance.get(lastKey);
+          return data;
+        }
+      },
     },
   },
 });

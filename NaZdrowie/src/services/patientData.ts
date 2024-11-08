@@ -1,4 +1,9 @@
-import { DoctorComment, HealthFormDisplayData } from "properties/types";
+import { useQuery } from "@tanstack/react-query";
+import {
+  DoctorComment,
+  HealthFormDisplayData,
+  UserData,
+} from "properties/types";
 import {
   PatientData,
   PatientReferral,
@@ -7,6 +12,16 @@ import {
 } from "properties/types/PatientDataProps";
 
 import axiosInstance from "./axios";
+
+export const useFetchHealthComments = <T>(
+  patient: UserData,
+  select?: (data: DoctorComment[]) => T,
+) => {
+  return useQuery<DoctorComment[], Error, T>({
+    queryKey: [patient, `patients/${patient.id}/health`],
+    select,
+  });
+};
 
 export const getHealthComments: (
   patientId: number,
@@ -19,6 +34,16 @@ export const getHealthComments: (
   }
 };
 
+export const useFetchReferrals = <T>(
+  patient: UserData,
+  select?: (data: PatientReferral[]) => T,
+) => {
+  return useQuery<PatientReferral[], Error, T>({
+    queryKey: [patient, `patients/${patient.id}/referrals`],
+    select,
+  });
+};
+
 export const getReferrals: (
   patientId: number,
 ) => Promise<PatientReferral[]> = async (patientId: number) => {
@@ -28,6 +53,16 @@ export const getReferrals: (
   } catch (error) {
     console.error("[getReferrals] Error fetching data:", error);
   }
+};
+
+export const useFetchResults = <T>(
+  patient: UserData,
+  select?: (data: PatientResult[]) => T,
+) => {
+  return useQuery<PatientResult[], Error, T>({
+    queryKey: [patient, `patients/${patient.id}/results`],
+    select,
+  });
 };
 
 export const getResults: (
@@ -61,6 +96,16 @@ export const sendResult: (
   } catch (error) {
     console.error("[sendResult] Result not added", error);
   }
+};
+
+export const useFetchLatestHealthForm = <T>(
+  patient: UserData,
+  select?: (data: HealthFormDisplayData | null) => T,
+) => {
+  return useQuery<HealthFormDisplayData | null, Error, T>({
+    queryKey: [patient, `patients/${patient.id}/forms/latest`],
+    select,
+  });
 };
 
 export const getLatestHealthForm: (

@@ -33,3 +33,11 @@ export const userButtonStyle = StyleSheet.create({
     ...generalStyle.shadow,
   },
 });
+
+export const loadingButtonStyles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+});

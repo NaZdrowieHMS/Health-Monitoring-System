@@ -38,3 +38,8 @@ export type ResultUpload = {
   testType: string;
   content: ResultDataContent;
 };
+
+export type UserData = {
+  id: number;
+  isDoctor: boolean;
+};
