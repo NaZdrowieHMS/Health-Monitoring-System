@@ -12,7 +12,7 @@ interface DropdownProps {
   setValue: (string) => void;
 }
 
-const Dropdown: React.FC<DropdownProps> = (props: DropdownProps) => {
+export const Dropdown: React.FC<DropdownProps> = (props: DropdownProps) => {
   const { items, placeholderLabel, setValue } = props;
 
   return (
@@ -27,5 +27,3 @@ const Dropdown: React.FC<DropdownProps> = (props: DropdownProps) => {
     />
   );
 };
-
-export default Dropdown;

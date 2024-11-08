@@ -1,5 +1,4 @@
 import { LinkButton, PersonalizedCheckbox } from "components/atoms";
-import primaryColors from "properties/colors";
 import { cardStyle, generalStyle } from "properties/styles";
 import { ListCardProps } from "properties/types";
 import React from "react";

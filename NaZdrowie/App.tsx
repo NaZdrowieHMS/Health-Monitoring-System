@@ -15,7 +15,7 @@ import {
 } from "screens/doctorScreens";
 import { MainScreen } from "screens/main";
 import axiosInstance from "services/axios";
-import { UserProvider, OverlayProvider } from "services/context";
+import { UserProvider, OverlayProvider } from "components/organisms/context";
 
 const queryClient = new QueryClient({
   defaultOptions: {

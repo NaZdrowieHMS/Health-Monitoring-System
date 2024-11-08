@@ -5,11 +5,11 @@ import {
   PrimaryButton,
   PersonalizedTextInput,
 } from "components/atoms";
+import { UserContext } from "components/organisms/context";
 import primaryColors from "properties/colors";
 import { authenticationScreenStyle } from "properties/styles";
 import React, { useContext } from "react";
 import { Keyboard, Text, View } from "react-native";
-import { UserContext } from "services/context";
 
 const LoginScreen = ({
   navigation,

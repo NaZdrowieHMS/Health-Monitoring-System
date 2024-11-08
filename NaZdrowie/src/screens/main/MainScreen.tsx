@@ -1,9 +1,9 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "App";
 import { Navbar } from "components/molecules";
+import { UserContext } from "components/organisms/context";
 import React, { useContext } from "react";
 import { View } from "react-native";
-import { UserContext } from "services/context";
 
 import MainScreenDoctor from "./MainScreenDoctor";
 import MainScreenPatient from "./MainScreenPatient";

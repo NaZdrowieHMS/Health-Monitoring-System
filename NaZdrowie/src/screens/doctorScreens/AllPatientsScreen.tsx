@@ -2,10 +2,10 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "App";
 import { UserButton, UserButtonElement } from "components/atoms";
 import { Navbar } from "components/molecules";
+import { UserContext } from "components/organisms/context";
 import { mainStyle } from "properties/styles";
 import React, { useContext, useEffect, useState } from "react";
 import { View, ScrollView } from "react-native";
-import { UserContext } from "services/context";
 import { getAllPatients } from "services/doctorData";
 
 export const AllPatientsScreen = ({

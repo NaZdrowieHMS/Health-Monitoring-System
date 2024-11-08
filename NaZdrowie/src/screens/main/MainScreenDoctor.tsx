@@ -2,12 +2,11 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "App";
 import { LinkButton, PrimaryButton } from "components/atoms";
 import { ListCard } from "components/molecules";
-import primaryColors from "properties/colors";
+import { UserContext } from "components/organisms/context";
 import { mainStyle } from "properties/styles/mainStyle";
 import { PatientData, PatientResult, ListCardElement } from "properties/types";
 import React, { useContext, useEffect, useState } from "react";
 import { View, ScrollView } from "react-native";
-import { UserContext } from "services/context";
 import { getLatestPatients, getLatestResults } from "services/doctorData";
 
 const MainScreenDoctor = ({

@@ -9,6 +9,7 @@ import {
   ReferralOverviewOverlay,
   ResultsFormOverlay,
 } from "components/molecules";
+import { UserContext, useOverlay } from "components/organisms/context";
 import { mainStyle } from "properties/styles";
 import {
   PatientData,
@@ -21,7 +22,6 @@ import {
 } from "properties/types";
 import React, { useContext, useEffect, useState } from "react";
 import { View, ScrollView } from "react-native";
-import { UserContext, useOverlay } from "services/context";
 import {
   getHealthComments,
   getLatestHealthForm,

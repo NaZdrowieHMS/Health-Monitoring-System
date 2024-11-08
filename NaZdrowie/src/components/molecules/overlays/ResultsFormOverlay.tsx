@@ -1,8 +1,6 @@
 import { Dropdown, PrimaryButton } from "components/atoms";
 import { DropdownItem } from "components/atoms/Dropdown";
-import primaryColors from "properties/colors";
 import { generalStyle, inputStyle } from "properties/styles";
-import { fontSize } from "properties/vars";
 import React, { useState } from "react";
 import { Text, View } from "react-native";
 import { sendResult } from "services/patientData";

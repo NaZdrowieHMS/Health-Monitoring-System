@@ -4,10 +4,10 @@ import { PrimaryButton } from "components/atoms";
 import { CommentsCard, ListCard } from "components/molecules";
 import LoadingCard from "components/molecules/cards/LoadingCard";
 import { usePatientData } from "components/organisms";
+import { UserContext } from "components/organisms/context";
 import { mainStyle } from "properties/styles";
 import React, { useContext } from "react";
 import { View, ScrollView } from "react-native";
-import { UserContext } from "services/context";
 
 const MainScreenPatient = ({
   navigation,
