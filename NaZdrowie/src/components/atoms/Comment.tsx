@@ -3,7 +3,7 @@ import { CommentData } from "properties/types";
 import React from "react";
 import { Text, View } from "react-native";
 
-const Comment: React.FC<
+export const Comment: React.FC<
   { item: CommentData } & { index: number; dontShowAuthor?: boolean }
 > = (
   props: { item: CommentData } & { index: number; dontShowAuthor?: boolean },
@@ -26,5 +26,3 @@ const Comment: React.FC<
     </View>
   );
 };
-
-export default Comment;

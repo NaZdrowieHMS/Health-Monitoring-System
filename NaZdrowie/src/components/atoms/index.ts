@@ -1,13 +1,12 @@
-export {
-  LinkButton,
-  PrimaryButton,
-  SecondaryButton,
-  UserButton,
-  UserButtonElement,
-} from "./buttons";
-export { default as PersonalizedTextInput } from "./PersonalizedTextInput";
-export { default as NavbarDescription } from "./NavbarDescription";
-export { default as HamburgerMenu } from "./HamburgerMenu";
-export { default as Comment } from "./Comment";
-export { default as PersonalizedCheckbox } from "./PersonalizedCheckbox";
-export { default as Dropdown } from "./Dropdown";
+export * from "./buttons/EditButton";
+export * from "./buttons/LinkButton";
+export * from "./buttons/PrimaryButton";
+export * from "./buttons/SecondaryButton";
+export * from "./buttons/UserButton";
+export * from "./Comment";
+export * from "./Dropdown";
+export * from "./HamburgerMenu";
+export * from "./LoadingIcon";
+export * from "./NavbarDescription";
+export * from "./PersonalizedCheckbox";
+export * from "./PersonalizedTextInput";

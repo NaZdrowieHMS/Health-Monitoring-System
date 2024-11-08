@@ -4,7 +4,9 @@ import { InputProps } from "properties/types";
 import React, { useEffect } from "react";
 import { TextInput } from "react-native";
 
-const PersonalizedTextInput: React.FC<InputProps> = (props: InputProps) => {
+export const PersonalizedTextInput: React.FC<InputProps> = (
+  props: InputProps,
+) => {
   const { placeholder, onChange } = props;
   const [text, onChangeText] = React.useState("");
 
@@ -26,5 +28,3 @@ const PersonalizedTextInput: React.FC<InputProps> = (props: InputProps) => {
     </>
   );
 };
-
-export default PersonalizedTextInput;

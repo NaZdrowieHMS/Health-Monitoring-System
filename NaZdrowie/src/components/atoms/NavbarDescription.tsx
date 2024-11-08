@@ -6,7 +6,7 @@ type NavbarDescriptionProps = {
   title?: string;
 };
 
-const NavbarDescription: React.FC<NavbarDescriptionProps> = (
+export const NavbarDescription: React.FC<NavbarDescriptionProps> = (
   props: NavbarDescriptionProps,
 ) => {
   const { title } = props;
@@ -17,5 +17,3 @@ const NavbarDescription: React.FC<NavbarDescriptionProps> = (
     <></>
   );
 };
-
-export default NavbarDescription;
