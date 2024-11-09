@@ -1,4 +1,9 @@
-import { DoctorComment, HealthFormDisplayData } from "properties/types";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  DoctorComment,
+  HealthFormDisplayData,
+  UserData,
+} from "properties/types";
 import {
   PatientData,
   PatientReferral,
@@ -8,71 +13,81 @@ import {
 
 import axiosInstance from "./axios";
 
-export const getHealthComments: (
-  patientId: number,
-) => Promise<DoctorComment[]> = async (patientId: number) => {
-  try {
-    const response = await axiosInstance.get(`patients/${patientId}/health`);
-    return response.data;
-  } catch (error) {
-    console.error("[getHealthComments] Error fetching data:", error);
-  }
-};
-
-export const getReferrals: (
-  patientId: number,
-) => Promise<PatientReferral[]> = async (patientId: number) => {
-  try {
-    const response = await axiosInstance.get(`patients/${patientId}/referrals`);
-    return response.data;
-  } catch (error) {
-    console.error("[getReferrals] Error fetching data:", error);
-  }
-};
-
-export const getResults: (
-  patientId: number,
-) => Promise<PatientResult[]> = async (patientId: number) => {
-  try {
-    const response = await axiosInstance.get(`patients/${patientId}/results`);
-    return response.data;
-  } catch (error) {
-    console.error("[getResults] Error fetching data:", error);
-  }
-};
-
-export const getPatient: (patientId: number) => Promise<PatientData> = async (
-  patientId: number,
+export const useFetchHealthComments = <T = DoctorComment[]>(
+  user: UserData,
+  select?: (data: DoctorComment[]) => T,
+  patientId?: number,
 ) => {
-  try {
-    const response = await axiosInstance.get(`patients/${patientId}`);
-    return response.data;
-  } catch (error) {
-    console.error("[getPatient] Error fetching data:", error);
-  }
+  return useQuery<DoctorComment[], Error, T>({
+    queryKey: [user, `patients/${patientId ? patientId : user.id}/health`],
+    select,
+  });
 };
 
-export const sendResult: (
-  resultUpload: ResultUpload,
-) => Promise<string> = async (resultUpload: ResultUpload) => {
-  try {
-    const response = await axiosInstance.post(`results`, resultUpload);
-    return response.data;
-  } catch (error) {
-    console.error("[sendResult] Result not added", error);
-  }
+export const useFetchReferrals = <T = PatientReferral[]>(
+  user: UserData,
+  select?: (data: PatientReferral[]) => T,
+  patientId?: number,
+) => {
+  return useQuery<PatientReferral[], Error, T>({
+    queryKey: [user, `patients/${patientId ? patientId : user.id}/referrals`],
+    select,
+  });
+};
+export const useFetchResults = <T = PatientResult[]>(
+  user: UserData,
+  select?: (data: PatientResult[]) => T,
+  patientId?: number,
+) => {
+  return useQuery<PatientResult[], Error, T>({
+    queryKey: [user, `patients/${patientId ? patientId : user.id}/results`],
+    select,
+  });
 };
 
-export const getLatestHealthForm: (
-  patientId: number,
-) => Promise<HealthFormDisplayData | null> = async (patientId: number) => {
-  try {
-    const response = await axiosInstance.get(
-      `patients/${patientId}/forms/latest`,
-    );
-    return response.data;
-  } catch (error) {
-    console.error("[getLatestHealthForm] Error fetching data:", error);
-    return null;
-  }
+export const useFetchPatient = <T = PatientData>(
+  user: UserData,
+  select?: (data: PatientData) => T,
+  patientId?: number,
+) => {
+  return useQuery<PatientData, Error, T>({
+    queryKey: [user, `patients/${patientId ? patientId : user.id}`],
+    select,
+  });
+};
+
+export const useSendResult = (user: UserData, isreferralAssigned: boolean) => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (resultUpload: ResultUpload) => {
+      const { data } = await axiosInstance.post("results", resultUpload);
+      return data;
+    },
+    onSuccess(data: PatientResult) {
+      queryClient.setQueryData(
+        [user, `patients/${data.patientId}/results`],
+        (previousData: PatientResult[]) => [...previousData, data],
+      );
+      if (isreferralAssigned) {
+        queryClient.invalidateQueries({
+          queryKey: [user, `patients/${data.patientId}/referrals`],
+        });
+      }
+    },
+  });
+};
+
+export const useFetchLatestHealthForm = <T = HealthFormDisplayData | null>(
+  user: UserData,
+  select?: (data: HealthFormDisplayData | null) => T,
+  patientId?: number,
+) => {
+  return useQuery<HealthFormDisplayData | null, Error, T>({
+    queryKey: [
+      user,
+      `patients/${patientId ? patientId : user.id}/forms/latest`,
+    ],
+    select,
+  });
 };

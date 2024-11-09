@@ -1,3 +1,4 @@
+import { UserData } from "properties/types";
 import React, {
   createContext,
   Dispatch,
@@ -5,13 +6,7 @@ import React, {
   useState,
 } from "react";
 
-type UserData = {
-  id: number;
-  isDoctor: boolean;
-};
-
 type UserProviderDispatch = {
-  // maybe a better name?
   currentUser: UserData;
   setCurrentUser: Dispatch<SetStateAction<{ id: number; isDoctor: boolean }>>;
 };
@@ -33,4 +28,4 @@ const UserProvider: React.FC<{ children: React.ReactNode }> = ({
   );
 };
 
-export { UserContext, UserProvider, UserData };
+export { UserContext, UserProvider };

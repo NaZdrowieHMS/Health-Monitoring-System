@@ -5,7 +5,7 @@ import { paddingSize } from "properties/vars";
 import React from "react";
 import { View, Text } from "react-native";
 
-const AiAnalysisResultCard: React.FC<object> = () => {
+export const AiAnalysisResultCard: React.FC<object> = () => {
   const mockedAiResults = [
     {
       diagnosis: "Nowotwór piersi",
@@ -66,5 +66,3 @@ const AiAnalysisResultCard: React.FC<object> = () => {
     </View>
   );
 };
-
-export default AiAnalysisResultCard;

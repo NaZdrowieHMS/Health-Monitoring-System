@@ -1,6 +1,7 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { UserProvider, OverlayProvider } from "components/organisms/context";
 import React from "react";
 import { View } from "react-native";
 import {
@@ -14,7 +15,7 @@ import {
   AiDiagnosis,
 } from "screens/doctorScreens";
 import { MainScreen } from "screens/main";
-import { UserProvider, OverlayProvider } from "services/context";
+import axiosInstance from "services/axios";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -22,6 +23,13 @@ const queryClient = new QueryClient({
       retry: 2,
       retryDelay: 2000,
       staleTime: 60_000,
+      queryFn: async ({ queryKey }) => {
+        const lastKey = queryKey[queryKey.length - 1];
+        if (typeof lastKey === "string") {
+          const { data } = await axiosInstance.get(lastKey);
+          return data;
+        }
+      },
     },
   },
 });

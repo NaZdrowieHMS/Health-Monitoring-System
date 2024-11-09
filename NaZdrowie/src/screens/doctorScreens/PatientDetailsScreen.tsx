@@ -1,34 +1,19 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "App";
-import { LinkButton, PrimaryButton } from "components/atoms";
+import { PrimaryButton } from "components/atoms";
 import {
   CommentsCardForDoctor,
-  HealthFormResultOverlay,
   ListCard,
+  LoadingCard,
   Navbar,
-  ReferralOverviewOverlay,
-  ResultsFormOverlay,
 } from "components/molecules";
+import { usePatientData } from "components/organisms";
+import { UserContext } from "components/organisms/context";
 import { mainStyle } from "properties/styles";
-import {
-  PatientData,
-  PatientReferral,
-  PatientResult,
-  CommentData,
-  ListCardElement,
-  DoctorComment,
-  HealthFormDisplayData,
-} from "properties/types";
-import React, { useContext, useEffect, useState } from "react";
+import { DoctorComment } from "properties/types";
+import React, { useContext } from "react";
 import { View, ScrollView } from "react-native";
-import { UserContext, useOverlay } from "services/context";
-import {
-  getHealthComments,
-  getLatestHealthForm,
-  getPatient,
-  getReferrals,
-  getResults,
-} from "services/patientData";
+import { useFetchHealthComments, useFetchPatient } from "services/patientData";
 import { formatDate } from "services/utils";
 
 export const PatientDetailsScreen = ({
@@ -37,26 +22,30 @@ export const PatientDetailsScreen = ({
 }: NativeStackScreenProps<RootStackParamList, "PatientDetails">) => {
   const { patientId } = route.params;
   const { currentUser } = useContext(UserContext);
-  const { showOverlay, hideOverlay } = useOverlay();
 
-  const [referralsData, setReferralsData] = useState<ListCardElement[]>([]);
-  const [resultsData, setResultssData] = useState<ListCardElement[]>([]);
-  const [patientData, setPatientData] = useState<PatientData>(null);
-  const [currentDotorCommentsData, setCurrentDotorCommentsData] = useState<
-    CommentData[]
-  >([]);
-
-  const [otherDotorsCommentsData, setOtherDotorsCommentsData] = useState<
-    CommentData[]
-  >([]);
-
-  useEffect(() => {
-    setReferrals(patientId);
-    setResults(patientId);
-    setPatient(patientId);
-    setHealthComments(patientId);
-  }, []);
-
+  const patient = useFetchPatient(currentUser, null, patientId);
+  const currentDotorComments = useFetchHealthComments(
+    currentUser,
+    (data) => {
+      return data
+        .filter((comment) => comment.doctor.id === currentUser.id)
+        .map(formatCommentsData);
+    },
+    patientId,
+  );
+  const otherDotorsComments = useFetchHealthComments(
+    currentUser,
+    (data) => {
+      return data
+        .filter((comment) => comment.doctor.id !== currentUser.id)
+        .map(formatCommentsData);
+    },
+    patientId,
+  );
+  const { referrals, results, openResultsFormOverlay } = usePatientData({
+    id: patientId,
+    isDoctor: false,
+  });
   const navigateToAllReferals = () => {
     // TODO
   };
@@ -71,118 +60,23 @@ export const PatientDetailsScreen = ({
     });
   };
 
-  const setReferrals = async (patientId: number) => {
-    try {
-      const data = await getReferrals(patientId);
-      const formattedReferrals = data.map(formatReferralsData);
-      setReferralsData(formattedReferrals);
-    } catch (error) {
-      console.error("Error fetching referrals:", error);
-    }
-  };
-
-  const formatReferralsData = (referral: PatientReferral) => ({
-    text: referral.testType,
-    buttons: [
-      <LinkButton
-        title="Podgląd"
-        handleOnClick={() => openReferralOverviewOverlay(referral)}
-      />,
-    ],
-  });
-
-  const openReferralOverviewOverlay = (referral: PatientReferral) => {
-    showOverlay(() => (
-      <ReferralOverviewOverlay
-        handleClose={() => hideOverlay()}
-        referral={referral}
-      />
-    ));
-  };
-
-  const setResults = async (patientId: number) => {
-    try {
-      const data = await getResults(patientId);
-      const formData = await getLatestHealthForm(patientId);
-      const formattedResults = data.map(formatResultsData);
-      if (formData != null) {
-        formattedResults.push({
-          text: `Formularz zdrowia ${formatDate(formData.createDate)}`,
-          buttons: [
-            <LinkButton
-              title="Podgląd"
-              handleOnClick={() => openHealthFormResultOverlay(formData)}
-            />,
-          ],
-        });
-      }
-      setResultssData(formattedResults);
-    } catch (error) {
-      console.error("Error fetching results:", error);
-    }
-  };
-
-  const openHealthFormResultOverlay = (data: HealthFormDisplayData) => {
-    showOverlay(() => (
-      <HealthFormResultOverlay
-        healthFormData={data}
-        handleClose={() => hideOverlay()}
-      />
-    ));
-  };
-
-  const formatResultsData = (result: PatientResult) => ({
-    text: result.testType,
-    buttons: [<LinkButton title="Przejdź" />],
-  });
-
-  const setPatient = async (patientId: number) => {
-    try {
-      const data = await getPatient(patientId);
-      setPatientData(data);
-    } catch (error) {
-      console.error("Error fetching patient data:", error);
-    }
-  };
-
-  const setHealthComments = async (patientId: number) => {
-    try {
-      const data = await getHealthComments(patientId);
-      const currentDotorComments = data.filter(
-        (comment) => comment.doctor.id === currentUser.id,
-      );
-      const otherDotorsComments = data.filter(
-        (comment) => comment.doctor.id !== currentUser.id,
-      );
-      setCurrentDotorCommentsData(currentDotorComments.map(formatCommentsData));
-      setOtherDotorsCommentsData(otherDotorsComments.map(formatCommentsData));
-    } catch (error) {
-      console.error("Error fetching health comments:", error);
-    }
-  };
-
-  const openResultsFormOverlay = () => {
-    showOverlay(() => (
-      <ResultsFormOverlay
-        handleClose={() => hideOverlay()}
-        patientId={currentUser.id}
-      />
-    ));
-  };
-
-  const formatCommentsData = (comment: DoctorComment) => ({
-    date: formatDate(comment.modifiedDate),
-    text: comment.content,
-    author: `${comment.doctor.name} ${comment.doctor.surname}`,
-  });
+  function formatCommentsData(comment: DoctorComment) {
+    return {
+      date: formatDate(comment.modifiedDate),
+      text: comment.content,
+      author: `${comment.doctor.name} ${comment.doctor.surname}`,
+    };
+  }
 
   return (
     <View style={{ flex: 1 }}>
-      <Navbar
-        navbarDescriptionTitle={
-          `${patientData?.name} ${patientData?.surname}` || ""
-        }
-      />
+      {patient.isSuccess ? (
+        <Navbar
+          navbarDescriptionTitle={`${patient.data.name} ${patient.data.surname}`}
+        />
+      ) : (
+        <Navbar navbarDescriptionTitle="..." /> // maybe loading here or sth idk
+      )}
       <ScrollView contentContainerStyle={mainStyle.container}>
         <View style={mainStyle.buttonContainer}>
           <PrimaryButton
@@ -192,25 +86,35 @@ export const PatientDetailsScreen = ({
           <PrimaryButton title="Czat z pacjentem" />
           <PrimaryButton
             title="Załącz wynik badania"
-            handleOnClick={() => openResultsFormOverlay()}
+            handleOnClick={() => openResultsFormOverlay(patientId)}
           />
           <PrimaryButton title="Wystaw skierowanie" />
         </View>
-        <CommentsCardForDoctor
-          title="Zdrowie pacjenta"
-          data={currentDotorCommentsData}
-          dataOthers={otherDotorsCommentsData}
-        />
-        <ListCard
-          title="Skierowania pacjenta"
-          data={referralsData}
-          handleSeeMore={navigateToAllReferals}
-        />
-        <ListCard
-          title="Wyniki pacjenta"
-          data={resultsData}
-          handleSeeMore={navigateToAllResults}
-        />
+
+        {referrals.isSuccess &&
+        currentDotorComments.isSuccess &&
+        otherDotorsComments.isSuccess &&
+        results.isSuccess ? (
+          <>
+            <CommentsCardForDoctor
+              title="Zdrowie pacjenta"
+              data={currentDotorComments.data}
+              dataOthers={otherDotorsComments.data}
+            />
+            <ListCard
+              title="Skierowania pacjenta"
+              data={referrals.data}
+              handleSeeMore={navigateToAllReferals}
+            />
+            <ListCard
+              title="Wyniki pacjenta"
+              data={results.data}
+              handleSeeMore={navigateToAllResults}
+            />
+          </>
+        ) : (
+          <LoadingCard />
+        )}
       </ScrollView>
     </View>
   );

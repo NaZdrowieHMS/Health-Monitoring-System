@@ -7,7 +7,7 @@ import { View, Text } from "react-native";
 import { formatDate } from "services/utils";
 
 import { Overlay } from "./Overlay";
-import ObjectCard from "../cards/ObjectCard";
+import { ObjectCard } from "../cards";
 
 export const ReferralOverviewOverlay: React.FC<{
   handleClose: () => void;

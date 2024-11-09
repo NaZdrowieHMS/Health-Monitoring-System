@@ -4,7 +4,7 @@ import { CommentsCardProps } from "properties/types";
 import React from "react";
 import { Text, View } from "react-native";
 
-const CommentsCard: React.FC<CommentsCardProps> = (
+export const CommentsCard: React.FC<CommentsCardProps> = (
   props: CommentsCardProps,
 ) => {
   const { title, data, handleSeeMore } = props;
@@ -21,5 +21,3 @@ const CommentsCard: React.FC<CommentsCardProps> = (
     </View>
   );
 };
-
-export default CommentsCard;

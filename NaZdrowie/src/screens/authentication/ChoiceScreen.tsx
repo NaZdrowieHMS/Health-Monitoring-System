@@ -5,7 +5,7 @@ import { authenticationScreenStyle } from "properties/styles";
 import React from "react";
 import { Keyboard, Text, View } from "react-native";
 
-const ChoiceScreen = ({
+export const ChoiceScreen = ({
   navigation,
 }: NativeStackScreenProps<RootStackParamList, "Choice">) => {
   const dismissKeyboard = () => {
@@ -42,5 +42,3 @@ const ChoiceScreen = ({
     </View>
   );
 };
-
-export default ChoiceScreen;

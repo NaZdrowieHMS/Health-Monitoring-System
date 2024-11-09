@@ -1,35 +1,26 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "App";
 import { PrimaryButton } from "components/atoms";
-import { CommentsCard, ListCard } from "components/molecules";
-import { usePatientData } from "components/organisms/usePatientData";
+import { CommentsCard, ListCard, LoadingCard } from "components/molecules";
+import { usePatientData } from "components/organisms";
+import { UserContext } from "components/organisms/context";
 import { mainStyle } from "properties/styles";
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import { View, ScrollView } from "react-native";
-import { UserContext } from "services/context";
 
-const MainScreenPatient = ({
+export const MainScreenPatient = ({
   navigation,
 }: NativeStackScreenProps<RootStackParamList, "MainScreen">) => {
   const { currentUser } = useContext(UserContext);
 
   const {
-    referralsData,
-    resultsData,
-    healthCommentsData,
-    setHealthComments,
-    setReferrals,
-    setResults,
+    healthComments,
+    referrals,
+    results,
     openHealthFormFillOverlay,
     openResultsFormOverlay,
     openCommentsOverlay,
-  } = usePatientData();
-
-  useEffect(() => {
-    setHealthComments(currentUser.id);
-    setReferrals(currentUser.id);
-    setResults(currentUser.id);
-  }, []);
+  } = usePatientData(currentUser);
 
   return (
     <ScrollView contentContainerStyle={mainStyle.container}>
@@ -47,15 +38,19 @@ const MainScreenPatient = ({
         <PrimaryButton title="Dodaj lekarza" />
         <PrimaryButton title="Czaty z lekarzami" />
       </View>
-      <CommentsCard
-        title="Moje zdrowie"
-        data={healthCommentsData}
-        handleSeeMore={() => openCommentsOverlay(healthCommentsData)}
-      />
-      <ListCard title="Moje skierowania" data={referralsData} />
-      <ListCard title="Moje wyniki" data={resultsData} />
+      {healthComments.isSuccess && referrals.isSuccess && results.isSuccess ? (
+        <>
+          <CommentsCard
+            title="Moje zdrowie"
+            data={healthComments.data}
+            handleSeeMore={() => openCommentsOverlay(healthComments.data)}
+          />
+          <ListCard title="Moje skierowania" data={referrals.data} />
+          <ListCard title="Moje wyniki" data={results.data} />
+        </>
+      ) : (
+        <LoadingCard />
+      )}
     </ScrollView>
   );
 };
-
-export default MainScreenPatient;
