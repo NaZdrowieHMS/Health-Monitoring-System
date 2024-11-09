@@ -3,7 +3,9 @@ import { ObjectCardProps } from "properties/types";
 import React from "react";
 import { Text, View } from "react-native";
 
-const ObjectCard: React.FC<ObjectCardProps> = (props: ObjectCardProps) => {
+export const ObjectCard: React.FC<ObjectCardProps> = (
+  props: ObjectCardProps,
+) => {
   const { data, keyStyle } = props;
 
   return (
@@ -21,5 +23,3 @@ const ObjectCard: React.FC<ObjectCardProps> = (props: ObjectCardProps) => {
     </View>
   );
 };
-
-export default ObjectCard;

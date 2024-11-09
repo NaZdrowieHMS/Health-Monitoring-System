@@ -1,4 +1,6 @@
-export { default as CommentsCard } from "./CommentsCard";
-export { default as CommentsCardForDoctor } from "./CommentsCardForDoctor";
-export { default as ListCard } from "./ListCard";
-export { default as AiAnalysisResultCard } from "./AiAnalysisResultCard";
+export * from "./AiAnalysisResultCard";
+export * from "./CommentsCard";
+export * from "./CommentsCardForDoctor";
+export * from "./ListCard";
+export * from "./LoadingCard";
+export * from "./ObjectCard";

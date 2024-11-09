@@ -4,7 +4,7 @@ import { ListCardProps } from "properties/types";
 import React from "react";
 import { Text, View } from "react-native";
 
-const ListCard: React.FC<ListCardProps> = (props: ListCardProps) => {
+export const ListCard: React.FC<ListCardProps> = (props: ListCardProps) => {
   const { title, data, handleSeeMore, extraButton } = props;
 
   return (
@@ -37,5 +37,3 @@ const ListCard: React.FC<ListCardProps> = (props: ListCardProps) => {
     </View>
   );
 };
-
-export default ListCard;

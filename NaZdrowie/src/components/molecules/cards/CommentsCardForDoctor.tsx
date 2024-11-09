@@ -4,7 +4,7 @@ import { CommentData, CommentsCardProps } from "properties/types";
 import React from "react";
 import { Text, View } from "react-native";
 
-const CommentsCardForDoctor: React.FC<
+export const CommentsCardForDoctor: React.FC<
   CommentsCardProps & { dataOthers: CommentData[] }
 > = (props: CommentsCardProps & { dataOthers: CommentData[] }) => {
   const { title, data, dataOthers } = props;
@@ -27,5 +27,3 @@ const CommentsCardForDoctor: React.FC<
     </View>
   );
 };
-
-export default CommentsCardForDoctor;

@@ -3,7 +3,7 @@ import { cardStyle, generalStyle } from "properties/styles";
 import React from "react";
 import { Text, View } from "react-native";
 
-const LoadingCard: React.FC<{ title?: string }> = (props: {
+export const LoadingCard: React.FC<{ title?: string }> = (props: {
   title?: string;
 }) => {
   const { title } = props;
@@ -15,5 +15,3 @@ const LoadingCard: React.FC<{ title?: string }> = (props: {
     </View>
   );
 };
-
-export default LoadingCard;
