@@ -11,7 +11,7 @@ import { authenticationScreenStyle } from "properties/styles";
 import React, { useContext } from "react";
 import { Keyboard, Text, View } from "react-native";
 
-const LoginScreen = ({
+export const LoginScreen = ({
   navigation,
 }: NativeStackScreenProps<RootStackParamList, "Login">) => {
   const [login, setLogin] = React.useState<string>("");
@@ -78,5 +78,3 @@ const LoginScreen = ({
     </View>
   );
 };
-
-export default LoginScreen;

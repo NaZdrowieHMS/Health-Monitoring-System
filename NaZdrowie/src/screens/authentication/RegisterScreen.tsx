@@ -8,7 +8,7 @@ import {
 import React from "react";
 import { Keyboard, ScrollView, Text, View } from "react-native";
 
-const RegisterScreen = ({
+export const RegisterScreen = ({
   navigation,
   route,
 }: NativeStackScreenProps<RootStackParamList, "Register">) => {
@@ -46,5 +46,3 @@ const RegisterScreen = ({
     </ScrollView>
   );
 };
-
-export default RegisterScreen;

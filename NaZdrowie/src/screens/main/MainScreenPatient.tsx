@@ -8,7 +8,7 @@ import { mainStyle } from "properties/styles";
 import React, { useContext } from "react";
 import { View, ScrollView } from "react-native";
 
-const MainScreenPatient = ({
+export const MainScreenPatient = ({
   navigation,
 }: NativeStackScreenProps<RootStackParamList, "MainScreen">) => {
   const { currentUser } = useContext(UserContext);
@@ -54,5 +54,3 @@ const MainScreenPatient = ({
     </ScrollView>
   );
 };
-
-export default MainScreenPatient;

@@ -12,7 +12,7 @@ import {
   useFetchLatestResults,
 } from "services/doctorData";
 
-const MainScreenDoctor = ({
+export const MainScreenDoctor = ({
   navigation,
 }: NativeStackScreenProps<RootStackParamList, "MainScreen">) => {
   const { currentUser } = useContext(UserContext);
@@ -88,5 +88,3 @@ const MainScreenDoctor = ({
     </ScrollView>
   );
 };
-
-export default MainScreenDoctor;

@@ -5,10 +5,10 @@ import { UserContext } from "components/organisms/context";
 import React, { useContext } from "react";
 import { View } from "react-native";
 
-import MainScreenDoctor from "./MainScreenDoctor";
-import MainScreenPatient from "./MainScreenPatient";
+import { MainScreenDoctor } from "./MainScreenDoctor";
+import { MainScreenPatient } from "./MainScreenPatient";
 
-const MainScreen = ({
+export const MainScreen = ({
   navigation,
   route,
 }: NativeStackScreenProps<RootStackParamList, "MainScreen">) => {
@@ -27,5 +27,3 @@ const MainScreen = ({
     </View>
   );
 };
-
-export default MainScreen;
