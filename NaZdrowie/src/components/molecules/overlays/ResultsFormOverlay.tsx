@@ -1,24 +1,31 @@
 import { Dropdown, PrimaryButton } from "components/atoms";
 import { DropdownItem } from "components/atoms/Dropdown";
 import { generalStyle, inputStyle } from "properties/styles";
+import { UserData } from "properties/types";
 import React, { useState } from "react";
 import { Text, View } from "react-native";
-import { sendResult } from "services/patientData";
+import { useSendResult } from "services/patientData";
 
 import { Overlay } from "./Overlay";
 import { PersonalizedImagePicker } from "../PersonalizedImagePicker";
 
 export const ResultsFormOverlay: React.FC<{
+  currentUser: UserData;
   patientId: number;
   referralId?: number;
   referralTestType?: string;
   handleClose: () => void;
-}> = ({ patientId, referralId, referralTestType, handleClose }) => {
+}> = ({
+  currentUser,
+  patientId,
+  referralId,
+  referralTestType,
+  handleClose,
+}) => {
   const resultItems: DropdownItem[] = [
     { label: "USG piersi", value: "USG piersi" },
     { label: "Mammografia", value: "Mammografia" },
   ];
-
   const [base64Data, setBase64Data] = useState<string>();
   const [dataType, setDataType] = useState<string>();
   const [testType, setTestType] = useState<string>();
@@ -30,8 +37,10 @@ export const ResultsFormOverlay: React.FC<{
     handleClose();
   };
 
+  const sendResult = useSendResult(currentUser, !!referralId);
+
   const handleSendResults = () => {
-    sendResult({
+    sendResult.mutateAsync({
       patientId,
       referralId,
       testType: testType ? testType : referralTestType,
@@ -39,7 +48,7 @@ export const ResultsFormOverlay: React.FC<{
         data: base64Data,
         type: dataType,
       },
-    });
+    }); // here you can define onSuccess, onError and onSettled logic
     closeAndCleanData();
   };
 

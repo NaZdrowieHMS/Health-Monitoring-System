@@ -120,6 +120,7 @@ export const usePatientData = (currentUser: UserData) => {
   ) => {
     showOverlay(() => (
       <ResultsFormOverlay
+        currentUser={currentUser}
         handleClose={() => hideOverlay()}
         patientId={patientId}
         referralId={referralId}

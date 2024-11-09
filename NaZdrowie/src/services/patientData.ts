@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   DoctorComment,
   HealthFormDisplayData,
@@ -56,16 +56,26 @@ export const useFetchPatient = <T = PatientData>(
   });
 };
 
-// to be done, mutation required here
-export const sendResult: (
-  resultUpload: ResultUpload,
-) => Promise<string> = async (resultUpload: ResultUpload) => {
-  try {
-    const response = await axiosInstance.post(`results`, resultUpload);
-    return response.data;
-  } catch (error) {
-    console.error("[sendResult] Result not added", error);
-  }
+export const useSendResult = (user: UserData, isreferralAssigned: boolean) => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (resultUpload: ResultUpload) => {
+      const { data } = await axiosInstance.post("results", resultUpload);
+      return data;
+    },
+    onSuccess(data: PatientResult) {
+      queryClient.setQueryData(
+        [user, `patients/${data.patientId}/results`],
+        (previousData: PatientResult[]) => [...previousData, data],
+      );
+      if (isreferralAssigned) {
+        queryClient.invalidateQueries({
+          queryKey: [user, `patients/${data.patientId}/referrals`],
+        });
+      }
+    },
+  });
 };
 
 export const useFetchLatestHealthForm = <T = HealthFormDisplayData | null>(

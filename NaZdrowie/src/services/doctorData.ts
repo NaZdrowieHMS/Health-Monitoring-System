@@ -2,8 +2,6 @@ import { useQuery } from "@tanstack/react-query";
 import { UserData } from "properties/types";
 import { PatientData, PatientResult } from "properties/types/PatientDataProps";
 
-import axiosInstance from "./axios";
-
 export const useFetchLatestPatients = <T = PatientData[]>(
   user: UserData,
   select?: (data: PatientData[]) => T,
