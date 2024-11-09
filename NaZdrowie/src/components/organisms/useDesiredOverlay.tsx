@@ -4,12 +4,14 @@ import {
   HealthFormResultOverlay,
   ReferralOverviewOverlay,
   ResultsFormOverlay,
+  ResultPreviewOverlay,
 } from "components/molecules";
 import {
   CommentData,
   HealthFormDisplayData,
   healthFormItems,
   PatientReferral,
+  PatientResult,
   UserData,
 } from "properties/types";
 
@@ -73,11 +75,18 @@ export const useDesiredOverlay = (currentUser: UserData) => {
     ));
   };
 
+  const openResultOverlay = (data: PatientResult) => {
+    showOverlay(() => (
+      <ResultPreviewOverlay result={data} handleClose={() => hideOverlay()} />
+    ));
+  };
+
   return {
     openCommentsOverlay,
     openReferralOverviewOverlay,
     openResultsFormOverlay,
     openHealthFormFillOverlay,
     openHealthFormResultOverlay,
+    openResultOverlay,
   };
 };

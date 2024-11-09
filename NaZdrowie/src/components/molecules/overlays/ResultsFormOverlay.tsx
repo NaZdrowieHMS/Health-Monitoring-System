@@ -73,7 +73,7 @@ export const ResultsFormOverlay: React.FC<{
               setContentType={setDataType}
             />
             <Text style={generalStyle.basicText}>
-              Dozwolone formaty: png, jpg, ...
+              Dozwolone formaty: png, jpg
             </Text>
           </View>
         </Overlay.Body>

@@ -15,6 +15,7 @@ export const usePatientData = (currentUser: UserData, patientId?: number) => {
     openReferralOverviewOverlay,
     openResultsFormOverlay,
     openHealthFormResultOverlay,
+    openResultOverlay,
   } = useDesiredOverlay(currentUser);
 
   const formatReferralsView = (referral: PatientReferral) => ({
@@ -47,7 +48,12 @@ export const usePatientData = (currentUser: UserData, patientId?: number) => {
 
   const formatResultsView = (result: PatientResult) => ({
     text: result.testType,
-    buttons: [<LinkButton title="Podgląd" />],
+    buttons: [
+      <LinkButton
+        title="Podgląd"
+        handleOnClick={() => openResultOverlay(result)}
+      />,
+    ],
   });
 
   const healthComments = useFetchHealthComments(

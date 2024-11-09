@@ -2,6 +2,8 @@ import primaryColors from "properties/colors";
 import { fontSize, paddingSize } from "properties/vars";
 import { StyleSheet } from "react-native";
 
+import { generalStyle } from "./generalStyle";
+
 export const mainStyle = StyleSheet.create({
   container: {
     backgroundColor: primaryColors.babyBlue,
@@ -20,9 +22,7 @@ export const navbarStyle = StyleSheet.create({
     paddingHorizontal: paddingSize.medium,
     paddingVertical: paddingSize.mediumBig,
     backgroundColor: primaryColors.white,
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between",
+    ...generalStyle.rowSpread,
   },
   text: {
     fontSize: fontSize.h2FontSize,
