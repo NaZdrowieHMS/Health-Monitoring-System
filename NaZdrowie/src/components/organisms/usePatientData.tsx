@@ -109,11 +109,11 @@ export const usePatientData = (currentUser: UserData) => {
       ],
     };
   });
-  
+
   if (results.isSuccess && latestHealthForm.data) {
     results.data?.push(latestHealthForm.data);
   }
-  
+
   const openResultsFormOverlay = (
     patientId: number,
     referralId?: number,
