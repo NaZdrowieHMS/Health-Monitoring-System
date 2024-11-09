@@ -19,3 +19,12 @@ export type DoctorComment = {
   modifiedDate: string;
   content: string;
 };
+
+export type PatientReferralUpload = {
+  doctorId: number;
+  patientId: number;
+  testType: string;
+  referralNumber: string;
+  completed: boolean;
+  comment: string;
+};

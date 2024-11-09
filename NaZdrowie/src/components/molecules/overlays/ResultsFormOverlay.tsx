@@ -1,10 +1,10 @@
 import { Dropdown, PrimaryButton } from "components/atoms";
-import { DropdownItem } from "components/atoms/Dropdown";
 import { generalStyle, inputStyle } from "properties/styles";
 import { UserData } from "properties/types";
 import React, { useState } from "react";
 import { Text, View } from "react-native";
 import { useSendResult } from "services/patientData";
+import { resultItems } from "services/utils";
 
 import { Overlay } from "./Overlay";
 import { PersonalizedImagePicker } from "../PersonalizedImagePicker";
@@ -22,20 +22,9 @@ export const ResultsFormOverlay: React.FC<{
   referralTestType,
   handleClose,
 }) => {
-  const resultItems: DropdownItem[] = [
-    { label: "USG piersi", value: "USG piersi" },
-    { label: "Mammografia", value: "Mammografia" },
-  ];
   const [base64Data, setBase64Data] = useState<string>();
   const [dataType, setDataType] = useState<string>();
   const [testType, setTestType] = useState<string>();
-
-  const closeAndCleanData = () => {
-    setBase64Data(null);
-    setDataType(null);
-    setTestType(null);
-    handleClose();
-  };
 
   const sendResult = useSendResult(currentUser, !!referralId);
 
@@ -49,13 +38,13 @@ export const ResultsFormOverlay: React.FC<{
         type: dataType,
       },
     }); // here you can define onSuccess, onError and onSettled logic
-    closeAndCleanData();
+    handleClose();
   };
 
   return (
     <Overlay>
       <Overlay.Container>
-        <Overlay.Header title="Załącz wyniki" handleClose={closeAndCleanData} />
+        <Overlay.Header title="Załącz wyniki" handleClose={handleClose} />
         <Overlay.Body>
           {!referralTestType && (
             <Dropdown

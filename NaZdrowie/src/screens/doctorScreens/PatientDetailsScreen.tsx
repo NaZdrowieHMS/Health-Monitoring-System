@@ -24,7 +24,8 @@ export const PatientDetailsScreen = ({
 }: NativeStackScreenProps<RootStackParamList, "PatientDetails">) => {
   const { patientId } = route.params;
   const { currentUser } = useContext(UserContext);
-  const { openResultsFormOverlay } = useDesiredOverlay(currentUser);
+  const { openResultsFormOverlay, openReferralFormOverlay } =
+    useDesiredOverlay(currentUser);
 
   const patient = useFetchPatient(currentUser, null, patientId);
   const { referrals, results } = usePatientData(currentUser, patientId);
@@ -68,7 +69,10 @@ export const PatientDetailsScreen = ({
             title="Załącz wynik badania"
             handleOnClick={() => openResultsFormOverlay(patientId)}
           />
-          <PrimaryButton title="Wystaw skierowanie" />
+          <PrimaryButton
+            title="Wystaw skierowanie"
+            handleOnClick={() => openReferralFormOverlay(patientId)}
+          />
         </View>
 
         {referrals.isSuccess &&

@@ -5,6 +5,7 @@ import {
   ReferralOverviewOverlay,
   ResultsFormOverlay,
   ResultPreviewOverlay,
+  ReferralFormOverlay,
 } from "components/molecules";
 import {
   CommentData,
@@ -23,7 +24,7 @@ export const useDesiredOverlay = (currentUser: UserData) => {
   const openCommentsOverlay = (healthCommentsData: CommentData[]) => {
     showOverlay(() => (
       <CommentsOverlay
-        handleClose={() => hideOverlay()}
+        handleClose={hideOverlay}
         comments={healthCommentsData}
         title="Moje zdrowie"
       />
@@ -32,10 +33,7 @@ export const useDesiredOverlay = (currentUser: UserData) => {
 
   const openReferralOverviewOverlay = (referral: PatientReferral) => {
     showOverlay(() => (
-      <ReferralOverviewOverlay
-        handleClose={() => hideOverlay()}
-        referral={referral}
-      />
+      <ReferralOverviewOverlay handleClose={hideOverlay} referral={referral} />
     ));
   };
 
@@ -47,7 +45,7 @@ export const useDesiredOverlay = (currentUser: UserData) => {
     showOverlay(() => (
       <ResultsFormOverlay
         currentUser={currentUser}
-        handleClose={() => hideOverlay()}
+        handleClose={hideOverlay}
         patientId={patientId}
         referralId={referralId}
         referralTestType={testType}
@@ -59,9 +57,7 @@ export const useDesiredOverlay = (currentUser: UserData) => {
     showOverlay(() => (
       <HealthFormFillOverlay
         healthFormData={{ patientId, content: healthFormItems }}
-        handleClose={() => {
-          hideOverlay();
-        }}
+        handleClose={hideOverlay}
       />
     ));
   };
@@ -70,14 +66,24 @@ export const useDesiredOverlay = (currentUser: UserData) => {
     showOverlay(() => (
       <HealthFormResultOverlay
         healthFormData={data}
-        handleClose={() => hideOverlay()}
+        handleClose={hideOverlay}
       />
     ));
   };
 
   const openResultOverlay = (data: PatientResult) => {
     showOverlay(() => (
-      <ResultPreviewOverlay result={data} handleClose={() => hideOverlay()} />
+      <ResultPreviewOverlay result={data} handleClose={hideOverlay} />
+    ));
+  };
+
+  const openReferralFormOverlay = (patientId: number) => {
+    showOverlay(() => (
+      <ReferralFormOverlay
+        handleClose={hideOverlay}
+        currentUser={currentUser}
+        patientId={patientId}
+      />
     ));
   };
 
@@ -88,5 +94,6 @@ export const useDesiredOverlay = (currentUser: UserData) => {
     openHealthFormFillOverlay,
     openHealthFormResultOverlay,
     openResultOverlay,
+    openReferralFormOverlay,
   };
 };
