@@ -1,3 +1,5 @@
+import { DoctorComment, CommentData } from "properties/types";
+
 export const formatDate = (unformattedDate: string) => {
   const date = new Date(unformattedDate);
   return new Intl.DateTimeFormat("pl-PL", {
@@ -9,3 +11,9 @@ export const formatDate = (unformattedDate: string) => {
     hour12: false,
   }).format(date);
 };
+
+export const formatCommentsData = (comment: DoctorComment): CommentData => ({
+  date: formatDate(comment.modifiedDate),
+  text: comment.content,
+  author: `${comment.doctor.name} ${comment.doctor.surname}`,
+});

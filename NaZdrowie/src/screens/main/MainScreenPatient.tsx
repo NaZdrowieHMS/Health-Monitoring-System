@@ -2,7 +2,7 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "App";
 import { PrimaryButton } from "components/atoms";
 import { CommentsCard, ListCard, LoadingCard } from "components/molecules";
-import { usePatientData } from "components/organisms";
+import { useDesiredOverlay, usePatientData } from "components/organisms";
 import { UserContext } from "components/organisms/context";
 import { mainStyle } from "properties/styles";
 import React, { useContext } from "react";
@@ -13,14 +13,13 @@ export const MainScreenPatient = ({
 }: NativeStackScreenProps<RootStackParamList, "MainScreen">) => {
   const { currentUser } = useContext(UserContext);
 
+  const { healthComments, referrals, results } = usePatientData(currentUser);
+
   const {
-    healthComments,
-    referrals,
-    results,
-    openHealthFormFillOverlay,
-    openResultsFormOverlay,
     openCommentsOverlay,
-  } = usePatientData(currentUser);
+    openResultsFormOverlay,
+    openHealthFormFillOverlay,
+  } = useDesiredOverlay(currentUser);
 
   return (
     <ScrollView contentContainerStyle={mainStyle.container}>

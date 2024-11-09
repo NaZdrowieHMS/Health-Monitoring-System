@@ -7,14 +7,16 @@ import {
   LoadingCard,
   Navbar,
 } from "components/molecules";
-import { usePatientData } from "components/organisms";
+import {
+  useDesiredOverlay,
+  usePatientData,
+  useDoctorData,
+} from "components/organisms";
 import { UserContext } from "components/organisms/context";
 import { mainStyle } from "properties/styles";
-import { DoctorComment } from "properties/types";
 import React, { useContext } from "react";
 import { View, ScrollView } from "react-native";
-import { useFetchHealthComments, useFetchPatient } from "services/patientData";
-import { formatDate } from "services/utils";
+import { useFetchPatient } from "services/patientData";
 
 export const PatientDetailsScreen = ({
   route,
@@ -22,30 +24,16 @@ export const PatientDetailsScreen = ({
 }: NativeStackScreenProps<RootStackParamList, "PatientDetails">) => {
   const { patientId } = route.params;
   const { currentUser } = useContext(UserContext);
+  const { openResultsFormOverlay } = useDesiredOverlay(currentUser);
 
   const patient = useFetchPatient(currentUser, null, patientId);
-  const currentDotorComments = useFetchHealthComments(
+  const { referrals, results } = usePatientData(currentUser, patientId);
+  const { currentDotorComments, otherDotorsComments } = useDoctorData(
+    navigation,
     currentUser,
-    (data) => {
-      return data
-        .filter((comment) => comment.doctor.id === currentUser.id)
-        .map(formatCommentsData);
-    },
     patientId,
   );
-  const otherDotorsComments = useFetchHealthComments(
-    currentUser,
-    (data) => {
-      return data
-        .filter((comment) => comment.doctor.id !== currentUser.id)
-        .map(formatCommentsData);
-    },
-    patientId,
-  );
-  const { referrals, results, openResultsFormOverlay } = usePatientData({
-    id: patientId,
-    isDoctor: false,
-  });
+
   const navigateToAllReferals = () => {
     // TODO
   };
@@ -59,14 +47,6 @@ export const PatientDetailsScreen = ({
       patientId,
     });
   };
-
-  function formatCommentsData(comment: DoctorComment) {
-    return {
-      date: formatDate(comment.modifiedDate),
-      text: comment.content,
-      author: `${comment.doctor.name} ${comment.doctor.surname}`,
-    };
-  }
 
   return (
     <View style={{ flex: 1 }}>
