@@ -1,8 +1,7 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "App";
 import { PrimaryButton } from "components/atoms";
-import { CommentsCard, ListCard } from "components/molecules";
-import LoadingCard from "components/molecules/cards/LoadingCard";
+import { CommentsCard, ListCard, LoadingCard } from "components/molecules";
 import { usePatientData } from "components/organisms";
 import { UserContext } from "components/organisms/context";
 import { mainStyle } from "properties/styles";
@@ -39,24 +38,18 @@ const MainScreenPatient = ({
         <PrimaryButton title="Dodaj lekarza" />
         <PrimaryButton title="Czaty z lekarzami" />
       </View>
-      {healthComments.isSuccess ? (
-        <CommentsCard
-          title="Moje zdrowie"
-          data={healthComments.data}
-          handleSeeMore={() => openCommentsOverlay(healthComments.data)}
-        />
+      {healthComments.isSuccess && referrals.isSuccess && results.isSuccess ? (
+        <>
+          <CommentsCard
+            title="Moje zdrowie"
+            data={healthComments.data}
+            handleSeeMore={() => openCommentsOverlay(healthComments.data)}
+          />
+          <ListCard title="Moje skierowania" data={referrals.data} />
+          <ListCard title="Moje wyniki" data={results.data} />
+        </>
       ) : (
-        <LoadingCard title="Moje zdrowie" />
-      )}
-      {referrals.isSuccess ? (
-        <ListCard title="Moje skierowania" data={referrals.data} />
-      ) : (
-        <LoadingCard title="Moje skierowania" />
-      )}
-      {results.isSuccess ? (
-        <ListCard title="Moje wyniki" data={results.data} />
-      ) : (
-        <LoadingCard title="Moje wyniki" />
+        <LoadingCard />
       )}
     </ScrollView>
   );

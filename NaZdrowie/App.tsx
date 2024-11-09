@@ -1,6 +1,7 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { UserProvider, OverlayProvider } from "components/organisms/context";
 import React from "react";
 import { View } from "react-native";
 import {
@@ -15,7 +16,6 @@ import {
 } from "screens/doctorScreens";
 import { MainScreen } from "screens/main";
 import axiosInstance from "services/axios";
-import { UserProvider, OverlayProvider } from "components/organisms/context";
 
 const queryClient = new QueryClient({
   defaultOptions: {

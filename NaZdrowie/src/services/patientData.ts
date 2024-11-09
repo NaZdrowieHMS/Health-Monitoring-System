@@ -13,12 +13,13 @@ import {
 
 import axiosInstance from "./axios";
 
-export const useFetchHealthComments = <T>(
-  patient: UserData,
+export const useFetchHealthComments = <T = DoctorComment[]>(
+  user: UserData,
   select?: (data: DoctorComment[]) => T,
+  patientId?: number,
 ) => {
   return useQuery<DoctorComment[], Error, T>({
-    queryKey: [patient, `patients/${patient.id}/health`],
+    queryKey: [user, `patients/${patientId ? patientId : user.id}/health`],
     select,
   });
 };
@@ -34,12 +35,13 @@ export const getHealthComments: (
   }
 };
 
-export const useFetchReferrals = <T>(
-  patient: UserData,
+export const useFetchReferrals = <T = PatientReferral[]>(
+  user: UserData,
   select?: (data: PatientReferral[]) => T,
+  patientId?: number,
 ) => {
   return useQuery<PatientReferral[], Error, T>({
-    queryKey: [patient, `patients/${patient.id}/referrals`],
+    queryKey: [user, `patients/${patientId ? patientId : user.id}/referrals`],
     select,
   });
 };
@@ -55,12 +57,13 @@ export const getReferrals: (
   }
 };
 
-export const useFetchResults = <T>(
-  patient: UserData,
+export const useFetchResults = <T = PatientResult[]>(
+  user: UserData,
   select?: (data: PatientResult[]) => T,
+  patientId?: number,
 ) => {
   return useQuery<PatientResult[], Error, T>({
-    queryKey: [patient, `patients/${patient.id}/results`],
+    queryKey: [user, `patients/${patientId ? patientId : user.id}/results`],
     select,
   });
 };
@@ -76,6 +79,17 @@ export const getResults: (
   }
 };
 
+export const useFetchPatient = <T = PatientData>(
+  user: UserData,
+  select?: (data: PatientData) => T,
+  patientId?: number,
+) => {
+  return useQuery<PatientData, Error, T>({
+    queryKey: [user, `patients/${patientId ? patientId : user.id}`],
+    select,
+  });
+};
+
 export const getPatient: (patientId: number) => Promise<PatientData> = async (
   patientId: number,
 ) => {
@@ -87,6 +101,7 @@ export const getPatient: (patientId: number) => Promise<PatientData> = async (
   }
 };
 
+// to be done, mutation required here
 export const sendResult: (
   resultUpload: ResultUpload,
 ) => Promise<string> = async (resultUpload: ResultUpload) => {
@@ -98,12 +113,16 @@ export const sendResult: (
   }
 };
 
-export const useFetchLatestHealthForm = <T>(
-  patient: UserData,
+export const useFetchLatestHealthForm = <T = HealthFormDisplayData | null>(
+  user: UserData,
   select?: (data: HealthFormDisplayData | null) => T,
+  patientId?: number,
 ) => {
   return useQuery<HealthFormDisplayData | null, Error, T>({
-    queryKey: [patient, `patients/${patient.id}/forms/latest`],
+    queryKey: [
+      user,
+      `patients/${patientId ? patientId : user.id}/forms/latest`,
+    ],
     select,
   });
 };
