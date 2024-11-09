@@ -14,17 +14,6 @@ export const useFetchLatestPatients = <T = PatientData[]>(
   });
 };
 
-export const getLatestPatients: (
-  doctorId: number,
-) => Promise<PatientData[]> = async (doctorId: number) => {
-  try {
-    const response = await axiosInstance.get(`/doctors/${doctorId}/patients`);
-    return response.data;
-  } catch (error) {
-    console.error("[getLatestPatients] Error fetching data:", error);
-  }
-};
-
 export const useFetchLatestResults = <
   T = (PatientResult & {
     patient: PatientData;
@@ -49,21 +38,6 @@ export const useFetchLatestResults = <
   });
 };
 
-export const getLatestResults: (doctorId: number) => Promise<
-  (PatientResult & {
-    patient: PatientData;
-  })[]
-> = async (doctorId: number) => {
-  try {
-    const response = await axiosInstance.get(
-      `/doctors/${doctorId}/results/unviewed`,
-    );
-    return response.data;
-  } catch (error) {
-    console.error("[getLatestResults] Error fetching data:", error);
-  }
-};
-
 export const useFetchAllPatients = <T = PatientData[]>(
   user: UserData,
   select?: (data: PatientData[]) => T,
@@ -72,15 +46,4 @@ export const useFetchAllPatients = <T = PatientData[]>(
     queryKey: [user, `doctors/${user.id}/patients`],
     select,
   });
-};
-
-export const getAllPatients: (
-  doctorId: number,
-) => Promise<PatientData[]> = async (doctorId: number) => {
-  try {
-    const response = await axiosInstance.get(`/doctors/${doctorId}/patients`);
-    return response.data;
-  } catch (error) {
-    console.error("[getAllPatients] Error fetching data:", error);
-  }
 };
