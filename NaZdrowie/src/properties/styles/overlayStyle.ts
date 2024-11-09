@@ -2,6 +2,8 @@ import primaryColors from "properties/colors";
 import { borderRadiusSize, paddingSize } from "properties/vars";
 import { StyleSheet } from "react-native";
 
+import { generalStyle } from "./generalStyle";
+
 export const overlayStyle = StyleSheet.create({
   container: {
     backgroundColor: primaryColors.white,
@@ -11,13 +13,11 @@ export const overlayStyle = StyleSheet.create({
     padding: paddingSize.mediumBig,
   },
   header: {
-    display: "flex",
-    flexDirection: "row",
     alignItems: "center",
-    justifyContent: "space-between",
     paddingBottom: paddingSize.medium,
     borderBottomWidth: 1,
     borderBottomColor: primaryColors.lightGrey,
+    ...generalStyle.rowSpread,
   },
   body: {
     paddingTop: paddingSize.mediumBig,

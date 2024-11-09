@@ -27,10 +27,8 @@ export const imagePickerStyle = StyleSheet.create({
   input: {
     paddingHorizontal: paddingSize.xSmall,
     paddingVertical: paddingSize.xxSmall,
-    display: "flex",
-    flexDirection: "row",
     alignItems: "center",
-    justifyContent: "space-between",
     ...inputStyle.input,
+    ...generalStyle.rowSpread,
   },
 });

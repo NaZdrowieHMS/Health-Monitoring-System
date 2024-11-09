@@ -3,5 +3,5 @@ export * from "./CommentsOverlay";
 export * from "./HealthFormFillOverlay";
 export * from "./ReferralOverviewOverlay";
 export * from "./ResultsFormOverlay";
-export * from "./ResultsPreviewOverlay";
+export * from "./ResultPreviewOverlay";
 export * from "./HealthFormResultOverlay";

@@ -28,4 +28,9 @@ export const generalStyle = StyleSheet.create({
     fontSize: fontSize.secondaryTitleFontSize,
     color: primaryColors.darkBlue,
   },
+  rowSpread: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
 });
