@@ -1,64 +1,26 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "App";
-import { LinkButton, PrimaryButton } from "components/atoms";
+import { PrimaryButton } from "components/atoms";
 import { ListCard, LoadingCard } from "components/molecules";
+import { useDoctorData } from "components/organisms";
 import { UserContext } from "components/organisms/context";
 import { mainStyle } from "properties/styles/mainStyle";
-import { PatientData, PatientResult } from "properties/types";
 import React, { useContext } from "react";
 import { View, ScrollView } from "react-native";
-import {
-  useFetchLatestPatients,
-  useFetchLatestResults,
-} from "services/doctorData";
 
 export const MainScreenDoctor = ({
   navigation,
 }: NativeStackScreenProps<RootStackParamList, "MainScreen">) => {
   const { currentUser } = useContext(UserContext);
 
-  const latestPatients = useFetchLatestPatients(currentUser, (data) =>
-    data.map(formatPatientData),
-  );
-  const latestResults = useFetchLatestResults(currentUser, (data) =>
-    data.map(formatResultEntry),
+  const { latestPatients, latestResults } = useDoctorData(
+    navigation,
+    currentUser,
   );
 
   const navigateToAllPatientsScreen = () => {
     navigation.navigate("AllPatients");
   };
-
-  const navigateToPatientScreen = (patientId: number) => {
-    navigation.navigate("PatientDetails", {
-      patientId,
-    });
-  };
-
-  function formatPatientData(patient: PatientData) {
-    return {
-      text: `${patient.name} ${patient.surname}`,
-      buttons: [
-        <LinkButton
-          key={patient.id}
-          title="Przejdź"
-          handleOnClick={() => {
-            navigateToPatientScreen(patient.id);
-          }}
-        />,
-      ],
-    };
-  }
-
-  function formatResultEntry(
-    entry: PatientResult & {
-      patient: PatientData;
-    },
-  ) {
-    return {
-      text: `${entry.patient.name}: ${entry.testType}`,
-      buttons: [<LinkButton key={entry.id} title="Podgląd" />],
-    };
-  }
 
   return (
     <ScrollView contentContainerStyle={mainStyle.container}>
