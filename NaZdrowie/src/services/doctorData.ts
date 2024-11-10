@@ -4,8 +4,8 @@ import {
   PatientData,
   PatientReferral,
   PatientResult,
-  ResultUpload,
 } from "properties/types/PatientDataProps";
+
 import axiosInstance from "./axios";
 
 export const useFetchLatestPatients = <T = PatientData[]>(

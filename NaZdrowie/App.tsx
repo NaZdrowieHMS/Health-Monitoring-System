@@ -2,6 +2,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { UserProvider, OverlayProvider } from "components/organisms/context";
+import { PatientResult } from "properties/types";
 import React from "react";
 import { View } from "react-native";
 import {
@@ -14,6 +15,7 @@ import {
   PatientDetailsScreen,
   AiDiagnosis,
 } from "screens/doctorScreens";
+import { ResultPreviewScreen } from "screens/doctorScreens/ResultPreviewScreen";
 import { MainScreen } from "screens/main";
 import axiosInstance from "services/axios";
 
@@ -43,6 +45,7 @@ export type RootStackParamList = {
   AllPatients: undefined;
   PatientDetails: { patientId: number };
   AiDiagnosis: { patientId: number };
+  ResultPreview: { result: PatientResult; patientId: number };
 };
 
 const App = (): React.JSX.Element => {
@@ -87,6 +90,11 @@ const App = (): React.JSX.Element => {
                   name="AiDiagnosis"
                   component={AiDiagnosis}
                   options={{ title: "Diagnozuj z AI" }}
+                />
+                <Stack.Screen
+                  name="ResultPreview"
+                  component={ResultPreviewScreen}
+                  options={{ title: "Podgląd wyniku" }}
                 />
               </Stack.Navigator>
             </NavigationContainer>

@@ -11,6 +11,8 @@ export const inputStyle = StyleSheet.create({
     borderRadius: borderRadiusSize.medium,
     borderColor: primaryColors.lightGrey,
     ...generalStyle.basicText,
+    backgroundColor: primaryColors.white,
+    ...generalStyle.rowSpread,
   },
 });
 

@@ -1,5 +1,7 @@
 import { GestureResponderEvent } from "react-native";
 
+import { Author } from "./DoctorDataProps";
+
 export type CommentData = {
   text: string;
   date: string;

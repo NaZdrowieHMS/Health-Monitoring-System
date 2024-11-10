@@ -33,7 +33,11 @@ export const useDesiredOverlay = (currentUser: UserData) => {
 
   const openReferralOverviewOverlay = (referral: PatientReferral) => {
     showOverlay(() => (
-      <ReferralOverviewOverlay handleClose={hideOverlay} referral={referral} />
+      <ReferralOverviewOverlay
+        handleClose={hideOverlay}
+        referral={referral}
+        isDoctor={currentUser.isDoctor}
+      />
     ));
   };
 

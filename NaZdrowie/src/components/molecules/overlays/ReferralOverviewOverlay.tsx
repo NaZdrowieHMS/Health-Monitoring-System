@@ -1,5 +1,5 @@
 import { Comment } from "components/atoms";
-import { EditButton } from "components/atoms/buttons/EditButton";
+import { IconButton } from "components/atoms/buttons";
 import { cardStyle, generalStyle } from "properties/styles";
 import { ObjectCardElement, PatientReferral } from "properties/types";
 import React from "react";
@@ -47,7 +47,9 @@ export const ReferralOverviewOverlay: React.FC<{
           <View style={cardStyle.container}>
             <View style={cardStyle.rowSpread}>
               <Text style={generalStyle.titleText}>Komentarz</Text>
-              {isDoctor && <EditButton handleOnClick={editComment} />}
+              {isDoctor && (
+                <IconButton handleOnClick={editComment} type="edit" />
+              )}
             </View>
             {(referral.comment && (
               <Comment

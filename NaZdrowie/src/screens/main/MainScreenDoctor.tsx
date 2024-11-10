@@ -6,7 +6,7 @@ import { useDoctorData } from "components/organisms";
 import { UserContext } from "components/organisms/context";
 import { mainStyle } from "properties/styles/mainStyle";
 import React, { useContext } from "react";
-import { View, ScrollView } from "react-native";
+import { View, ScrollView, Text } from "react-native";
 
 export const MainScreenDoctor = ({
   navigation,
@@ -47,6 +47,9 @@ export const MainScreenDoctor = ({
       ) : (
         <LoadingCard />
       )}
+
+      <Text>{latestPatients.status}</Text>
+      <Text>{latestResults.status}</Text>
     </ScrollView>
   );
 };

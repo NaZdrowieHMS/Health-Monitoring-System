@@ -1,4 +1,4 @@
-import { DownloadButton } from "components/atoms/buttons";
+import { IconButton } from "components/atoms/buttons";
 import { cardStyle, generalStyle } from "properties/styles";
 import React from "react";
 import { Text, View, Image } from "react-native";
@@ -14,11 +14,19 @@ export const ImageCard: React.FC<{
     <View style={cardStyle.container}>
       <View style={generalStyle.rowSpread}>
         <Text style={generalStyle.titleText}>{title}</Text>
-        <DownloadButton handleOnClick={() => console.log("siema")} />
+        <IconButton
+          handleOnClick={() => console.log("siema")}
+          type="download"
+        />
       </View>
 
       <Image
-        style={{ width: "80%", height: 150, marginLeft: "10%" }}
+        style={{
+          width: "80%",
+          height: 150,
+          marginLeft: "10%",
+          resizeMode: "contain",
+        }}
         source={{ uri: `data:${imageType};base64,${imageData}` }}
       />
     </View>

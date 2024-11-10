@@ -7,10 +7,10 @@ import { generalStyle } from "properties/styles";
 import { UserData } from "properties/types";
 import { useState } from "react";
 import { Text } from "react-native";
+import { useUploadReferral } from "services/doctorData";
 import { resultItems } from "services/utils";
 
 import { Overlay } from "./Overlay";
-import { useUploadReferral } from "services/doctorData";
 
 export const ReferralFormOverlay: React.FC<{
   currentUser: UserData;

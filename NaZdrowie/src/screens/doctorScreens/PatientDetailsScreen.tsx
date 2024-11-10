@@ -28,7 +28,11 @@ export const PatientDetailsScreen = ({
     useDesiredOverlay(currentUser);
 
   const patient = useFetchPatient(currentUser, null, patientId);
-  const { referrals, results } = usePatientData(currentUser, patientId);
+  const { referrals, results } = usePatientData(
+    navigation,
+    currentUser,
+    patientId,
+  );
   const { currentDotorComments, otherDotorsComments } = useDoctorData(
     navigation,
     currentUser,
