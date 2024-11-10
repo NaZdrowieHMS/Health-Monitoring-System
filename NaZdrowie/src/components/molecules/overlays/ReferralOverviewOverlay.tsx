@@ -1,7 +1,7 @@
 import { Comment } from "components/atoms";
 import { IconButton } from "components/atoms/buttons";
 import { cardStyle, generalStyle } from "properties/styles";
-import { ObjectCardElement, PatientReferral } from "properties/types";
+import { ObjectCardElement, PatientReferral, UserData } from "properties/types";
 import React from "react";
 import { View, Text } from "react-native";
 import { formatDate } from "services/utils";
@@ -12,8 +12,8 @@ import { ObjectCard } from "../cards";
 export const ReferralOverviewOverlay: React.FC<{
   handleClose: () => void;
   referral: PatientReferral;
-  isDoctor?: boolean;
-}> = ({ handleClose, referral, isDoctor }) => {
+  currentUser?: UserData;
+}> = ({ handleClose, referral, currentUser }) => {
   const referralInfo: ObjectCardElement[] = [
     {
       key: "Data wystawienia",
@@ -47,9 +47,10 @@ export const ReferralOverviewOverlay: React.FC<{
           <View style={cardStyle.container}>
             <View style={cardStyle.rowSpread}>
               <Text style={generalStyle.titleText}>Komentarz</Text>
-              {isDoctor && (
-                <IconButton handleOnClick={editComment} type="edit" />
-              )}
+              {currentUser?.isDoctor &&
+                referral.doctor.id === currentUser.id && (
+                  <IconButton handleOnClick={editComment} type="edit" />
+                )}
             </View>
             {(referral.comment && (
               <Comment

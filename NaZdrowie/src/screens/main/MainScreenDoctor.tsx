@@ -47,9 +47,6 @@ export const MainScreenDoctor = ({
       ) : (
         <LoadingCard />
       )}
-
-      <Text>{latestPatients.status}</Text>
-      <Text>{latestResults.status}</Text>
     </ScrollView>
   );
 };

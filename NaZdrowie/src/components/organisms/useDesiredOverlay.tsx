@@ -36,7 +36,7 @@ export const useDesiredOverlay = (currentUser: UserData) => {
       <ReferralOverviewOverlay
         handleClose={hideOverlay}
         referral={referral}
-        isDoctor={currentUser.isDoctor}
+        currentUser={currentUser}
       />
     ));
   };
@@ -77,7 +77,11 @@ export const useDesiredOverlay = (currentUser: UserData) => {
 
   const openResultOverlay = (data: PatientResult) => {
     showOverlay(() => (
-      <ResultPreviewOverlay result={data} handleClose={hideOverlay} />
+      <ResultPreviewOverlay
+        result={data}
+        handleClose={hideOverlay}
+        currentUser={currentUser}
+      />
     ));
   };
 

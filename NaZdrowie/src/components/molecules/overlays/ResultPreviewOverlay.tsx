@@ -1,6 +1,5 @@
-import { UserContext } from "components/organisms/context";
-import { PatientResult } from "properties/types";
-import React, { useContext } from "react";
+import { PatientResult, UserData } from "properties/types";
+import React from "react";
 import { useFetchResultCommentsData } from "services/commentsData";
 import { formatCommentsData } from "services/utils";
 
@@ -8,10 +7,10 @@ import { Overlay } from "./Overlay";
 import { CommentsCard, ImageCard, LoadingCard } from "../cards";
 
 export const ResultPreviewOverlay: React.FC<{
+  currentUser: UserData;
   handleClose: () => void;
   result: PatientResult;
-}> = ({ handleClose, result }) => {
-  const { currentUser } = useContext(UserContext);
+}> = ({ currentUser, handleClose, result }) => {
   const resultComments = useFetchResultCommentsData(
     currentUser,
     result.id,
@@ -28,7 +27,6 @@ export const ResultPreviewOverlay: React.FC<{
             imageData={result.content.data}
             imageType={result.content.type}
           />
-          <CommentsCard title="Komentarze do badania" data={[]} />
           {resultComments.isSuccess ? (
             <CommentsCard
               title="Komentarze do badania"
