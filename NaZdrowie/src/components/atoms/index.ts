@@ -1,4 +1,4 @@
-export * from "./buttons/EditButton";
+export * from "./buttons/IconButton";
 export * from "./buttons/LinkButton";
 export * from "./buttons/PrimaryButton";
 export * from "./buttons/SecondaryButton";

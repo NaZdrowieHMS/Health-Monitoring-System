@@ -10,13 +10,27 @@ import { formatCommentsData, formatDate } from "services/utils";
 
 import { useDesiredOverlay } from "./useDesiredOverlay";
 
-export const usePatientData = (currentUser: UserData, patientId?: number) => {
+export const usePatientData = (
+  navigation,
+  currentUser: UserData,
+  patientId?: number,
+) => {
   const {
     openReferralOverviewOverlay,
     openResultsFormOverlay,
     openHealthFormResultOverlay,
     openResultOverlay,
   } = useDesiredOverlay(currentUser);
+
+  const navigateToResultPreviewScreen = (
+    result: PatientResult,
+    patientId: number,
+  ) => {
+    navigation.navigate("ResultPreview", {
+      result,
+      patientId,
+    });
+  };
 
   const formatReferralsView = (referral: PatientReferral) => ({
     text: referral.testType,
@@ -51,7 +65,15 @@ export const usePatientData = (currentUser: UserData, patientId?: number) => {
     buttons: [
       <LinkButton
         title="Podgląd"
-        handleOnClick={() => openResultOverlay(result)}
+        handleOnClick={
+          currentUser.isDoctor
+            ? () =>
+                navigateToResultPreviewScreen(
+                  result,
+                  patientId ? patientId : currentUser.id,
+                )
+            : () => openResultOverlay(result)
+        }
       />,
     ],
   });

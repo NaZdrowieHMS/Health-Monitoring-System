@@ -1,13 +1,22 @@
-import { PatientResult } from "properties/types";
+import { PatientResult, UserData } from "properties/types";
 import React from "react";
+import { useFetchResultCommentsData } from "services/commentsData";
+import { formatCommentsData } from "services/utils";
 
 import { Overlay } from "./Overlay";
-import { CommentsCard, ImageCard } from "../cards";
+import { CommentsCard, ImageCard, LoadingCard } from "../cards";
 
 export const ResultPreviewOverlay: React.FC<{
+  currentUser: UserData;
   handleClose: () => void;
   result: PatientResult;
-}> = ({ handleClose, result }) => {
+}> = ({ currentUser, handleClose, result }) => {
+  const resultComments = useFetchResultCommentsData(
+    currentUser,
+    result.id,
+    (data) => data.map(formatCommentsData),
+  );
+
   return (
     <Overlay>
       <Overlay.Container>
@@ -18,7 +27,14 @@ export const ResultPreviewOverlay: React.FC<{
             imageData={result.content.data}
             imageType={result.content.type}
           />
-          <CommentsCard title="Komentarze do badania" data={[]} />
+          {resultComments.isSuccess ? (
+            <CommentsCard
+              title="Komentarze do badania"
+              data={resultComments.data}
+            />
+          ) : (
+            <LoadingCard />
+          )}
         </Overlay.Body>
         <Overlay.Footer />
       </Overlay.Container>

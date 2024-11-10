@@ -13,7 +13,10 @@ export const MainScreenPatient = ({
 }: NativeStackScreenProps<RootStackParamList, "MainScreen">) => {
   const { currentUser } = useContext(UserContext);
 
-  const { healthComments, referrals, results } = usePatientData(currentUser);
+  const { healthComments, referrals, results } = usePatientData(
+    navigation,
+    currentUser,
+  );
 
   const {
     openCommentsOverlay,
