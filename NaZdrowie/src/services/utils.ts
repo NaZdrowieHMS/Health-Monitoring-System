@@ -1,3 +1,4 @@
+import { DropdownItem } from "components/atoms";
 import { DoctorComment, CommentData } from "properties/types";
 
 export const formatDate = (unformattedDate: string) => {
@@ -17,3 +18,8 @@ export const formatCommentsData = (comment: DoctorComment): CommentData => ({
   text: comment.content,
   author: `${comment.doctor.name} ${comment.doctor.surname}`,
 });
+
+export const resultItems: DropdownItem[] = [
+  { label: "USG piersi", value: "USG piersi" },
+  { label: "Mammografia", value: "Mammografia" },
+];
