@@ -11,7 +11,6 @@ export interface ButtonProps {
 }
 
 export interface IconButtonProps {
-  type: keyof typeof AntDesign.glyphMap;
   handleOnClick?: (event: GestureResponderEvent) => void;
   size?: number;
   color?: string;
