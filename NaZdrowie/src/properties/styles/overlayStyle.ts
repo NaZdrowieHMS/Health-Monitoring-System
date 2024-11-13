@@ -11,19 +11,16 @@ export const overlayStyle = StyleSheet.create({
     borderWidth: 2,
     borderColor: primaryColors.babyBlue,
     padding: paddingSize.mediumBig,
+    maxHeight: "80%",
   },
   header: {
     alignItems: "center",
-    paddingBottom: paddingSize.medium,
     borderBottomWidth: 1,
     borderBottomColor: primaryColors.lightGrey,
     ...generalStyle.rowSpread,
   },
   body: {
-    paddingTop: paddingSize.mediumBig,
-    justifyContent: "center",
-    paddingBottom: paddingSize.mediumBig,
-    display: "flex",
     rowGap: paddingSize.mediumBig,
+    paddingVertical: paddingSize.mediumBig,
   },
 });
