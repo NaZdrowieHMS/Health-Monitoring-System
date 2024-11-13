@@ -1,5 +1,5 @@
 import { generalStyle, overlayStyle } from "properties/styles";
-import { fontSize, paddingSize } from "properties/vars";
+import { fontSize } from "properties/vars";
 import { ReactNode } from "react";
 import {
   View,
