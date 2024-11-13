@@ -14,6 +14,7 @@ export const cardStyle = StyleSheet.create({
     borderRadius: borderRadiusSize.small,
     elevation: 3,
     ...generalStyle.shadow,
+    marginHorizontal: 2,
   },
   floatRight: {
     flexDirection: "row",

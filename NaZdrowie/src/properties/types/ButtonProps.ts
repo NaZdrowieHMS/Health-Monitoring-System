@@ -1,4 +1,3 @@
-import AntDesign from "@expo/vector-icons/AntDesign";
 import { GestureResponderEvent } from "react-native";
 
 export interface ButtonProps {

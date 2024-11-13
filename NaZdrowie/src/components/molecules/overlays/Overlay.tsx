@@ -1,7 +1,13 @@
 import { generalStyle, overlayStyle } from "properties/styles";
-import { fontSize } from "properties/vars";
+import { fontSize, paddingSize } from "properties/vars";
 import { ReactNode } from "react";
-import { View, Text, Pressable, GestureResponderEvent } from "react-native";
+import {
+  View,
+  Text,
+  Pressable,
+  GestureResponderEvent,
+  ScrollView,
+} from "react-native";
 import RNModal from "react-native-modal";
 
 type OverlayProps = {
@@ -45,7 +51,7 @@ const OverlayHeader = ({
 );
 
 const OverlayBody = ({ children }: { children?: ReactNode }) => (
-  <View style={overlayStyle.body}>{children}</View>
+  <ScrollView contentContainerStyle={overlayStyle.body}>{children}</ScrollView>
 );
 
 const OverlayFooter = ({ children }: { children?: ReactNode }) => (
