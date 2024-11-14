@@ -15,7 +15,9 @@ export const Comment: React.FC<
       <Text style={[generalStyle.basicText, commentStyle.date]}>
         {item.date}
       </Text>
-      <Text style={generalStyle.basicText}>{item.text}</Text>
+      <Text style={generalStyle.basicText}>
+        {item.text || "Brak komentarzy do wyswietlenia"}
+      </Text>
       {!dontShowAuthor && (
         <View style={commentStyle.floatRight}>
           <Text style={[generalStyle.basicText, commentStyle.author]}>

@@ -1,9 +1,9 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "App";
 import {
-  IconButton,
   PersonalizedCheckbox,
   PersonalizedTextInput,
+  SendButton,
 } from "components/atoms";
 import {
   ImageCard,
@@ -57,12 +57,7 @@ export const ResultPreviewScreen = ({
         <PersonalizedTextInput
           placeholder="Wpisz nowy komentarz"
           onChange={setComment}
-          iconButton={
-            <IconButton
-              type="doubleright"
-              handleOnClick={() => console.log("send")}
-            />
-          }
+          iconButton={<SendButton handleOnClick={() => console.log("send")} />}
         />
         {resultComments.isSuccess ? (
           <CommentsCard

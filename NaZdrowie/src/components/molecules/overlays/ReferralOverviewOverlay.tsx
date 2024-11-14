@@ -1,5 +1,4 @@
-import { Comment } from "components/atoms";
-import { IconButton } from "components/atoms/buttons";
+import { Comment, EditButton } from "components/atoms";
 import { cardStyle, generalStyle } from "properties/styles";
 import { ObjectCardElement, PatientReferral, UserData } from "properties/types";
 import React from "react";
@@ -44,27 +43,24 @@ export const ReferralOverviewOverlay: React.FC<{
           <ObjectCard data={referralInfo} keyStyle={generalStyle.keyText} />
         </Overlay.Body>
         <Overlay.Footer>
-          <View style={cardStyle.container}>
-            <View style={cardStyle.rowSpread}>
-              <Text style={generalStyle.titleText}>Komentarz</Text>
-              {currentUser?.isDoctor &&
-                referral.doctor.id === currentUser.id && (
-                  <IconButton handleOnClick={editComment} type="edit" />
-                )}
-            </View>
-            {(referral.comment && (
-              <Comment
-                item={{
-                  text: referral.comment.content,
-                  date: formatDate(referral.comment.modifiedDate),
-                  author: "", // this data will not be used
-                }}
-                index={0}
-                dontShowAuthor
-              />
-            )) ||
-              (!referral.comment && <Text>Brak komentarza</Text>)}
+          <View style={cardStyle.rowSpread}>
+            <Text style={generalStyle.titleText}>Komentarz</Text>
+            {currentUser?.isDoctor && referral.doctor.id === currentUser.id && (
+              <EditButton handleOnClick={editComment} />
+            )}
           </View>
+          {(referral.comment && (
+            <Comment
+              item={{
+                text: referral.comment.content,
+                date: formatDate(referral.comment.modifiedDate),
+                author: "", // this data will not be used
+              }}
+              index={0}
+              dontShowAuthor
+            />
+          )) ||
+            (!referral.comment && <Text>Brak komentarza</Text>)}
         </Overlay.Footer>
       </Overlay.Container>
     </Overlay>
