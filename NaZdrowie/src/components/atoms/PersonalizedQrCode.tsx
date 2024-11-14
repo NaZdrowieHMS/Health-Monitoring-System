@@ -1,7 +1,7 @@
 import React from "react";
 import QRCode from "react-native-qrcode-svg";
 
-export const PersonalizedQRCode: React.FC<{
+export const PersonalizedQrCode: React.FC<{
   url: string;
   size?: number;
 }> = ({ url, size = 200 }) => {

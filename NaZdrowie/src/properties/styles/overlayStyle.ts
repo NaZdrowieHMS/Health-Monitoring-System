@@ -23,4 +23,9 @@ export const overlayStyle = StyleSheet.create({
     rowGap: paddingSize.mediumBig,
     paddingVertical: paddingSize.mediumBig,
   },
+  centeredElement: {
+    justifyContent: "center",
+    alignItems: "center",
+    flex: 1,
+  },
 });

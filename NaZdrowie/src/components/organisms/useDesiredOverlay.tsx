@@ -1,3 +1,4 @@
+import { useQueryClient } from "@tanstack/react-query";
 import {
   CommentsOverlay,
   HealthFormFillOverlay,
@@ -21,6 +22,7 @@ import { useOverlay } from "./context";
 
 export const useDesiredOverlay = (currentUser: UserData) => {
   const { showOverlay, hideOverlay } = useOverlay();
+  const queryClient = useQueryClient();
 
   const openCommentsOverlay = (healthCommentsData: CommentData[]) => {
     showOverlay(() => (
@@ -96,9 +98,18 @@ export const useDesiredOverlay = (currentUser: UserData) => {
     ));
   };
 
+  const hideAndRefreshData = () => {
+    hideOverlay();
+    queryClient.invalidateQueries({
+      queryKey: [currentUser, `doctors/${currentUser.id}/patients`],
+    });
+  };
   const openQrDisplayOverlay = () => {
     showOverlay(() => (
-      <QrDisplayOverlay handleClose={hideOverlay} doctorId={currentUser.id} />
+      <QrDisplayOverlay
+        handleClose={hideAndRefreshData}
+        doctorId={currentUser.id}
+      />
     ));
   };
 
