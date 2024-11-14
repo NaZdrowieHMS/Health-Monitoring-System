@@ -15,7 +15,7 @@ export const QrDisplayOverlay: React.FC<{
           handleClose={handleClose}
         />
         <Overlay.Body>
-          <PersonalizedQRCode url="https://www.google.com" />
+          <PersonalizedQRCode url={`{"doctorId":${doctorId}}`} />
         </Overlay.Body>
       </Overlay.Container>
     </Overlay>
