@@ -3,9 +3,10 @@ import {
   HealthFormFillOverlay,
   HealthFormResultOverlay,
   ReferralOverviewOverlay,
-  ResultsFormOverlay,
+  QrDisplayOverlay,
   ResultPreviewOverlay,
   ReferralFormOverlay,
+  ResultsFormOverlay,
 } from "components/molecules";
 import {
   CommentData,
@@ -95,6 +96,12 @@ export const useDesiredOverlay = (currentUser: UserData) => {
     ));
   };
 
+  const openQrDisplayOverlay = () => {
+    showOverlay(() => (
+      <QrDisplayOverlay handleClose={hideOverlay} doctorId={currentUser.id} />
+    ));
+  };
+
   return {
     openCommentsOverlay,
     openReferralOverviewOverlay,
@@ -103,5 +110,6 @@ export const useDesiredOverlay = (currentUser: UserData) => {
     openHealthFormResultOverlay,
     openResultOverlay,
     openReferralFormOverlay,
+    openQrDisplayOverlay,
   };
 };
