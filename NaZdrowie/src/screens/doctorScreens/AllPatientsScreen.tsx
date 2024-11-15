@@ -5,7 +5,7 @@ import { LoadingCard, Navbar } from "components/molecules";
 import { UserContext } from "components/organisms/context";
 import { mainStyle } from "properties/styles";
 import { useContext } from "react";
-import { View, ScrollView, Text } from "react-native";
+import { View, ScrollView } from "react-native";
 import { useFetchAllPatients } from "services/doctorData";
 
 export const AllPatientsScreen = ({

@@ -6,17 +6,15 @@ import { useDoctorData } from "components/organisms";
 import { UserContext } from "components/organisms/context";
 import { mainStyle } from "properties/styles/mainStyle";
 import React, { useContext } from "react";
-import { View, ScrollView, Text } from "react-native";
+import { View, ScrollView } from "react-native";
 
 export const MainScreenDoctor = ({
   navigation,
 }: NativeStackScreenProps<RootStackParamList, "MainScreen">) => {
   const { currentUser } = useContext(UserContext);
 
-  const { latestPatients, latestResults } = useDoctorData(
-    navigation,
-    currentUser,
-  );
+  const { latestPatients, latestResults, navigateToNewPatientsScreen } =
+    useDoctorData(navigation, currentUser);
 
   const navigateToAllPatientsScreen = () => {
     navigation.navigate("AllPatients");
@@ -31,7 +29,10 @@ export const MainScreenDoctor = ({
         />
         <PrimaryButton title="Czaty z pacjentami" />
         <PrimaryButton title="Wygeneruj kod QR" />
-        <PrimaryButton title="Znajdź nowego pacjenta" />
+        <PrimaryButton
+          title="Znajdź nowego pacjenta"
+          handleOnClick={navigateToNewPatientsScreen}
+        />
       </View>
       {latestPatients.isSuccess && latestResults.isSuccess ? (
         <>

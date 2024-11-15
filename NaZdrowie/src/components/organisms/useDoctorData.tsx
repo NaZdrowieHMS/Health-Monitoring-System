@@ -1,6 +1,7 @@
-import { LinkButton } from "components/atoms";
+import { LinkButton, UserButton } from "components/atoms";
 import { PatientData, PatientResult, UserData } from "properties/types";
 import {
+  useFetchAllUnassignedPatients,
   useFetchLatestPatients,
   useFetchLatestResults,
 } from "services/doctorData";
@@ -16,6 +17,10 @@ export const useDoctorData = (
     navigation.navigate("PatientDetails", {
       patientId,
     });
+  };
+
+  const navigateToNewPatientsScreen = () => {
+    navigation.navigate("NewPatients");
   };
 
   function formatPatientsView(patient: PatientData) {
@@ -47,6 +52,7 @@ export const useDoctorData = (
   const latestPatients = useFetchLatestPatients(currentUser, (data) =>
     data.map(formatPatientsView),
   );
+
   const latestResults = useFetchLatestResults(currentUser, (data) =>
     data.map(formatResultEntry),
   );
@@ -71,10 +77,52 @@ export const useDoctorData = (
     patientId,
   );
 
+  function displayPatientInfoOverlay(patientId: number) {
+    // TODO
+  }
+
+  function formatNewPatients(patient: PatientData) {
+    return {
+      pesel: Number(patient.pesel),
+      fullName: `${patient.name} ${patient.surname}`,
+      button: (
+        <UserButton
+          key={patient.id}
+          title={`${patient.name} ${patient.surname}`}
+          handleOnClick={() => displayPatientInfoOverlay(patient.id)}
+        />
+      ),
+    };
+  }
+
+  const unassignedPatients = useFetchAllUnassignedPatients(
+    currentUser,
+    (data) => {
+      return data.map(formatNewPatients);
+    },
+  );
+
+  const filteredUnassignedPatients = (filterValue: string) => {
+    return filterValue
+      ? unassignedPatients.data?.filter((patientCard) => {
+          return (
+            patientCard.pesel.toString().includes(filterValue.toLowerCase()) ||
+            patientCard.fullName
+              .toLowerCase()
+              .includes(filterValue.toLowerCase())
+          );
+        })
+      : unassignedPatients.data;
+  };
+
   return {
+    navigateToNewPatientsScreen,
+    navigateToPatientScreen,
     currentDotorComments,
     otherDotorsComments,
     latestPatients,
     latestResults,
+    unassignedPatients,
+    filteredUnassignedPatients,
   };
 };

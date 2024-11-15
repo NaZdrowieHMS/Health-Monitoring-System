@@ -52,6 +52,16 @@ export const useFetchAllPatients = <T = PatientData[]>(
   });
 };
 
+export const useFetchAllUnassignedPatients = <T = PatientData[]>(
+  user: UserData,
+  select?: (data: PatientData[]) => T,
+) => {
+  return useQuery<PatientData[], Error, T>({
+    queryKey: [user, `doctors/${user.id}/patients/unassigned`],
+    select,
+  });
+};
+
 export const useUploadReferral = (user: UserData) => {
   const queryClient = useQueryClient();
 
