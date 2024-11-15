@@ -1,11 +1,13 @@
+import { useQueryClient } from "@tanstack/react-query";
 import {
   CommentsOverlay,
   HealthFormFillOverlay,
   HealthFormResultOverlay,
   ReferralOverviewOverlay,
-  ResultsFormOverlay,
+  QrDisplayOverlay,
   ResultPreviewOverlay,
   ReferralFormOverlay,
+  ResultsFormOverlay,
 } from "components/molecules";
 import {
   CommentData,
@@ -20,6 +22,7 @@ import { useOverlay } from "./context";
 
 export const useDesiredOverlay = (currentUser: UserData) => {
   const { showOverlay, hideOverlay } = useOverlay();
+  const queryClient = useQueryClient();
 
   const openCommentsOverlay = (healthCommentsData: CommentData[]) => {
     showOverlay(() => (
@@ -95,6 +98,21 @@ export const useDesiredOverlay = (currentUser: UserData) => {
     ));
   };
 
+  const hideAndRefreshData = () => {
+    hideOverlay();
+    queryClient.invalidateQueries({
+      queryKey: [currentUser, `doctors/${currentUser.id}/patients`],
+    });
+  };
+  const openQrDisplayOverlay = () => {
+    showOverlay(() => (
+      <QrDisplayOverlay
+        handleClose={hideAndRefreshData}
+        doctorId={currentUser.id}
+      />
+    ));
+  };
+
   return {
     openCommentsOverlay,
     openReferralOverviewOverlay,
@@ -103,5 +121,6 @@ export const useDesiredOverlay = (currentUser: UserData) => {
     openHealthFormResultOverlay,
     openResultOverlay,
     openReferralFormOverlay,
+    openQrDisplayOverlay,
   };
 };
