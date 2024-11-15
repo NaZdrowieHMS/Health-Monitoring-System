@@ -10,7 +10,6 @@ import {
   PatientResult,
   ResultUpload,
 } from "properties/types/PatientDataProps";
-import { Alert } from "react-native";
 
 import axiosInstance from "./axios";
 
@@ -90,26 +89,5 @@ export const useFetchLatestHealthForm = <T = HealthFormDisplayData | null>(
       `patients/${patientId ? patientId : user.id}/forms/latest`,
     ],
     select,
-  });
-};
-
-export const useBindPatientToDoctor = (user: UserData) => {
-  // const queryClient = useQueryClient(); //
-
-  return useMutation({
-    mutationFn: async (doctorId: number) => {
-      const { data } = await axiosInstance.put("doctors/patients/relation", {
-        doctorId,
-        patientId: user.id,
-      });
-      return data;
-    },
-    onSuccess(data) {
-      Alert.alert(
-        "Binding succesfull",
-      );
-      // queryClient.invalidateQueries({ queryKey: [user, 'doctors/endpoint/TODO'] })
-      // refetch list of all doctors - curerntly not implemented
-    },
   });
 };

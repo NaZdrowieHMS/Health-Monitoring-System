@@ -6,6 +6,7 @@ import {
   useFetchLatestResults,
 } from "services/doctorData";
 import { useFetchHealthComments } from "services/patientData";
+import { useBindPatientToDoctor } from "services/universalData";
 import { formatCommentsData } from "services/utils";
 
 import { useDesiredOverlay } from "./useDesiredOverlay";
@@ -16,6 +17,7 @@ export const useDoctorData = (
   patientId?: number,
 ) => {
   const { openPatientInfoOverlay } = useDesiredOverlay(currentUser);
+  const bind = useBindPatientToDoctor(currentUser);
 
   const navigateToPatientScreen = (patientId: number) => {
     navigation.navigate("PatientDetails", {
@@ -90,7 +92,9 @@ export const useDoctorData = (
           key={patient.id}
           title={`${patient.name} ${patient.surname}`}
           handleOnClick={() =>
-            openPatientInfoOverlay(patient, () => console.log("ojejku"))
+            openPatientInfoOverlay(patient, () =>
+              bind.mutate({ doctorId: currentUser.id, patientId: patient.id }),
+            )
           }
         />
       ),

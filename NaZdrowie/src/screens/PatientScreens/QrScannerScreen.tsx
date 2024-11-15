@@ -11,7 +11,7 @@ import {
   StatusBar,
   StyleSheet,
 } from "react-native";
-import { useBindPatientToDoctor } from "services/patientData";
+import { useBindPatientToDoctor } from "services/universalData";
 
 export const QrScannerScreen = ({
   navigation,
@@ -26,7 +26,7 @@ export const QrScannerScreen = ({
       try {
         data = JSON.parse(data);
         if (typeof data.doctorId === "number") {
-          bind.mutate(data.doctorId);
+          bind.mutate({ doctorId: data.doctorId, patientId: currentUser.id });
           // await Linking.openURL(data); // should be used when deep linking is introduced
           navigation.goBack();
         }
