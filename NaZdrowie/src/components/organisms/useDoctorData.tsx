@@ -8,11 +8,15 @@ import {
 import { useFetchHealthComments } from "services/patientData";
 import { formatCommentsData } from "services/utils";
 
+import { useDesiredOverlay } from "./useDesiredOverlay";
+
 export const useDoctorData = (
   navigation,
   currentUser: UserData,
   patientId?: number,
 ) => {
+  const { openPatientInfoOverlay } = useDesiredOverlay(currentUser);
+
   const navigateToPatientScreen = (patientId: number) => {
     navigation.navigate("PatientDetails", {
       patientId,
@@ -77,10 +81,6 @@ export const useDoctorData = (
     patientId,
   );
 
-  function displayPatientInfoOverlay(patientId: number) {
-    // TODO
-  }
-
   function formatNewPatients(patient: PatientData) {
     return {
       pesel: Number(patient.pesel),
@@ -89,7 +89,9 @@ export const useDoctorData = (
         <UserButton
           key={patient.id}
           title={`${patient.name} ${patient.surname}`}
-          handleOnClick={() => displayPatientInfoOverlay(patient.id)}
+          handleOnClick={() =>
+            openPatientInfoOverlay(patient, () => console.log("ojejku"))
+          }
         />
       ),
     };

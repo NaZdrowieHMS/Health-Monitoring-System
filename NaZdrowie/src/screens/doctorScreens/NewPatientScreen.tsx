@@ -22,7 +22,7 @@ export const NewPatientsScreen = ({
   return (
     <View style={{ flex: 1 }}>
       <Navbar navbarDescriptionTitle="Nowi pacjenci" />
-      <View style={[cardStyle.container, { maxHeight: 150 }]}>
+      <View style={cardStyle.container}>
         <Text style={generalStyle.titleText}>Znajdź Pacjenta</Text>
         <PersonalizedTextInput
           placeholder="Wpisz PESEL lub imię i nazwisko"
