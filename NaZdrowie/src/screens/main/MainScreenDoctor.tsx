@@ -2,7 +2,7 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "App";
 import { PrimaryButton } from "components/atoms";
 import { ListCard, LoadingCard } from "components/molecules";
-import { useDoctorData } from "components/organisms";
+import { useDesiredOverlay, useDoctorData } from "components/organisms";
 import { UserContext } from "components/organisms/context";
 import { mainStyle } from "properties/styles/mainStyle";
 import React, { useContext } from "react";
@@ -16,6 +16,7 @@ export const MainScreenDoctor = ({
   const { latestPatients, latestResults, navigateToNewPatientsScreen } =
     useDoctorData(navigation, currentUser);
 
+  const { openQrDisplayOverlay } = useDesiredOverlay(currentUser);
   const navigateToAllPatientsScreen = () => {
     navigation.navigate("AllPatients");
   };
@@ -28,7 +29,10 @@ export const MainScreenDoctor = ({
           title="Moi pacjenci"
         />
         <PrimaryButton title="Czaty z pacjentami" />
-        <PrimaryButton title="Wygeneruj kod QR" />
+        <PrimaryButton
+          title="Wygeneruj kod QR"
+          handleOnClick={() => openQrDisplayOverlay()}
+        />
         <PrimaryButton
           title="Znajdź nowego pacjenta"
           handleOnClick={navigateToNewPatientsScreen}

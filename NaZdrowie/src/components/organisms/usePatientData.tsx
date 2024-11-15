@@ -1,5 +1,7 @@
 import { LinkButton } from "components/atoms";
+import { useCameraPermissions } from "expo-camera";
 import { PatientReferral, PatientResult, UserData } from "properties/types";
+import { Alert, Linking } from "react-native";
 import {
   useFetchHealthComments,
   useFetchReferrals,
@@ -22,6 +24,8 @@ export const usePatientData = (
     openResultOverlay,
   } = useDesiredOverlay(currentUser);
 
+  const [, requestPermission] = useCameraPermissions();
+
   const navigateToResultPreviewScreen = (
     result: PatientResult,
     patientId: number,
@@ -30,6 +34,24 @@ export const usePatientData = (
       result,
       patientId,
     });
+  };
+
+  const navigateToQrScannerScreen = async () => {
+    const { status } = await requestPermission();
+
+    if (status === "granted") {
+      navigation.navigate("QrScanner");
+    } else {
+      // This needs to be replaced with our custom alert or sth
+      Alert.alert(
+        "Permission required",
+        "Permission to use the camera is required to scan QR codes. Please enable it in your settings.",
+        [
+          { text: "Cancel", style: "cancel" },
+          { text: "Open Settings", onPress: () => Linking.openSettings() },
+        ],
+      );
+    }
   };
 
   const formatReferralsView = (referral: PatientReferral) => ({
@@ -116,6 +138,7 @@ export const usePatientData = (
   }
 
   return {
+    navigateToQrScannerScreen,
     healthComments,
     referrals,
     results,

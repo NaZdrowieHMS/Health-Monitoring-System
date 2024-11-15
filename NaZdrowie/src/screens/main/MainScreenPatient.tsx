@@ -13,10 +13,8 @@ export const MainScreenPatient = ({
 }: NativeStackScreenProps<RootStackParamList, "MainScreen">) => {
   const { currentUser } = useContext(UserContext);
 
-  const { healthComments, referrals, results } = usePatientData(
-    navigation,
-    currentUser,
-  );
+  const { healthComments, referrals, results, navigateToQrScannerScreen } =
+    usePatientData(navigation, currentUser);
 
   const {
     openCommentsOverlay,
@@ -37,7 +35,10 @@ export const MainScreenPatient = ({
           title="Załącz wynik badania"
           handleOnClick={() => openResultsFormOverlay(currentUser.id)}
         />
-        <PrimaryButton title="Dodaj lekarza" />
+        <PrimaryButton
+          title="Dodaj lekarza"
+          handleOnClick={() => navigateToQrScannerScreen()}
+        />
         <PrimaryButton title="Czaty z lekarzami" />
       </View>
       {healthComments.isSuccess && referrals.isSuccess && results.isSuccess ? (

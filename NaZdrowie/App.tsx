@@ -5,6 +5,7 @@ import { UserProvider, OverlayProvider } from "components/organisms/context";
 import { PatientResult } from "properties/types";
 import React from "react";
 import { View } from "react-native";
+import { QrScannerScreen } from "screens/PatientScreens";
 import {
   LoginScreen,
   RegisterScreen,
@@ -43,6 +44,7 @@ export type RootStackParamList = {
   Register: { doctorScreen: boolean };
   Choice: undefined;
   MainScreen: undefined;
+  QrScanner: undefined;
   AllPatients: undefined;
   NewPatients: undefined;
   PatientDetails: { patientId: number };
@@ -77,6 +79,11 @@ const App = (): React.JSX.Element => {
                   name="MainScreen"
                   component={MainScreen}
                   options={{ title: "Strona główna" }}
+                />
+                <Stack.Screen
+                  name="QrScanner"
+                  component={QrScannerScreen}
+                  options={{ headerShown: false }}
                 />
                 <Stack.Screen
                   name="AllPatients"
