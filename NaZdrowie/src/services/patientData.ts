@@ -107,7 +107,6 @@ export const useBindPatientToDoctor = (user: UserData) => {
     onSuccess(data) {
       Alert.alert(
         "Binding succesfull",
-        // "Returned data: " + JSON.stringify(data),
       );
       // queryClient.invalidateQueries({ queryKey: [user, 'doctors/endpoint/TODO'] })
       // refetch list of all doctors - curerntly not implemented
