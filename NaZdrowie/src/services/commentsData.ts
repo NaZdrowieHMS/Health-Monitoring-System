@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { DoctorComment, UserData } from "properties/types";
+import { CommentsFilter } from "./utils";
 
 export const useFetchResultCommentsData = <T = DoctorComment[]>(
   user: UserData,
@@ -22,6 +23,21 @@ export const useFetchHealthComments = <T = DoctorComment[]>(
 ) => {
   return useQuery<DoctorComment[], Error, T>({
     queryKey: [user, `patients/${patientId ? patientId : user.id}/health`],
+    select,
+  });
+};
+
+export const useFetchHealthCommentsFiltered = <T = DoctorComment[]>(
+  doctor: UserData,
+  patientId: number,
+  filter: CommentsFilter,
+  select?: (data: DoctorComment[]) => T,
+) => {
+  return useQuery<DoctorComment[], Error, T>({
+    queryKey: [
+      doctor,
+      `doctors/doctors/${doctor.id}/patient/${patientId}/health?filter=${filter}`,
+    ],
     select,
   });
 };

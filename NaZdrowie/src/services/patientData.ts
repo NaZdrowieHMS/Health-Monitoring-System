@@ -6,9 +6,9 @@ import {
   PatientResult,
   ResultUpload,
 } from "properties/types/PatientDataProps";
+import { Alert } from "react-native";
 
 import axiosInstance from "./axios";
-import { Alert } from "react-native";
 
 export const useFetchReferrals = <T = PatientReferral[]>(
   user: UserData,

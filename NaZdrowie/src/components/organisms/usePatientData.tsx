@@ -115,9 +115,9 @@ export const usePatientData = (
 
   const latestReferrals = useFetchReferrals(
     currentUser,
-    (data) => data.map(formatReferralsView),
+    (data) =>
+      data.filter((referral) => !referral.completed).map(formatReferralsView),
     patientId,
-    latestCount,
   );
 
   const results = useFetchResults(
