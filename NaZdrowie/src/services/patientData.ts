@@ -23,6 +23,7 @@ export const useFetchReferrals = <T = PatientReferral[]>(
   return useQuery<PatientReferral[], Error, T>({
     queryKey: [
       user,
+      "referrals",
       `patients/${patientId ? patientId : user.id}/referrals${referralsCount}`,
     ],
     select,
@@ -42,6 +43,7 @@ export const useFetchResults = <T = PatientResult[]>(
   return useQuery<PatientResult[], Error, T>({
     queryKey: [
       user,
+      "results",
       `patients/${patientId ? patientId : user.id}/results${resultsCount}`,
     ],
     select,
@@ -68,13 +70,12 @@ export const useSendResult = (user: UserData, isreferralAssigned: boolean) => {
       return data;
     },
     onSuccess(data: PatientResult) {
-      queryClient.setQueryData(
-        [user, `patients/${data.patientId}/results`],
-        (previousData: PatientResult[]) => [...previousData, data],
-      );
+      queryClient.invalidateQueries({
+        queryKey: [user, "results"],
+      });
       if (isreferralAssigned) {
         queryClient.invalidateQueries({
-          queryKey: [user, `patients/${data.patientId}/referrals`],
+          queryKey: [user, "referrals"],
         });
       }
     },
