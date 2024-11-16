@@ -1,5 +1,4 @@
 import { useQueryClient } from "@tanstack/react-query";
-import { PrimaryButton } from "components/atoms";
 import {
   CommentsOverlay,
   HealthFormFillOverlay,
@@ -119,20 +118,13 @@ export const useDesiredOverlay = (currentUser: UserData) => {
 
   function openPatientInfoOverlay(
     patient: PatientData,
-    handleButtonClick?: () => void,
+    button?: React.JSX.Element,
   ) {
     showOverlay(() => (
       <PatientDetailsOverlay
         handleClose={hideOverlay}
         patient={patient}
-        button={
-          handleButtonClick ? (
-            <PrimaryButton
-              title="Dodaj pacjenta"
-              handleOnClick={handleButtonClick}
-            />
-          ) : null
-        }
+        button={button}
       />
     ));
   }
