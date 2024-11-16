@@ -26,7 +26,7 @@ export const ResultPreviewScreen = ({
   const { currentUser } = useContext(UserContext);
   const { result, patientId } = route.params;
   const patient = useFetchPatient(currentUser, null, patientId);
-  const [comment, setComment] = useState<string>();
+  const [, setComment] = useState<string>();
 
   const resultComments = useFetchResultCommentsData(
     currentUser,

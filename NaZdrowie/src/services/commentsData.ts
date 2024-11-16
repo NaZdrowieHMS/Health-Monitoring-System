@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { DoctorComment, UserData } from "properties/types";
+
 import { CommentsFilter } from "./utils";
 
 export const useFetchResultCommentsData = <T = DoctorComment[]>(

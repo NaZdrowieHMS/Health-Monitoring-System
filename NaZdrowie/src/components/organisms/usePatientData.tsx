@@ -101,6 +101,16 @@ export const usePatientData = (
     ],
   });
 
+  function formatResultsForAiData(result: PatientResult) {
+    return {
+      checkbox: {
+        checkboxStatus: true, // TODO
+      },
+      text: result.testType,
+      buttons: [<LinkButton title="Podgląd" />],
+    };
+  }
+
   const healthComments = useFetchHealthComments(
     currentUser,
     (data) => data.map(formatCommentsData),
@@ -123,6 +133,12 @@ export const usePatientData = (
   const results = useFetchResults(
     currentUser,
     (data) => data.map(formatResultsView),
+    patientId,
+  );
+
+  const resultsForAi = useFetchResults(
+    currentUser,
+    (data) => data.map(formatResultsForAiData),
     patientId,
   );
 
@@ -159,6 +175,7 @@ export const usePatientData = (
     referrals,
     results,
     latestResults,
+    resultsForAi,
     latestReferrals,
   };
 };

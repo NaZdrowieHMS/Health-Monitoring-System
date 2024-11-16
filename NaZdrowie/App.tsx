@@ -5,7 +5,6 @@ import { UserProvider, OverlayProvider } from "components/organisms/context";
 import { PatientResult } from "properties/types";
 import React from "react";
 import { View } from "react-native";
-import { QrScannerScreen } from "screens/patientScreens";
 import {
   LoginScreen,
   RegisterScreen,
@@ -19,6 +18,7 @@ import {
 } from "screens/doctorScreens";
 import { ResultPreviewScreen } from "screens/doctorScreens/ResultPreviewScreen";
 import { MainScreen } from "screens/main";
+import { QrScannerScreen } from "screens/patientScreens";
 import axiosInstance from "services/axios";
 
 const queryClient = new QueryClient({

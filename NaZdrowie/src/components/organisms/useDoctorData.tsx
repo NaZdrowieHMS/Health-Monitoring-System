@@ -1,6 +1,7 @@
 import { LinkButton, PrimaryButton, UserButton } from "components/atoms";
 import { PatientData, PatientResult, UserData } from "properties/types";
 import { useFetchHealthCommentsFiltered } from "services/commentsData";
+import { latestCount } from "services/config";
 import {
   useFetchAllUnassignedPatients,
   useFetchUnviewedResults,
@@ -11,7 +12,6 @@ import { CommentsFilter, formatCommentsData } from "services/utils";
 
 import { useOverlay } from "./context";
 import { useDesiredOverlay } from "./useDesiredOverlay";
-import { latestCount } from "services/config";
 
 export const useDoctorData = (
   navigation,
