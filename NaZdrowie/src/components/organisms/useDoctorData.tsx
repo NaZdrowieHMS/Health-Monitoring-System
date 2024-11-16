@@ -1,14 +1,17 @@
-import { LinkButton, UserButton } from "components/atoms";
+import { LinkButton, PrimaryButton, UserButton } from "components/atoms";
 import { PatientData, PatientResult, UserData } from "properties/types";
 import {
   useFetchAllUnassignedPatients,
   useFetchLatestPatients,
   useFetchLatestResults,
 } from "services/doctorData";
-import { useFetchHealthComments } from "services/patientData";
-import { useBindPatientToDoctor } from "services/patientData";
+import {
+  useFetchHealthComments,
+  useBindPatientToDoctor,
+} from "services/patientData";
 import { formatCommentsData } from "services/utils";
 
+import { useOverlay } from "./context";
 import { useDesiredOverlay } from "./useDesiredOverlay";
 
 export const useDoctorData = (
@@ -17,6 +20,7 @@ export const useDoctorData = (
   patientId?: number,
 ) => {
   const { openPatientInfoOverlay } = useDesiredOverlay(currentUser);
+  const { hideOverlay } = useOverlay();
   const bind = useBindPatientToDoctor(currentUser);
 
   const navigateToPatientScreen = (patientId: number) => {
@@ -92,8 +96,18 @@ export const useDoctorData = (
           key={patient.id}
           title={`${patient.name} ${patient.surname}`}
           handleOnClick={() =>
-            openPatientInfoOverlay(patient, () =>
-              bind.mutate({ doctorId: currentUser.id, patientId: patient.id }),
+            openPatientInfoOverlay(
+              patient,
+              <PrimaryButton
+                title="Dodaj pacjenta"
+                handleOnClick={() => {
+                  bind.mutate({
+                    doctorId: currentUser.id,
+                    patientId: patient.id,
+                  });
+                  hideOverlay();
+                }}
+              />,
             )
           }
         />
