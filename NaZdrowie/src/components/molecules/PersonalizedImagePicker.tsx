@@ -11,7 +11,7 @@ export const PersonalizedImagePicker: React.FC<{
 }> = ({ setBase64Data, setContentType }) => {
   const selectImage = async () => {
     const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      mediaTypes: ["images"],
       allowsEditing: true,
       base64: true,
     });
