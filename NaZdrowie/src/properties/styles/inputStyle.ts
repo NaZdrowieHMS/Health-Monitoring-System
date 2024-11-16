@@ -16,15 +16,6 @@ export const inputStyle = StyleSheet.create({
   },
 });
 
-export const dropdownStyle = StyleSheet.create({
-  inputIOS: {
-    ...inputStyle.input,
-  },
-  inputAndroid: {
-    ...inputStyle.input,
-  },
-});
-
 export const imagePickerStyle = StyleSheet.create({
   input: {
     paddingHorizontal: paddingSize.xSmall,

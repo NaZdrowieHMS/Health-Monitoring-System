@@ -65,10 +65,9 @@ export const useUploadReferral = (user: UserData) => {
       return data;
     },
     onSuccess(data: PatientReferral) {
-      queryClient.setQueryData(
-        [user, `patients/${data.patientId}/referrals`],
-        (previousData: PatientReferral[]) => [...previousData, data],
-      );
+      queryClient.invalidateQueries({
+        queryKey: [user, "referrals"],
+      });
     },
   });
 };
