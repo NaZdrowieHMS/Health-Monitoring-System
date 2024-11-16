@@ -12,7 +12,7 @@ export const CommentsCardForDoctor: React.FC<
   return (
     <View style={cardStyle.container}>
       <Text style={generalStyle.titleText}>{title}</Text>
-      <Text style={generalStyle.keyText}>Twoje komentarze</Text>
+      <Text style={generalStyle.keyText}>Twój ostatni komentarz</Text>
       {/* TODO Comment input */}
       {data.map((item, index) => (
         <Comment item={item} index={index} key={index} />

@@ -14,3 +14,14 @@ export const useFetchResultCommentsData = <T = DoctorComment[]>(
     select,
   });
 };
+
+export const useFetchHealthComments = <T = DoctorComment[]>(
+  user: UserData,
+  select?: (data: DoctorComment[]) => T,
+  patientId?: number,
+) => {
+  return useQuery<DoctorComment[], Error, T>({
+    queryKey: [user, `patients/${patientId ? patientId : user.id}/health`],
+    select,
+  });
+};

@@ -1,14 +1,12 @@
 import { LinkButton, PrimaryButton, UserButton } from "components/atoms";
 import { PatientData, PatientResult, UserData } from "properties/types";
+import { useFetchHealthComments } from "services/commentsData";
 import {
   useFetchAllUnassignedPatients,
   useFetchLatestPatients,
   useFetchLatestResults,
 } from "services/doctorData";
-import {
-  useFetchHealthComments,
-  useBindPatientToDoctor,
-} from "services/patientData";
+import { useBindPatientToDoctor } from "services/patientData";
 import { formatCommentsData } from "services/utils";
 
 import { useOverlay } from "./context";
