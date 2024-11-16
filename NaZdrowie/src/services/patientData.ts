@@ -1,9 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import {
-  DoctorComment,
-  HealthFormDisplayData,
-  UserData,
-} from "properties/types";
+import { HealthFormDisplayData, UserData } from "properties/types";
 import {
   PatientData,
   PatientReferral,
@@ -14,34 +10,40 @@ import {
 import axiosInstance from "./axios";
 import { Alert } from "react-native";
 
-export const useFetchHealthComments = <T = DoctorComment[]>(
-  user: UserData,
-  select?: (data: DoctorComment[]) => T,
-  patientId?: number,
-) => {
-  return useQuery<DoctorComment[], Error, T>({
-    queryKey: [user, `patients/${patientId ? patientId : user.id}/health`],
-    select,
-  });
-};
-
 export const useFetchReferrals = <T = PatientReferral[]>(
   user: UserData,
   select?: (data: PatientReferral[]) => T,
   patientId?: number,
+  numberOfReferrals?: number,
 ) => {
+  const referralsCount = numberOfReferrals
+    ? `?startIndex=0&pageSize=${numberOfReferrals}`
+    : "";
+
   return useQuery<PatientReferral[], Error, T>({
-    queryKey: [user, `patients/${patientId ? patientId : user.id}/referrals`],
+    queryKey: [
+      user,
+      `patients/${patientId ? patientId : user.id}/referrals${referralsCount}`,
+    ],
     select,
   });
 };
+
 export const useFetchResults = <T = PatientResult[]>(
   user: UserData,
   select?: (data: PatientResult[]) => T,
   patientId?: number,
+  numberOfResults?: number,
 ) => {
+  const resultsCount = numberOfResults
+    ? `?startIndex=0&pageSize=${numberOfResults}`
+    : "";
+
   return useQuery<PatientResult[], Error, T>({
-    queryKey: [user, `patients/${patientId ? patientId : user.id}/results`],
+    queryKey: [
+      user,
+      `patients/${patientId ? patientId : user.id}/results${resultsCount}`,
+    ],
     select,
   });
 };

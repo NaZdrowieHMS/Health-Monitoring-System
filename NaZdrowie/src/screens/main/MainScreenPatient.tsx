@@ -13,8 +13,12 @@ export const MainScreenPatient = ({
 }: NativeStackScreenProps<RootStackParamList, "MainScreen">) => {
   const { currentUser } = useContext(UserContext);
 
-  const { healthComments, referrals, results, navigateToQrScannerScreen } =
-    usePatientData(navigation, currentUser);
+  const {
+    healthComments,
+    latestReferrals,
+    latestResults,
+    navigateToQrScannerScreen,
+  } = usePatientData(navigation, currentUser);
 
   const {
     openCommentsOverlay,
@@ -41,15 +45,17 @@ export const MainScreenPatient = ({
         />
         <PrimaryButton title="Czaty z lekarzami" />
       </View>
-      {healthComments.isSuccess && referrals.isSuccess && results.isSuccess ? (
+      {healthComments.isSuccess &&
+      latestReferrals.isSuccess &&
+      latestResults.isSuccess ? (
         <>
           <CommentsCard
             title="Moje zdrowie"
             data={healthComments.data}
             handleSeeMore={() => openCommentsOverlay(healthComments.data)}
           />
-          <ListCard title="Moje skierowania" data={referrals.data} />
-          <ListCard title="Moje wyniki" data={results.data} />
+          <ListCard title="Moje skierowania" data={latestReferrals.data} />
+          <ListCard title="Moje wyniki" data={latestResults.data} />
         </>
       ) : (
         <LoadingCard />
