@@ -11,7 +11,7 @@ import {
   StatusBar,
   StyleSheet,
 } from "react-native";
-import { useBindPatientToDoctor } from "services/universalData";
+import { useBindPatientToDoctor } from "services/patientData";
 
 export const QrScannerScreen = ({
   navigation,

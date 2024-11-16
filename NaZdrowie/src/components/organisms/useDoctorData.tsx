@@ -6,7 +6,7 @@ import {
   useFetchLatestResults,
 } from "services/doctorData";
 import { useFetchHealthComments } from "services/patientData";
-import { useBindPatientToDoctor } from "services/universalData";
+import { useBindPatientToDoctor } from "services/patientData";
 import { formatCommentsData } from "services/utils";
 
 import { useDesiredOverlay } from "./useDesiredOverlay";
