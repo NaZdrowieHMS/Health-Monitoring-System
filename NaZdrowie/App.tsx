@@ -15,6 +15,7 @@ import {
   AllPatientsScreen,
   PatientDetailsScreen,
   AiDiagnosis,
+  NewPatientsScreen,
 } from "screens/doctorScreens";
 import { ResultPreviewScreen } from "screens/doctorScreens/ResultPreviewScreen";
 import { MainScreen } from "screens/main";
@@ -45,6 +46,7 @@ export type RootStackParamList = {
   MainScreen: undefined;
   QrScanner: undefined;
   AllPatients: undefined;
+  NewPatients: undefined;
   PatientDetails: { patientId: number };
   AiDiagnosis: { patientId: number };
   ResultPreview: { result: PatientResult; patientId: number };
@@ -87,6 +89,11 @@ const App = (): React.JSX.Element => {
                   name="AllPatients"
                   component={AllPatientsScreen}
                   options={{ title: "Moi pacjenci" }}
+                />
+                <Stack.Screen
+                  name="NewPatients"
+                  component={NewPatientsScreen}
+                  options={{ title: "Znajdź pacjenta" }}
                 />
                 <Stack.Screen
                   name="PatientDetails"

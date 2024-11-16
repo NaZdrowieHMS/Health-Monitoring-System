@@ -7,7 +7,6 @@ import { generalStyle } from "./generalStyle";
 export const cardStyle = StyleSheet.create({
   container: {
     backgroundColor: primaryColors.white,
-    flexGrow: 1,
     paddingHorizontal: paddingSize.medium,
     paddingVertical: paddingSize.mediumBig,
     rowGap: paddingSize.mediumBig,

@@ -1,4 +1,5 @@
 import { useQueryClient } from "@tanstack/react-query";
+import { PrimaryButton } from "components/atoms";
 import {
   CommentsOverlay,
   HealthFormFillOverlay,
@@ -9,10 +10,12 @@ import {
   ReferralFormOverlay,
   ResultsFormOverlay,
 } from "components/molecules";
+import { PatientDetailsOverlay } from "components/molecules/overlays/PatientDetialsOverlay";
 import {
   CommentData,
   HealthFormDisplayData,
   healthFormItems,
+  PatientData,
   PatientReferral,
   PatientResult,
   UserData,
@@ -104,6 +107,7 @@ export const useDesiredOverlay = (currentUser: UserData) => {
       queryKey: [currentUser, `doctors/${currentUser.id}/patients`],
     });
   };
+
   const openQrDisplayOverlay = () => {
     showOverlay(() => (
       <QrDisplayOverlay
@@ -112,6 +116,26 @@ export const useDesiredOverlay = (currentUser: UserData) => {
       />
     ));
   };
+
+  function openPatientInfoOverlay(
+    patient: PatientData,
+    handleButtonClick?: () => void,
+  ) {
+    showOverlay(() => (
+      <PatientDetailsOverlay
+        handleClose={hideOverlay}
+        patient={patient}
+        button={
+          handleButtonClick ? (
+            <PrimaryButton
+              title="Dodaj pacjenta"
+              handleOnClick={handleButtonClick}
+            />
+          ) : null
+        }
+      />
+    ));
+  }
 
   return {
     openCommentsOverlay,
@@ -122,5 +146,6 @@ export const useDesiredOverlay = (currentUser: UserData) => {
     openResultOverlay,
     openReferralFormOverlay,
     openQrDisplayOverlay,
+    openPatientInfoOverlay,
   };
 };

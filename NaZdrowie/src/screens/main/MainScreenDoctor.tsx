@@ -13,10 +13,9 @@ export const MainScreenDoctor = ({
 }: NativeStackScreenProps<RootStackParamList, "MainScreen">) => {
   const { currentUser } = useContext(UserContext);
 
-  const { latestPatients, latestResults } = useDoctorData(
-    navigation,
-    currentUser,
-  );
+  const { latestPatients, latestResults, navigateToNewPatientsScreen } =
+    useDoctorData(navigation, currentUser);
+
   const { openQrDisplayOverlay } = useDesiredOverlay(currentUser);
   const navigateToAllPatientsScreen = () => {
     navigation.navigate("AllPatients");
@@ -34,7 +33,10 @@ export const MainScreenDoctor = ({
           title="Wygeneruj kod QR"
           handleOnClick={() => openQrDisplayOverlay()}
         />
-        <PrimaryButton title="Znajdź nowego pacjenta" />
+        <PrimaryButton
+          title="Znajdź nowego pacjenta"
+          handleOnClick={navigateToNewPatientsScreen}
+        />
       </View>
       {latestPatients.isSuccess && latestResults.isSuccess ? (
         <>
