@@ -6,9 +6,9 @@ import {
   PatientResult,
   ResultUpload,
 } from "properties/types/PatientDataProps";
+import { Alert } from "react-native";
 
 import axiosInstance from "./axios";
-import { Alert } from "react-native";
 
 export const useFetchReferrals = <T = PatientReferral[]>(
   user: UserData,
@@ -100,16 +100,14 @@ export const useBindPatientToDoctor = (user: UserData) => {
 
   return useMutation({
     mutationFn: async (usersInfo: { doctorId: number; patientId: number }) => {
-      console.log("Update binding", usersInfo);
       const { data } = await axiosInstance.put(
         "doctors/patients/relation",
         usersInfo,
       );
-      console.log(data);
       return data;
     },
     onSuccess(data) {
-      Alert.alert("Binding succesfull");
+      Alert.alert("Połączenie zostało utworzone pomyślnie");
       if (user.isDoctor) {
         queryClient.invalidateQueries({
           queryKey: [user, `doctors/${user.id}/patients/unassigned`],
