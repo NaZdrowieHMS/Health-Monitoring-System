@@ -1,16 +1,17 @@
 import { LinkButton, PrimaryButton, UserButton } from "components/atoms";
 import { PatientData, PatientResult, UserData } from "properties/types";
-import { useFetchHealthComments } from "services/commentsData";
+import { useFetchHealthCommentsFiltered } from "services/commentsData";
 import {
   useFetchAllUnassignedPatients,
-  useFetchLatestPatients,
-  useFetchLatestResults,
+  useFetchUnviewedResults,
+  useFetchPatients,
 } from "services/doctorData";
 import { useBindPatientToDoctor } from "services/patientData";
-import { formatCommentsData } from "services/utils";
+import { CommentsFilter, formatCommentsData } from "services/utils";
 
 import { useOverlay } from "./context";
 import { useDesiredOverlay } from "./useDesiredOverlay";
+import { latestCount } from "services/config";
 
 export const useDoctorData = (
   navigation,
@@ -57,32 +58,28 @@ export const useDoctorData = (
     };
   }
 
-  const latestPatients = useFetchLatestPatients(currentUser, (data) =>
-    data.map(formatPatientsView),
+  const latestPatients = useFetchPatients(
+    currentUser,
+    (data) => data.map(formatPatientsView),
+    latestCount,
   );
 
-  const latestResults = useFetchLatestResults(currentUser, (data) =>
+  const unviewedResults = useFetchUnviewedResults(currentUser, (data) =>
     data.map(formatResultEntry),
   );
 
-  const currentDotorComments = useFetchHealthComments(
+  const currentDotorComments = useFetchHealthCommentsFiltered(
     currentUser,
-    (data) => {
-      return data
-        .filter((comment) => comment.doctor.id === currentUser.id)
-        .map(formatCommentsData);
-    },
     patientId,
+    CommentsFilter.Specific,
+    (data) => data.map(formatCommentsData),
   );
 
-  const otherDotorsComments = useFetchHealthComments(
+  const otherDotorsComments = useFetchHealthCommentsFiltered(
     currentUser,
-    (data) => {
-      return data
-        .filter((comment) => comment.doctor.id !== currentUser.id)
-        .map(formatCommentsData);
-    },
     patientId,
+    CommentsFilter.Others,
+    (data) => data.map(formatCommentsData),
   );
 
   function formatNewPatients(patient: PatientData) {
@@ -115,9 +112,7 @@ export const useDoctorData = (
 
   const unassignedPatients = useFetchAllUnassignedPatients(
     currentUser,
-    (data) => {
-      return data.map(formatNewPatients);
-    },
+    (data) => data.map(formatNewPatients),
   );
 
   const filteredUnassignedPatients = (filterValue: string) => {
@@ -139,7 +134,7 @@ export const useDoctorData = (
     currentDotorComments,
     otherDotorsComments,
     latestPatients,
-    latestResults,
+    unviewedResults,
     unassignedPatients,
     filteredUnassignedPatients,
   };

@@ -26,6 +26,14 @@ export const MainScreenPatient = ({
     openHealthFormFillOverlay,
   } = useDesiredOverlay(currentUser);
 
+  const navigateToAllReferals = () => {
+    // TODO
+  };
+
+  const navigateToAllResults = () => {
+    // TODO
+  };
+
   return (
     <ScrollView contentContainerStyle={mainStyle.container}>
       <View style={mainStyle.buttonContainer}>
@@ -54,8 +62,16 @@ export const MainScreenPatient = ({
             data={healthComments.data}
             handleSeeMore={() => openCommentsOverlay(healthComments.data)}
           />
-          <ListCard title="Moje skierowania" data={latestReferrals.data} />
-          <ListCard title="Moje wyniki" data={latestResults.data} />
+          <ListCard
+            title="Moje skierowania"
+            data={latestReferrals.data}
+            handleSeeMore={navigateToAllReferals}
+          />
+          <ListCard
+            title="Moje wyniki"
+            data={latestResults.data}
+            handleSeeMore={navigateToAllResults}
+          />
         </>
       ) : (
         <LoadingCard />

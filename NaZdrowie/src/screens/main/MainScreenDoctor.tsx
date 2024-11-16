@@ -13,7 +13,7 @@ export const MainScreenDoctor = ({
 }: NativeStackScreenProps<RootStackParamList, "MainScreen">) => {
   const { currentUser } = useContext(UserContext);
 
-  const { latestPatients, latestResults, navigateToNewPatientsScreen } =
+  const { latestPatients, unviewedResults, navigateToNewPatientsScreen } =
     useDoctorData(navigation, currentUser);
 
   const { openQrDisplayOverlay } = useDesiredOverlay(currentUser);
@@ -38,16 +38,13 @@ export const MainScreenDoctor = ({
           handleOnClick={navigateToNewPatientsScreen}
         />
       </View>
-      {latestPatients.isSuccess && latestResults.isSuccess ? (
+      {latestPatients.isSuccess && unviewedResults.isSuccess ? (
         <>
           <ListCard
             title="Ostatnio leczeni pacjenci"
             data={latestPatients.data}
           />
-          <ListCard
-            title="Ostatnio załączone badania"
-            data={latestResults.data}
-          />
+          <ListCard title="Nowe wyniki badań" data={unviewedResults.data} />
         </>
       ) : (
         <LoadingCard />

@@ -90,7 +90,7 @@ export const PatientDetailsScreen = ({
               dataOthers={otherDotorsComments.data}
             />
             <ListCard
-              title="Skierowania pacjenta"
+              title="Aktywne skierowania pacjenta"
               data={latestReferrals.data}
               handleSeeMore={navigateToAllReferals}
             />

@@ -5,7 +5,7 @@ import { UserProvider, OverlayProvider } from "components/organisms/context";
 import { PatientResult } from "properties/types";
 import React from "react";
 import { View } from "react-native";
-import { QrScannerScreen } from "screens/PatientScreens";
+import { QrScannerScreen } from "screens/patientScreens";
 import {
   LoginScreen,
   RegisterScreen,
@@ -59,7 +59,7 @@ const App = (): React.JSX.Element => {
         <UserProvider>
           <View style={{ flex: 1 }}>
             <NavigationContainer>
-              <Stack.Navigator>
+              <Stack.Navigator id={undefined}>
                 <Stack.Screen
                   name="Login"
                   component={LoginScreen}

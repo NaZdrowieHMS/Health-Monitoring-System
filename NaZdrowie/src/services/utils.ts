@@ -23,3 +23,8 @@ export const resultItems: DropdownItem[] = [
   { label: "USG piersi", value: "USG piersi" },
   { label: "Mammografia", value: "Mammografia" },
 ];
+
+export enum CommentsFilter {
+  Specific = "specific",
+  Others = "others",
+}
