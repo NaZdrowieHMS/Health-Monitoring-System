@@ -36,7 +36,7 @@ export const useFetchHealthCommentsFiltered = <T = DoctorComment[]>(
   return useQuery<DoctorComment[], Error, T>({
     queryKey: [
       doctor,
-      `doctors/doctors/${doctor.id}/patient/${patientId}/health?filter=${filter}`,
+      `doctors/${doctor.id}/patient/${patientId}/health?filter=${filter}`,
     ],
     select,
   });
