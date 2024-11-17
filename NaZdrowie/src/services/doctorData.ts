@@ -8,17 +8,7 @@ import {
 
 import axiosInstance from "./axios";
 
-export const useFetchLatestPatients = <T = PatientData[]>(
-  user: UserData,
-  select?: (data: PatientData[]) => T,
-) => {
-  return useQuery<PatientData[], Error, T>({
-    queryKey: [user, `doctors/${user.id}/patients`],
-    select,
-  });
-};
-
-export const useFetchLatestResults = <
+export const useFetchUnviewedResults = <
   T = (PatientResult & {
     patient: PatientData;
   })[],
@@ -42,12 +32,26 @@ export const useFetchLatestResults = <
   });
 };
 
-export const useFetchAllPatients = <T = PatientData[]>(
+export const useFetchPatients = <T = PatientData[]>(
+  user: UserData,
+  select?: (data: PatientData[]) => T,
+  numberOfPatients?: number,
+) => {
+  const patientsCount = numberOfPatients
+    ? `?startIndex=0&pageSize=${numberOfPatients}`
+    : "";
+  return useQuery<PatientData[], Error, T>({
+    queryKey: [user, `doctors/${user.id}/patients${patientsCount}`],
+    select,
+  });
+};
+
+export const useFetchAllUnassignedPatients = <T = PatientData[]>(
   user: UserData,
   select?: (data: PatientData[]) => T,
 ) => {
   return useQuery<PatientData[], Error, T>({
-    queryKey: [user, `doctors/${user.id}/patients`],
+    queryKey: [user, `doctors/${user.id}/patients/unassigned`],
     select,
   });
 };
@@ -61,10 +65,9 @@ export const useUploadReferral = (user: UserData) => {
       return data;
     },
     onSuccess(data: PatientReferral) {
-      queryClient.setQueryData(
-        [user, `patients/${data.patientId}/referrals`],
-        (previousData: PatientReferral[]) => [...previousData, data],
-      );
+      queryClient.invalidateQueries({
+        queryKey: [user, "referrals"],
+      });
     },
   });
 };

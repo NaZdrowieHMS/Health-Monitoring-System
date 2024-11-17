@@ -2,8 +2,9 @@ import { LinkButton } from "components/atoms";
 import { useCameraPermissions } from "expo-camera";
 import { PatientReferral, PatientResult, UserData } from "properties/types";
 import { Alert, Linking } from "react-native";
+import { useFetchHealthComments } from "services/commentsData";
+import { latestCount } from "services/config";
 import {
-  useFetchHealthComments,
   useFetchReferrals,
   useFetchResults,
   useFetchLatestHealthForm,
@@ -112,11 +113,26 @@ export const usePatientData = (
     patientId,
   );
 
+  const latestReferrals = useFetchReferrals(
+    currentUser,
+    (data) =>
+      data.filter((referral) => !referral.completed).map(formatReferralsView),
+    patientId,
+  );
+
   const results = useFetchResults(
     currentUser,
     (data) => data.map(formatResultsView),
     patientId,
   );
+
+  const latestResults = useFetchResults(
+    currentUser,
+    (data) => data.map(formatResultsView),
+    patientId,
+    latestCount,
+  );
+
   const latestHealthForm = useFetchLatestHealthForm(
     currentUser,
     (data) => {
@@ -133,8 +149,8 @@ export const usePatientData = (
     patientId,
   );
 
-  if (results.isSuccess && latestHealthForm.data) {
-    results.data?.push(latestHealthForm.data);
+  if (latestResults.isSuccess && latestHealthForm.data) {
+    latestResults.data?.push(latestHealthForm.data);
   }
 
   return {
@@ -142,5 +158,7 @@ export const usePatientData = (
     healthComments,
     referrals,
     results,
+    latestResults,
+    latestReferrals,
   };
 };

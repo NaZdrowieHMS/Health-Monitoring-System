@@ -9,10 +9,12 @@ import {
   ReferralFormOverlay,
   ResultsFormOverlay,
 } from "components/molecules";
+import { PatientDetailsOverlay } from "components/molecules/overlays/PatientDetialsOverlay";
 import {
   CommentData,
   HealthFormDisplayData,
   healthFormItems,
+  PatientData,
   PatientReferral,
   PatientResult,
   UserData,
@@ -104,6 +106,7 @@ export const useDesiredOverlay = (currentUser: UserData) => {
       queryKey: [currentUser, `doctors/${currentUser.id}/patients`],
     });
   };
+
   const openQrDisplayOverlay = () => {
     showOverlay(() => (
       <QrDisplayOverlay
@@ -112,6 +115,19 @@ export const useDesiredOverlay = (currentUser: UserData) => {
       />
     ));
   };
+
+  function openPatientInfoOverlay(
+    patient: PatientData,
+    button?: React.JSX.Element,
+  ) {
+    showOverlay(() => (
+      <PatientDetailsOverlay
+        handleClose={hideOverlay}
+        patient={patient}
+        button={button}
+      />
+    ));
+  }
 
   return {
     openCommentsOverlay,
@@ -122,5 +138,6 @@ export const useDesiredOverlay = (currentUser: UserData) => {
     openResultOverlay,
     openReferralFormOverlay,
     openQrDisplayOverlay,
+    openPatientInfoOverlay,
   };
 };

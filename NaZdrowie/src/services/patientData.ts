@@ -1,9 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import {
-  DoctorComment,
-  HealthFormDisplayData,
-  UserData,
-} from "properties/types";
+import { HealthFormDisplayData, UserData } from "properties/types";
 import {
   PatientData,
   PatientReferral,
@@ -14,34 +10,42 @@ import { Alert } from "react-native";
 
 import axiosInstance from "./axios";
 
-export const useFetchHealthComments = <T = DoctorComment[]>(
-  user: UserData,
-  select?: (data: DoctorComment[]) => T,
-  patientId?: number,
-) => {
-  return useQuery<DoctorComment[], Error, T>({
-    queryKey: [user, `patients/${patientId ? patientId : user.id}/health`],
-    select,
-  });
-};
-
 export const useFetchReferrals = <T = PatientReferral[]>(
   user: UserData,
   select?: (data: PatientReferral[]) => T,
   patientId?: number,
+  numberOfReferrals?: number,
 ) => {
+  const referralsCount = numberOfReferrals
+    ? `?startIndex=0&pageSize=${numberOfReferrals}`
+    : "";
+
   return useQuery<PatientReferral[], Error, T>({
-    queryKey: [user, `patients/${patientId ? patientId : user.id}/referrals`],
+    queryKey: [
+      user,
+      "referrals",
+      `patients/${patientId ? patientId : user.id}/referrals${referralsCount}`,
+    ],
     select,
   });
 };
+
 export const useFetchResults = <T = PatientResult[]>(
   user: UserData,
   select?: (data: PatientResult[]) => T,
   patientId?: number,
+  numberOfResults?: number,
 ) => {
+  const resultsCount = numberOfResults
+    ? `?startIndex=0&pageSize=${numberOfResults}`
+    : "";
+
   return useQuery<PatientResult[], Error, T>({
-    queryKey: [user, `patients/${patientId ? patientId : user.id}/results`],
+    queryKey: [
+      user,
+      "results",
+      `patients/${patientId ? patientId : user.id}/results${resultsCount}`,
+    ],
     select,
   });
 };
@@ -66,13 +70,12 @@ export const useSendResult = (user: UserData, isreferralAssigned: boolean) => {
       return data;
     },
     onSuccess(data: PatientResult) {
-      queryClient.setQueryData(
-        [user, `patients/${data.patientId}/results`],
-        (previousData: PatientResult[]) => [...previousData, data],
-      );
+      queryClient.invalidateQueries({
+        queryKey: [user, "results"],
+      });
       if (isreferralAssigned) {
         queryClient.invalidateQueries({
-          queryKey: [user, `patients/${data.patientId}/referrals`],
+          queryKey: [user, "referrals"],
         });
       }
     },
@@ -94,22 +97,32 @@ export const useFetchLatestHealthForm = <T = HealthFormDisplayData | null>(
 };
 
 export const useBindPatientToDoctor = (user: UserData) => {
-  // const queryClient = useQueryClient(); //
+  const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (doctorId: number) => {
-      const { data } = await axiosInstance.put("doctors/patients/relation", {
-        doctorId,
-        patientId: user.id,
-      });
+    mutationFn: async (usersInfo: { doctorId: number; patientId: number }) => {
+      const { data } = await axiosInstance.put(
+        "doctors/patients/relation",
+        usersInfo,
+      );
       return data;
     },
     onSuccess(data) {
-      Alert.alert(
-        "Binding succesfull",
-      );
-      // queryClient.invalidateQueries({ queryKey: [user, 'doctors/endpoint/TODO'] })
-      // refetch list of all doctors - curerntly not implemented
+      Alert.alert("Połączenie zostało utworzone pomyślnie");
+      if (user.isDoctor) {
+        queryClient.invalidateQueries({
+          queryKey: [user, `doctors/${user.id}/patients/unassigned`],
+        });
+        queryClient.invalidateQueries({
+          queryKey: [user, `doctors/${user.id}/patients`],
+        });
+        queryClient.invalidateQueries({
+          queryKey: [user, `doctors/${user.id}/results/unviewed`],
+        });
+      } else {
+        // queryClient.invalidateQueries({ queryKey: [user, 'doctors/endpoint/TODO'] })
+        // refetch list of all doctors (for patient) - curerntly not implemented
+      }
     },
   });
 };

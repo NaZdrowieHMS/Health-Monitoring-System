@@ -1,21 +1,35 @@
-import { LinkButton } from "components/atoms";
+import { LinkButton, PrimaryButton, UserButton } from "components/atoms";
 import { PatientData, PatientResult, UserData } from "properties/types";
+import { useFetchHealthCommentsFiltered } from "services/commentsData";
 import {
-  useFetchLatestPatients,
-  useFetchLatestResults,
+  useFetchAllUnassignedPatients,
+  useFetchUnviewedResults,
+  useFetchPatients,
 } from "services/doctorData";
-import { useFetchHealthComments } from "services/patientData";
-import { formatCommentsData } from "services/utils";
+import { useBindPatientToDoctor } from "services/patientData";
+import { CommentsFilter, formatCommentsData } from "services/utils";
+
+import { useOverlay } from "./context";
+import { useDesiredOverlay } from "./useDesiredOverlay";
+import { latestCount } from "services/config";
 
 export const useDoctorData = (
   navigation,
   currentUser: UserData,
   patientId?: number,
 ) => {
+  const { openPatientInfoOverlay } = useDesiredOverlay(currentUser);
+  const { hideOverlay } = useOverlay();
+  const bind = useBindPatientToDoctor(currentUser);
+
   const navigateToPatientScreen = (patientId: number) => {
     navigation.navigate("PatientDetails", {
       patientId,
     });
+  };
+
+  const navigateToNewPatientsScreen = () => {
+    navigation.navigate("NewPatients");
   };
 
   function formatPatientsView(patient: PatientData) {
@@ -44,37 +58,84 @@ export const useDoctorData = (
     };
   }
 
-  const latestPatients = useFetchLatestPatients(currentUser, (data) =>
-    data.map(formatPatientsView),
+  const latestPatients = useFetchPatients(
+    currentUser,
+    (data) => data.map(formatPatientsView),
+    latestCount,
   );
-  const latestResults = useFetchLatestResults(currentUser, (data) =>
+
+  const unviewedResults = useFetchUnviewedResults(currentUser, (data) =>
     data.map(formatResultEntry),
   );
 
-  const currentDotorComments = useFetchHealthComments(
+  const currentDotorComments = useFetchHealthCommentsFiltered(
     currentUser,
-    (data) => {
-      return data
-        .filter((comment) => comment.doctor.id === currentUser.id)
-        .map(formatCommentsData);
-    },
     patientId,
+    CommentsFilter.Specific,
+    (data) => data.map(formatCommentsData),
   );
 
-  const otherDotorsComments = useFetchHealthComments(
+  const otherDotorsComments = useFetchHealthCommentsFiltered(
     currentUser,
-    (data) => {
-      return data
-        .filter((comment) => comment.doctor.id !== currentUser.id)
-        .map(formatCommentsData);
-    },
     patientId,
+    CommentsFilter.Others,
+    (data) => data.map(formatCommentsData),
   );
+
+  function formatNewPatients(patient: PatientData) {
+    return {
+      pesel: Number(patient.pesel),
+      fullName: `${patient.name} ${patient.surname}`,
+      button: (
+        <UserButton
+          key={patient.id}
+          title={`${patient.name} ${patient.surname}`}
+          handleOnClick={() =>
+            openPatientInfoOverlay(
+              patient,
+              <PrimaryButton
+                title="Dodaj pacjenta"
+                handleOnClick={() => {
+                  bind.mutate({
+                    doctorId: currentUser.id,
+                    patientId: patient.id,
+                  });
+                  hideOverlay();
+                }}
+              />,
+            )
+          }
+        />
+      ),
+    };
+  }
+
+  const unassignedPatients = useFetchAllUnassignedPatients(
+    currentUser,
+    (data) => data.map(formatNewPatients),
+  );
+
+  const filteredUnassignedPatients = (filterValue: string) => {
+    return filterValue
+      ? unassignedPatients.data?.filter((patientCard) => {
+          return (
+            patientCard.pesel.toString().includes(filterValue.toLowerCase()) ||
+            patientCard.fullName
+              .toLowerCase()
+              .includes(filterValue.toLowerCase())
+          );
+        })
+      : unassignedPatients.data;
+  };
 
   return {
+    navigateToNewPatientsScreen,
+    navigateToPatientScreen,
     currentDotorComments,
     otherDotorsComments,
     latestPatients,
-    latestResults,
+    unviewedResults,
+    unassignedPatients,
+    filteredUnassignedPatients,
   };
 };

@@ -5,19 +5,19 @@ import { LoadingCard, Navbar } from "components/molecules";
 import { UserContext } from "components/organisms/context";
 import { mainStyle } from "properties/styles";
 import { useContext } from "react";
-import { View, ScrollView, Text } from "react-native";
-import { useFetchAllPatients } from "services/doctorData";
+import { View, ScrollView } from "react-native";
+import { useFetchPatients } from "services/doctorData";
 
 export const AllPatientsScreen = ({
   navigation,
 }: NativeStackScreenProps<RootStackParamList, "AllPatients">) => {
   const { currentUser } = useContext(UserContext);
 
-  const allPatients = useFetchAllPatients(currentUser, (data) => {
+  const allPatients = useFetchPatients(currentUser, (data) => {
     return data.map((patient) => (
       <UserButton
         key={patient.id}
-        title={patient.name}
+        title={`${patient.name} ${patient.surname}`}
         handleOnClick={() => navigateToPatientScreen(patient.id)}
       />
     ));
