@@ -31,7 +31,7 @@ export const AllPatientsScreen = ({
 
   return (
     <View style={{ flex: 1 }}>
-      <Navbar navbarDescriptionTitle="Moi pacjenci" />
+      <Navbar navigation={(path) => navigation.navigate(path)} navbarDescriptionTitle="Moi pacjenci" />
       <ScrollView contentContainerStyle={mainStyle.container}>
         {allPatients.isSuccess ? allPatients.data : <LoadingCard />}
       </ScrollView>

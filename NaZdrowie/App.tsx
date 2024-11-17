@@ -20,6 +20,7 @@ import {
 import { ResultPreviewScreen } from "screens/doctorScreens/ResultPreviewScreen";
 import { MainScreen } from "screens/main";
 import axiosInstance from "services/axios";
+import {HamburgerMenuProvider} from "components/organisms/context/HamburgerMenuProvider";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -57,6 +58,7 @@ const App = (): React.JSX.Element => {
     <QueryClientProvider client={queryClient}>
       <OverlayProvider>
         <UserProvider>
+        <HamburgerMenuProvider>
           <View style={{ flex: 1 }}>
             <NavigationContainer>
               <Stack.Navigator id={undefined}>
@@ -113,6 +115,7 @@ const App = (): React.JSX.Element => {
               </Stack.Navigator>
             </NavigationContainer>
           </View>
+        </HamburgerMenuProvider>
         </UserProvider>
       </OverlayProvider>
     </QueryClientProvider>
