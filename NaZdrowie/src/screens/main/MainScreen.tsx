@@ -3,10 +3,10 @@ import { RootStackParamList } from "App";
 import { Navbar } from "components/molecules";
 import { UserContext } from "components/organisms/context";
 import React, { useContext } from "react";
-import { View } from "react-native";
-
+import { SafeAreaView } from "react-native";
 import { MainScreenDoctor } from "./MainScreenDoctor";
 import { MainScreenPatient } from "./MainScreenPatient";
+import { generalStyle } from "properties/styles";
 
 export const MainScreen = ({
   navigation,
@@ -17,13 +17,15 @@ export const MainScreen = ({
   const doctorScreen = currentUser.isDoctor;
 
   return (
-    <View style={{ flex: 1 }}>
-      <Navbar />
-      {doctorScreen ? (
-        <MainScreenDoctor navigation={navigation} route={route} />
-      ) : (
-        <MainScreenPatient navigation={navigation} route={route} />
-      )}
-    </View>
+    <>
+      <Navbar navigation={(path) => navigation.navigate(path)} />
+      <SafeAreaView style={generalStyle.safeArea}>
+        {doctorScreen ? (
+          <MainScreenDoctor navigation={navigation} route={route} />
+        ) : (
+          <MainScreenPatient navigation={navigation} route={route} />
+        )}
+      </SafeAreaView>
+    </>
   );
 };

@@ -33,4 +33,8 @@ export const generalStyle = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
   },
+  safeArea: {
+    flex: 1,
+    backgroundColor: primaryColors.babyBlue,
+  },
 });

@@ -20,6 +20,8 @@ import { ResultPreviewScreen } from "screens/doctorScreens/ResultPreviewScreen";
 import { MainScreen } from "screens/main";
 import { QrScannerScreen } from "screens/patientScreens";
 import axiosInstance from "services/axios";
+import { HamburgerMenuProvider } from "components/organisms/context/HamburgerMenuProvider";
+import primaryColors from "properties/colors";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -57,62 +59,64 @@ const App = (): React.JSX.Element => {
     <QueryClientProvider client={queryClient}>
       <OverlayProvider>
         <UserProvider>
-          <View style={{ flex: 1 }}>
-            <NavigationContainer>
-              <Stack.Navigator id={undefined}>
-                <Stack.Screen
-                  name="Login"
-                  component={LoginScreen}
-                  options={{ title: "Logowanie" }}
-                />
-                <Stack.Screen
-                  name="Register"
-                  component={RegisterScreen}
-                  options={{ title: "Rejestracja" }}
-                />
-                <Stack.Screen
-                  name="Choice"
-                  component={ChoiceScreen}
-                  options={{ title: "Logowanie" }}
-                />
-                <Stack.Screen
-                  name="MainScreen"
-                  component={MainScreen}
-                  options={{ title: "Strona główna" }}
-                />
-                <Stack.Screen
-                  name="QrScanner"
-                  component={QrScannerScreen}
-                  options={{ headerShown: false }}
-                />
-                <Stack.Screen
-                  name="AllPatients"
-                  component={AllPatientsScreen}
-                  options={{ title: "Moi pacjenci" }}
-                />
-                <Stack.Screen
-                  name="NewPatients"
-                  component={NewPatientsScreen}
-                  options={{ title: "Znajdź pacjenta" }}
-                />
-                <Stack.Screen
-                  name="PatientDetails"
-                  component={PatientDetailsScreen}
-                  options={{ title: "Dane pacjenta" }}
-                />
-                <Stack.Screen
-                  name="AiDiagnosis"
-                  component={AiDiagnosis}
-                  options={{ title: "Diagnozuj z AI" }}
-                />
-                <Stack.Screen
-                  name="ResultPreview"
-                  component={ResultPreviewScreen}
-                  options={{ title: "Podgląd wyniku" }}
-                />
-              </Stack.Navigator>
-            </NavigationContainer>
-          </View>
+          <HamburgerMenuProvider>
+            <View style={{ flex: 1, backgroundColor: primaryColors.white }}>
+              <NavigationContainer>
+                <Stack.Navigator id={undefined}>
+                  <Stack.Screen
+                    name="Login"
+                    component={LoginScreen}
+                    options={{ title: "Logowanie", headerShown: false }}
+                  />
+                  <Stack.Screen
+                    name="Register"
+                    component={RegisterScreen}
+                    options={{ title: "Rejestracja", headerShown: false }}
+                  />
+                  <Stack.Screen
+                    name="Choice"
+                    component={ChoiceScreen}
+                    options={{ title: "Logowanie", headerShown: false }}
+                  />
+                  <Stack.Screen
+                    name="MainScreen"
+                    component={MainScreen}
+                    options={{ title: "Strona główna", headerShown: false }}
+                  />
+                  <Stack.Screen
+                    name="QrScanner"
+                    component={QrScannerScreen}
+                    options={{ headerShown: false }}
+                  />
+                  <Stack.Screen
+                    name="AllPatients"
+                    component={AllPatientsScreen}
+                    options={{ title: "Moi pacjenci", headerShown: false }}
+                  />
+                  <Stack.Screen
+                    name="NewPatients"
+                    component={NewPatientsScreen}
+                    options={{ title: "Znajdź pacjenta", headerShown: false }}
+                  />
+                  <Stack.Screen
+                    name="PatientDetails"
+                    component={PatientDetailsScreen}
+                    options={{ title: "Dane pacjenta", headerShown: false }}
+                  />
+                  <Stack.Screen
+                    name="AiDiagnosis"
+                    component={AiDiagnosis}
+                    options={{ title: "Diagnozuj z AI", headerShown: false }}
+                  />
+                  <Stack.Screen
+                    name="ResultPreview"
+                    component={ResultPreviewScreen}
+                    options={{ title: "Podgląd wyniku", headerShown: false }}
+                  />
+                </Stack.Navigator>
+              </NavigationContainer>
+            </View>
+          </HamburgerMenuProvider>
         </UserProvider>
       </OverlayProvider>
     </QueryClientProvider>
