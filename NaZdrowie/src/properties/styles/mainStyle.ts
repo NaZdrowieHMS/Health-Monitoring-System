@@ -28,11 +28,15 @@ export const navbarStyle = StyleSheet.create({
     fontSize: fontSize.h2FontSize,
     color: primaryColors.darkBlue,
   },
-  navbarDescriptionText: {
+  navbarDescription: {
     paddingHorizontal: paddingSize.medium,
     paddingVertical: paddingSize.mediumBig,
     backgroundColor: primaryColors.darkBlue,
+    ...generalStyle.rowSpread,
+  },
+  navbarDescriptionText: {
     fontSize: fontSize.titleFontSize,
     color: primaryColors.white,
+    lineHeight: fontSize.h2FontSize * 1.5,
   },
 });

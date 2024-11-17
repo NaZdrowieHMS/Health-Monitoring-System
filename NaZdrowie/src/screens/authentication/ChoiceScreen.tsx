@@ -1,9 +1,10 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "App";
-import { PrimaryButton } from "components/atoms";
+import { LinkButton, PrimaryButton } from "components/atoms";
+import primaryColors from "properties/colors";
 import { authenticationScreenStyle } from "properties/styles";
 import React from "react";
-import { Keyboard, Text, View } from "react-native";
+import { Keyboard, Text, View, SafeAreaView } from "react-native";
 
 export const ChoiceScreen = ({
   navigation,
@@ -19,9 +20,12 @@ export const ChoiceScreen = ({
   const navigateToDoctorRegisterScreen = () => {
     navigation.navigate("Register", { doctorScreen: true });
   };
+  const navigateToLoginScreen = () => {
+    navigation.navigate("Login");
+  };
 
   return (
-    <View
+    <SafeAreaView
       style={authenticationScreenStyle.container}
       onTouchStart={dismissKeyboard}
     >
@@ -38,7 +42,14 @@ export const ChoiceScreen = ({
           handleOnClick={navigateToDoctorRegisterScreen}
           title="Jestem lekarzem"
         />
+        <LinkButton
+          title="Zaloguj się"
+          color={primaryColors.darkGrey}
+          helperText="Masz już konto?"
+          fontWeight="bold"
+          handleOnClick={navigateToLoginScreen}
+        />
       </View>
-    </View>
+    </SafeAreaView>
   );
 };

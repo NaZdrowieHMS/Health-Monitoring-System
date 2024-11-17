@@ -6,7 +6,7 @@ import { useDoctorData } from "components/organisms";
 import { UserContext } from "components/organisms/context";
 import { cardStyle, generalStyle, mainStyle } from "properties/styles";
 import { useContext, useState } from "react";
-import { View, ScrollView, Text } from "react-native";
+import { View, ScrollView, Text, SafeAreaView } from "react-native";
 
 export const NewPatientsScreen = ({
   navigation,
@@ -20,24 +20,29 @@ export const NewPatientsScreen = ({
   );
 
   return (
-    <View style={{ flex: 1 }}>
-      <Navbar navbarDescriptionTitle="Nowi pacjenci" />
-      <View style={cardStyle.container}>
-        <Text style={generalStyle.titleText}>Znajdź Pacjenta</Text>
-        <PersonalizedTextInput
-          placeholder="Wpisz PESEL lub imię i nazwisko"
-          onChange={setFilterValue}
-        />
-      </View>
-      <ScrollView contentContainerStyle={mainStyle.container}>
-        {unassignedPatients.isSuccess ? (
-          filteredUnassignedPatients(filterValue).map(
-            (element) => element.button,
-          )
-        ) : (
-          <LoadingCard />
-        )}
-      </ScrollView>
-    </View>
+    <>
+      <Navbar
+        navbarDescriptionTitle="Nowi pacjenci"
+        navigation={(path) => navigation.navigate(path)}
+      />
+      <SafeAreaView style={generalStyle.safeArea}>
+        <View style={cardStyle.container}>
+          <Text style={generalStyle.titleText}>Znajdź Pacjenta</Text>
+          <PersonalizedTextInput
+            placeholder="Wpisz PESEL lub imię i nazwisko"
+            onChange={setFilterValue}
+          />
+        </View>
+        <ScrollView contentContainerStyle={mainStyle.container}>
+          {unassignedPatients.isSuccess ? (
+            filteredUnassignedPatients(filterValue).map(
+              (element) => element.button,
+            )
+          ) : (
+            <LoadingCard />
+          )}
+        </ScrollView>
+      </SafeAreaView>
+    </>
   );
 };

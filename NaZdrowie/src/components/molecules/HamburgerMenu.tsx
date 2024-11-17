@@ -1,9 +1,9 @@
-import {View} from "react-native";
-import {useContext} from "react";
-import {UserContext} from "components/organisms/context";
-import {LinkButton} from "components/atoms";
-import {HamburgerMenuContext} from "components/organisms/context/HamburgerMenuProvider";
-import {HamburgerMenuStyle} from "properties/styles/hamburgerMenuStyle";
+import { View } from "react-native";
+import { useContext } from "react";
+import { UserContext } from "components/organisms/context";
+import { LinkButton } from "components/atoms";
+import { HamburgerMenuContext } from "components/organisms/context/HamburgerMenuProvider";
+import { HamburgerMenuStyle } from "properties/styles/hamburgerMenuStyle";
 
 const defaultButtons = [
   {
@@ -20,13 +20,13 @@ const defaultButtons = [
   },
   {
     title: "Wyloguj",
-    path: "Login"
-  }
-]
+    path: "Login",
+  },
+];
 
-export const HamburgerMenu = ({navigation}) => {
-  const {currentUser} = useContext(UserContext);
-  const {setIsMenuVisible} = useContext(HamburgerMenuContext);
+export const HamburgerMenu = ({ navigation }) => {
+  const { currentUser } = useContext(UserContext);
+  const { setIsMenuVisible } = useContext(HamburgerMenuContext);
 
   const navigate = (path) => {
     if (path === null) {
@@ -34,11 +34,17 @@ export const HamburgerMenu = ({navigation}) => {
     }
     navigation(path);
     setIsMenuVisible(false);
-  }
+  };
 
   return (
     <View style={HamburgerMenuStyle.container}>
-      {defaultButtons.map(button => <LinkButton title={button.title} handleOnClick={() => navigate(button.path)} key={button.title}/>)}
+      {defaultButtons.map((button) => (
+        <LinkButton
+          title={button.title}
+          handleOnClick={() => navigate(button.path)}
+          key={button.title}
+        />
+      ))}
     </View>
   );
-}
+};
