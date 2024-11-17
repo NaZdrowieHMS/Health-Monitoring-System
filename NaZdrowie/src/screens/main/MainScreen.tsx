@@ -18,7 +18,7 @@ export const MainScreen = ({
 
   return (
     <View style={{ flex: 1 }}>
-      <Navbar />
+      <Navbar navigation={(path) => navigation.navigate(path)} />
       {doctorScreen ? (
         <MainScreenDoctor navigation={navigation} route={route} />
       ) : (

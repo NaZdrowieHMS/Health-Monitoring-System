@@ -38,10 +38,11 @@ export const ResultPreviewScreen = ({
     <View style={{ flex: 1 }}>
       {patient.isSuccess ? (
         <Navbar
+          navigation={(path) => navigation.navigate(path)}
           navbarDescriptionTitle={`${patient.data.name} ${patient.data.surname}`}
         />
       ) : (
-        <Navbar navbarDescriptionTitle="..." />
+        <Navbar navigation={(path) => navigation.navigate(path)} navbarDescriptionTitle="..." />
       )}
       <ScrollView contentContainerStyle={mainStyle.container}>
         <Text style={generalStyle.titleText}>{result.testType}</Text>

@@ -44,10 +44,11 @@ export const AiDiagnosis = ({
     <View style={{ flex: 1 }}>
       {patient.isSuccess ? (
         <Navbar
+          navigation={(path) => navigation.navigate(path)}
           navbarDescriptionTitle={`${patient.data.name} ${patient.data.surname}`}
         />
       ) : (
-        <Navbar navbarDescriptionTitle="..." /> // maybe loading here or sth idk
+        <Navbar navigation={(path) => navigation.navigate(path)} navbarDescriptionTitle="..." /> // maybe loading here or sth idk
       )}
       <ScrollView contentContainerStyle={mainStyle.container}>
         {results.isSuccess ? (

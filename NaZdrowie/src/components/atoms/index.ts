@@ -1,6 +1,6 @@
 export * from "./Comment";
 export * from "./Dropdown";
-export * from "./HamburgerMenu";
+export * from "./HamburgerButton";
 export * from "./LoadingIcon";
 export * from "./NavbarDescription";
 export * from "./PersonalizedCheckbox";
