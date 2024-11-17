@@ -8,10 +8,10 @@ import {
   Navbar,
 } from "components/molecules";
 import { UserContext } from "components/organisms/context";
-import { mainStyle } from "properties/styles";
+import { generalStyle, mainStyle } from "properties/styles";
 import { PatientResult } from "properties/types";
 import React, { useContext } from "react";
-import { ScrollView, View } from "react-native";
+import { ScrollView, SafeAreaView } from "react-native";
 import { useFetchPatient, useFetchResults } from "services/patientData";
 
 export const AiDiagnosis = ({
@@ -41,27 +41,32 @@ export const AiDiagnosis = ({
   // const startAiDiagnosis = () => {};
 
   return (
-    <View style={{ flex: 1 }}>
+    <>
       {patient.isSuccess ? (
         <Navbar
           navigation={(path) => navigation.navigate(path)}
           navbarDescriptionTitle={`${patient.data.name} ${patient.data.surname}`}
         />
       ) : (
-        <Navbar navigation={(path) => navigation.navigate(path)} navbarDescriptionTitle="..." /> // maybe loading here or sth idk
+        <Navbar
+          navigation={(path) => navigation.navigate(path)}
+          navbarDescriptionTitle="..."
+        /> // maybe loading here or sth idk
       )}
-      <ScrollView contentContainerStyle={mainStyle.container}>
-        {results.isSuccess ? (
-          <ListCard
-            title="Załączone badania"
-            data={results.data}
-            extraButton={<PrimaryButton title="Poproś AI o analizę" />}
-          />
-        ) : (
-          <LoadingCard title="Załączone badania" />
-        )}
-        <AiAnalysisResultCard />
-      </ScrollView>
-    </View>
+      <SafeAreaView style={generalStyle.safeArea}>
+        <ScrollView contentContainerStyle={mainStyle.container}>
+          {results.isSuccess ? (
+            <ListCard
+              title="Załączone badania"
+              data={results.data}
+              extraButton={<PrimaryButton title="Poproś AI o analizę" />}
+            />
+          ) : (
+            <LoadingCard title="Załączone badania" />
+          )}
+          <AiAnalysisResultCard />
+        </ScrollView>
+      </SafeAreaView>
+    </>
   );
 };

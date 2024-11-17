@@ -13,9 +13,9 @@ import {
   useDoctorData,
 } from "components/organisms";
 import { UserContext } from "components/organisms/context";
-import { mainStyle } from "properties/styles";
+import { generalStyle, mainStyle } from "properties/styles";
 import React, { useContext } from "react";
-import { View, ScrollView } from "react-native";
+import { View, ScrollView, SafeAreaView } from "react-native";
 import { useFetchPatient } from "services/patientData";
 
 export const PatientDetailsScreen = ({
@@ -54,57 +54,62 @@ export const PatientDetailsScreen = ({
   };
 
   return (
-    <View style={{ flex: 1 }}>
+    <>
       {patient.isSuccess ? (
         <Navbar
           navigation={(path) => navigation.navigate(path)}
           navbarDescriptionTitle={`${patient.data.name} ${patient.data.surname}`}
         />
       ) : (
-        <Navbar navigation={(path) => navigation.navigate(path)} navbarDescriptionTitle="..." /> // maybe loading here or sth idk
+        <Navbar
+          navigation={(path) => navigation.navigate(path)}
+          navbarDescriptionTitle="..."
+        /> // maybe loading here or sth idk
       )}
-      <ScrollView contentContainerStyle={mainStyle.container}>
-        <View style={mainStyle.buttonContainer}>
-          <PrimaryButton
-            handleOnClick={navigateToAiDiagnosis}
-            title="Diagnozuj z AI"
-          />
-          <PrimaryButton title="Czat z pacjentem" />
-          <PrimaryButton
-            title="Załącz wynik badania"
-            handleOnClick={() => openResultsFormOverlay(patientId)}
-          />
-          <PrimaryButton
-            title="Wystaw skierowanie"
-            handleOnClick={() => openReferralFormOverlay(patientId)}
-          />
-        </View>
+      <SafeAreaView style={generalStyle.safeArea}>
+        <ScrollView contentContainerStyle={mainStyle.container}>
+          <View style={mainStyle.buttonContainer}>
+            <PrimaryButton
+              handleOnClick={navigateToAiDiagnosis}
+              title="Diagnozuj z AI"
+            />
+            <PrimaryButton title="Czat z pacjentem" />
+            <PrimaryButton
+              title="Załącz wynik badania"
+              handleOnClick={() => openResultsFormOverlay(patientId)}
+            />
+            <PrimaryButton
+              title="Wystaw skierowanie"
+              handleOnClick={() => openReferralFormOverlay(patientId)}
+            />
+          </View>
 
-        {latestReferrals.isSuccess &&
-        currentDotorComments.isSuccess &&
-        otherDotorsComments.isSuccess &&
-        latestResults.isSuccess ? (
-          <>
-            <CommentsCardForDoctor
-              title="Zdrowie pacjenta"
-              data={currentDotorComments.data}
-              dataOthers={otherDotorsComments.data}
-            />
-            <ListCard
-              title="Aktywne skierowania pacjenta"
-              data={latestReferrals.data}
-              handleSeeMore={navigateToAllReferals}
-            />
-            <ListCard
-              title="Wyniki pacjenta"
-              data={latestResults.data}
-              handleSeeMore={navigateToAllResults}
-            />
-          </>
-        ) : (
-          <LoadingCard />
-        )}
-      </ScrollView>
-    </View>
+          {latestReferrals.isSuccess &&
+          currentDotorComments.isSuccess &&
+          otherDotorsComments.isSuccess &&
+          latestResults.isSuccess ? (
+            <>
+              <CommentsCardForDoctor
+                title="Zdrowie pacjenta"
+                data={currentDotorComments.data}
+                dataOthers={otherDotorsComments.data}
+              />
+              <ListCard
+                title="Aktywne skierowania pacjenta"
+                data={latestReferrals.data}
+                handleSeeMore={navigateToAllReferals}
+              />
+              <ListCard
+                title="Wyniki pacjenta"
+                data={latestResults.data}
+                handleSeeMore={navigateToAllResults}
+              />
+            </>
+          ) : (
+            <LoadingCard />
+          )}
+        </ScrollView>
+      </SafeAreaView>
+    </>
   );
 };

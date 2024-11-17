@@ -35,7 +35,7 @@ export const authenticationScreenStyle = StyleSheet.create({
 export const registerScreenStyle = StyleSheet.create({
   container: {
     paddingHorizontal: paddingSize.big,
-    paddingVertical: paddingSize.xxBig,
+    paddingVertical: paddingSize.big,
     rowGap: paddingSize.xxBig,
     backgroundColor: primaryColors.white,
     flexGrow: 1,

@@ -1,12 +1,17 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "App";
-import { PrimaryButton, PersonalizedTextInput } from "components/atoms";
+import {
+  PrimaryButton,
+  PersonalizedTextInput,
+  LinkButton,
+} from "components/atoms";
+import primaryColors from "properties/colors";
 import {
   authenticationScreenStyle,
   registerScreenStyle,
 } from "properties/styles";
 import React from "react";
-import { Keyboard, ScrollView, Text, View } from "react-native";
+import { Keyboard, ScrollView, Text, View, SafeAreaView } from "react-native";
 
 export const RegisterScreen = ({
   navigation,
@@ -23,26 +28,37 @@ export const RegisterScreen = ({
   };
 
   return (
-    <ScrollView
-      contentContainerStyle={registerScreenStyle.container}
-      onTouchStart={dismissKeyboard}
-    >
-      <View>
-        <Text style={authenticationScreenStyle.h1}>Na Zdrowie!</Text>
-        <Text style={authenticationScreenStyle.h2}>Dołącz do nas!</Text>
-      </View>
-      <View style={authenticationScreenStyle.inputContainer}>
-        <PersonalizedTextInput placeholder="Adres email" />
-        <PersonalizedTextInput placeholder="PESEL" />
-        {doctorScreen && <PersonalizedTextInput placeholder="Numer PWZ" />}
-        <PersonalizedTextInput placeholder="Login" />
-        <PersonalizedTextInput placeholder="Hasło" />
-        <PersonalizedTextInput placeholder="Powtórz hasło" />
-      </View>
-      <PrimaryButton
-        title="Zarejestruj się"
-        handleOnClick={navigateToLoginScreen}
-      />
-    </ScrollView>
+    <SafeAreaView style={{ flex: 1, backgroundColor: primaryColors.white }}>
+      <ScrollView
+        contentContainerStyle={registerScreenStyle.container}
+        onTouchStart={dismissKeyboard}
+      >
+        <View>
+          <Text style={authenticationScreenStyle.h1}>Na Zdrowie!</Text>
+          <Text style={authenticationScreenStyle.h2}>Dołącz do nas!</Text>
+        </View>
+        <View style={authenticationScreenStyle.inputContainer}>
+          <PersonalizedTextInput placeholder="Adres email" />
+          <PersonalizedTextInput placeholder="PESEL" />
+          {doctorScreen && <PersonalizedTextInput placeholder="Numer PWZ" />}
+          <PersonalizedTextInput placeholder="Login" />
+          <PersonalizedTextInput placeholder="Hasło" />
+          <PersonalizedTextInput placeholder="Powtórz hasło" />
+        </View>
+        <View style={authenticationScreenStyle.buttonsContainer}>
+          <PrimaryButton
+            title="Zarejestruj się"
+            handleOnClick={navigateToLoginScreen}
+          />
+          <LinkButton
+            title="Zaloguj się"
+            color={primaryColors.darkGrey}
+            helperText="Masz już konto?"
+            fontWeight="bold"
+            handleOnClick={navigateToLoginScreen}
+          />
+        </View>
+      </ScrollView>
+    </SafeAreaView>
   );
 };

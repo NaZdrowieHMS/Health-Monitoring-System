@@ -3,9 +3,9 @@ import { RootStackParamList } from "App";
 import { UserButton } from "components/atoms";
 import { LoadingCard, Navbar } from "components/molecules";
 import { UserContext } from "components/organisms/context";
-import { mainStyle } from "properties/styles";
+import { generalStyle, mainStyle } from "properties/styles";
 import { useContext } from "react";
-import { View, ScrollView } from "react-native";
+import { ScrollView, SafeAreaView } from "react-native";
 import { useFetchPatients } from "services/doctorData";
 
 export const AllPatientsScreen = ({
@@ -30,11 +30,16 @@ export const AllPatientsScreen = ({
   };
 
   return (
-    <View style={{ flex: 1 }}>
-      <Navbar navigation={(path) => navigation.navigate(path)} navbarDescriptionTitle="Moi pacjenci" />
-      <ScrollView contentContainerStyle={mainStyle.container}>
-        {allPatients.isSuccess ? allPatients.data : <LoadingCard />}
-      </ScrollView>
-    </View>
+    <>
+      <Navbar
+        navigation={(path) => navigation.navigate(path)}
+        navbarDescriptionTitle="Moi pacjenci"
+      />
+      <SafeAreaView style={generalStyle.safeArea}>
+        <ScrollView contentContainerStyle={mainStyle.container}>
+          {allPatients.isSuccess ? allPatients.data : <LoadingCard />}
+        </ScrollView>
+      </SafeAreaView>
+    </>
   );
 };

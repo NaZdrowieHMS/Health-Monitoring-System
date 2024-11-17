@@ -9,7 +9,7 @@ import { UserContext } from "components/organisms/context";
 import primaryColors from "properties/colors";
 import { authenticationScreenStyle } from "properties/styles";
 import React, { useContext } from "react";
-import { Keyboard, Text, View } from "react-native";
+import { Keyboard, Text, View, SafeAreaView } from "react-native";
 
 export const LoginScreen = ({
   navigation,
@@ -42,7 +42,7 @@ export const LoginScreen = ({
   };
 
   return (
-    <View
+    <SafeAreaView
       style={authenticationScreenStyle.container}
       onTouchStart={dismissKeyboard}
     >
@@ -75,6 +75,6 @@ export const LoginScreen = ({
           handleOnClick={navigateToRegisterScreen}
         />
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
