@@ -169,7 +169,7 @@ export const useDoctorData = (
 
   function handleCheckboxForAiSelection(resultId: number) {
     queryClient.setQueryData(
-      [currentUser, patientId, "results"],
+      [currentUser, patientId, "results", ""], // keys needs to be changed :)
       (data: PatientResult[]) => {
         return data.map((dataResult: PatientResult) => {
           if (dataResult.id === resultId) {
@@ -187,14 +187,20 @@ export const useDoctorData = (
   function formatResultsForAiData(result: PatientResult) {
     return {
       checkbox: {
-        checkboxStatus: result.ai_selected, // TODO
+        checkboxStatus: result.ai_selected,
         checkboxHandler: () => handleCheckboxForAiSelection(result.id),
       },
       text: result.testType,
       buttons: [<LinkButton title="Podgląd" />],
     };
   }
-
+  const startAiDiagnosis = () => {
+    // keys needs to be changed :)
+    const selectedResults = queryClient.getQueryData<PatientResult[]>([currentUser, patientId, "results", ""]) 
+      .filter((result) => result.ai_selected === true)
+      .map((result) => result.id)
+    console.log(selectedResults)
+  }
   return {
     navigateToNewPatientsScreen,
     navigateToPatientScreen,
@@ -207,5 +213,6 @@ export const useDoctorData = (
     handleCheckboxForAiSelection,
     unassignedPatients,
     filteredUnassignedPatients,
+    startAiDiagnosis,
   };
 };

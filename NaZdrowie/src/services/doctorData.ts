@@ -43,7 +43,7 @@ export const useFetchPatientResults = <T = PatientResult[]>(
     : "";
 
   return useQuery<PatientResult[], Error, T>({
-    queryKey: [user, patientId, "results"],
+    queryKey: [user, patientId, "results", resultsCount],
     queryFn: () =>
       axiosInstance
         .get(
