@@ -5,6 +5,7 @@ import { formatCommentsData } from "services/utils";
 
 import { Overlay } from "./Overlay";
 import { CommentsCard, ImageCard, LoadingCard } from "../cards";
+import { cardCommentsCount } from "services/config";
 
 export const ResultPreviewOverlay: React.FC<{
   currentUser: UserData;
@@ -15,6 +16,7 @@ export const ResultPreviewOverlay: React.FC<{
     currentUser,
     result.id,
     (data) => data.map(formatCommentsData),
+    cardCommentsCount,
   );
 
   return (

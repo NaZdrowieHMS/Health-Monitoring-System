@@ -14,7 +14,7 @@ export const MainScreenPatient = ({
   const { currentUser } = useContext(UserContext);
 
   const {
-    healthComments,
+    latestHealthComments,
     latestReferrals,
     latestResults,
     navigateToQrScannerScreen,
@@ -53,14 +53,14 @@ export const MainScreenPatient = ({
         />
         <PrimaryButton title="Czaty z lekarzami" />
       </View>
-      {healthComments.isSuccess &&
+      {latestHealthComments.isSuccess &&
       latestReferrals.isSuccess &&
       latestResults.isSuccess ? (
         <>
           <CommentsCard
             title="Moje zdrowie"
-            data={healthComments.data}
-            handleSeeMore={() => openCommentsOverlay(healthComments.data)}
+            data={latestHealthComments.data}
+            handleSeeMore={() => openCommentsOverlay(latestHealthComments.data)}
           />
           <ListCard
             title="Moje skierowania"
