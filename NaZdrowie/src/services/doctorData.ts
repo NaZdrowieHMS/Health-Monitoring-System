@@ -6,7 +6,7 @@ import {
   PatientResult,
 } from "properties/types/PatientDataProps";
 
-import axiosInstance from "./axios";
+import { axiosApi } from "./axios";
 
 export const useFetchUnviewedResults = <
   T = (PatientResult & {
@@ -45,7 +45,7 @@ export const useFetchPatientResults = <T = PatientResult[]>(
   return useQuery<PatientResult[], Error, T>({
     queryKey: [user, patientId, "results", resultsCount],
     queryFn: () =>
-      axiosInstance
+      axiosApi
         .get(
           `doctors/${user.id}/patients/${patientId}/results${resultsCount}`,
         )
@@ -83,7 +83,7 @@ export const useUploadReferral = (user: UserData) => {
 
   return useMutation({
     mutationFn: async (referralUpload: PatientReferralUpload) => {
-      const { data } = await axiosInstance.post("referrals", referralUpload);
+      const { data } = await axiosApi.post("referrals", referralUpload);
       return data;
     },
     onSuccess(data: PatientReferral) {
@@ -97,7 +97,7 @@ export const useUploadReferral = (user: UserData) => {
 export const useAddAiSelectedResults = () => {
   return useMutation({
     mutationFn: async (AiSelectedChanges: AiSelectedChange[]) => {
-      const { data } = await axiosInstance.put("results/ai-selected", AiSelectedChanges);
+      const { data } = await axiosApi.put("results/ai-selected", AiSelectedChanges);
       return data;
     },
   });
@@ -106,7 +106,7 @@ export const useAddAiSelectedResults = () => {
 export const useDeleteAiSelectedResults = () => {
   return useMutation({
     mutationFn: async (AiSelectedChanges: AiSelectedChange[]) => {
-      const { data } = await axiosInstance.delete("results/ai-selected", {
+      const { data } = await axiosApi.delete("results/ai-selected", {
         data: {
           source: AiSelectedChanges
         }

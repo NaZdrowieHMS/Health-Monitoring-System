@@ -19,7 +19,7 @@ import {
 import { ResultPreviewScreen } from "screens/doctorScreens/ResultPreviewScreen";
 import { MainScreen } from "screens/main";
 import { QrScannerScreen } from "screens/patientScreens";
-import axiosInstance from "services/axios";
+import { axiosApi } from "services/axios";
 import { HamburgerMenuProvider } from "components/organisms/context/HamburgerMenuProvider";
 import primaryColors from "properties/colors";
 
@@ -32,7 +32,7 @@ const queryClient = new QueryClient({
       queryFn: async ({ queryKey }) => {
         const lastKey = queryKey[queryKey.length - 1];
         if (typeof lastKey === "string") {
-          const { data } = await axiosInstance.get(lastKey);
+          const { data } = await axiosApi.get(lastKey);
           return data;
         }
       },

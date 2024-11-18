@@ -8,7 +8,7 @@ import {
 } from "properties/types/PatientDataProps";
 import { Alert } from "react-native";
 
-import axiosInstance from "./axios";
+import { axiosApi } from "./axios";
 
 export const useFetchReferrals = <T = PatientReferral[]>(
   user: UserData,
@@ -70,7 +70,7 @@ export const useSendResult = (user: UserData, isreferralAssigned: boolean) => {
 
   return useMutation({
     mutationFn: async (resultUpload: ResultUpload) => {
-      const { data } = await axiosInstance.post("results", resultUpload);
+      const { data } = await axiosApi.post("results", resultUpload);
       return data;
     },
     onSuccess(data: PatientResult) {
@@ -110,7 +110,7 @@ export const useBindPatientToDoctor = (user: UserData) => {
 
   return useMutation({
     mutationFn: async (usersInfo: { doctorId: number; patientId: number }) => {
-      const { data } = await axiosInstance.put(
+      const { data } = await axiosApi.put(
         "doctors/patients/relation",
         usersInfo,
       );

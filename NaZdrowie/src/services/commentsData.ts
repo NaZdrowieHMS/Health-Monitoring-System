@@ -6,7 +6,7 @@ import {
   ResultCommentUpload,
 } from "properties/types";
 import { CommentsFilter } from "./utils";
-import axiosInstance from "./axios";
+import { axiosApi } from "./axios";
 
 export const useFetchResultCommentsData = <T = DoctorComment[]>(
   user: UserData,
@@ -76,7 +76,7 @@ export const useSendHealthComment = (user: UserData) => {
 
   return useMutation({
     mutationFn: async (comment: HealthCommentUpload) => {
-      const { data } = await axiosInstance.post("health", comment);
+      const { data } = await axiosApi.post("health", comment);
       return data;
     },
     onSuccess(data: DoctorComment) {
@@ -92,7 +92,7 @@ export const useSendResultComment = (user: UserData) => {
 
   return useMutation({
     mutationFn: async (comment: ResultCommentUpload) => {
-      const { data } = await axiosInstance.post("results/comments", comment);
+      const { data } = await axiosApi.post("results/comments", comment);
       return data;
     },
     onSuccess(data: DoctorComment) {

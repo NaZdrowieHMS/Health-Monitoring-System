@@ -1,14 +1,14 @@
 import { AiResults } from "properties/types/AiDataProps";
+import { axiosAiApi } from "./axios";
 
-import axiosInstance from "./axios";
 
 export const getAiPrediction: (
   base64Image: string,
 ) => Promise<AiResults> = async (base64Image: string) => {
   try {
-    const response = await axiosInstance.post(
+    const response = await axiosAiApi.post(
       // TODO: zmienić to na właiwy url
-      "http://localhost:5001/predictions/test",
+      "TODO",
       {
         image: base64Image,
       },
