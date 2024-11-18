@@ -28,3 +28,9 @@ export type PatientReferralUpload = {
   completed: boolean;
   comment: string;
 };
+
+export type AiSelectedChange = {
+  resultId: number,
+  patientId: number,
+  doctorId: number
+}

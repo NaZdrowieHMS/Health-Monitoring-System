@@ -1,3 +1,4 @@
+import { useFocusEffect } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "App";
 import { PrimaryButton } from "components/atoms";
@@ -21,8 +22,11 @@ export const AiDiagnosis = ({
   const { patientId } = route.params;
   const { currentUser } = useContext(UserContext);
   const patient = useFetchPatient(currentUser, null, patientId);
+  const { patientResultsForAi, startAiDiagnosis, updateAiSelectedData } = useDoctorData(navigation, currentUser, patientId);
 
-  const { patientResultsForAi, startAiDiagnosis } = useDoctorData(navigation, currentUser, patientId);
+  useFocusEffect(
+    updateAiSelectedData
+  )
 
   return (
     <>

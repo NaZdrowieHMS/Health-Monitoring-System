@@ -1,3 +1,4 @@
+import { useFocusEffect } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "App";
 import {
@@ -28,12 +29,16 @@ export const ResultPreviewScreen = ({
   const { result, patientId } = route.params;
   const patient = useFetchPatient(currentUser, null, patientId);
   const [, setComment] = useState<string>();
-  const { handleCheckboxForAiSelection } = useDoctorData(navigation, currentUser, patientId)
+  const { handleCheckboxForAiSelection, updateAiSelectedData } = useDoctorData(navigation, currentUser, patientId)
   const resultComments = useFetchResultCommentsData(
     currentUser,
     result.id,
     (data) => data.map(formatCommentsData),
   );
+
+  useFocusEffect(
+    updateAiSelectedData
+  )
 
   return (
     <>

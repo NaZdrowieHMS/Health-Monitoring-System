@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { PatientReferralUpload, UserData } from "properties/types";
+import { AiSelectedChange, PatientReferralUpload, UserData } from "properties/types";
 import {
   PatientData,
   PatientReferral,
@@ -90,6 +90,28 @@ export const useUploadReferral = (user: UserData) => {
       queryClient.invalidateQueries({
         queryKey: [user, "referrals"],
       });
+    },
+  });
+};
+
+export const useAddAiSelectedResults = () => {
+  return useMutation({
+    mutationFn: async (AiSelectedChanges: AiSelectedChange[]) => {
+      const { data } = await axiosInstance.put("results/ai-selected", AiSelectedChanges);
+      return data;
+    },
+  });
+};
+
+export const useDeleteAiSelectedResults = () => {
+  return useMutation({
+    mutationFn: async (AiSelectedChanges: AiSelectedChange[]) => {
+      const { data } = await axiosInstance.delete("results/ai-selected", {
+        data: {
+          source: AiSelectedChanges
+        }
+      });
+      return data;
     },
   });
 };
