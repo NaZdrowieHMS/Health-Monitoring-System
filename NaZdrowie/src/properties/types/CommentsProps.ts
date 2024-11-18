@@ -1,7 +1,5 @@
 import { GestureResponderEvent } from "react-native";
 
-import { Author } from "./DoctorDataProps";
-
 export type CommentData = {
   text: string;
   date: string;
@@ -12,4 +10,16 @@ export type CommentsCardProps = {
   title: string;
   data: CommentData[];
   handleSeeMore?: (event: GestureResponderEvent) => void;
+};
+
+export type HealthCommentUpload = {
+  doctorId: number;
+  patientId: number;
+  content: string;
+};
+
+export type ResultCommentUpload = {
+  resultId: number;
+  doctorId: number;
+  content: string;
 };

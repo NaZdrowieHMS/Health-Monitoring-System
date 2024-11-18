@@ -1,6 +1,9 @@
 import { LinkButton, PrimaryButton, UserButton } from "components/atoms";
 import { PatientData, PatientResult, UserData } from "properties/types";
-import { useFetchHealthCommentsFiltered } from "services/commentsData";
+import {
+  useFetchHealthCommentsFiltered,
+  useSendHealthComment,
+} from "services/commentsData";
 import { currentDoctorCommentsCount, latestCount } from "services/config";
 import {
   useFetchAllUnassignedPatients,
@@ -29,6 +32,15 @@ export const useDoctorData = (
   const bind = useBindPatientToDoctor(currentUser);
   const addAiSelectedResults = useAddAiSelectedResults();
   const deleteAiSelectedResults = useDeleteAiSelectedResults();
+
+  const healthCommentUpload = {
+    sendComment: useSendHealthComment(currentUser),
+    comment: {
+      doctorId: currentUser.id,
+      patientId: patientId,
+      content: "",
+    },
+  };
 
   const navigateToPatientScreen = (patientId: number) => {
     navigation.navigate("PatientDetails", {
@@ -242,5 +254,6 @@ export const useDoctorData = (
     filteredUnassignedPatients,
     startAiDiagnosis,
     updateAiSelectedData,
+    healthCommentUpload,
   };
 };

@@ -1,7 +1,12 @@
-import { useQuery } from "@tanstack/react-query";
-import { DoctorComment, UserData } from "properties/types";
-
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  HealthCommentUpload,
+  DoctorComment,
+  UserData,
+  ResultCommentUpload,
+} from "properties/types";
 import { CommentsFilter } from "./utils";
+import axiosInstance from "./axios";
 
 export const useFetchResultCommentsData = <T = DoctorComment[]>(
   user: UserData,
@@ -63,5 +68,37 @@ export const useFetchHealthCommentsFiltered = <T = DoctorComment[]>(
     ],
 
     select,
+  });
+};
+
+export const useSendHealthComment = (user: UserData) => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (comment: HealthCommentUpload) => {
+      const { data } = await axiosInstance.post("health", comment);
+      return data;
+    },
+    onSuccess(data: DoctorComment) {
+      queryClient.invalidateQueries({
+        queryKey: [user, "healthComments"],
+      });
+    },
+  });
+};
+
+export const useSendResultComment = (user: UserData) => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (comment: ResultCommentUpload) => {
+      const { data } = await axiosInstance.post("results/comments", comment);
+      return data;
+    },
+    onSuccess(data: DoctorComment) {
+      queryClient.invalidateQueries({
+        queryKey: [user, "resultComments"],
+      });
+    },
   });
 };
