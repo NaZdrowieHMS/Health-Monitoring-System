@@ -33,11 +33,8 @@ export const PatientDetailsScreen = ({
     currentUser,
     patientId,
   );
-  const { currentDotorComments, otherDotorsComments } = useDoctorData(
-    navigation,
-    currentUser,
-    patientId,
-  );
+  const { currentDotorComments, otherDotorsComments, healthCommentUpload } =
+    useDoctorData(navigation, currentUser, patientId);
 
   const navigateToAllReferals = () => {
     // TODO
@@ -93,6 +90,7 @@ export const PatientDetailsScreen = ({
                 title="Zdrowie pacjenta"
                 data={currentDotorComments.data}
                 dataOthers={otherDotorsComments.data}
+                commentUpload={healthCommentUpload}
               />
               <ListCard
                 title="Aktywne skierowania pacjenta"

@@ -82,15 +82,20 @@ export const useSendResult = (user: UserData, isreferralAssigned: boolean) => {
   });
 };
 
-export const useFetchLatestHealthForm = <T = HealthFormDisplayData | null>(
+export const useFetchHealthForms = <T = HealthFormDisplayData | null>(
   user: UserData,
   select?: (data: HealthFormDisplayData | null) => T,
   patientId?: number,
+  numberOfForms?: number,
 ) => {
+  const formsCount = numberOfForms
+    ? `?startIndex=0&pageSize=${numberOfForms}`
+    : "";
+
   return useQuery<HealthFormDisplayData | null, Error, T>({
     queryKey: [
       user,
-      `patients/${patientId ? patientId : user.id}/forms/latest`,
+      `patients/${patientId ? patientId : user.id}/forms${formsCount}`,
     ],
     select,
   });

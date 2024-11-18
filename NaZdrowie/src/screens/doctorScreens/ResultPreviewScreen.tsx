@@ -15,7 +15,10 @@ import { UserContext } from "components/organisms/context";
 import { generalStyle, mainStyle } from "properties/styles";
 import React, { useContext, useState } from "react";
 import { ScrollView, View, Text, SafeAreaView } from "react-native";
-import { useFetchResultCommentsData } from "services/commentsData";
+import {
+  useFetchResultCommentsData,
+  useSendResultComment,
+} from "services/commentsData";
 import { cardCommentsCount } from "services/config";
 import { useFetchPatient } from "services/patientData";
 import { formatCommentsData } from "services/utils";
@@ -35,6 +38,18 @@ export const ResultPreviewScreen = ({
     (data) => data.map(formatCommentsData),
     cardCommentsCount,
   );
+
+  const sendResultComment = useSendResultComment(currentUser);
+
+  const handleSendComment = () => {
+    if (comment.length > 0) {
+      sendResultComment.mutateAsync({
+        resultId: result.id,
+        doctorId: currentUser.id,
+        content: comment,
+      }); // here you can define onSuccess, onError and onSettled logic
+    }
+  };
 
   return (
     <>
@@ -64,9 +79,7 @@ export const ResultPreviewScreen = ({
           <PersonalizedTextInput
             placeholder="Wpisz nowy komentarz"
             onChange={setComment}
-            iconButton={
-              <SendButton handleOnClick={() => console.log("send")} />
-            }
+            iconButton={<SendButton handleOnClick={handleSendComment} />}
           />
           {resultComments.isSuccess ? (
             <CommentsCard
