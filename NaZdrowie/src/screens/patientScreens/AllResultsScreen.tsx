@@ -7,6 +7,7 @@ import React, {useContext} from "react";
 import {UserContext} from "components/organisms/context";
 import {useFetchPatient, useFetchResults} from "services/patientData";
 import {ResultButton} from "components/atoms/buttons/ResultButton";
+import {useDesiredOverlay} from "components/organisms";
 
 export const AllResultsScreen = ({
   route,
@@ -16,7 +17,7 @@ export const AllResultsScreen = ({
   const { patientId } = route.params;
   const results = useFetchResults({id: patientId, isDoctor: false});
   const patient = useFetchPatient(currentUser, null, patientId);
-
+  const {openResultOverlay} = useDesiredOverlay(currentUser);
   return (
       <>
         {results.isSuccess && currentUser.isDoctor ? (
@@ -39,7 +40,12 @@ export const AllResultsScreen = ({
         <SafeAreaView style={generalStyle.safeArea}>
           <ScrollView contentContainerStyle={mainStyle.container}>
             {results.isSuccess ? (
-                results.data.map(result => <ResultButton title={result.testType} date={result.createdDate} />)
+                results.data.map(result =>
+                    <ResultButton
+                      title={result.testType}
+                      date={result.createdDate}
+                      handleOnClick={() => openResultOverlay(result)}
+                    />)
             ) : (
                 <LoadingCard />
             )}
