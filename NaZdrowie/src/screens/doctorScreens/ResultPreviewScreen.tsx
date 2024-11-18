@@ -16,6 +16,7 @@ import { generalStyle, mainStyle } from "properties/styles";
 import React, { useContext, useState } from "react";
 import { ScrollView, View, Text, SafeAreaView } from "react-native";
 import { useFetchResultCommentsData } from "services/commentsData";
+import { cardCommentsCount } from "services/config";
 import { useFetchPatient } from "services/patientData";
 import { formatCommentsData } from "services/utils";
 
@@ -32,6 +33,7 @@ export const ResultPreviewScreen = ({
     currentUser,
     result.id,
     (data) => data.map(formatCommentsData),
+    cardCommentsCount,
   );
 
   return (

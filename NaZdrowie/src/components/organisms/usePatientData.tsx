@@ -107,6 +107,13 @@ export const usePatientData = (
     patientId,
   );
 
+  const latestHealthComments = useFetchHealthComments(
+    currentUser,
+    (data) => data.map(formatCommentsData),
+    patientId,
+    latestCount,
+  );
+
   const referrals = useFetchReferrals(
     currentUser,
     (data) => data.map(formatReferralsView),
@@ -160,5 +167,6 @@ export const usePatientData = (
     results,
     latestResults,
     latestReferrals,
+    latestHealthComments,
   };
 };

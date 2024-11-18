@@ -6,12 +6,19 @@ export const useFetchResultCommentsData = <T = DoctorComment[]>(
   user: UserData,
   resultId: number,
   select?: (data: DoctorComment[]) => T,
-  latestCount?: number,
+  numberOfComments?: number,
 ) => {
+  const commentsCount = numberOfComments
+    ? `?startIndex=0&pageSize=${numberOfComments}`
+    : "";
+
   return useQuery<DoctorComment[], Error, T>({
-    queryKey: latestCount
-      ? [user, `results/${resultId}/comments`]
-      : [user, `results/${resultId}/comments`],
+    queryKey: [
+      user,
+      "resultComments",
+      `results/${resultId}/comments${commentsCount}`,
+    ],
+
     select,
   });
 };
@@ -20,9 +27,18 @@ export const useFetchHealthComments = <T = DoctorComment[]>(
   user: UserData,
   select?: (data: DoctorComment[]) => T,
   patientId?: number,
+  numberOfComments?: number,
 ) => {
+  const commentsCount = numberOfComments
+    ? `?startIndex=0&pageSize=${numberOfComments}`
+    : "";
+
   return useQuery<DoctorComment[], Error, T>({
-    queryKey: [user, `patients/${patientId ? patientId : user.id}/health`],
+    queryKey: [
+      user,
+      "healthComments",
+      `patients/${patientId ? patientId : user.id}/health${commentsCount}`,
+    ],
     select,
   });
 };
@@ -32,12 +48,19 @@ export const useFetchHealthCommentsFiltered = <T = DoctorComment[]>(
   patientId: number,
   filter: CommentsFilter,
   select?: (data: DoctorComment[]) => T,
+  numberOfComments?: number,
 ) => {
+  const commentsCount = numberOfComments
+    ? `&startIndex=0&pageSize=${numberOfComments}`
+    : "";
+
   return useQuery<DoctorComment[], Error, T>({
     queryKey: [
       doctor,
-      `doctors/${doctor.id}/patient/${patientId}/health?filter=${filter}`,
+      "healthComments",
+      `doctors/${doctor.id}/patient/${patientId}/health?filter=${filter}${commentsCount}`,
     ],
+
     select,
   });
 };

@@ -7,9 +7,12 @@ import {
 } from "components/atoms";
 import { UserContext } from "components/organisms/context";
 import primaryColors from "properties/colors";
-import { authenticationScreenStyle } from "properties/styles";
+import {
+  authenticationScreenStyle,
+  registerScreenStyle,
+} from "properties/styles";
 import React, { useContext } from "react";
-import { Keyboard, Text, View, SafeAreaView } from "react-native";
+import { Keyboard, Text, View, SafeAreaView, ScrollView } from "react-native";
 
 export const LoginScreen = ({
   navigation,
@@ -42,39 +45,41 @@ export const LoginScreen = ({
   };
 
   return (
-    <SafeAreaView
-      style={authenticationScreenStyle.container}
-      onTouchStart={dismissKeyboard}
-    >
-      <View>
-        <Text style={authenticationScreenStyle.h1}>Na Zdrowie!</Text>
-        <Text style={authenticationScreenStyle.h2}>
-          Zaloguj się na swoje konto
-        </Text>
-      </View>
-      <View style={authenticationScreenStyle.inputContainer}>
-        <PersonalizedTextInput placeholder="login" onChange={setLogin} />
+    <SafeAreaView style={{ flex: 1, backgroundColor: primaryColors.white }}>
+      <ScrollView
+        contentContainerStyle={registerScreenStyle.container}
+        onTouchStart={dismissKeyboard}
+      >
+        <View>
+          <Text style={authenticationScreenStyle.h1}>Na Zdrowie!</Text>
+          <Text style={authenticationScreenStyle.h2}>
+            Zaloguj się na swoje konto
+          </Text>
+        </View>
+        <View style={authenticationScreenStyle.inputContainer}>
+          <PersonalizedTextInput placeholder="login" onChange={setLogin} />
+          <View style={authenticationScreenStyle.buttonsContainer}>
+            <PersonalizedTextInput placeholder="password" />
+            <LinkButton
+              title="Zapomniałeś hasła?"
+              color={primaryColors.lightGrey}
+            />
+          </View>
+        </View>
         <View style={authenticationScreenStyle.buttonsContainer}>
-          <PersonalizedTextInput placeholder="password" />
+          <PrimaryButton
+            title="Zaloguj się"
+            handleOnClick={navigateToMainScreen}
+          />
           <LinkButton
-            title="Zapomniałeś hasła?"
-            color={primaryColors.lightGrey}
+            title="Zarejestruj się"
+            color={primaryColors.darkGrey}
+            helperText="Nie masz konta?"
+            fontWeight="bold"
+            handleOnClick={navigateToRegisterScreen}
           />
         </View>
-      </View>
-      <View style={authenticationScreenStyle.buttonsContainer}>
-        <PrimaryButton
-          title="Zaloguj się"
-          handleOnClick={navigateToMainScreen}
-        />
-        <LinkButton
-          title="Zarejestruj się"
-          color={primaryColors.darkGrey}
-          helperText="Nie masz konta?"
-          fontWeight="bold"
-          handleOnClick={navigateToRegisterScreen}
-        />
-      </View>
+      </ScrollView>
     </SafeAreaView>
   );
 };

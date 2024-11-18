@@ -11,7 +11,7 @@ import { CommentsFilter, formatCommentsData } from "services/utils";
 
 import { useOverlay } from "./context";
 import { useDesiredOverlay } from "./useDesiredOverlay";
-import { latestCount } from "services/config";
+import { currentDoctorCommentsCount, latestCount } from "services/config";
 
 export const useDoctorData = (
   navigation,
@@ -73,6 +73,7 @@ export const useDoctorData = (
     patientId,
     CommentsFilter.Specific,
     (data) => data.map(formatCommentsData),
+    currentDoctorCommentsCount,
   );
 
   const otherDotorsComments = useFetchHealthCommentsFiltered(
@@ -80,6 +81,7 @@ export const useDoctorData = (
     patientId,
     CommentsFilter.Others,
     (data) => data.map(formatCommentsData),
+    latestCount - currentDoctorCommentsCount,
   );
 
   function formatNewPatients(patient: PatientData) {
