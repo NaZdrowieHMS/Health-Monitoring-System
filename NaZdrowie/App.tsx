@@ -33,7 +33,7 @@ const queryClient = new QueryClient({
       queryFn: async ({ queryKey }) => {
         const lastKey = queryKey[queryKey.length - 1];
         if (typeof lastKey === "string") {
-          const { data } = await axiosApi.get(lastKey);
+          const { data } = await axiosInstance.get(lastKey);
           return data;
         }
       },

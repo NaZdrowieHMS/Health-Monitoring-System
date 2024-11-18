@@ -7,7 +7,6 @@ import React, {useContext} from "react";
 import {UserContext} from "components/organisms/context";
 import {useFetchPatient, useFetchResults} from "services/patientData";
 import {ResultButton} from "components/atoms/buttons/ResultButton";
-import {useDesiredOverlay} from "components/organisms";
 
 export const AllResultsScreen = ({
   route,
