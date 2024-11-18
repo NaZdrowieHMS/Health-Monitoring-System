@@ -1,5 +1,4 @@
-export const API_URL: string =
-  "https://health-monitoring-system-api.onrender.com/api/";
+export const API_URL: string = "http://localhost:8080/api/";
 
 export const latestCount: number = 3;
 export const cardCommentsCount: number = 1;

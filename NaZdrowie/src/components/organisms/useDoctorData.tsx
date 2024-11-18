@@ -1,6 +1,9 @@
 import { LinkButton, PrimaryButton, UserButton } from "components/atoms";
 import { PatientData, PatientResult, UserData } from "properties/types";
-import { useFetchHealthCommentsFiltered } from "services/commentsData";
+import {
+  useFetchHealthCommentsFiltered,
+  useSendHealthComment,
+} from "services/commentsData";
 import {
   useFetchAllUnassignedPatients,
   useFetchUnviewedResults,
@@ -21,6 +24,15 @@ export const useDoctorData = (
   const { openPatientInfoOverlay } = useDesiredOverlay(currentUser);
   const { hideOverlay } = useOverlay();
   const bind = useBindPatientToDoctor(currentUser);
+
+  const healthCommentUpload = {
+    sendComment: useSendHealthComment(currentUser),
+    comment: {
+      doctorId: currentUser.id,
+      patientId: patientId,
+      content: "",
+    },
+  };
 
   const navigateToPatientScreen = (patientId: number) => {
     navigation.navigate("PatientDetails", {
@@ -139,5 +151,6 @@ export const useDoctorData = (
     unviewedResults,
     unassignedPatients,
     filteredUnassignedPatients,
+    healthCommentUpload,
   };
 };

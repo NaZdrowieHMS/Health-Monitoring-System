@@ -7,7 +7,7 @@ import { latestCount } from "services/config";
 import {
   useFetchReferrals,
   useFetchResults,
-  useFetchLatestHealthForm,
+  useFetchHealthForms,
 } from "services/patientData";
 import { formatCommentsData, formatDate } from "services/utils";
 
@@ -140,7 +140,7 @@ export const usePatientData = (
     latestCount,
   );
 
-  const latestHealthForm = useFetchLatestHealthForm(
+  const latestHealthForm = useFetchHealthForms(
     currentUser,
     (data) => {
       return {
@@ -154,6 +154,7 @@ export const usePatientData = (
       };
     },
     patientId,
+    1,
   );
 
   if (latestResults.isSuccess && latestHealthForm.data) {
