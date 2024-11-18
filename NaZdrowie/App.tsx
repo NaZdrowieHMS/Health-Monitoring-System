@@ -22,7 +22,7 @@ import { QrScannerScreen } from "src/screens/patientScreens";
 import axiosInstance from "services/axios";
 import { HamburgerMenuProvider } from "components/organisms/context/HamburgerMenuProvider";
 import primaryColors from "properties/colors";
-import {AllResultsScreen} from "screens/patientScreens/AllResultsScreen";
+import { AllResultsScreen } from "screens/patientScreens/AllResultsScreen";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -53,7 +53,7 @@ export type RootStackParamList = {
   PatientDetails: { patientId: number };
   AiDiagnosis: { patientId: number };
   ResultPreview: { result: PatientResult; patientId: number };
-  AllResults: { patientId: number }
+  AllResults: { patientId: number };
 };
 
 const App = (): React.JSX.Element => {
@@ -116,9 +116,9 @@ const App = (): React.JSX.Element => {
                     options={{ title: "Podgląd wyniku", headerShown: false }}
                   />
                   <Stack.Screen
-                      name="AllResults"
-                      component={AllResultsScreen}
-                      options={{ title: "Historia wyników", headerShown: false }}
+                    name="AllResults"
+                    component={AllResultsScreen}
+                    options={{ title: "Historia wyników", headerShown: false }}
                   />
                 </Stack.Navigator>
               </NavigationContainer>

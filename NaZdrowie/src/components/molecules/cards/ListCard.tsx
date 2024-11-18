@@ -30,7 +30,7 @@ export const ListCard: React.FC<ListCardProps> = (props: ListCardProps) => {
       ))}
       {handleSeeMore && (
         <View style={cardStyle.floatRight}>
-          <LinkButton title="Zobacz więcej..." />
+          <LinkButton title="Zobacz więcej..." handleOnClick={handleSeeMore} />
         </View>
       )}
 
