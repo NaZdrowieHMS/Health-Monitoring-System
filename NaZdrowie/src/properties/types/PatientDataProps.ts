@@ -30,6 +30,7 @@ export type PatientResult = {
   testType: string;
   content: ResultDataContent;
   createdDate: string;
+  ai_selected: boolean;
 };
 
 export type ResultUpload = {

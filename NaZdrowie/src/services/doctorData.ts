@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { PatientReferralUpload, UserData } from "properties/types";
+import { AiSelectedChange, PatientReferralUpload, UserData } from "properties/types";
 import {
   PatientData,
   PatientReferral,
@@ -28,6 +28,28 @@ export const useFetchUnviewedResults = <
     T
   >({
     queryKey: [user, `doctors/${user.id}/results/unviewed`],
+    select,
+  });
+};
+
+export const useFetchPatientResults = <T = PatientResult[]>(
+  user: UserData,
+  patientId: number,
+  select?: (data: PatientResult[]) => T,
+  numberOfResults?: number,
+) => {
+  const resultsCount = numberOfResults
+    ? `?startIndex=0&pageSize=${numberOfResults}`
+    : "";
+
+  return useQuery<PatientResult[], Error, T>({
+    queryKey: [user, patientId, "results", resultsCount],
+    queryFn: () =>
+      axiosInstance
+        .get(
+          `doctors/${user.id}/patients/${patientId}/results${resultsCount}`,
+        )
+        .then((response) => response.data),
     select,
   });
 };
@@ -68,6 +90,28 @@ export const useUploadReferral = (user: UserData) => {
       queryClient.invalidateQueries({
         queryKey: [user, "referrals"],
       });
+    },
+  });
+};
+
+export const useAddAiSelectedResults = () => {
+  return useMutation({
+    mutationFn: async (AiSelectedChanges: AiSelectedChange[]) => {
+      const { data } = await axiosInstance.put("results/ai-selected", AiSelectedChanges);
+      return data;
+    },
+  });
+};
+
+export const useDeleteAiSelectedResults = () => {
+  return useMutation({
+    mutationFn: async (AiSelectedChanges: AiSelectedChange[]) => {
+      const { data } = await axiosInstance.delete("results/ai-selected", {
+        data: {
+          source: AiSelectedChanges
+        }
+      });
+      return data;
     },
   });
 };

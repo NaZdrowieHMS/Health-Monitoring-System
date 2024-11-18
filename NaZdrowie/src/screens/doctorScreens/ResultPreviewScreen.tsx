@@ -1,3 +1,4 @@
+import { useFocusEffect } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "App";
 import {
@@ -11,6 +12,7 @@ import {
   LoadingCard,
   Navbar,
 } from "components/molecules";
+import { useDoctorData } from "components/organisms";
 import { UserContext } from "components/organisms/context";
 import { generalStyle, mainStyle } from "properties/styles";
 import React, { useContext, useState } from "react";
@@ -31,13 +33,17 @@ export const ResultPreviewScreen = ({
   const { result, patientId } = route.params;
   const patient = useFetchPatient(currentUser, null, patientId);
   const [comment, setComment] = useState<string>();
-
+  const { handleCheckboxForAiSelection, updateAiSelectedData } = useDoctorData(navigation, currentUser, patientId)
   const resultComments = useFetchResultCommentsData(
     currentUser,
     result.id,
     (data) => data.map(formatCommentsData),
     cardCommentsCount,
   );
+
+  useFocusEffect(
+    updateAiSelectedData
+  )
 
   const sendResultComment = useSendResultComment(currentUser);
 
@@ -74,7 +80,10 @@ export const ResultPreviewScreen = ({
           />
           <View style={generalStyle.rowSpread}>
             <Text style={generalStyle.titleText}>Uzyj do analizy AI</Text>
-            <PersonalizedCheckbox checkboxStatus={false} />
+            <PersonalizedCheckbox
+              checkboxValue={result.ai_selected}
+              handleValueChange={() => handleCheckboxForAiSelection(result.id)}
+            />
           </View>
           <PersonalizedTextInput
             placeholder="Wpisz nowy komentarz"

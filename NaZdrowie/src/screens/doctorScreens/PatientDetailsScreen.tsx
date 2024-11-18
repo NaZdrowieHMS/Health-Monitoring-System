@@ -28,12 +28,12 @@ export const PatientDetailsScreen = ({
     useDesiredOverlay(currentUser);
 
   const patient = useFetchPatient(currentUser, null, patientId);
-  const { latestReferrals, latestResults } = usePatientData(
+  const { latestReferrals } = usePatientData(
     navigation,
     currentUser,
     patientId,
   );
-  const { currentDotorComments, otherDotorsComments, healthCommentUpload } =
+  const { currentDotorComments, otherDotorsComments, latestPatientResults, healthCommentUpload } =
     useDoctorData(navigation, currentUser, patientId);
 
   const navigateToAllReferals = () => {
@@ -84,7 +84,7 @@ export const PatientDetailsScreen = ({
           {latestReferrals.isSuccess &&
           currentDotorComments.isSuccess &&
           otherDotorsComments.isSuccess &&
-          latestResults.isSuccess ? (
+          latestPatientResults.isSuccess ? (
             <>
               <CommentsCardForDoctor
                 title="Zdrowie pacjenta"
@@ -99,7 +99,7 @@ export const PatientDetailsScreen = ({
               />
               <ListCard
                 title="Wyniki pacjenta"
-                data={latestResults.data}
+                data={latestPatientResults.data}
                 handleSeeMore={navigateToAllResults}
               />
             </>

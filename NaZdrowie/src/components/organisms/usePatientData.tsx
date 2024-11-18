@@ -27,16 +27,6 @@ export const usePatientData = (
 
   const [, requestPermission] = useCameraPermissions();
 
-  const navigateToResultPreviewScreen = (
-    result: PatientResult,
-    patientId: number,
-  ) => {
-    navigation.navigate("ResultPreview", {
-      result,
-      patientId,
-    });
-  };
-
   const navigateToQrScannerScreen = async () => {
     const { status } = await requestPermission();
 
@@ -88,15 +78,7 @@ export const usePatientData = (
     buttons: [
       <LinkButton
         title="Podgląd"
-        handleOnClick={
-          currentUser.isDoctor
-            ? () =>
-                navigateToResultPreviewScreen(
-                  result,
-                  patientId ? patientId : currentUser.id,
-                )
-            : () => openResultOverlay(result)
-        }
+        handleOnClick={() => openResultOverlay(result)}
       />,
     ],
   });
