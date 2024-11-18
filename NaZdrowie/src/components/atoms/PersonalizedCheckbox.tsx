@@ -4,7 +4,7 @@ import React from "react";
 
 export const PersonalizedCheckbox: React.FC<{
   checkboxValue: boolean;
-  handleValueChange: () => void;
+  handleValueChange: (boolean) => void;
 }> = ({ checkboxValue, handleValueChange }) => {
   return (
     <Checkbox
