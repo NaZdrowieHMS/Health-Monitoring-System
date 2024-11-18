@@ -41,11 +41,15 @@ export const useFetchResults = <T = PatientResult[]>(
     : "";
 
   return useQuery<PatientResult[], Error, T>({
-    queryKey: [
+    queryKey: patientId ? [
       user,
       "results",
+      patientId, 
       `patients/${patientId ? patientId : user.id}/results${resultsCount}`,
-    ],
+    ] : [user,
+    "results",
+    `patients/${patientId ? patientId : user.id}/results${resultsCount}`,
+  ],
     select,
   });
 };

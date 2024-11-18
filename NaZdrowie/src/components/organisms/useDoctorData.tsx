@@ -6,12 +6,14 @@ import {
   useFetchAllUnassignedPatients,
   useFetchUnviewedResults,
   useFetchPatients,
+  useFetchPatientResults,
 } from "services/doctorData";
 import { useBindPatientToDoctor } from "services/patientData";
 import { CommentsFilter, formatCommentsData } from "services/utils";
 
 import { useOverlay } from "./context";
 import { useDesiredOverlay } from "./useDesiredOverlay";
+import { useQueryClient } from "@tanstack/react-query";
 
 export const useDoctorData = (
   navigation,
@@ -19,6 +21,7 @@ export const useDoctorData = (
   patientId?: number,
 ) => {
   const { openPatientInfoOverlay } = useDesiredOverlay(currentUser);
+  const queryClient = useQueryClient();
   const { hideOverlay } = useOverlay();
   const bind = useBindPatientToDoctor(currentUser);
 
@@ -128,6 +131,70 @@ export const useDoctorData = (
       : unassignedPatients.data;
   };
 
+  const navigateToResultPreviewScreen = (
+    result: PatientResult,
+    patientId: number,
+  ) => {
+    navigation.navigate("ResultPreview", {
+      result,
+      patientId,
+    });
+  };
+
+  const formatResultsView = (result: PatientResult) => ({
+    text: result.testType,
+    buttons: [
+      <LinkButton
+        title="Podgląd"
+        handleOnClick={() => navigateToResultPreviewScreen(
+          result,
+          patientId ? patientId : currentUser.id,
+        )}
+      />,
+    ],
+  });
+
+  const latestPatientResults = useFetchPatientResults(
+    currentUser,
+    patientId,
+    (data) => data.map(formatResultsView),
+    latestCount,
+  );
+
+  const patientResultsForAi = useFetchPatientResults(
+    currentUser,
+    patientId,
+    (data) => data.map(formatResultsForAiData),
+  );
+
+  function handleCheckboxForAiSelection(resultId: number) {
+    queryClient.setQueryData(
+      [currentUser, patientId, "results"],
+      (data: PatientResult[]) => {
+        return data.map((dataResult: PatientResult) => {
+          if (dataResult.id === resultId) {
+            return {
+              ...dataResult,
+              ai_selected: !dataResult.ai_selected,
+            };
+          } else {
+            return dataResult;
+          }
+        })},
+    );
+  }
+
+  function formatResultsForAiData(result: PatientResult) {
+    return {
+      checkbox: {
+        checkboxStatus: result.ai_selected, // TODO
+        checkboxHandler: () => handleCheckboxForAiSelection(result.id),
+      },
+      text: result.testType,
+      buttons: [<LinkButton title="Podgląd" />],
+    };
+  }
+
   return {
     navigateToNewPatientsScreen,
     navigateToPatientScreen,
@@ -135,6 +202,9 @@ export const useDoctorData = (
     otherDotorsComments,
     latestPatients,
     unviewedResults,
+    latestPatientResults,
+    patientResultsForAi,
+    handleCheckboxForAiSelection,
     unassignedPatients,
     filteredUnassignedPatients,
   };

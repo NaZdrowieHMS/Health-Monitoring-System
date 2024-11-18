@@ -7,7 +7,7 @@ import {
   LoadingCard,
   Navbar,
 } from "components/molecules";
-import { usePatientData } from "components/organisms";
+import { useDoctorData, usePatientData } from "components/organisms";
 import { UserContext } from "components/organisms/context";
 import { generalStyle, mainStyle } from "properties/styles";
 import React, { useContext } from "react";
@@ -22,7 +22,7 @@ export const AiDiagnosis = ({
   const { currentUser } = useContext(UserContext);
   const patient = useFetchPatient(currentUser, null, patientId);
 
-  const { resultsForAi } = usePatientData(navigation, currentUser, patientId);
+  const { patientResultsForAi } = useDoctorData(navigation, currentUser, patientId);
 
   // const startAiDiagnosis = () => {};
 
@@ -41,10 +41,10 @@ export const AiDiagnosis = ({
       )}
       <SafeAreaView style={generalStyle.safeArea}>
         <ScrollView contentContainerStyle={mainStyle.container}>
-          {resultsForAi.isSuccess ? (
+          {patientResultsForAi.isSuccess ? (
             <ListCard
               title="Załączone badania"
-              data={resultsForAi.data}
+              data={patientResultsForAi.data}
               extraButton={<PrimaryButton title="Poproś AI o analizę" />}
             />
           ) : (

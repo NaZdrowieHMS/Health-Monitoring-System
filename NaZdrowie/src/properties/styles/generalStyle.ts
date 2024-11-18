@@ -1,6 +1,6 @@
 import primaryColors from "properties/colors";
 import { fontSize } from "properties/vars";
-import { StyleSheet } from "react-native";
+import { Platform, StatusBar, StyleSheet } from "react-native";
 
 export const generalStyle = StyleSheet.create({
   shadow: {
@@ -36,5 +36,6 @@ export const generalStyle = StyleSheet.create({
   safeArea: {
     flex: 1,
     backgroundColor: primaryColors.babyBlue,
+    paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
   },
 });

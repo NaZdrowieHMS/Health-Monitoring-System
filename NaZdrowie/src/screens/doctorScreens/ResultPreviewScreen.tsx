@@ -11,6 +11,7 @@ import {
   LoadingCard,
   Navbar,
 } from "components/molecules";
+import { useDoctorData } from "components/organisms";
 import { UserContext } from "components/organisms/context";
 import { generalStyle, mainStyle } from "properties/styles";
 import React, { useContext, useState } from "react";
@@ -27,7 +28,7 @@ export const ResultPreviewScreen = ({
   const { result, patientId } = route.params;
   const patient = useFetchPatient(currentUser, null, patientId);
   const [, setComment] = useState<string>();
-
+  const { handleCheckboxForAiSelection } = useDoctorData(navigation, currentUser, patientId)
   const resultComments = useFetchResultCommentsData(
     currentUser,
     result.id,
@@ -57,7 +58,10 @@ export const ResultPreviewScreen = ({
           />
           <View style={generalStyle.rowSpread}>
             <Text style={generalStyle.titleText}>Uzyj do analizy AI</Text>
-            <PersonalizedCheckbox checkboxStatus={false} />
+            <PersonalizedCheckbox
+              checkboxValue={result.ai_selected}
+              handleValueChange={() => handleCheckboxForAiSelection(result.id)}
+            />
           </View>
           <PersonalizedTextInput
             placeholder="Wpisz nowy komentarz"

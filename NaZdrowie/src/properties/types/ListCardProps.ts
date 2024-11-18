@@ -3,6 +3,7 @@ import { ButtonProps, GestureResponderEvent } from "react-native";
 
 type CheckboxElement = {
   checkboxStatus: boolean;
+  checkboxHandler: () => void;
 };
 
 export type ListCardElement = {

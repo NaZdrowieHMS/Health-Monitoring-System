@@ -15,7 +15,8 @@ export const ListCard: React.FC<ListCardProps> = (props: ListCardProps) => {
           <View style={cardStyle.cardElement}>
             {item.checkbox && (
               <PersonalizedCheckbox
-                checkboxStatus={item.checkbox.checkboxStatus}
+                checkboxValue={item.checkbox.checkboxStatus}
+                handleValueChange={item.checkbox.checkboxHandler}
               />
             )}
             <Text style={generalStyle.basicText}>{item.text}</Text>

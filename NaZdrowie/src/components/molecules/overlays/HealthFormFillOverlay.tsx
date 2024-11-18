@@ -41,7 +41,12 @@ export const HealthFormFillOverlay: React.FC<{
                 </View>
               )}
               {item.type === HealthFormItemType.Checkbox && (
-                <PersonalizedCheckbox checkboxStatus />
+                <PersonalizedCheckbox
+                  checkboxValue
+                  handleValueChange={() => {
+                    //TODO
+                  }}
+                />
               )}
               {item.type === HealthFormItemType.Dropdown && item.options && (
                 <View style={{ paddingTop: paddingSize.xxSmall }}>

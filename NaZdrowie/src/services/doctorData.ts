@@ -32,6 +32,28 @@ export const useFetchUnviewedResults = <
   });
 };
 
+export const useFetchPatientResults = <T = PatientResult[]>(
+  user: UserData,
+  patientId: number,
+  select?: (data: PatientResult[]) => T,
+  numberOfResults?: number,
+) => {
+  const resultsCount = numberOfResults
+    ? `?startIndex=0&pageSize=${numberOfResults}`
+    : "";
+
+  return useQuery<PatientResult[], Error, T>({
+    queryKey: [user, patientId, "results"],
+    queryFn: () =>
+      axiosInstance
+        .get(
+          `doctors/${user.id}/patients/${patientId}/results${resultsCount}`,
+        )
+        .then((response) => response.data),
+    select,
+  });
+};
+
 export const useFetchPatients = <T = PatientData[]>(
   user: UserData,
   select?: (data: PatientData[]) => T,
