@@ -36,11 +36,22 @@ export const HealthFormFillOverlay: React.FC<{
 
   const sendFormResult = useSendHealthForm(currentUser);
 
-  const handleValueChange = (index: string, newValue: any) => {
+  // const handleValueChange = (index: string, newValue: any) => {
+  //   setHealthFormItems((prevItems) => ({
+  //     ...prevItems,
+  //     content: prevItems.content.map((item, i) =>
+  //       item.key === index ? { ...item, value: newValue } : item,
+  //     ),
+  //   }));
+  // };
+  
+  // Here I wanted to toggle the value for the checkbox type of values. 
+  // The only issue is that I do not know how to insert the value from healthFormItems for each appropriate checkbox
+  const handleValueChange = (index: string, newValue?: any) => {
     setHealthFormItems((prevItems) => ({
       ...prevItems,
       content: prevItems.content.map((item, i) =>
-        item.key === index ? { ...item, value: newValue } : item,
+        item.key === index ? { ...item, value: newValue ? newValue : (item.value==="false" ? "true" : "false" ) } : item,
       ),
     }));
   };
@@ -79,9 +90,12 @@ export const HealthFormFillOverlay: React.FC<{
               )}
               {item.type === HealthFormItemType.Checkbox && (
                 <PersonalizedCheckbox
-                  checkboxValue={false}
-                  handleValueChange={(value) => {
-                    handleValueChange(item.title, value.toString());
+                  checkboxValue={false} // idk how to get the data here
+                  // checkboxValue={false}
+                  // handleValueChange={(value) => {
+                    // handleValueChange(item.title, value.toString());
+                    handleValueChange={() => {
+                    handleValueChange(item.title);
                   }}
                 />
               )}

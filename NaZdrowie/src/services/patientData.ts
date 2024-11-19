@@ -93,9 +93,9 @@ export const useSendResult = (user: UserData, isreferralAssigned: boolean) => {
   });
 };
 
-export const useFetchHealthForms = <T = HealthFormDisplayData | null>(
+export const useFetchHealthForms = <T = HealthFormDisplayData[]>(
   user: UserData,
-  select?: (data: HealthFormDisplayData | null) => T,
+  select?: (data: HealthFormDisplayData[]) => T,
   patientId?: number,
   numberOfForms?: number,
 ) => {
@@ -103,7 +103,7 @@ export const useFetchHealthForms = <T = HealthFormDisplayData | null>(
     ? `?startIndex=0&pageSize=${numberOfForms}`
     : "";
 
-  return useQuery<HealthFormDisplayData | null, Error, T>({
+  return useQuery<HealthFormDisplayData[], Error, T>({
     queryKey: [
       user,
       "healthForm",
@@ -118,7 +118,7 @@ export const useSendHealthForm = (user: UserData) => {
 
   return useMutation({
     mutationFn: async (form: HealthFormUpdate) => {
-      const { data } = await axiosInstance.post("forms", form);
+      const { data } = await axiosApi.post("forms", form);
       return data;
     },
     onSuccess(data: HealthFormDisplayData) {

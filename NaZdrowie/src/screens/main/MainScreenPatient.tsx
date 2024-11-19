@@ -17,6 +17,7 @@ export const MainScreenPatient = ({
     latestHealthComments,
     latestReferrals,
     latestResults,
+    latestHealthForm,
     navigateToQrScannerScreen,
   } = usePatientData(navigation, currentUser);
 
@@ -55,7 +56,8 @@ export const MainScreenPatient = ({
       </View>
       {latestHealthComments.isSuccess &&
       latestReferrals.isSuccess &&
-      latestResults.isSuccess ? (
+      latestResults.isSuccess &&
+      latestHealthForm.isSuccess ? (
         <>
           <CommentsCard
             title="Moje zdrowie"
@@ -69,7 +71,7 @@ export const MainScreenPatient = ({
           />
           <ListCard
             title="Moje wyniki"
-            data={latestResults.data}
+            data={[...latestResults.data, latestHealthForm.data]}
             handleSeeMore={navigateToAllResults}
           />
         </>
