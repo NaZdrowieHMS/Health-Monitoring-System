@@ -1,5 +1,9 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { HealthFormDisplayData, UserData } from "properties/types";
+import {
+  HealthFormDisplayData,
+  HealthFormUpdate,
+  UserData,
+} from "properties/types";
 import {
   PatientData,
   PatientReferral,
@@ -41,15 +45,18 @@ export const useFetchResults = <T = PatientResult[]>(
     : "";
 
   return useQuery<PatientResult[], Error, T>({
-    queryKey: patientId ? [
-      user,
-      "results",
-      patientId, 
-      `patients/${patientId ? patientId : user.id}/results${resultsCount}`,
-    ] : [user,
-    "results",
-    `patients/${patientId ? patientId : user.id}/results${resultsCount}`,
-  ],
+    queryKey: patientId
+      ? [
+          user,
+          "results",
+          patientId,
+          `patients/${patientId ? patientId : user.id}/results${resultsCount}`,
+        ]
+      : [
+          user,
+          "results",
+          `patients/${patientId ? patientId : user.id}/results${resultsCount}`,
+        ],
     select,
   });
 };
@@ -99,9 +106,26 @@ export const useFetchHealthForms = <T = HealthFormDisplayData | null>(
   return useQuery<HealthFormDisplayData | null, Error, T>({
     queryKey: [
       user,
+      "healthForm",
       `patients/${patientId ? patientId : user.id}/forms${formsCount}`,
     ],
     select,
+  });
+};
+
+export const useSendHealthForm = (user: UserData) => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (form: HealthFormUpdate) => {
+      const { data } = await axiosInstance.post("forms", form);
+      return data;
+    },
+    onSuccess(data: HealthFormDisplayData) {
+      queryClient.invalidateQueries({
+        queryKey: [user, "healthForm"],
+      });
+    },
   });
 };
 

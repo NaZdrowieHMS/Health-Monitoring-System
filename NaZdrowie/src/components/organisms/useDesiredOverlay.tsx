@@ -65,6 +65,7 @@ export const useDesiredOverlay = (currentUser: UserData) => {
   const openHealthFormFillOverlay = (patientId: number) => {
     showOverlay(() => (
       <HealthFormFillOverlay
+        currentUser={currentUser}
         healthFormData={{ patientId, content: healthFormItems }}
         handleClose={hideOverlay}
       />

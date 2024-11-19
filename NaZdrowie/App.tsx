@@ -18,10 +18,11 @@ import {
 } from "screens/doctorScreens";
 import { ResultPreviewScreen } from "screens/doctorScreens/ResultPreviewScreen";
 import { MainScreen } from "screens/main";
-import { QrScannerScreen } from "screens/patientScreens";
+import { QrScannerScreen } from "src/screens/patientScreens";
 import axiosInstance from "services/axios";
 import { HamburgerMenuProvider } from "components/organisms/context/HamburgerMenuProvider";
 import primaryColors from "properties/colors";
+import { AllResultsScreen } from "screens/patientScreens/AllResultsScreen";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -52,6 +53,7 @@ export type RootStackParamList = {
   PatientDetails: { patientId: number };
   AiDiagnosis: { patientId: number };
   ResultPreview: { result: PatientResult; patientId: number };
+  AllResults: { patientId: number };
 };
 
 const App = (): React.JSX.Element => {
@@ -112,6 +114,11 @@ const App = (): React.JSX.Element => {
                     name="ResultPreview"
                     component={ResultPreviewScreen}
                     options={{ title: "Podgląd wyniku", headerShown: false }}
+                  />
+                  <Stack.Screen
+                    name="AllResults"
+                    component={AllResultsScreen}
+                    options={{ title: "Historia wyników", headerShown: false }}
                   />
                 </Stack.Navigator>
               </NavigationContainer>

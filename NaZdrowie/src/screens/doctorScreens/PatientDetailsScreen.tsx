@@ -33,15 +33,19 @@ export const PatientDetailsScreen = ({
     currentUser,
     patientId,
   );
-  const { currentDotorComments, otherDotorsComments, latestPatientResults, healthCommentUpload } =
-    useDoctorData(navigation, currentUser, patientId);
+  const {
+    currentDotorComments,
+    otherDotorsComments,
+    latestPatientResults,
+    healthCommentUpload,
+  } = useDoctorData(navigation, currentUser, patientId);
 
   const navigateToAllReferals = () => {
     // TODO
   };
 
   const navigateToAllResults = () => {
-    // TODO
+    navigation.navigate("AllResults", { patientId });
   };
 
   const navigateToAiDiagnosis = () => {
