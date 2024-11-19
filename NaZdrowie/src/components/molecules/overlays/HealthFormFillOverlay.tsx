@@ -9,27 +9,32 @@ import {
   HealthFormItemType,
   HealthFormProps,
   HealthFormUpdate,
+  UserData,
 } from "properties/types";
 import { paddingSize } from "properties/vars";
 import React, { useState } from "react";
 import { Text, View } from "react-native";
 
 import { Overlay } from "./Overlay";
+import { useSendHealthForm } from "services/patientData";
 
 export const HealthFormFillOverlay: React.FC<{
+  currentUser: UserData;
   healthFormData: HealthFormProps;
   handleClose: () => void;
-}> = ({ handleClose, healthFormData }) => {
+}> = ({ currentUser, handleClose, healthFormData }) => {
   const defaultFormFillData: HealthFormUpdate = {
     patientId: healthFormData.patientId,
     content: healthFormData.content.map((item) => ({
       key: item.title,
-      value: item.type == HealthFormItemType.Checkbox ? false : null,
+      value: item.type == HealthFormItemType.Checkbox ? "false" : "",
     })),
   };
 
   const [healthFormItems, setHealthFormItems] =
     useState<HealthFormUpdate>(defaultFormFillData);
+
+  const sendFormResult = useSendHealthForm(currentUser);
 
   const handleValueChange = (index: string, newValue: any) => {
     setHealthFormItems((prevItems) => ({
@@ -41,7 +46,8 @@ export const HealthFormFillOverlay: React.FC<{
   };
 
   const handleSendFormData = () => {
-    console.log(healthFormItems);
+    sendFormResult.mutate(healthFormItems);
+    handleClose();
   };
 
   return (
@@ -75,7 +81,7 @@ export const HealthFormFillOverlay: React.FC<{
                 <PersonalizedCheckbox
                   checkboxValue={false}
                   handleValueChange={(value) => {
-                    handleValueChange(item.title, value);
+                    handleValueChange(item.title, value.toString());
                   }}
                 />
               )}

@@ -139,7 +139,8 @@ export const usePatientData = (
     1,
   );
 
-  if (latestResults.isSuccess && latestHealthForm.data) {
+  // TODO
+  if (latestResults.isSuccess && latestHealthForm.isSuccess) {
     latestResults.data?.push(latestHealthForm.data);
   }
 
