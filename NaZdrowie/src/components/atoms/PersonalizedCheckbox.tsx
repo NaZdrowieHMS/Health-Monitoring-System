@@ -1,26 +1,29 @@
 import { Checkbox } from "expo-checkbox";
 import primaryColors from "properties/colors";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 export const PersonalizedCheckbox: React.FC<{
-  checkboxValue: boolean;
-  // handleValueChange: (boolean) => void;
-  handleValueChange: () => void;
-}> = ({ checkboxValue, handleValueChange }) => {
-  // const [value, onChangeValue] = React.useState(checkboxValue);
+  checkboxInitialValue: boolean;
+  handleValueChange: (boolean) => void;
+}> = ({ checkboxInitialValue, handleValueChange }) => {
+  const [value, onChangeValue] = useState(checkboxInitialValue);
+  const [isInitial, setIsInitial] = useState(true);
 
-  // useEffect(() => {
-  //   if (handleValueChange !== undefined) {
-  //     handleValueChange(value);
-  //   }
-  // }, [value]);
+  useEffect(() => {
+    if (!isInitial) {
+      if (handleValueChange !== undefined) {
+        handleValueChange(value);
+      }
+    } else {
+      setIsInitial(false);
+    }
+  }, [value]);
 
-  // aboce commented code just make too much noise and makes the wole app lagging (especially in aiDiagnosis screen)
   return (
     <Checkbox
       color={primaryColors.lightGreen}
-      value={checkboxValue}
-      onValueChange={handleValueChange}
+      value={value}
+      onValueChange={onChangeValue}
     />
   );
 };

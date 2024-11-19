@@ -11,14 +11,11 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useCallback } from "react";
 import { useAnalyzeWithAi, useFetchPatientPredictions } from "services/aiData";
 
-export const useAiData = (
-  currentUser: UserData,
-  patientId: number,
-) => {
+export const useAiData = (currentUser: UserData, patientId: number) => {
   const queryClient = useQueryClient();
   const addAiSelectedResults = useAddAiSelectedResults();
   const deleteAiSelectedResults = useDeleteAiSelectedResults();
-  const analyzeWithAi = useAnalyzeWithAi(currentUser, patientId)
+  const analyzeWithAi = useAnalyzeWithAi(currentUser, patientId);
 
   const patientResultsForAi = useFetchPatientResults(
     currentUser,
@@ -39,7 +36,8 @@ export const useAiData = (
           } else {
             return dataResult;
           }
-        })},
+        });
+      },
     );
   }
 
@@ -56,48 +54,68 @@ export const useAiData = (
 
   const updateAiSelectedData = useCallback(() => {
     return () => {
-      const selectedResults = queryClient.getQueryData<PatientResult[]>([currentUser, patientId, "results", ""]) 
-      const toAdd = selectedResults.filter((result) => result.aiSelected === true && result.patientId === patientId).map((result) => ({
-        resultId: result.id,
-        patientId: patientId,
-        doctorId: currentUser.id
-      }))
-      const toDelete = selectedResults.filter((result) => result.aiSelected === false && result.patientId === patientId).map((result) => ({
-        resultId: result.id,
-        patientId: patientId,
-        doctorId: currentUser.id
-      }))
-      addAiSelectedResults.mutateAsync(toAdd)
-      deleteAiSelectedResults.mutateAsync(toDelete)
+      const selectedResults = queryClient.getQueryData<PatientResult[]>([
+        currentUser,
+        patientId,
+        "results",
+        "",
+      ]);
+      const toAdd = selectedResults
+        .filter(
+          (result) =>
+            result.aiSelected === true && result.patientId === patientId,
+        )
+        .map((result) => ({
+          resultId: result.id,
+          patientId: patientId,
+          doctorId: currentUser.id,
+        }));
+      const toDelete = selectedResults
+        .filter(
+          (result) =>
+            result.aiSelected === false && result.patientId === patientId,
+        )
+        .map((result) => ({
+          resultId: result.id,
+          patientId: patientId,
+          doctorId: currentUser.id,
+        }));
+      addAiSelectedResults.mutateAsync(toAdd);
+      deleteAiSelectedResults.mutateAsync(toDelete);
       // maybe verify whether it was succesfull
     };
-  }, [])
+  }, []);
 
   const startAiDiagnosis = () => {
     // keys needs to be changed :)
-    const selectedResults = queryClient.getQueryData<PatientResult[]>([currentUser, patientId, "results", ""]) 
+    const selectedResults = queryClient
+      .getQueryData<PatientResult[]>([currentUser, patientId, "results", ""])
       .filter((result) => {
-        return (result.aiSelected === true) && (patientId === result.patientId)}
-    )
-      .map((result) => result.id)
+        return result.aiSelected === true && patientId === result.patientId;
+      })
+      .map((result) => result.id);
     analyzeWithAi.mutate({
       patientId: patientId,
       doctorId: currentUser.id,
-      resultIds: selectedResults
-    })
-  }
+      resultIds: selectedResults,
+    });
+  };
 
-  function formatPatientPredictions(prediction:AiPrediction) {
+  function formatPatientPredictions(prediction: AiPrediction) {
     return {
       status: prediction.status,
       sourceResults: prediction.resultIds, // TODO
       prediction: prediction.prediction,
       confidence: prediction.confidence,
-      createdDate: formatDate(prediction.createdDate)
-    }
+      createdDate: formatDate(prediction.createdDate),
+    };
   }
 
-  const patientPredictions = useFetchPatientPredictions(currentUser, patientId, (data) => data.map(formatPatientPredictions))
+  const patientPredictions = useFetchPatientPredictions(
+    currentUser,
+    patientId,
+    (data) => data.map(formatPatientPredictions),
+  );
 
   return {
     patientResultsForAi,

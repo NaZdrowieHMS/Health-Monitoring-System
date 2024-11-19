@@ -31,8 +31,11 @@ export const ResultPreviewScreen = ({
   const { currentUser } = useContext(UserContext);
   const { result, patientId } = route.params;
   const [comment, setComment] = useState<string>();
-  const { currentPatient } = useDoctorData(navigation, currentUser, patientId)
-  const { handleCheckboxForAiSelection, updateAiSelectedData } = useAiData(currentUser, patientId)
+  const { currentPatient } = useDoctorData(navigation, currentUser, patientId);
+  const { handleCheckboxForAiSelection, updateAiSelectedData } = useAiData(
+    currentUser,
+    patientId,
+  );
   const resultComments = useFetchResultCommentsData(
     currentUser,
     result.id,
@@ -40,9 +43,7 @@ export const ResultPreviewScreen = ({
     cardCommentsCount,
   );
 
-  useFocusEffect(
-    updateAiSelectedData
-  )
+  useFocusEffect(updateAiSelectedData);
 
   const sendResultComment = useSendResultComment(currentUser);
 
@@ -80,7 +81,7 @@ export const ResultPreviewScreen = ({
           <View style={generalStyle.rowSpread}>
             <Text style={generalStyle.titleText}>Uzyj do analizy AI</Text>
             <PersonalizedCheckbox
-              checkboxValue={result.aiSelected}
+              checkboxInitialValue={result.aiSelected}
               handleValueChange={() => handleCheckboxForAiSelection(result.id)}
             />
           </View>

@@ -1,7 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   HealthFormDisplayData,
-  HealthFormUpdate,
+  HealthFormUpload,
   UserData,
 } from "properties/types";
 import {
@@ -117,7 +117,7 @@ export const useSendHealthForm = (user: UserData) => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (form: HealthFormUpdate) => {
+    mutationFn: async (form: HealthFormUpload) => {
       const { data } = await axiosApi.post("forms", form);
       return data;
     },

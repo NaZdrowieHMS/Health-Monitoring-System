@@ -8,7 +8,7 @@ import { generalStyle } from "properties/styles";
 import {
   HealthFormItemType,
   HealthFormProps,
-  HealthFormUpdate,
+  HealthFormUpload,
   UserData,
 } from "properties/types";
 import { paddingSize } from "properties/vars";
@@ -23,7 +23,7 @@ export const HealthFormFillOverlay: React.FC<{
   healthFormData: HealthFormProps;
   handleClose: () => void;
 }> = ({ currentUser, handleClose, healthFormData }) => {
-  const defaultFormFillData: HealthFormUpdate = {
+  const defaultFormFillData: HealthFormUpload = {
     patientId: healthFormData.patientId,
     content: healthFormData.content.map((item) => ({
       key: item.title,
@@ -32,26 +32,15 @@ export const HealthFormFillOverlay: React.FC<{
   };
 
   const [healthFormItems, setHealthFormItems] =
-    useState<HealthFormUpdate>(defaultFormFillData);
+    useState<HealthFormUpload>(defaultFormFillData);
 
   const sendFormResult = useSendHealthForm(currentUser);
 
-  // const handleValueChange = (index: string, newValue: any) => {
-  //   setHealthFormItems((prevItems) => ({
-  //     ...prevItems,
-  //     content: prevItems.content.map((item, i) =>
-  //       item.key === index ? { ...item, value: newValue } : item,
-  //     ),
-  //   }));
-  // };
-  
-  // Here I wanted to toggle the value for the checkbox type of values. 
-  // The only issue is that I do not know how to insert the value from healthFormItems for each appropriate checkbox
-  const handleValueChange = (index: string, newValue?: any) => {
+  const handleValueChange = (index: string, newValue: any) => {
     setHealthFormItems((prevItems) => ({
       ...prevItems,
       content: prevItems.content.map((item, i) =>
-        item.key === index ? { ...item, value: newValue ? newValue : (item.value==="false" ? "true" : "false" ) } : item,
+        item.key === index ? { ...item, value: newValue } : item,
       ),
     }));
   };
@@ -90,12 +79,9 @@ export const HealthFormFillOverlay: React.FC<{
               )}
               {item.type === HealthFormItemType.Checkbox && (
                 <PersonalizedCheckbox
-                  checkboxValue={false} // idk how to get the data here
-                  // checkboxValue={false}
-                  // handleValueChange={(value) => {
-                    // handleValueChange(item.title, value.toString());
-                    handleValueChange={() => {
-                    handleValueChange(item.title);
+                  checkboxInitialValue={false}
+                  handleValueChange={(value) => {
+                    handleValueChange(item.title, value.toString());
                   }}
                 />
               )}
