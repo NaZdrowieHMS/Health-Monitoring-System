@@ -34,7 +34,7 @@ export const useAiData = (
           if (dataResult.id === resultId) {
             return {
               ...dataResult,
-              ai_selected: !dataResult.ai_selected,
+              aiSelected: !dataResult.aiSelected,
             };
           } else {
             return dataResult;
@@ -46,7 +46,7 @@ export const useAiData = (
   function formatResultsForAiData(result: PatientResult) {
     return {
       checkbox: {
-        checkboxStatus: result.ai_selected,
+        checkboxStatus: result.aiSelected,
         checkboxHandler: () => handleCheckboxForAiSelection(result.id),
       },
       text: result.testType,
@@ -57,12 +57,12 @@ export const useAiData = (
   const updateAiSelectedData = useCallback(() => {
     return () => {
       const selectedResults = queryClient.getQueryData<PatientResult[]>([currentUser, patientId, "results", ""]) 
-      const toAdd = selectedResults.filter((result) => result.ai_selected === true).map((result) => ({
+      const toAdd = selectedResults.filter((result) => result.aiSelected === true && result.patientId === patientId).map((result) => ({
         resultId: result.id,
         patientId: patientId,
         doctorId: currentUser.id
       }))
-      const toDelete = selectedResults.filter((result) => result.ai_selected === false).map((result) => ({
+      const toDelete = selectedResults.filter((result) => result.aiSelected === false && result.patientId === patientId).map((result) => ({
         resultId: result.id,
         patientId: patientId,
         doctorId: currentUser.id
@@ -76,7 +76,9 @@ export const useAiData = (
   const startAiDiagnosis = () => {
     // keys needs to be changed :)
     const selectedResults = queryClient.getQueryData<PatientResult[]>([currentUser, patientId, "results", ""]) 
-      .filter((result) => result.ai_selected === true)
+      .filter((result) => {
+        return (result.aiSelected === true) && (patientId === result.patientId)}
+    )
       .map((result) => result.id)
     analyzeWithAi.mutate({
       patientId: patientId,

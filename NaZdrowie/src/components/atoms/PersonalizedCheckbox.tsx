@@ -6,19 +6,20 @@ export const PersonalizedCheckbox: React.FC<{
   checkboxValue: boolean;
   handleValueChange: (boolean) => void;
 }> = ({ checkboxValue, handleValueChange }) => {
-  const [value, onChangeValue] = React.useState(checkboxValue);
+  // const [value, onChangeValue] = React.useState(checkboxValue);
 
-  useEffect(() => {
-    if (handleValueChange !== undefined) {
-      handleValueChange(value);
-    }
-  }, [value]);
+  // useEffect(() => {
+  //   if (handleValueChange !== undefined) {
+  //     handleValueChange(value);
+  //   }
+  // }, [value]);
 
+  // aboce commented code just make too much noise and makes the wole app lagging (especially in aiDiagnosis screen)
   return (
     <Checkbox
       color={primaryColors.lightGreen}
-      value={value}
-      onValueChange={onChangeValue}
+      value={checkboxValue}
+      onValueChange={handleValueChange}
     />
   );
 };

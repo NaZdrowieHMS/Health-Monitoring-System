@@ -34,7 +34,7 @@ export const AiAnalysisResultCard: React.FC<(AiAnalysisResultCardProps)> = (
               },
             ]}
           >
-            {`${prediction.prediction} ${prediction.confidence.toPrecision(6)}%`}
+            {`${prediction.prediction ? prediction.prediction : "N/A"} ${prediction.confidence ? prediction.confidence.toPrecision(6) : "N/A"}%`}
           </Text>
           <Text style={generalStyle.titleText}>
             Wynik opierał się na wynikach:

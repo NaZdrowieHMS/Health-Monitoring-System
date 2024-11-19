@@ -26,11 +26,12 @@ export type PatientReferral = {
 
 export type PatientResult = {
   id: number;
-  patientId: number;
   testType: string;
+  patientId: number; // needed!!
   content: ResultDataContent;
+  aiSelected: boolean;
+  viewed:boolean;
   createdDate: string;
-  ai_selected: boolean;
 };
 
 export type ResultUpload = {

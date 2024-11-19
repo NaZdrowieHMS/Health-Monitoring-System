@@ -7,6 +7,7 @@ import {
 } from "properties/types/PatientDataProps";
 
 import { axiosApi } from "./axios";
+import { AxiosResponse } from "axios";
 
 export const useFetchUnviewedResults = <
   T = (PatientResult & {
@@ -41,7 +42,6 @@ export const useFetchPatientResults = <T = PatientResult[]>(
   const resultsCount = numberOfResults
     ? `?startIndex=0&pageSize=${numberOfResults}`
     : "";
-
   return useQuery<PatientResult[], Error, T>({
     queryKey: [user, patientId, "results", resultsCount],
     queryFn: () =>
@@ -49,7 +49,18 @@ export const useFetchPatientResults = <T = PatientResult[]>(
         .get(
           `doctors/${user.id}/patients/${patientId}/results${resultsCount}`,
         )
-        .then((response) => response.data),
+        .then((response: AxiosResponse<PatientResult[]>) => response.data.map((result:PatientResult) => {
+          // PLEASE CHANGE REQUEST DATA THAT IS RETURNED PLEASEEEEE
+          return {
+            id: result.id,
+            patientId,
+            testType: result.testType,
+            content: result.content,
+            createdDate: result.createdDate,
+            aiSelected: result.aiSelected,
+            viewed: result.viewed
+          }
+        })),
     select,
   });
 };

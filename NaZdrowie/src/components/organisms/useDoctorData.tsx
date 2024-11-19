@@ -16,7 +16,6 @@ import { CommentsFilter, formatCommentsData } from "services/utils";
 
 import { useOverlay } from "./context";
 import { useDesiredOverlay } from "./useDesiredOverlay";
-import { useQueryClient } from "@tanstack/react-query";
 
 export const useDoctorData = (
   navigation,
@@ -24,7 +23,6 @@ export const useDoctorData = (
   patientId?: number,
 ) => {
   const { openPatientInfoOverlay } = useDesiredOverlay(currentUser);
-  const queryClient = useQueryClient();
   const { hideOverlay } = useOverlay();
   const bind = useBindPatientToDoctor(currentUser);
   const currentPatient = useFetchPatient(currentUser, null, patientId);
@@ -175,34 +173,6 @@ export const useDoctorData = (
     (data) => data.map(formatResultsView),
     latestCount,
   );
-
-  function handleCheckboxForAiSelection(resultId: number) {
-    queryClient.setQueryData(
-      [currentUser, patientId, "results", ""], // keys needs to be changed :)
-      (data: PatientResult[]) => {
-        return data.map((dataResult: PatientResult) => {
-          if (dataResult.id === resultId) {
-            return {
-              ...dataResult,
-              ai_selected: !dataResult.ai_selected,
-            };
-          } else {
-            return dataResult;
-          }
-        })},
-    );
-  }
-
-  function formatResultsForAiData(result: PatientResult) {
-    return {
-      checkbox: {
-        checkboxStatus: result.ai_selected,
-        checkboxHandler: () => handleCheckboxForAiSelection(result.id),
-      },
-      text: result.testType,
-      buttons: [<LinkButton title="Podgląd" />],
-    };
-  }
 
   return {
     navigateToNewPatientsScreen,

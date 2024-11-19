@@ -80,7 +80,7 @@ export const ResultPreviewScreen = ({
           <View style={generalStyle.rowSpread}>
             <Text style={generalStyle.titleText}>Uzyj do analizy AI</Text>
             <PersonalizedCheckbox
-              checkboxValue={result.ai_selected}
+              checkboxValue={result.aiSelected}
               handleValueChange={() => handleCheckboxForAiSelection(result.id)}
             />
           </View>
