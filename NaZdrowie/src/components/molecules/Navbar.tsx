@@ -8,11 +8,12 @@ import primaryColors from "properties/colors";
 
 type NavbarProps = {
   navbarDescriptionTitle?: string;
+  navbarDescriptionSubtitle?: string;
   navigation;
 };
 
 export const Navbar: React.FC<NavbarProps> = (props: NavbarProps) => {
-  const { navbarDescriptionTitle, navigation } = props;
+  const { navbarDescriptionTitle, navbarDescriptionSubtitle, navigation } = props;
   const { isMenuVisible } = useContext(HamburgerMenuContext);
   return (
     <SafeAreaView style={{ backgroundColor: primaryColors.white }}>
@@ -21,7 +22,7 @@ export const Navbar: React.FC<NavbarProps> = (props: NavbarProps) => {
         <HamburgerButton />
       </View>
       {isMenuVisible && <HamburgerMenu navigation={navigation} />}
-      <NavbarDescription title={navbarDescriptionTitle} />
+      <NavbarDescription title={navbarDescriptionTitle} subtitle={navbarDescriptionSubtitle} />
     </SafeAreaView>
   );
 };

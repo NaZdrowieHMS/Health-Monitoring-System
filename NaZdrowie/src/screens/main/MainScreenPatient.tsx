@@ -32,7 +32,7 @@ export const MainScreenPatient = ({
   };
 
   const navigateToAllResults = () => {
-    // TODO
+    navigation.navigate("AllResults", {patientId: currentUser.id});
   };
 
   return (

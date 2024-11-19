@@ -41,3 +41,14 @@ export const loadingButtonStyles = StyleSheet.create({
     alignItems: "center",
   },
 });
+
+export const resultButtonStyle = StyleSheet.create({
+  buttonContainer: {
+    ...userButtonStyle.buttonContainer,
+    ...generalStyle.rowSpread,
+    justifyContent: "flex-start",
+    padding: 12,
+    alignItems: "center",
+    columnGap: 10,
+  }
+})
