@@ -107,3 +107,8 @@ export type HealthFormDisplayData = {
   createDate: string;
   content: ObjectCardElement[];
 };
+
+export type HealthFormUpdate = {
+  patientId: number;
+  content: ObjectCardElement[];
+};

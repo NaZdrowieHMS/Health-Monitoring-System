@@ -31,6 +31,7 @@ export const PatientDetailsScreen = ({
     currentUser,
     patientId,
   );
+
   const { 
     currentDotorComments, 
     otherDotorsComments, 
@@ -44,7 +45,7 @@ export const PatientDetailsScreen = ({
   };
 
   const navigateToAllResults = () => {
-    // TODO
+    navigation.navigate("AllResults", { patientId });
   };
 
   const navigateToAiDiagnosis = () => {

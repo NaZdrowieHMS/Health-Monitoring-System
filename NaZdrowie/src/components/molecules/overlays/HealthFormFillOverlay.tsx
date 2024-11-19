@@ -5,17 +5,51 @@ import {
   PrimaryButton,
 } from "components/atoms";
 import { generalStyle } from "properties/styles";
-import { HealthFormItemType, HealthFormProps } from "properties/types";
+import {
+  HealthFormItemType,
+  HealthFormProps,
+  HealthFormUpdate,
+  UserData,
+} from "properties/types";
 import { paddingSize } from "properties/vars";
-import React from "react";
+import React, { useState } from "react";
 import { Text, View } from "react-native";
 
 import { Overlay } from "./Overlay";
+import { useSendHealthForm } from "services/patientData";
 
 export const HealthFormFillOverlay: React.FC<{
+  currentUser: UserData;
   healthFormData: HealthFormProps;
   handleClose: () => void;
-}> = ({ handleClose, healthFormData }) => {
+}> = ({ currentUser, handleClose, healthFormData }) => {
+  const defaultFormFillData: HealthFormUpdate = {
+    patientId: healthFormData.patientId,
+    content: healthFormData.content.map((item) => ({
+      key: item.title,
+      value: item.type == HealthFormItemType.Checkbox ? "false" : "",
+    })),
+  };
+
+  const [healthFormItems, setHealthFormItems] =
+    useState<HealthFormUpdate>(defaultFormFillData);
+
+  const sendFormResult = useSendHealthForm(currentUser);
+
+  const handleValueChange = (index: string, newValue: any) => {
+    setHealthFormItems((prevItems) => ({
+      ...prevItems,
+      content: prevItems.content.map((item, i) =>
+        item.key === index ? { ...item, value: newValue } : item,
+      ),
+    }));
+  };
+
+  const handleSendFormData = () => {
+    sendFormResult.mutate(healthFormItems);
+    handleClose();
+  };
+
   return (
     <Overlay>
       <Overlay.Container>
@@ -37,14 +71,17 @@ export const HealthFormFillOverlay: React.FC<{
               <Text style={generalStyle.secondaryTitle}>{item.title}</Text>
               {item.type === HealthFormItemType.Input && (
                 <View style={{ paddingTop: paddingSize.xxSmall }}>
-                  <PersonalizedTextInput placeholder={item.placeholder} />
+                  <PersonalizedTextInput
+                    placeholder={item.placeholder}
+                    onChange={(value) => handleValueChange(item.title, value)}
+                  />
                 </View>
               )}
               {item.type === HealthFormItemType.Checkbox && (
                 <PersonalizedCheckbox
-                  checkboxValue
-                  handleValueChange={() => {
-                    //TODO
+                  checkboxValue={false}
+                  handleValueChange={(value) => {
+                    handleValueChange(item.title, value.toString());
                   }}
                 />
               )}
@@ -53,7 +90,7 @@ export const HealthFormFillOverlay: React.FC<{
                   <Dropdown
                     items={item.options}
                     placeholderLabel={item.placeholder}
-                    setValue={() => console.log("siema")}
+                    setValue={(value) => handleValueChange(item.title, value)}
                   />
                 </View>
               )}
@@ -61,7 +98,7 @@ export const HealthFormFillOverlay: React.FC<{
           ))}
         </Overlay.Body>
         <Overlay.Footer>
-          <PrimaryButton title="Wyślij" />
+          <PrimaryButton title="Wyślij" handleOnClick={handleSendFormData} />
         </Overlay.Footer>
       </Overlay.Container>
     </Overlay>
