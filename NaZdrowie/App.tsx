@@ -18,11 +18,10 @@ import {
 } from "screens/doctorScreens";
 import { ResultPreviewScreen } from "screens/doctorScreens/ResultPreviewScreen";
 import { MainScreen } from "screens/main";
-import { QrScannerScreen } from "screens/patientScreens";
-import { axiosApi } from "services/axios";
+import { QrScannerScreen, AllResultsScreen } from "screens/patientScreens";
 import { HamburgerMenuProvider } from "components/organisms/context/HamburgerMenuProvider";
 import primaryColors from "properties/colors";
-import { AllResultsScreen } from "screens/patientScreens/AllResultsScreen";
+import { axiosApi } from "services/axios";
 
 const queryClient = new QueryClient({
   defaultOptions: {

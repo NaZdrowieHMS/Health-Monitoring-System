@@ -24,6 +24,7 @@ export const AllResultsScreen = ({
             <Navbar
                 navigation={(path) => navigation.navigate(path)}
                 navbarDescriptionTitle={`${patient.data.name} ${patient.data.surname}`}
+                navbarDescriptionSubtitle="Historia wyników"
             />
         ) : results.isSuccess && !currentUser.isDoctor ? (
             <Navbar
@@ -44,7 +45,11 @@ export const AllResultsScreen = ({
                     <ResultButton
                       title={result.testType}
                       date={result.createdDate}
-                      handleOnClick={() => openResultOverlay(result)}
+                      key={result.id}
+                      handleOnClick={
+                        currentUser.isDoctor ?
+                          () => navigation.navigate("ResultPreview", {result, patientId}) :
+                          () => openResultOverlay(result)}
                     />)
             ) : (
                 <LoadingCard />

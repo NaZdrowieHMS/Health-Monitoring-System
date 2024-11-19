@@ -16,6 +16,7 @@ import { UserContext } from "components/organisms/context";
 import { generalStyle, mainStyle } from "properties/styles";
 import React, { useContext } from "react";
 import { View, ScrollView, SafeAreaView } from "react-native";
+import { useFetchPatient } from "services/patientData";
 
 export const PatientDetailsScreen = ({
   route,
@@ -26,18 +27,19 @@ export const PatientDetailsScreen = ({
   const { openResultsFormOverlay, openReferralFormOverlay } =
     useDesiredOverlay(currentUser);
 
+  const patient = useFetchPatient(currentUser, null, patientId);
   const { latestReferrals } = usePatientData(
     navigation,
     currentUser,
     patientId,
   );
 
-  const { 
-    currentDotorComments, 
-    otherDotorsComments, 
-    latestPatientResults, 
-    healthCommentUpload, 
-    currentPatient 
+  const {
+    currentDotorComments,
+    otherDotorsComments,
+    latestPatientResults,
+    healthCommentUpload,
+    currentPatient
   } = useDoctorData(navigation, currentUser, patientId);
 
   const navigateToAllReferals = () => {

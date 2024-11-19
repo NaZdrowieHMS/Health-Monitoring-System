@@ -7,18 +7,22 @@ import { Pressable, Text, View } from "react-native";
 
 type NavbarDescriptionProps = {
   title?: string;
+  subtitle?: string
 };
 
 export const NavbarDescription: React.FC<NavbarDescriptionProps> = (
   props: NavbarDescriptionProps,
 ) => {
-  const { title } = props;
+  const { title, subtitle } = props;
 
   const navigation = useNavigation();
 
   return title ? (
     <View style={navbarStyle.navbarDescription}>
-      <Text style={navbarStyle.navbarDescriptionText}>{title}</Text>
+      <View style={navbarStyle.navbarDescriptionTitle}>
+        <Text style={navbarStyle.navbarDescriptionText}>{title}</Text>
+        {subtitle && <Text style={navbarStyle.navbarDescriptionSubtitleText}>{subtitle}</Text>}
+      </View>
       <Pressable onPress={navigation.goBack}>
         <Text
           style={{
