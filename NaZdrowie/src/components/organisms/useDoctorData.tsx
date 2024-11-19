@@ -10,16 +10,13 @@ import {
   useFetchUnviewedResults,
   useFetchPatients,
   useFetchPatientResults,
-  useAddAiSelectedResults,
-  useDeleteAiSelectedResults,
 } from "services/doctorData";
-import { useBindPatientToDoctor } from "services/patientData";
+import { useBindPatientToDoctor, useFetchPatient } from "services/patientData";
 import { CommentsFilter, formatCommentsData } from "services/utils";
 
 import { useOverlay } from "./context";
 import { useDesiredOverlay } from "./useDesiredOverlay";
 import { useQueryClient } from "@tanstack/react-query";
-import { useCallback } from "react";
 
 export const useDoctorData = (
   navigation,
@@ -30,8 +27,7 @@ export const useDoctorData = (
   const queryClient = useQueryClient();
   const { hideOverlay } = useOverlay();
   const bind = useBindPatientToDoctor(currentUser);
-  const addAiSelectedResults = useAddAiSelectedResults();
-  const deleteAiSelectedResults = useDeleteAiSelectedResults();
+  const currentPatient = useFetchPatient(currentUser, null, patientId);
 
   const healthCommentUpload = {
     sendComment: useSendHealthComment(currentUser),
@@ -180,12 +176,6 @@ export const useDoctorData = (
     latestCount,
   );
 
-  const patientResultsForAi = useFetchPatientResults(
-    currentUser,
-    patientId,
-    (data) => data.map(formatResultsForAiData),
-  );
-
   function handleCheckboxForAiSelection(resultId: number) {
     queryClient.setQueryData(
       [currentUser, patientId, "results", ""], // keys needs to be changed :)
@@ -213,33 +203,7 @@ export const useDoctorData = (
       buttons: [<LinkButton title="Podgląd" />],
     };
   }
-  const startAiDiagnosis = () => {
-    // keys needs to be changed :)
-    const selectedResults = queryClient.getQueryData<PatientResult[]>([currentUser, patientId, "results", ""]) 
-      .filter((result) => result.ai_selected === true)
-      .map((result) => result.id)
-    console.log(selectedResults)
-  }
 
-  const updateAiSelectedData = useCallback(() => {
-    return () => {
-      const selectedResults = queryClient.getQueryData<PatientResult[]>([currentUser, patientId, "results", ""]) 
-      const toAdd = selectedResults.filter((result) => result.ai_selected === true).map((result) => ({
-        resultId: result.id,
-        patientId: patientId,
-        doctorId: currentUser.id
-      }))
-      const toDelete = selectedResults.filter((result) => result.ai_selected === false).map((result) => ({
-        resultId: result.id,
-        patientId: patientId,
-        doctorId: currentUser.id
-      }))
-      addAiSelectedResults.mutateAsync(toAdd)
-      deleteAiSelectedResults.mutateAsync(toDelete)
-      // maybe verify whether it was succesfull
-    };
-  }, [])
-  
   return {
     navigateToNewPatientsScreen,
     navigateToPatientScreen,
@@ -248,12 +212,9 @@ export const useDoctorData = (
     latestPatients,
     unviewedResults,
     latestPatientResults,
-    patientResultsForAi,
-    handleCheckboxForAiSelection,
     unassignedPatients,
     filteredUnassignedPatients,
-    startAiDiagnosis,
-    updateAiSelectedData,
     healthCommentUpload,
+    currentPatient,
   };
 };
