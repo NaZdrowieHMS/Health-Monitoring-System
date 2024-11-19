@@ -126,11 +126,11 @@ export const usePatientData = (
     currentUser,
     (data) => {
       return {
-        text: `Formularz zdrowia ${formatDate(data.createDate)}`,
+        text: `Formularz zdrowia ${formatDate(data[0].createDate)}`,
         buttons: [
           <LinkButton
             title="Podgląd"
-            handleOnClick={() => openHealthFormResultOverlay(data)}
+            handleOnClick={() => openHealthFormResultOverlay(data[0])}
           />,
         ],
       };
@@ -138,18 +138,14 @@ export const usePatientData = (
     patientId,
     1,
   );
-
-  // TODO
-  if (latestResults.isSuccess && latestHealthForm.isSuccess) {
-    latestResults.data?.push(latestHealthForm.data);
-  }
-
+  
   return {
     navigateToQrScannerScreen,
     healthComments,
     referrals,
     results,
     latestResults,
+    latestHealthForm,
     latestReferrals,
     latestHealthComments,
   };

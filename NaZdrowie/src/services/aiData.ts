@@ -1,20 +1,31 @@
-import { AiResults } from "properties/types/AiDataProps";
+import { AiPrediction, AiPredictionInfo } from "properties/types/AiDataProps";
+import { axiosAiApi } from "./axios";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { UserData } from "properties/types";
 
-import axiosInstance from "./axios";
+export const useAnalyzeWithAi = (user: UserData, patientId: number) => {
+  const queryClient = useQueryClient();
 
-export const getAiPrediction: (
-  base64Image: string,
-) => Promise<AiResults> = async (base64Image: string) => {
-  try {
-    const response = await axiosInstance.post(
-      // TODO: zmienić to na właiwy url
-      "http://localhost:5001/predictions/test",
-      {
-        image: base64Image,
-      },
-    );
-    return response.data;
-  } catch (error) {
-    console.error("Error fetching data:", error);
-  }
+  return useMutation({
+    mutationFn: async (predictionData: AiPredictionInfo) => {
+      const { data } = await axiosAiApi.post("ai/predictions", predictionData);
+      return data;
+    },
+    onSuccess(data: {requestId:number}) {
+      queryClient.invalidateQueries({
+        queryKey: [user, patientId, "predictions"],
+      });
+    },
+  });
+};
+
+export const useFetchPatientPredictions = <T = AiPrediction[]>(
+  user: UserData,
+  patientId: number,
+  select?: (data: AiPrediction[]) => T,
+) => {
+  return useQuery<AiPrediction[], Error, T>({
+    queryKey: [user, patientId, "predictions" , `patients/${patientId}/predictions`],
+    select,
+  });
 };

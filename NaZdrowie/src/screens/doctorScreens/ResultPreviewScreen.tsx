@@ -12,7 +12,7 @@ import {
   LoadingCard,
   Navbar,
 } from "components/molecules";
-import { useDoctorData } from "components/organisms";
+import { useAiData, useDoctorData } from "components/organisms";
 import { UserContext } from "components/organisms/context";
 import { generalStyle, mainStyle } from "properties/styles";
 import React, { useContext, useState } from "react";
@@ -22,7 +22,6 @@ import {
   useSendResultComment,
 } from "services/commentsData";
 import { cardCommentsCount } from "services/config";
-import { useFetchPatient } from "services/patientData";
 import { formatCommentsData } from "services/utils";
 
 export const ResultPreviewScreen = ({
@@ -31,9 +30,12 @@ export const ResultPreviewScreen = ({
 }: NativeStackScreenProps<RootStackParamList, "ResultPreview">) => {
   const { currentUser } = useContext(UserContext);
   const { result, patientId } = route.params;
-  const patient = useFetchPatient(currentUser, null, patientId);
   const [comment, setComment] = useState<string>();
-  const { handleCheckboxForAiSelection, updateAiSelectedData } = useDoctorData(navigation, currentUser, patientId)
+  const { currentPatient } = useDoctorData(navigation, currentUser, patientId);
+  const { handleCheckboxForAiSelection, updateAiSelectedData } = useAiData(
+    currentUser,
+    patientId,
+  );
   const resultComments = useFetchResultCommentsData(
     currentUser,
     result.id,
@@ -41,9 +43,7 @@ export const ResultPreviewScreen = ({
     cardCommentsCount,
   );
 
-  useFocusEffect(
-    updateAiSelectedData
-  )
+  useFocusEffect(updateAiSelectedData);
 
   const sendResultComment = useSendResultComment(currentUser);
 
@@ -59,10 +59,10 @@ export const ResultPreviewScreen = ({
 
   return (
     <>
-      {patient.isSuccess ? (
+      {currentPatient.isSuccess ? (
         <Navbar
           navigation={(path) => navigation.navigate(path)}
-          navbarDescriptionTitle={`${patient.data.name} ${patient.data.surname}`}
+          navbarDescriptionTitle={`${currentPatient.data.name} ${currentPatient.data.surname}`}
         />
       ) : (
         <Navbar
@@ -81,7 +81,7 @@ export const ResultPreviewScreen = ({
           <View style={generalStyle.rowSpread}>
             <Text style={generalStyle.titleText}>Uzyj do analizy AI</Text>
             <PersonalizedCheckbox
-              checkboxValue={result.ai_selected}
+              checkboxInitialValue={result.aiSelected}
               handleValueChange={() => handleCheckboxForAiSelection(result.id)}
             />
           </View>

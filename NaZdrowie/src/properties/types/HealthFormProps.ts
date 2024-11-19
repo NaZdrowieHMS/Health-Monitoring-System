@@ -108,7 +108,7 @@ export type HealthFormDisplayData = {
   content: ObjectCardElement[];
 };
 
-export type HealthFormUpdate = {
+export type HealthFormUpload = {
   patientId: number;
   content: ObjectCardElement[];
 };

@@ -8,7 +8,7 @@ import { generalStyle } from "properties/styles";
 import {
   HealthFormItemType,
   HealthFormProps,
-  HealthFormUpdate,
+  HealthFormUpload,
   UserData,
 } from "properties/types";
 import { paddingSize } from "properties/vars";
@@ -23,7 +23,7 @@ export const HealthFormFillOverlay: React.FC<{
   healthFormData: HealthFormProps;
   handleClose: () => void;
 }> = ({ currentUser, handleClose, healthFormData }) => {
-  const defaultFormFillData: HealthFormUpdate = {
+  const defaultFormFillData: HealthFormUpload = {
     patientId: healthFormData.patientId,
     content: healthFormData.content.map((item) => ({
       key: item.title,
@@ -32,7 +32,7 @@ export const HealthFormFillOverlay: React.FC<{
   };
 
   const [healthFormItems, setHealthFormItems] =
-    useState<HealthFormUpdate>(defaultFormFillData);
+    useState<HealthFormUpload>(defaultFormFillData);
 
   const sendFormResult = useSendHealthForm(currentUser);
 
@@ -79,7 +79,7 @@ export const HealthFormFillOverlay: React.FC<{
               )}
               {item.type === HealthFormItemType.Checkbox && (
                 <PersonalizedCheckbox
-                  checkboxValue={false}
+                  checkboxInitialValue={false}
                   handleValueChange={(value) => {
                     handleValueChange(item.title, value.toString());
                   }}

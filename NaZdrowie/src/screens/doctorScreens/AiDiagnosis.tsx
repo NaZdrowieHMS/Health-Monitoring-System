@@ -8,12 +8,11 @@ import {
   LoadingCard,
   Navbar,
 } from "components/molecules";
-import { useDoctorData } from "components/organisms";
+import { useAiData, useDoctorData } from "components/organisms";
 import { UserContext } from "components/organisms/context";
 import { generalStyle, mainStyle } from "properties/styles";
 import React, { useContext } from "react";
 import { ScrollView, SafeAreaView } from "react-native";
-import { useFetchPatient } from "services/patientData";
 
 export const AiDiagnosis = ({
   route,
@@ -21,19 +20,20 @@ export const AiDiagnosis = ({
 }: NativeStackScreenProps<RootStackParamList, "AiDiagnosis">) => {
   const { patientId } = route.params;
   const { currentUser } = useContext(UserContext);
-  const patient = useFetchPatient(currentUser, null, patientId);
-  const { patientResultsForAi, startAiDiagnosis, updateAiSelectedData } = useDoctorData(navigation, currentUser, patientId);
-
+  const { currentPatient }
+    = useDoctorData(navigation, currentUser, patientId);
+  const { patientResultsForAi, startAiDiagnosis, updateAiSelectedData, patientPredictions } 
+    = useAiData(currentUser, patientId)
   useFocusEffect(
     updateAiSelectedData
   )
 
   return (
     <>
-      {patient.isSuccess ? (
+      {currentPatient.isSuccess ? (
         <Navbar
           navigation={(path) => navigation.navigate(path)}
-          navbarDescriptionTitle={`${patient.data.name} ${patient.data.surname}`}
+          navbarDescriptionTitle={`${currentPatient.data.name} ${currentPatient.data.surname}`}
         />
       ) : (
         <Navbar
@@ -52,7 +52,9 @@ export const AiDiagnosis = ({
           ) : (
             <LoadingCard title="Załączone badania" />
           )}
-          <AiAnalysisResultCard />
+          {patientPredictions.isSuccess 
+          ? <AiAnalysisResultCard data={patientPredictions.data} /> 
+          : <LoadingCard title="Wyniki poprzednich analiz AI"/>}
         </ScrollView>
       </SafeAreaView>
     </>

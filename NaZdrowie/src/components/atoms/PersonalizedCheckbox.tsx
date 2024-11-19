@@ -1,16 +1,21 @@
 import { Checkbox } from "expo-checkbox";
 import primaryColors from "properties/colors";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 export const PersonalizedCheckbox: React.FC<{
-  checkboxValue: boolean;
+  checkboxInitialValue: boolean;
   handleValueChange: (boolean) => void;
-}> = ({ checkboxValue, handleValueChange }) => {
-  const [value, onChangeValue] = React.useState(checkboxValue);
+}> = ({ checkboxInitialValue, handleValueChange }) => {
+  const [value, onChangeValue] = useState(checkboxInitialValue);
+  const [isInitial, setIsInitial] = useState(true);
 
   useEffect(() => {
-    if (handleValueChange !== undefined) {
-      handleValueChange(value);
+    if (!isInitial) {
+      if (handleValueChange !== undefined) {
+        handleValueChange(value);
+      }
+    } else {
+      setIsInitial(false);
     }
   }, [value]);
 

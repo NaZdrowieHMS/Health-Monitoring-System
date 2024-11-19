@@ -1,7 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   HealthFormDisplayData,
-  HealthFormUpdate,
+  HealthFormUpload,
   UserData,
 } from "properties/types";
 import {
@@ -12,7 +12,7 @@ import {
 } from "properties/types/PatientDataProps";
 import { Alert } from "react-native";
 
-import axiosInstance from "./axios";
+import { axiosApi } from "./axios";
 
 export const useFetchReferrals = <T = PatientReferral[]>(
   user: UserData,
@@ -77,7 +77,7 @@ export const useSendResult = (user: UserData, isreferralAssigned: boolean) => {
 
   return useMutation({
     mutationFn: async (resultUpload: ResultUpload) => {
-      const { data } = await axiosInstance.post("results", resultUpload);
+      const { data } = await axiosApi.post("results", resultUpload);
       return data;
     },
     onSuccess(data: PatientResult) {
@@ -93,9 +93,9 @@ export const useSendResult = (user: UserData, isreferralAssigned: boolean) => {
   });
 };
 
-export const useFetchHealthForms = <T = HealthFormDisplayData | null>(
+export const useFetchHealthForms = <T = HealthFormDisplayData[]>(
   user: UserData,
-  select?: (data: HealthFormDisplayData | null) => T,
+  select?: (data: HealthFormDisplayData[]) => T,
   patientId?: number,
   numberOfForms?: number,
 ) => {
@@ -103,7 +103,7 @@ export const useFetchHealthForms = <T = HealthFormDisplayData | null>(
     ? `?startIndex=0&pageSize=${numberOfForms}`
     : "";
 
-  return useQuery<HealthFormDisplayData | null, Error, T>({
+  return useQuery<HealthFormDisplayData[], Error, T>({
     queryKey: [
       user,
       "healthForm",
@@ -117,8 +117,8 @@ export const useSendHealthForm = (user: UserData) => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (form: HealthFormUpdate) => {
-      const { data } = await axiosInstance.post("forms", form);
+    mutationFn: async (form: HealthFormUpload) => {
+      const { data } = await axiosApi.post("forms", form);
       return data;
     },
     onSuccess(data: HealthFormDisplayData) {
@@ -134,7 +134,7 @@ export const useBindPatientToDoctor = (user: UserData) => {
 
   return useMutation({
     mutationFn: async (usersInfo: { doctorId: number; patientId: number }) => {
-      const { data } = await axiosInstance.put(
+      const { data } = await axiosApi.put(
         "doctors/patients/relation",
         usersInfo,
       );
