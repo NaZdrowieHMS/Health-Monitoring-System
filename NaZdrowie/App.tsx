@@ -2,7 +2,6 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { UserProvider, OverlayProvider } from "components/organisms/context";
-import { PatientResult } from "properties/types";
 import React from "react";
 import { View } from "react-native";
 import {
@@ -22,6 +21,7 @@ import { QrScannerScreen, AllResultsScreen } from "screens/patientScreens";
 import { HamburgerMenuProvider } from "components/organisms/context/HamburgerMenuProvider";
 import primaryColors from "properties/colors";
 import { axiosApi } from "services/axios";
+import { AxiosHeaders } from "axios";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -29,12 +29,17 @@ const queryClient = new QueryClient({
       retry: 2,
       retryDelay: 2000,
       staleTime: 60_000,
-      queryFn: async ({ queryKey }) => {
+      queryFn: async ({ queryKey, meta }) => {
         const lastKey = queryKey[queryKey.length - 1];
+        const headers: AxiosHeaders = meta?.headers;
         if (typeof lastKey === "string") {
-          const { data } = await axiosApi.get(lastKey);
+          const { data } = await axiosApi.get(
+            lastKey,
+            headers && { headers: headers },
+          );
           return data;
         }
+        throw new Error("Invalid queryKey");
       },
     },
   },
@@ -51,7 +56,7 @@ export type RootStackParamList = {
   NewPatients: undefined;
   PatientDetails: { patientId: number };
   AiDiagnosis: { patientId: number };
-  ResultPreview: { result: PatientResult; patientId: number };
+  ResultPreview: { resultId: number; patientId: number; resultTitle: string };
   AllResults: { patientId: number };
 };
 

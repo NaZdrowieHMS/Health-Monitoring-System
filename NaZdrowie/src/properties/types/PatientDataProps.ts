@@ -8,11 +8,6 @@ export type PatientData = {
   pesel: string;
 };
 
-type ResultDataContent = {
-  data: string;
-  type: string;
-};
-
 export type PatientReferral = {
   id: number;
   patientId: number;
@@ -22,21 +17,4 @@ export type PatientReferral = {
   doctor: Author;
   comment: DoctorComment;
   createdDate: string;
-};
-
-export type PatientResult = {
-  id: number;
-  testType: string;
-  patientId: number; // needed!!
-  content: ResultDataContent;
-  aiSelected: boolean;
-  viewed:boolean;
-  createdDate: string;
-};
-
-export type ResultUpload = {
-  patientId: number;
-  referralId?: number;
-  testType: string;
-  content: ResultDataContent;
 };
