@@ -12,7 +12,7 @@ import {
   LoadingCard,
   Navbar,
 } from "components/molecules";
-import { useAiData, useDoctorData, usePatientData } from "components/organisms";
+import { useAiData, usePatientData } from "components/organisms";
 import { UserContext } from "components/organisms/context";
 import { generalStyle, mainStyle } from "properties/styles";
 import React, { useContext, useState } from "react";
@@ -27,17 +27,12 @@ import { formatCommentsData } from "services/utils";
 
 export const ResultPreviewScreen = ({
   route,
-  navigation,
 }: NativeStackScreenProps<RootStackParamList, "ResultPreview">) => {
   const { currentUser } = useContext(UserContext);
   const { resultId, patientId, resultTitle } = route.params;
   const [comment, setComment] = useState<string>();
-  const {
-    isSuccess,
-    isLoading,
-    data: result,
-  } = useFetchResult(currentUser, resultId);
-  const { patientData } = usePatientData(navigation, currentUser, patientId);
+  const { isSuccess, data: result } = useFetchResult(currentUser, resultId);
+  const { patientData } = usePatientData(currentUser, patientId);
   const { handleCheckboxForAiSelection, updateAiSelectedData } = useAiData(
     currentUser,
     patientId,
@@ -67,14 +62,10 @@ export const ResultPreviewScreen = ({
     <>
       {patientData.isSuccess ? (
         <Navbar
-          navigation={(path) => navigation.navigate(path)}
           navbarDescriptionTitle={`${patientData.data.name} ${patientData.data.surname}`}
         />
       ) : (
-        <Navbar
-          navigation={(path) => navigation.navigate(path)}
-          navbarDescriptionTitle="..."
-        />
+        <Navbar navbarDescriptionTitle="..." />
       )}
       <SafeAreaView style={generalStyle.safeArea}>
         <ScrollView contentContainerStyle={mainStyle.container}>

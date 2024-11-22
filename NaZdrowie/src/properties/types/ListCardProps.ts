@@ -1,5 +1,6 @@
 import { FontWeight } from "properties/vars";
 import { ButtonProps, GestureResponderEvent } from "react-native";
+import React from "react";
 
 type CheckboxElement = {
   checkboxStatus: boolean;

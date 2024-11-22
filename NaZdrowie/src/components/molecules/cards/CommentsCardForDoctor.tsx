@@ -18,19 +18,11 @@ export const CommentsCardForDoctor: React.FC<
   CommentsCardProps & {
     dataOthers: CommentData[];
     commentUpload?: {
-      sendComment: UseMutationResult<any, Error, HealthCommentUpload, unknown>;
+      sendComment: UseMutationResult<HealthCommentUpload, Error>;
       comment: HealthCommentUpload;
     };
   }
-> = (
-  props: CommentsCardProps & {
-    dataOthers: CommentData[];
-    commentUpload?: {
-      sendComment: UseMutationResult<any, Error, HealthCommentUpload, unknown>;
-      comment: HealthCommentUpload;
-    };
-  },
-) => {
+> = (props) => {
   const { title, data, dataOthers, commentUpload } = props;
   const [comment, setComment] = useState<string>();
 

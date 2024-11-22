@@ -8,3 +8,7 @@ export * from "./ObjectCardProps";
 export * from "./PatientDataProps";
 export * from "./HealthFormProps";
 export * from "./CommentsProps";
+
+export type StringNavigation = {
+  navigate: (value: string, params?: object) => void;
+};

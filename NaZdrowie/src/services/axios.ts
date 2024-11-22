@@ -23,7 +23,6 @@ axiosApi.interceptors.response.use(
   (error) => Promise.reject(error),
 );
 
-
 const axiosAiApi = axios.create({
   baseURL: AI_API_URL,
   timeout: 10_000,
@@ -46,7 +45,4 @@ axiosApi.interceptors.response.use(
 );
 
 // Return the custom Axios instance
-export {
-  axiosApi,
-  axiosAiApi
-};
+export { axiosApi, axiosAiApi };

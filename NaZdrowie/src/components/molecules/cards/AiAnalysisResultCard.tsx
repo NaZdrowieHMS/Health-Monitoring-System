@@ -6,23 +6,16 @@ import { paddingSize } from "properties/vars";
 import React from "react";
 import { View, Text } from "react-native";
 
-export const AiAnalysisResultCard: React.FC<(AiAnalysisResultCardProps)> = (
-  {data},
-) => {
-
+export const AiAnalysisResultCard: React.FC<AiAnalysisResultCardProps> = ({
+  data,
+}) => {
   return (
     <View style={cardStyle.container}>
-      <Text style={generalStyle.titleText}>
-        Wyniki poprzednich analiz AI
-      </Text>
+      <Text style={generalStyle.titleText}>Wyniki poprzednich analiz AI</Text>
       {data.map((prediction, index) => (
         <View key={index} style={{ rowGap: paddingSize.mediumBig }}>
-          <Text style={generalStyle.titleText}>
-            {prediction.status}
-          </Text>
-          <Text style={generalStyle.basicText}>
-            {prediction.createdDate}
-          </Text>
+          <Text style={generalStyle.titleText}>{prediction.status}</Text>
+          <Text style={generalStyle.basicText}>{prediction.createdDate}</Text>
           <Text
             style={[
               generalStyle.secondaryTitle,

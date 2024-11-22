@@ -1,5 +1,5 @@
 import { LinkButton, PrimaryButton, UserButton } from "components/atoms";
-import { PatientData, UserData } from "properties/types";
+import { PatientData, StringNavigation, UserData } from "properties/types";
 import {
   useFetchHealthCommentsFiltered,
   useSendHealthComment,
@@ -14,16 +14,13 @@ import { CommentsFilter, formatCommentsData } from "services/utils";
 
 import { useOverlay } from "./context";
 import { useDesiredOverlay } from "./useDesiredOverlay";
+import { useNavigation } from "@react-navigation/native";
 
-export const useDoctorData = (
-  navigation,
-  currentUser: UserData,
-  patientId?: number,
-) => {
+export const useDoctorData = (currentUser: UserData, patientId?: number) => {
   const { openPatientInfoOverlay } = useDesiredOverlay(currentUser);
   const { hideOverlay } = useOverlay();
   const bind = useBindPatientToDoctor(currentUser);
-
+  const { navigate } = useNavigation<StringNavigation>();
   const healthCommentUpload = {
     sendComment: useSendHealthComment(currentUser),
     comment: {
@@ -34,13 +31,13 @@ export const useDoctorData = (
   };
 
   const navigateToPatientScreen = (patientId: number) => {
-    navigation.navigate("PatientDetails", {
+    navigate("PatientDetails", {
       patientId,
     });
   };
 
   const navigateToNewPatientsScreen = () => {
-    navigation.navigate("NewPatients");
+    navigate("NewPatients");
   };
 
   function formatPatientsView(patient: PatientData) {

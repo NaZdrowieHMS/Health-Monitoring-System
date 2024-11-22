@@ -31,7 +31,7 @@ const queryClient = new QueryClient({
       staleTime: 60_000,
       queryFn: async ({ queryKey, meta }) => {
         const lastKey = queryKey[queryKey.length - 1];
-        const headers: AxiosHeaders = meta?.headers;
+        const headers: AxiosHeaders = meta?.headers as AxiosHeaders;
         if (typeof lastKey === "string") {
           const { data } = await axiosApi.get(
             lastKey,

@@ -3,16 +3,17 @@ import { RootStackParamList } from "../../../App";
 import { LoadingCard, Navbar } from "components/molecules";
 import { SafeAreaView, ScrollView } from "react-native";
 import { generalStyle, mainStyle } from "properties/styles";
-import React, { useContext } from "react";
+import { useContext } from "react";
 import { UserContext } from "components/organisms/context";
 import { useFetchPatient } from "services/patientData";
 import { ResultButton } from "components/atoms/buttons/ResultButton";
 import { useDesiredOverlay } from "components/organisms";
 import { useFetchAllResultsByPatientId } from "services/resultsData";
+import { useNavigation } from "@react-navigation/native";
+import { StringNavigation } from "properties/types";
 
 export const AllResultsScreen = ({
   route,
-  navigation,
 }: NativeStackScreenProps<RootStackParamList, "AllResults">) => {
   const { currentUser } = useContext(UserContext);
   const { patientId } = route.params;
@@ -20,26 +21,20 @@ export const AllResultsScreen = ({
     id: patientId,
     isDoctor: false,
   });
+  const { navigate } = useNavigation<StringNavigation>();
   const patient = useFetchPatient(currentUser, null, patientId);
   const { openResultOverlay } = useDesiredOverlay(currentUser);
   return (
     <>
       {results.isSuccess && currentUser.isDoctor ? (
         <Navbar
-          navigation={(path) => navigation.navigate(path)}
           navbarDescriptionTitle={`${patient.data.name} ${patient.data.surname}`}
           navbarDescriptionSubtitle="Historia wyników"
         />
       ) : results.isSuccess && !currentUser.isDoctor ? (
-        <Navbar
-          navigation={(path) => navigation.navigate(path)}
-          navbarDescriptionTitle="Historia wyników"
-        />
+        <Navbar navbarDescriptionTitle="Historia wyników" />
       ) : (
-        <Navbar
-          navigation={(path) => navigation.navigate(path)}
-          navbarDescriptionTitle="..."
-        />
+        <Navbar navbarDescriptionTitle="..." />
       )}
       <SafeAreaView style={generalStyle.safeArea}>
         <ScrollView contentContainerStyle={mainStyle.container}>
@@ -52,7 +47,7 @@ export const AllResultsScreen = ({
                 handleOnClick={
                   currentUser.isDoctor
                     ? () =>
-                        navigation.navigate("ResultPreview", {
+                        navigate("ResultPreview", {
                           resultId: result.id,
                           patientId,
                           resultTitle: result.testType,
