@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 
 export const PersonalizedCheckbox: React.FC<{
   checkboxInitialValue: boolean;
-  handleValueChange: (boolean) => void;
+  handleValueChange: (value: boolean) => void;
 }> = ({ checkboxInitialValue, handleValueChange }) => {
   const [value, onChangeValue] = useState(checkboxInitialValue);
   const [isInitial, setIsInitial] = useState(true);

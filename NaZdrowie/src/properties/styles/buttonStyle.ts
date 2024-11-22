@@ -50,5 +50,5 @@ export const resultButtonStyle = StyleSheet.create({
     padding: 12,
     alignItems: "center",
     columnGap: 10,
-  }
-})
+  },
+});

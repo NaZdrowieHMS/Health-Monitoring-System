@@ -11,7 +11,7 @@ export const useAnalyzeWithAi = (user: UserData, patientId: number) => {
       const { data } = await axiosAiApi.post("ai/predictions", predictionData);
       return data;
     },
-    onSuccess(data: {requestId:number}) {
+    onSuccess(data: { requestId: number }) {
       queryClient.invalidateQueries({
         queryKey: [user, patientId, "predictions"],
       });
@@ -25,7 +25,12 @@ export const useFetchPatientPredictions = <T = AiPrediction[]>(
   select?: (data: AiPrediction[]) => T,
 ) => {
   return useQuery<AiPrediction[], Error, T>({
-    queryKey: [user, patientId, "predictions" , `patients/${patientId}/predictions`],
+    queryKey: [
+      user,
+      patientId,
+      "predictions",
+      `patients/${patientId}/predictions`,
+    ],
     select,
   });
 };

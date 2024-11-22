@@ -1,4 +1,4 @@
-export type AiPrediction  = {
+export type AiPrediction = {
   id: number;
   status: string;
   patientId: number;
@@ -14,7 +14,7 @@ export type AiPredictionInfo = {
   patientId: number;
   doctorId: number;
   resultIds: number[];
-}
+};
 
 export type AiAnalysisResultCardProps = {
   data: {
@@ -23,5 +23,5 @@ export type AiAnalysisResultCardProps = {
     prediction: string;
     confidence: number;
     createdDate: string;
-  }[]
-}
+  }[];
+};

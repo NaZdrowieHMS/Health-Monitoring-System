@@ -1,5 +1,4 @@
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { RootStackParamList } from "App";
+import { useNavigation } from "@react-navigation/native";
 import {
   LinkButton,
   PrimaryButton,
@@ -11,21 +10,20 @@ import {
   authenticationScreenStyle,
   registerScreenStyle,
 } from "properties/styles";
+import { StringNavigation } from "properties/types";
 import React, { useContext } from "react";
 import { Keyboard, Text, View, SafeAreaView, ScrollView } from "react-native";
 
-export const LoginScreen = ({
-  navigation,
-}: NativeStackScreenProps<RootStackParamList, "Login">) => {
+export const LoginScreen = () => {
   const [login, setLogin] = React.useState<string>("");
   const { setCurrentUser } = useContext(UserContext);
-
+  const { navigate } = useNavigation<StringNavigation>();
   const dismissKeyboard = () => {
     Keyboard.dismiss();
   };
 
   const navigateToRegisterScreen = () => {
-    navigation.navigate("Choice");
+    navigate("Choice");
   };
 
   const navigateToMainScreen = () => {
@@ -41,7 +39,7 @@ export const LoginScreen = ({
     } else {
       setCurrentUser({ id: 3, isDoctor: false });
     }
-    navigation.navigate("MainScreen");
+    navigate("MainScreen");
   };
 
   return (

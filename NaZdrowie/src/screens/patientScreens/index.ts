@@ -1,2 +1,2 @@
 export * from "./QrScannerScreen";
-export * from "./AllResultsScreen"
+export * from "./AllResultsScreen";

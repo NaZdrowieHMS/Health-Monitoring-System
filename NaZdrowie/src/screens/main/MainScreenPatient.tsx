@@ -1,17 +1,15 @@
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { RootStackParamList } from "App";
+import { useNavigation } from "@react-navigation/native";
 import { PrimaryButton } from "components/atoms";
 import { CommentsCard, ListCard, LoadingCard } from "components/molecules";
 import { useDesiredOverlay, usePatientData } from "components/organisms";
 import { UserContext } from "components/organisms/context";
 import { useResultsData } from "components/organisms/useResultsData";
 import { mainStyle } from "properties/styles";
+import { StringNavigation } from "properties/types";
 import React, { useContext } from "react";
-import { View, ScrollView, Text } from "react-native";
+import { View, ScrollView } from "react-native";
 
-export const MainScreenPatient = ({
-  navigation,
-}: NativeStackScreenProps<RootStackParamList, "MainScreen">) => {
+export const MainScreenPatient = () => {
   const { currentUser } = useContext(UserContext);
 
   const {
@@ -19,9 +17,9 @@ export const MainScreenPatient = ({
     latestReferrals,
     latestHealthForm,
     navigateToQrScannerScreen,
-  } = usePatientData(navigation, currentUser);
-
-  const { latestResults } = useResultsData(navigation, currentUser);
+  } = usePatientData(currentUser);
+  const { navigate } = useNavigation<StringNavigation>();
+  const { latestResults } = useResultsData(currentUser);
 
   const {
     openCommentsOverlay,
@@ -34,7 +32,7 @@ export const MainScreenPatient = ({
   };
 
   const navigateToAllResults = () => {
-    navigation.navigate("AllResults", { patientId: currentUser.id });
+    navigate("AllResults", { patientId: currentUser.id });
   };
 
   return (

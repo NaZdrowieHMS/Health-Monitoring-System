@@ -3,6 +3,7 @@ import { useCameraPermissions } from "expo-camera";
 import {
   HealthFormDisplayData,
   PatientReferral,
+  StringNavigation,
   UserData,
 } from "properties/types";
 import { Alert, Linking } from "react-native";
@@ -16,25 +17,22 @@ import {
 import { formatCommentsData, formatDate } from "services/utils";
 
 import { useDesiredOverlay } from "./useDesiredOverlay";
+import { useNavigation } from "@react-navigation/native";
 
-export const usePatientData = (
-  navigation,
-  currentUser: UserData,
-  patientId?: number,
-) => {
+export const usePatientData = (currentUser: UserData, patientId?: number) => {
   const {
     openReferralOverviewOverlay,
     openResultsFormOverlay,
     openHealthFormResultOverlay,
   } = useDesiredOverlay(currentUser);
-
+  const { navigate } = useNavigation<StringNavigation>();
   const [, requestPermission] = useCameraPermissions();
 
   const navigateToQrScannerScreen = async () => {
     const { status } = await requestPermission();
 
     if (status === "granted") {
-      navigation.navigate("QrScanner");
+      navigate("QrScanner");
     } else {
       // This needs to be replaced with our custom alert or sth
       Alert.alert(

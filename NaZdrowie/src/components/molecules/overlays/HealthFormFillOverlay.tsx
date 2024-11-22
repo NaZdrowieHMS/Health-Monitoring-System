@@ -36,10 +36,10 @@ export const HealthFormFillOverlay: React.FC<{
 
   const sendFormResult = useSendHealthForm(currentUser);
 
-  const handleValueChange = (index: string, newValue: any) => {
+  const handleValueChange = (index: string, newValue: string) => {
     setHealthFormItems((prevItems) => ({
       ...prevItems,
-      content: prevItems.content.map((item, i) =>
+      content: prevItems.content.map((item) =>
         item.key === index ? { ...item, value: newValue } : item,
       ),
     }));

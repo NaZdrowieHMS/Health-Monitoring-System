@@ -1,5 +1,5 @@
-import {StyleSheet} from "react-native";
-import {navbarStyle} from "properties/styles/mainStyle";
+import { StyleSheet } from "react-native";
+import { navbarStyle } from "properties/styles/mainStyle";
 import primaryColors from "properties/colors";
 
 export const HamburgerMenuStyle = StyleSheet.create({
@@ -9,5 +9,5 @@ export const HamburgerMenuStyle = StyleSheet.create({
     rowGap: 10,
     borderTopColor: primaryColors.black,
     borderTopWidth: 1,
-  }
-})
+  },
+});

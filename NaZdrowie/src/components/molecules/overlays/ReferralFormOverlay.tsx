@@ -9,7 +9,7 @@ import { useState } from "react";
 import { Text } from "react-native";
 import { useUploadReferral } from "services/doctorData";
 import { resultItems } from "services/utils";
-
+import React from "react";
 import { Overlay } from "./Overlay";
 
 export const ReferralFormOverlay: React.FC<{

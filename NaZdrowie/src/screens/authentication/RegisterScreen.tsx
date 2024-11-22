@@ -1,3 +1,4 @@
+import { useNavigation } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "App";
 import {
@@ -10,21 +11,21 @@ import {
   authenticationScreenStyle,
   registerScreenStyle,
 } from "properties/styles";
+import { StringNavigation } from "properties/types";
 import React from "react";
 import { Keyboard, ScrollView, Text, View, SafeAreaView } from "react-native";
 
 export const RegisterScreen = ({
-  navigation,
   route,
 }: NativeStackScreenProps<RootStackParamList, "Register">) => {
   const { doctorScreen } = route.params;
-
+  const { navigate } = useNavigation<StringNavigation>();
   const dismissKeyboard = () => {
     Keyboard.dismiss();
   };
 
   const navigateToLoginScreen = () => {
-    navigation.navigate("Login");
+    navigate("Login");
   };
 
   return (

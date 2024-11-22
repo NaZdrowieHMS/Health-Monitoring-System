@@ -1,16 +1,20 @@
-import React, {useContext, useEffect} from "react";
-import {TouchableWithoutFeedback, View} from "react-native";
+import React, { useContext, useEffect } from "react";
+import { TouchableWithoutFeedback, View } from "react-native";
 import Animated, {
   interpolate,
   useAnimatedStyle,
   useDerivedValue,
 } from "react-native-reanimated";
-import {HamburgerButtonStyle} from "properties/styles/hamburgerButtonStyle";
-import {HamburgerMenuContext} from "components/organisms/context/HamburgerMenuProvider";
+import { HamburgerButtonStyle } from "properties/styles/hamburgerButtonStyle";
+import { HamburgerMenuContext } from "components/organisms/context/HamburgerMenuProvider";
+import { DefaultStyle } from "react-native-reanimated/lib/typescript/hook/commonTypes";
 
 export const HamburgerButton: React.FC<object> = () => {
-  const {isMenuVisible, setIsMenuVisible} = useContext(HamburgerMenuContext);
-  const toggleAnim = useDerivedValue(() => (isMenuVisible ? 1 : 0), [isMenuVisible]);
+  const { isMenuVisible, setIsMenuVisible } = useContext(HamburgerMenuContext);
+  const toggleAnim = useDerivedValue(
+    () => (isMenuVisible ? 1 : 0),
+    [isMenuVisible],
+  );
 
   useEffect(() => {
     if (isMenuVisible) {
@@ -45,7 +49,7 @@ export const HamburgerButton: React.FC<object> = () => {
           translateX: interpolate(toggleAnim.value, [0, 1], [13.5, 16]),
         },
       ],
-    };
+    } as DefaultStyle;
   });
 
   const bottomLineTransform = useAnimatedStyle(() => {
@@ -61,7 +65,7 @@ export const HamburgerButton: React.FC<object> = () => {
           translateX: interpolate(toggleAnim.value, [0, 1], [-13.5, -16]),
         },
       ],
-    };
+    } as DefaultStyle;
   });
 
   return (
@@ -69,7 +73,9 @@ export const HamburgerButton: React.FC<object> = () => {
       <TouchableWithoutFeedback onPress={handlePress}>
         <View style={HamburgerButtonStyle.button}>
           <View style={HamburgerButtonStyle.innerContainer}>
-            <Animated.View style={[HamburgerButtonStyle.rowStart, topLineTransform]}>
+            <Animated.View
+              style={[HamburgerButtonStyle.rowStart, topLineTransform]}
+            >
               <View
                 style={[
                   HamburgerButtonStyle.blueBar,
@@ -79,11 +85,22 @@ export const HamburgerButton: React.FC<object> = () => {
               />
             </Animated.View>
 
-            <Animated.View style={[HamburgerButtonStyle.blueBar, HamburgerButtonStyle.wideBar, centerLineTransform]} />
-            <Animated.View style={[HamburgerButtonStyle.rowEnd, bottomLineTransform]}>
+            <Animated.View
+              style={[
+                HamburgerButtonStyle.blueBar,
+                HamburgerButtonStyle.wideBar,
+                centerLineTransform,
+              ]}
+            />
+            <Animated.View
+              style={[HamburgerButtonStyle.rowEnd, bottomLineTransform]}
+            >
               <View
-                style={
-                  [HamburgerButtonStyle.blueBar, HamburgerButtonStyle.narrowBar, HamburgerButtonStyle.blueBarMarginTop]}
+                style={[
+                  HamburgerButtonStyle.blueBar,
+                  HamburgerButtonStyle.narrowBar,
+                  HamburgerButtonStyle.blueBarMarginTop,
+                ]}
               />
             </Animated.View>
           </View>

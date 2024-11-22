@@ -33,11 +33,9 @@ export const navbarStyle = StyleSheet.create({
     paddingVertical: paddingSize.mediumBig,
     backgroundColor: primaryColors.darkBlue,
     ...generalStyle.rowSpread,
-    alignItems: "center"
+    alignItems: "center",
   },
-  navbarDescriptionTitle: {
-
-  },
+  navbarDescriptionTitle: {},
   navbarDescriptionText: {
     fontSize: fontSize.titleFontSize,
     color: primaryColors.white,
@@ -46,5 +44,5 @@ export const navbarStyle = StyleSheet.create({
   navbarDescriptionSubtitleText: {
     fontSize: fontSize.baseFontSize,
     color: primaryColors.white,
-  }
+  },
 });

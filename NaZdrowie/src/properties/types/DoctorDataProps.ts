@@ -30,7 +30,7 @@ export type PatientReferralUpload = {
 };
 
 export type AiSelectedChange = {
-  resultId: number,
-  patientId: number,
-  doctorId: number
-}
+  resultId: number;
+  patientId: number;
+  doctorId: number;
+};

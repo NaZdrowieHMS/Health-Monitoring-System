@@ -1,13 +1,13 @@
 import { useNavigation } from "@react-navigation/native";
 import primaryColors from "properties/colors";
-import { generalStyle, navbarStyle } from "properties/styles";
+import { navbarStyle } from "properties/styles";
 import { fontSize } from "properties/vars";
 import React from "react";
 import { Pressable, Text, View } from "react-native";
 
 type NavbarDescriptionProps = {
   title?: string;
-  subtitle?: string
+  subtitle?: string;
 };
 
 export const NavbarDescription: React.FC<NavbarDescriptionProps> = (
@@ -15,15 +15,19 @@ export const NavbarDescription: React.FC<NavbarDescriptionProps> = (
 ) => {
   const { title, subtitle } = props;
 
-  const navigation = useNavigation();
+  const { goBack } = useNavigation();
 
   return title ? (
     <View style={navbarStyle.navbarDescription}>
       <View style={navbarStyle.navbarDescriptionTitle}>
         <Text style={navbarStyle.navbarDescriptionText}>{title}</Text>
-        {subtitle && <Text style={navbarStyle.navbarDescriptionSubtitleText}>{subtitle}</Text>}
+        {subtitle && (
+          <Text style={navbarStyle.navbarDescriptionSubtitleText}>
+            {subtitle}
+          </Text>
+        )}
       </View>
-      <Pressable onPress={navigation.goBack}>
+      <Pressable onPress={goBack}>
         <Text
           style={{
             fontSize: fontSize.xFontSize,

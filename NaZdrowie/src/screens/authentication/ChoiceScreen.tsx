@@ -1,30 +1,29 @@
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { RootStackParamList } from "App";
+import { useNavigation } from "@react-navigation/native";
 import { LinkButton, PrimaryButton } from "components/atoms";
 import primaryColors from "properties/colors";
 import {
   authenticationScreenStyle,
   registerScreenStyle,
 } from "properties/styles";
+import { StringNavigation } from "properties/types";
 import React from "react";
 import { Keyboard, Text, View, SafeAreaView, ScrollView } from "react-native";
 
-export const ChoiceScreen = ({
-  navigation,
-}: NativeStackScreenProps<RootStackParamList, "Choice">) => {
+export const ChoiceScreen = () => {
+  const { navigate } = useNavigation<StringNavigation>();
   const dismissKeyboard = () => {
     Keyboard.dismiss();
   };
 
   const navigateToPatientRegisterScreen = () => {
-    navigation.navigate("Register", { doctorScreen: false });
+    navigate("Register", { doctorScreen: false });
   };
 
   const navigateToDoctorRegisterScreen = () => {
-    navigation.navigate("Register", { doctorScreen: true });
+    navigate("Register", { doctorScreen: true });
   };
   const navigateToLoginScreen = () => {
-    navigation.navigate("Login");
+    navigate("Login");
   };
 
   return (

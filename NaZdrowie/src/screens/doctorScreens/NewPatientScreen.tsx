@@ -1,5 +1,3 @@
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { RootStackParamList } from "App";
 import { PersonalizedTextInput } from "components/atoms";
 import { LoadingCard, Navbar } from "components/molecules";
 import { useDoctorData } from "components/organisms";
@@ -8,23 +6,16 @@ import { cardStyle, generalStyle, mainStyle } from "properties/styles";
 import { useContext, useState } from "react";
 import { View, ScrollView, Text, SafeAreaView } from "react-native";
 
-export const NewPatientsScreen = ({
-  navigation,
-}: NativeStackScreenProps<RootStackParamList, "NewPatients">) => {
+export const NewPatientsScreen = () => {
   const { currentUser } = useContext(UserContext);
   const [filterValue, setFilterValue] = useState<string>("");
 
-  const { unassignedPatients, filteredUnassignedPatients } = useDoctorData(
-    navigation,
-    currentUser,
-  );
+  const { unassignedPatients, filteredUnassignedPatients } =
+    useDoctorData(currentUser);
 
   return (
     <>
-      <Navbar
-        navbarDescriptionTitle="Nowi pacjenci"
-        navigation={(path) => navigation.navigate(path)}
-      />
+      <Navbar navbarDescriptionTitle="Nowi pacjenci" />
       <SafeAreaView style={generalStyle.safeArea}>
         <View style={cardStyle.container}>
           <Text style={generalStyle.titleText}>Znajdź Pacjenta</Text>

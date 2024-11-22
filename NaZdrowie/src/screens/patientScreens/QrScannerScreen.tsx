@@ -1,5 +1,4 @@
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { RootStackParamList } from "App";
+import { useNavigation } from "@react-navigation/native";
 import { CameraOverlay } from "components/molecules";
 import { UserContext } from "components/organisms/context";
 import { CameraView } from "expo-camera";
@@ -13,12 +12,11 @@ import {
 } from "react-native";
 import { useBindPatientToDoctor } from "services/patientData";
 
-export const QrScannerScreen = ({
-  navigation,
-}: NativeStackScreenProps<RootStackParamList, "QrScanner">) => {
+export const QrScannerScreen = () => {
   const qrLock = useRef(false);
   const { currentUser } = useContext(UserContext);
   const bind = useBindPatientToDoctor(currentUser);
+  const { goBack } = useNavigation();
 
   const activateScannedUrl = ({ data }) => {
     if (data && !qrLock.current) {
@@ -28,7 +26,7 @@ export const QrScannerScreen = ({
         if (typeof data.doctorId === "number") {
           bind.mutate({ doctorId: data.doctorId, patientId: currentUser.id });
           // await Linking.openURL(data); // should be used when deep linking is introduced
-          navigation.goBack();
+          goBack();
         }
       } catch (error) {
         Alert.alert(
@@ -39,7 +37,7 @@ export const QrScannerScreen = ({
               text: "Try again",
               onPress: () => (qrLock.current = false),
             },
-            { text: "Cancel", onPress: () => navigation.goBack() },
+            { text: "Cancel", onPress: () => goBack() },
           ],
         );
       }

@@ -36,7 +36,6 @@ const RNPickerSelect = ({
   placeholder = { label: "Select an item...", value: null, color: "#9EA0A4" },
   style,
   useNativeAndroidPickerStyle = true,
-  textInputProps = {},
   pickerProps,
   disabled = false,
 }) => {
@@ -67,7 +66,7 @@ const RNPickerSelect = ({
       ? [{ ...placeholder, isPlaceholder: true }, ...items]
       : items;
 
-    return combinedItems.map((item, index) => (
+    return combinedItems.map((item) => (
       <Picker.Item
         key={item.value}
         label={item.label}

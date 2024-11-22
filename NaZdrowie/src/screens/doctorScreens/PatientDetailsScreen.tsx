@@ -1,3 +1,4 @@
+import { useNavigation } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "App";
 import { PrimaryButton } from "components/atoms";
@@ -15,42 +16,38 @@ import {
 import { UserContext } from "components/organisms/context";
 import { useResultsData } from "components/organisms/useResultsData";
 import { generalStyle, mainStyle } from "properties/styles";
-import React, { useContext } from "react";
+import { StringNavigation } from "properties/types";
+import { useContext } from "react";
 import { View, ScrollView, SafeAreaView } from "react-native";
-import { useFetchPatient } from "services/patientData";
 
 export const PatientDetailsScreen = ({
   route,
-  navigation,
 }: NativeStackScreenProps<RootStackParamList, "PatientDetails">) => {
   const { patientId } = route.params;
   const { currentUser } = useContext(UserContext);
   const { openResultsFormOverlay, openReferralFormOverlay } =
     useDesiredOverlay(currentUser);
-
-  const { latestReferrals } = usePatientData(
-    navigation,
+  const { navigate } = useNavigation<StringNavigation>();
+  const { latestReferrals, patientData } = usePatientData(
     currentUser,
     patientId,
   );
 
   const { currentDotorComments, otherDotorsComments, healthCommentUpload } =
-    useDoctorData(navigation, currentUser, patientId);
+    useDoctorData(currentUser, patientId);
 
-  const { patientData } = usePatientData(navigation, currentUser, patientId);
-
-  const { latestResults } = useResultsData(navigation, currentUser, patientId);
+  const { latestResults } = useResultsData(currentUser, patientId);
 
   const navigateToAllReferals = () => {
     // TODO
   };
 
   const navigateToAllResults = () => {
-    navigation.navigate("AllResults", { patientId });
+    navigate("AllResults", { patientId });
   };
 
   const navigateToAiDiagnosis = () => {
-    navigation.navigate("AiDiagnosis", {
+    navigate("AiDiagnosis", {
       patientId,
     });
   };
@@ -59,14 +56,10 @@ export const PatientDetailsScreen = ({
     <>
       {patientData.isSuccess ? (
         <Navbar
-          navigation={(path) => navigation.navigate(path)}
           navbarDescriptionTitle={`${patientData.data.name} ${patientData.data.surname}`}
         />
       ) : (
-        <Navbar
-          navigation={(path) => navigation.navigate(path)}
-          navbarDescriptionTitle="..."
-        /> // maybe loading here or sth idk
+        <Navbar navbarDescriptionTitle="..." /> // maybe loading here or sth idk
       )}
       <SafeAreaView style={generalStyle.safeArea}>
         <ScrollView contentContainerStyle={mainStyle.container}>

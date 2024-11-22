@@ -1,5 +1,5 @@
 import { LinkButton } from "components/atoms";
-import { UserData } from "properties/types";
+import { StringNavigation, UserData } from "properties/types";
 import { latestCount } from "services/config";
 
 import { useDesiredOverlay } from "./useDesiredOverlay";
@@ -8,20 +8,17 @@ import {
   useFetchAllResultsByPatientId,
   useFetchUnviewedResults,
 } from "services/resultsData";
+import { useNavigation } from "@react-navigation/native";
 
-export const useResultsData = (
-  navigation,
-  currentUser: UserData,
-  patientId?: number,
-) => {
+export const useResultsData = (currentUser: UserData, patientId?: number) => {
   const { openResultOverlay } = useDesiredOverlay(currentUser);
-
+  const { navigate } = useNavigation<StringNavigation>();
   const navigateToResultPreviewScreen = (
     resultId: number,
     patientId: number,
     resultTitle: string,
   ) => {
-    navigation.navigate("ResultPreview", {
+    navigate("ResultPreview", {
       resultId,
       patientId,
       resultTitle,
