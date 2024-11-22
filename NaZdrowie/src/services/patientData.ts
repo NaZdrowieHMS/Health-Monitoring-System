@@ -7,12 +7,11 @@ import {
 import {
   PatientData,
   PatientReferral,
-  PatientResult,
-  ResultUpload,
 } from "properties/types/PatientDataProps";
 import { Alert } from "react-native";
 
 import { axiosApi } from "./axios";
+import { ResultOverview, ResultUpload } from "properties/types/api/ResultProps";
 
 export const useFetchReferrals = <T = PatientReferral[]>(
   user: UserData,
@@ -30,33 +29,6 @@ export const useFetchReferrals = <T = PatientReferral[]>(
       "referrals",
       `patients/${patientId ? patientId : user.id}/referrals${referralsCount}`,
     ],
-    select,
-  });
-};
-
-export const useFetchResults = <T = PatientResult[]>(
-  user: UserData,
-  select?: (data: PatientResult[]) => T,
-  patientId?: number,
-  numberOfResults?: number,
-) => {
-  const resultsCount = numberOfResults
-    ? `?startIndex=0&pageSize=${numberOfResults}`
-    : "";
-
-  return useQuery<PatientResult[], Error, T>({
-    queryKey: patientId
-      ? [
-          user,
-          "results",
-          patientId,
-          `patients/${patientId ? patientId : user.id}/results${resultsCount}`,
-        ]
-      : [
-          user,
-          "results",
-          `patients/${patientId ? patientId : user.id}/results${resultsCount}`,
-        ],
     select,
   });
 };
@@ -80,7 +52,7 @@ export const useSendResult = (user: UserData, isreferralAssigned: boolean) => {
       const { data } = await axiosApi.post("results", resultUpload);
       return data;
     },
-    onSuccess(data: PatientResult) {
+    onSuccess(data: ResultOverview) {
       queryClient.invalidateQueries({
         queryKey: [user, "results"],
       });

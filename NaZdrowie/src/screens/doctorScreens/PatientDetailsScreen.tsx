@@ -13,6 +13,7 @@ import {
   useDoctorData,
 } from "components/organisms";
 import { UserContext } from "components/organisms/context";
+import { useResultsData } from "components/organisms/useResultsData";
 import { generalStyle, mainStyle } from "properties/styles";
 import React, { useContext } from "react";
 import { View, ScrollView, SafeAreaView } from "react-native";
@@ -27,20 +28,18 @@ export const PatientDetailsScreen = ({
   const { openResultsFormOverlay, openReferralFormOverlay } =
     useDesiredOverlay(currentUser);
 
-  const patient = useFetchPatient(currentUser, null, patientId);
   const { latestReferrals } = usePatientData(
     navigation,
     currentUser,
     patientId,
   );
 
-  const {
-    currentDotorComments,
-    otherDotorsComments,
-    latestPatientResults,
-    healthCommentUpload,
-    currentPatient
-  } = useDoctorData(navigation, currentUser, patientId);
+  const { currentDotorComments, otherDotorsComments, healthCommentUpload } =
+    useDoctorData(navigation, currentUser, patientId);
+
+  const { patientData } = usePatientData(navigation, currentUser, patientId);
+
+  const { latestResults } = useResultsData(navigation, currentUser, patientId);
 
   const navigateToAllReferals = () => {
     // TODO
@@ -58,10 +57,10 @@ export const PatientDetailsScreen = ({
 
   return (
     <>
-      {currentPatient.isSuccess ? (
+      {patientData.isSuccess ? (
         <Navbar
           navigation={(path) => navigation.navigate(path)}
-          navbarDescriptionTitle={`${currentPatient.data.name} ${currentPatient.data.surname}`}
+          navbarDescriptionTitle={`${patientData.data.name} ${patientData.data.surname}`}
         />
       ) : (
         <Navbar
@@ -90,7 +89,7 @@ export const PatientDetailsScreen = ({
           {latestReferrals.isSuccess &&
           currentDotorComments.isSuccess &&
           otherDotorsComments.isSuccess &&
-          latestPatientResults.isSuccess ? (
+          latestResults.isSuccess ? (
             <>
               <CommentsCardForDoctor
                 title="Zdrowie pacjenta"
@@ -105,7 +104,7 @@ export const PatientDetailsScreen = ({
               />
               <ListCard
                 title="Wyniki pacjenta"
-                data={latestPatientResults.data}
+                data={latestResults.data}
                 handleSeeMore={navigateToAllResults}
               />
             </>

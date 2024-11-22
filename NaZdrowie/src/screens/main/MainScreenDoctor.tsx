@@ -4,6 +4,7 @@ import { PrimaryButton } from "components/atoms";
 import { ListCard, LoadingCard } from "components/molecules";
 import { useDesiredOverlay, useDoctorData } from "components/organisms";
 import { UserContext } from "components/organisms/context";
+import { useResultsData } from "components/organisms/useResultsData";
 import { mainStyle } from "properties/styles/mainStyle";
 import React, { useContext } from "react";
 import { View, ScrollView } from "react-native";
@@ -13,8 +14,12 @@ export const MainScreenDoctor = ({
 }: NativeStackScreenProps<RootStackParamList, "MainScreen">) => {
   const { currentUser } = useContext(UserContext);
 
-  const { latestPatients, unviewedResults, navigateToNewPatientsScreen } =
-    useDoctorData(navigation, currentUser);
+  const { latestPatients, navigateToNewPatientsScreen } = useDoctorData(
+    navigation,
+    currentUser,
+  );
+
+  const { unviewedResults } = useResultsData(navigation, currentUser);
 
   const { openQrDisplayOverlay } = useDesiredOverlay(currentUser);
   const navigateToAllPatientsScreen = () => {

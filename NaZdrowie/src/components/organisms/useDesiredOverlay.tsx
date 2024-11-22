@@ -16,7 +16,6 @@ import {
   healthFormItems,
   PatientData,
   PatientReferral,
-  PatientResult,
   UserData,
 } from "properties/types";
 
@@ -81,10 +80,11 @@ export const useDesiredOverlay = (currentUser: UserData) => {
     ));
   };
 
-  const openResultOverlay = (data: PatientResult) => {
+  const openResultOverlay = (resultId: number, resultTitle) => {
     showOverlay(() => (
       <ResultPreviewOverlay
-        result={data}
+        resultId={resultId}
+        resultTitle={resultTitle}
         handleClose={hideOverlay}
         currentUser={currentUser}
       />

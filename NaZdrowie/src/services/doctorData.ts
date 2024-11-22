@@ -1,69 +1,15 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { AiSelectedChange, PatientReferralUpload, UserData } from "properties/types";
+import {
+  AiSelectedChange,
+  PatientReferralUpload,
+  UserData,
+} from "properties/types";
 import {
   PatientData,
   PatientReferral,
-  PatientResult,
 } from "properties/types/PatientDataProps";
 
 import { axiosApi } from "./axios";
-import { AxiosResponse } from "axios";
-
-export const useFetchUnviewedResults = <
-  T = (PatientResult & {
-    patient: PatientData;
-  })[],
->(
-  user: UserData,
-  select?: (
-    data: (PatientResult & {
-      patient: PatientData;
-    })[],
-  ) => T,
-) => {
-  return useQuery<
-    (PatientResult & {
-      patient: PatientData;
-    })[],
-    Error,
-    T
-  >({
-    queryKey: [user, `doctors/${user.id}/results/unviewed`],
-    select,
-  });
-};
-
-export const useFetchPatientResults = <T = PatientResult[]>(
-  user: UserData,
-  patientId: number,
-  select?: (data: PatientResult[]) => T,
-  numberOfResults?: number,
-) => {
-  const resultsCount = numberOfResults
-    ? `?startIndex=0&pageSize=${numberOfResults}`
-    : "";
-  return useQuery<PatientResult[], Error, T>({
-    queryKey: [user, patientId, "results", resultsCount],
-    queryFn: () =>
-      axiosApi
-        .get(
-          `doctors/${user.id}/patients/${patientId}/results${resultsCount}`,
-        )
-        .then((response: AxiosResponse<PatientResult[]>) => response.data.map((result:PatientResult) => {
-          // PLEASE CHANGE REQUEST DATA THAT IS RETURNED PLEASEEEEE
-          return {
-            id: result.id,
-            patientId,
-            testType: result.testType,
-            content: result.content,
-            createdDate: result.createdDate,
-            aiSelected: result.aiSelected,
-            viewed: result.viewed
-          }
-        })),
-    select,
-  });
-};
 
 export const useFetchPatients = <T = PatientData[]>(
   user: UserData,
@@ -108,7 +54,10 @@ export const useUploadReferral = (user: UserData) => {
 export const useAddAiSelectedResults = () => {
   return useMutation({
     mutationFn: async (AiSelectedChanges: AiSelectedChange[]) => {
-      const { data } = await axiosApi.put("results/ai-selected", AiSelectedChanges);
+      const { data } = await axiosApi.put(
+        "results/ai-selected",
+        AiSelectedChanges,
+      );
       return data;
     },
   });
@@ -119,8 +68,8 @@ export const useDeleteAiSelectedResults = () => {
     mutationFn: async (AiSelectedChanges: AiSelectedChange[]) => {
       const { data } = await axiosApi.delete("results/ai-selected", {
         data: {
-          source: AiSelectedChanges
-        }
+          source: AiSelectedChanges,
+        },
       });
       return data;
     },

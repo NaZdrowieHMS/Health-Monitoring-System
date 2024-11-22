@@ -1,5 +1,5 @@
 import { LinkButton, PrimaryButton, UserButton } from "components/atoms";
-import { PatientData, PatientResult, UserData } from "properties/types";
+import { PatientData, UserData } from "properties/types";
 import {
   useFetchHealthCommentsFiltered,
   useSendHealthComment,
@@ -7,11 +7,9 @@ import {
 import { currentDoctorCommentsCount, latestCount } from "services/config";
 import {
   useFetchAllUnassignedPatients,
-  useFetchUnviewedResults,
   useFetchPatients,
-  useFetchPatientResults,
 } from "services/doctorData";
-import { useBindPatientToDoctor, useFetchPatient } from "services/patientData";
+import { useBindPatientToDoctor } from "services/patientData";
 import { CommentsFilter, formatCommentsData } from "services/utils";
 
 import { useOverlay } from "./context";
@@ -25,7 +23,6 @@ export const useDoctorData = (
   const { openPatientInfoOverlay } = useDesiredOverlay(currentUser);
   const { hideOverlay } = useOverlay();
   const bind = useBindPatientToDoctor(currentUser);
-  const currentPatient = useFetchPatient(currentUser, null, patientId);
 
   const healthCommentUpload = {
     sendComment: useSendHealthComment(currentUser),
@@ -61,25 +58,10 @@ export const useDoctorData = (
     };
   }
 
-  function formatResultEntry(
-    entry: PatientResult & {
-      patient: PatientData;
-    },
-  ) {
-    return {
-      text: `${entry.patient.name}: ${entry.testType}`,
-      buttons: [<LinkButton key={entry.id} title="Podgląd" />],
-    };
-  }
-
   const latestPatients = useFetchPatients(
     currentUser,
     (data) => data.map(formatPatientsView),
     latestCount,
-  );
-
-  const unviewedResults = useFetchUnviewedResults(currentUser, (data) =>
-    data.map(formatResultEntry),
   );
 
   const currentDotorComments = useFetchHealthCommentsFiltered(
@@ -144,47 +126,14 @@ export const useDoctorData = (
       : unassignedPatients.data;
   };
 
-  const navigateToResultPreviewScreen = (
-    result: PatientResult,
-    patientId: number,
-  ) => {
-    navigation.navigate("ResultPreview", {
-      result,
-      patientId,
-    });
-  };
-
-  const formatResultsView = (result: PatientResult) => ({
-    text: result.testType,
-    buttons: [
-      <LinkButton
-        title="Podgląd"
-        handleOnClick={() => navigateToResultPreviewScreen(
-          result,
-          patientId ? patientId : currentUser.id,
-        )}
-      />,
-    ],
-  });
-
-  const latestPatientResults = useFetchPatientResults(
-    currentUser,
-    patientId,
-    (data) => data.map(formatResultsView),
-    latestCount,
-  );
-
   return {
     navigateToNewPatientsScreen,
     navigateToPatientScreen,
     currentDotorComments,
     otherDotorsComments,
     latestPatients,
-    unviewedResults,
-    latestPatientResults,
     unassignedPatients,
     filteredUnassignedPatients,
     healthCommentUpload,
-    currentPatient,
   };
 };

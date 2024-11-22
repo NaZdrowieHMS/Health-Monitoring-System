@@ -1,13 +1,17 @@
 import { LinkButton } from "components/atoms";
 import { useCameraPermissions } from "expo-camera";
-import { PatientReferral, PatientResult, UserData } from "properties/types";
+import {
+  HealthFormDisplayData,
+  PatientReferral,
+  UserData,
+} from "properties/types";
 import { Alert, Linking } from "react-native";
 import { useFetchHealthComments } from "services/commentsData";
 import { latestCount } from "services/config";
 import {
   useFetchReferrals,
-  useFetchResults,
   useFetchHealthForms,
+  useFetchPatient,
 } from "services/patientData";
 import { formatCommentsData, formatDate } from "services/utils";
 
@@ -22,7 +26,6 @@ export const usePatientData = (
     openReferralOverviewOverlay,
     openResultsFormOverlay,
     openHealthFormResultOverlay,
-    openResultOverlay,
   } = useDesiredOverlay(currentUser);
 
   const [, requestPermission] = useCameraPermissions();
@@ -73,12 +76,13 @@ export const usePatientData = (
           ],
   });
 
-  const formatResultsView = (result: PatientResult) => ({
-    text: result.testType,
+  const formatHealthFormView = (healthForm: HealthFormDisplayData) => ({
+    text: `Formularz zdrowia ${formatDate(healthForm.createDate)}`,
     buttons: [
       <LinkButton
+        key="view-health-form"
         title="Podgląd"
-        handleOnClick={() => openResultOverlay(result)}
+        handleOnClick={() => openHealthFormResultOverlay(healthForm)}
       />,
     ],
   });
@@ -109,44 +113,22 @@ export const usePatientData = (
     patientId,
   );
 
-  const results = useFetchResults(
-    currentUser,
-    (data) => data.map(formatResultsView),
-    patientId,
-  );
-
-  const latestResults = useFetchResults(
-    currentUser,
-    (data) => data.map(formatResultsView),
-    patientId,
-    latestCount,
-  );
-
   const latestHealthForm = useFetchHealthForms(
     currentUser,
-    (data) => {
-      return {
-        text: `Formularz zdrowia ${formatDate(data[0].createDate)}`,
-        buttons: [
-          <LinkButton
-            title="Podgląd"
-            handleOnClick={() => openHealthFormResultOverlay(data[0])}
-          />,
-        ],
-      };
-    },
+    (data) => data.map(formatHealthFormView),
     patientId,
     1,
   );
-  
+
+  const patientData = useFetchPatient(currentUser, null, patientId);
+
   return {
     navigateToQrScannerScreen,
     healthComments,
     referrals,
-    results,
-    latestResults,
     latestHealthForm,
     latestReferrals,
     latestHealthComments,
+    patientData,
   };
 };

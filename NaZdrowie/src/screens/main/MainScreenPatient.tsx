@@ -4,9 +4,10 @@ import { PrimaryButton } from "components/atoms";
 import { CommentsCard, ListCard, LoadingCard } from "components/molecules";
 import { useDesiredOverlay, usePatientData } from "components/organisms";
 import { UserContext } from "components/organisms/context";
+import { useResultsData } from "components/organisms/useResultsData";
 import { mainStyle } from "properties/styles";
 import React, { useContext } from "react";
-import { View, ScrollView } from "react-native";
+import { View, ScrollView, Text } from "react-native";
 
 export const MainScreenPatient = ({
   navigation,
@@ -16,10 +17,11 @@ export const MainScreenPatient = ({
   const {
     latestHealthComments,
     latestReferrals,
-    latestResults,
     latestHealthForm,
     navigateToQrScannerScreen,
   } = usePatientData(navigation, currentUser);
+
+  const { latestResults } = useResultsData(navigation, currentUser);
 
   const {
     openCommentsOverlay,
@@ -32,7 +34,7 @@ export const MainScreenPatient = ({
   };
 
   const navigateToAllResults = () => {
-    navigation.navigate("AllResults", {patientId: currentUser.id});
+    navigation.navigate("AllResults", { patientId: currentUser.id });
   };
 
   return (
@@ -71,7 +73,7 @@ export const MainScreenPatient = ({
           />
           <ListCard
             title="Moje wyniki"
-            data={[...latestResults.data, latestHealthForm.data]}
+            data={[...latestResults.data, ...latestHealthForm.data]}
             handleSeeMore={navigateToAllResults}
           />
         </>
