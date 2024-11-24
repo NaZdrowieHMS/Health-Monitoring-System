@@ -74,33 +74,48 @@ export const usePatientData = (currentUser: UserData, patientId?: number) => {
           ],
   });
 
-  const formatHealthFormView = (healthForm: HealthFormDisplayData) => ({
-    text: `Formularz zdrowia ${formatDate(healthForm.createDate)}`,
-    buttons: [
-      <LinkButton
-        key="view-health-form"
-        title="Podgląd"
-        handleOnClick={() => openHealthFormResultOverlay(healthForm)}
-      />,
-    ],
-  });
+  const formatHealthFormView = (healthForm: HealthFormDisplayData) => {
+    console.log("formatHealthFormView", healthForm.createDate);
+    return {
+      text: `Formularz zdrowia ${formatDate(healthForm.createDate)}`,
+      buttons: [
+        <LinkButton
+          key="view-health-form"
+          title="Podgląd"
+          handleOnClick={() => openHealthFormResultOverlay(healthForm)}
+        />,
+      ],
+    };
+  };
+  // const formatHealthFormView = (healthForm: HealthFormDisplayData) => ({
+  //   text: `Formularz zdrowia ${formatDate(healthForm.createDate)}`,
+  //   buttons: [
+  //     <LinkButton
+  //       key="view-health-form"
+  //       title="Podgląd"
+  //       handleOnClick={() => openHealthFormResultOverlay(healthForm)}
+  //     />,
+  //   ],
+  // });
 
   const healthComments = useFetchHealthComments(
     currentUser,
     (data) => data.map(formatCommentsData),
+    null,
     patientId,
   );
 
   const latestHealthComments = useFetchHealthComments(
     currentUser,
     (data) => data.map(formatCommentsData),
+    { pageSize: latestCount },
     patientId,
-    latestCount,
   );
 
   const referrals = useFetchReferrals(
     currentUser,
     (data) => data.map(formatReferralsView),
+    null,
     patientId,
   );
 
@@ -108,14 +123,15 @@ export const usePatientData = (currentUser: UserData, patientId?: number) => {
     currentUser,
     (data) =>
       data.filter((referral) => !referral.completed).map(formatReferralsView),
+    null,
     patientId,
   );
 
   const latestHealthForm = useFetchHealthForms(
     currentUser,
     (data) => data.map(formatHealthFormView),
+    { pageSize: 1 },
     patientId,
-    1,
   );
 
   const patientData = useFetchPatient(currentUser, null, patientId);

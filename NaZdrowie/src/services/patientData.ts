@@ -12,23 +12,28 @@ import { Alert } from "react-native";
 
 import { axiosApi } from "./axios";
 import { ResultOverview, ResultUpload } from "properties/types/api/ResultProps";
+import { doctorKeys, patientKeys } from "./queryKeyFactory";
+import { PaginationData } from "properties/types/api";
 
 export const useFetchReferrals = <T = PatientReferral[]>(
   user: UserData,
   select?: (data: PatientReferral[]) => T,
+  pagination?: PaginationData,
   patientId?: number,
-  numberOfReferrals?: number,
 ) => {
-  const referralsCount = numberOfReferrals
-    ? `?startIndex=0&pageSize=${numberOfReferrals}`
-    : "";
-
   return useQuery<PatientReferral[], Error, T>({
-    queryKey: [
-      user,
-      "referrals",
-      `patients/${patientId ? patientId : user.id}/referrals${referralsCount}`,
-    ],
+    queryKey: patientId
+      ? doctorKeys.patient.referrals.list(user.id, patientId, pagination)
+      : patientKeys.referrals.list(user.id, pagination),
+    queryFn: async () => {
+      const { data } = await axiosApi.get("referrals", {
+        params: {
+          patientId,
+          ...pagination,
+        },
+      });
+      return data;
+    },
     select,
   });
 };
@@ -39,11 +44,20 @@ export const useFetchPatient = <T = PatientData>(
   patientId?: number,
 ) => {
   return useQuery<PatientData, Error, T>({
-    queryKey: [user, `patients/${patientId ? patientId : user.id}`],
+    queryKey: patientId
+      ? doctorKeys.patient.specific(user.id, patientId)
+      : patientKeys.info(user.id),
+    queryFn: async () => {
+      const { data } = await axiosApi.get(
+        `patients/${patientId ? patientId : user.id}`,
+      );
+      return data;
+    },
     select,
   });
 };
 
+// TODO
 export const useSendResult = (user: UserData, isreferralAssigned: boolean) => {
   const queryClient = useQueryClient();
 
@@ -68,23 +82,27 @@ export const useSendResult = (user: UserData, isreferralAssigned: boolean) => {
 export const useFetchHealthForms = <T = HealthFormDisplayData[]>(
   user: UserData,
   select?: (data: HealthFormDisplayData[]) => T,
+  pagination?: PaginationData,
   patientId?: number,
-  numberOfForms?: number,
 ) => {
-  const formsCount = numberOfForms
-    ? `?startIndex=0&pageSize=${numberOfForms}`
-    : "";
-
   return useQuery<HealthFormDisplayData[], Error, T>({
-    queryKey: [
-      user,
-      "healthForm",
-      `patients/${patientId ? patientId : user.id}/forms${formsCount}`,
-    ],
+    queryKey: patientId
+      ? doctorKeys.patient.healthForms.list(user.id, patientId, pagination)
+      : patientKeys.healthForms.list(user.id, pagination),
+    queryFn: async () => {
+      const { data } = await axiosApi.get("forms", {
+        params: {
+          patientId,
+          ...pagination,
+        },
+      });
+      return data;
+    },
     select,
   });
 };
 
+// TODO
 export const useSendHealthForm = (user: UserData) => {
   const queryClient = useQueryClient();
 
@@ -101,6 +119,7 @@ export const useSendHealthForm = (user: UserData) => {
   });
 };
 
+// TODO
 export const useBindPatientToDoctor = (user: UserData) => {
   const queryClient = useQueryClient();
 

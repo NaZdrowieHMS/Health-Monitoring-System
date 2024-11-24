@@ -10,17 +10,24 @@ import {
 } from "properties/types/PatientDataProps";
 
 import { axiosApi } from "./axios";
+import { doctorKeys } from "./queryKeyFactory";
+import { PaginationData } from "properties/types/api";
 
 export const useFetchPatients = <T = PatientData[]>(
   user: UserData,
   select?: (data: PatientData[]) => T,
-  numberOfPatients?: number,
+  pagination?: PaginationData,
 ) => {
-  const patientsCount = numberOfPatients
-    ? `?startIndex=0&pageSize=${numberOfPatients}`
-    : "";
   return useQuery<PatientData[], Error, T>({
-    queryKey: [user, `doctors/${user.id}/patients${patientsCount}`],
+    queryKey: doctorKeys.patients.list(user.id, pagination),
+    queryFn: async () => {
+      const { data } = await axiosApi.get(`doctors/${user.id}/patients`, {
+        params: {
+          ...pagination,
+        },
+      });
+      return data;
+    },
     select,
   });
 };
@@ -28,13 +35,26 @@ export const useFetchPatients = <T = PatientData[]>(
 export const useFetchAllUnassignedPatients = <T = PatientData[]>(
   user: UserData,
   select?: (data: PatientData[]) => T,
+  pagination?: PaginationData,
 ) => {
   return useQuery<PatientData[], Error, T>({
-    queryKey: [user, `doctors/${user.id}/patients/unassigned`],
+    queryKey: doctorKeys.patients.unassigned(user.id, pagination),
+    queryFn: async () => {
+      const { data } = await axiosApi.get(
+        `doctors/${user.id}/patients/unassigned`,
+        {
+          params: {
+            ...pagination,
+          },
+        },
+      );
+      return data;
+    },
     select,
   });
 };
 
+// TODO
 export const useUploadReferral = (user: UserData) => {
   const queryClient = useQueryClient();
 
@@ -45,12 +65,13 @@ export const useUploadReferral = (user: UserData) => {
     },
     onSuccess(data: PatientReferral) {
       queryClient.invalidateQueries({
-        queryKey: [user, "referrals"],
+        queryKey: doctorKeys.patient.referrals.list(user.id, data.patientId),
       });
     },
   });
 };
 
+// TODO
 export const useAddAiSelectedResults = () => {
   return useMutation({
     mutationFn: async (AiSelectedChanges: AiSelectedChange[]) => {
@@ -63,6 +84,7 @@ export const useAddAiSelectedResults = () => {
   });
 };
 
+// TODO
 export const useDeleteAiSelectedResults = () => {
   return useMutation({
     mutationFn: async (AiSelectedChanges: AiSelectedChange[]) => {

@@ -46,13 +46,19 @@ const axiosAiApi = axios.create({
 });
 
 // Add a request interceptor to include the token in requests
-axiosApi.interceptors.request.use((config) => {
-  // login token can be added here
-  return config;
-});
+axiosAiApi.interceptors.request.use(
+  (config) => {
+    const currentUserId = userId;
+    if (currentUserId) {
+      config.headers["userId"] = currentUserId;
+    }
+    return config;
+  },
+  (error) => Promise.reject(error),
+);
 
 // Add a response interceptor to handle errors
-axiosApi.interceptors.response.use(
+axiosAiApi.interceptors.response.use(
   (response) => response,
   (error) => Promise.reject(error),
 );

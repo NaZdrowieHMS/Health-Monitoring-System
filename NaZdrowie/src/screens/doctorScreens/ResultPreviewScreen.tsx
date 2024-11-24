@@ -31,7 +31,12 @@ export const ResultPreviewScreen = ({
   const { currentUser } = useContext(UserContext);
   const { resultId, patientId, resultTitle } = route.params;
   const [comment, setComment] = useState<string>();
-  const { isSuccess, data: result } = useFetchResult(currentUser, resultId);
+  const { isSuccess, data: result } = useFetchResult(
+    currentUser,
+    resultId,
+    null,
+    patientId,
+  );
   const { patientData } = usePatientData(currentUser, patientId);
   const { handleCheckboxForAiSelection, updateAiSelectedData } = useAiData(
     currentUser,
@@ -41,7 +46,8 @@ export const ResultPreviewScreen = ({
     currentUser,
     resultId,
     (data) => data.map(formatCommentsData),
-    cardCommentsCount,
+    { pageSize: cardCommentsCount },
+    patientId,
   );
 
   useFocusEffect(updateAiSelectedData);

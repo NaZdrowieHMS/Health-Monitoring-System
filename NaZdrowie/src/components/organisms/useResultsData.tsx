@@ -46,14 +46,15 @@ export const useResultsData = (currentUser: UserData, patientId?: number) => {
   const results = useFetchAllResultsByPatientId(
     currentUser,
     (data) => data.map(formatResultsView),
+    null,
     patientId,
   );
 
   const latestResults = useFetchAllResultsByPatientId(
     currentUser,
     (data) => data.map(formatResultsView),
+    { pageSize: latestCount },
     patientId,
-    latestCount,
   );
 
   const unviewedResults = useFetchUnviewedResults(currentUser, (data) =>
@@ -63,7 +64,7 @@ export const useResultsData = (currentUser: UserData, patientId?: number) => {
   const latestUnviewedResults = useFetchUnviewedResults(
     currentUser,
     (data) => data.map(formatResultsView),
-    latestCount,
+    { pageSize: latestCount },
   );
 
   return {

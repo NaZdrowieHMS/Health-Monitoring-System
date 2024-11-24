@@ -7,24 +7,33 @@ import {
 } from "properties/types";
 import { CommentsFilter } from "./utils";
 import { axiosApi } from "./axios";
+import { PaginationData } from "properties/types/api";
+import { doctorKeys, patientKeys } from "./queryKeyFactory";
 
 export const useFetchResultCommentsData = <T = DoctorComment[]>(
   user: UserData,
   resultId: number,
   select?: (data: DoctorComment[]) => T,
-  numberOfComments?: number,
+  pagination?: PaginationData,
+  patientId?: number,
 ) => {
-  const commentsCount = numberOfComments
-    ? `?startIndex=0&pageSize=${numberOfComments}`
-    : "";
-
   return useQuery<DoctorComment[], Error, T>({
-    queryKey: [
-      user,
-      "resultComments",
-      `results/${resultId}/comments${commentsCount}`,
-    ],
-
+    queryKey: patientId
+      ? doctorKeys.patient.results.specificComments(
+          user.id,
+          patientId,
+          resultId,
+          pagination,
+        )
+      : patientKeys.results.specificComments(user.id, resultId, pagination),
+    queryFn: async () => {
+      const { data } = await axiosApi.get(`results/${resultId}/comments`, {
+        params: {
+          ...pagination,
+        },
+      });
+      return data;
+    },
     select,
   });
 };
@@ -32,45 +41,29 @@ export const useFetchResultCommentsData = <T = DoctorComment[]>(
 export const useFetchHealthComments = <T = DoctorComment[]>(
   user: UserData,
   select?: (data: DoctorComment[]) => T,
+  pagination?: PaginationData,
   patientId?: number,
-  numberOfComments?: number,
+  filter?: CommentsFilter,
 ) => {
-  const commentsCount = numberOfComments
-    ? `?startIndex=0&pageSize=${numberOfComments}`
-    : "";
-
   return useQuery<DoctorComment[], Error, T>({
-    queryKey: [
-      user,
-      "healthComments",
-      `patients/${patientId ? patientId : user.id}/health${commentsCount}`,
-    ],
+    queryKey: patientId
+      ? doctorKeys.patient.healthComments.list(user.id, patientId, pagination)
+      : patientKeys.healthComments.list(user.id, pagination),
+    queryFn: async () => {
+      const { data } = await axiosApi.get("health", {
+        params: {
+          ...pagination,
+          patientId,
+          filter,
+        },
+      });
+      return data;
+    },
     select,
   });
 };
 
-export const useFetchHealthCommentsFiltered = <T = DoctorComment[]>(
-  doctor: UserData,
-  patientId: number,
-  filter: CommentsFilter,
-  select?: (data: DoctorComment[]) => T,
-  numberOfComments?: number,
-) => {
-  const commentsCount = numberOfComments
-    ? `&startIndex=0&pageSize=${numberOfComments}`
-    : "";
-
-  return useQuery<DoctorComment[], Error, T>({
-    queryKey: [
-      doctor,
-      "healthComments",
-      `doctors/${doctor.id}/patient/${patientId}/health?filter=${filter}${commentsCount}`,
-    ],
-
-    select,
-  });
-};
-
+// TODO
 export const useSendHealthComment = (user: UserData) => {
   const queryClient = useQueryClient();
 
@@ -87,6 +80,7 @@ export const useSendHealthComment = (user: UserData) => {
   });
 };
 
+// TODO
 export const useSendResultComment = (user: UserData) => {
   const queryClient = useQueryClient();
 

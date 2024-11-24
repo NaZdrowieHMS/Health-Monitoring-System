@@ -1,60 +1,118 @@
+import { PaginationData } from "properties/types/api";
+
 export const patientKeys = {
-  listLimitedHealthComments: (userId: number, limit?: number) =>
-    [userId, "healthComments", limit ? `limit${limit}` : "all"] as const,
+  info: (userId: number) => [userId, "details"] as const,
+  healthComments: {
+    list: (userId: number, limit?: PaginationData) =>
+      [userId, "healthComments", limit ? limit : "all"] as const,
+    core: (userId: number) => [userId, "healthComments"] as const,
+  },
+  referrals: {
+    list: (userId: number, limit?: PaginationData) =>
+      [userId, "referrals", limit ? limit : "all"] as const,
+    specific: (userId: number, referralId: number) =>
+      [userId, "referrals", referralId] as const,
+    core: (userId: number) => [userId, "referrals"] as const,
+  },
 
-  listReferrals: (userId: number, limit?: number) =>
-    [userId, "referrals", limit ? `limit${limit}` : "all"] as const,
-  referral: (userId: number, referralId: number) =>
-    [userId, "referrals", referralId] as const,
-
-  listResults: (userId: number, limit?: number) =>
-    [userId, "results", limit ? `limit${limit}` : "all"] as const,
-  result: (userId: number, resultId: number) =>
-    [userId, "results", resultId] as const,
-  resultData: (userId: number, resultId: number) =>
-    [userId, "results", resultId, "data"] as const,
-
-  listHealthForm: (userId: number, limit?: number) =>
-    [userId, "healthForms", limit ? `limit${limit}` : "all"] as const,
-  healthForm: (userId: number, healthFormId: number) =>
-    [userId, "healthForms", healthFormId] as const,
+  results: {
+    list: (userId: number, limit?: PaginationData) =>
+      [userId, "results", limit ? limit : "all"] as const,
+    specific: (userId: number, resultId: number) =>
+      [userId, "results", resultId] as const,
+    specificData: (userId: number, resultId: number) =>
+      [userId, "results", resultId, "data"] as const,
+    specificComments: (
+      userId: number,
+      resultId: number,
+      limit?: PaginationData,
+    ) =>
+      [userId, "results", resultId, "comments", limit ? limit : "all"] as const,
+    core: (userId: number) => [userId, "results"] as const,
+  },
+  healthForms: {
+    list: (userId: number, limit?: PaginationData) =>
+      [userId, "healthForms", limit ? limit : "all"] as const,
+    specific: (userId: number, healthFormId: number) =>
+      [userId, "healthForms", healthFormId] as const,
+    core: (userId: number) => [userId, "healthForms"] as const,
+  },
 };
 
 export const doctorKeys = {
   resultsUnviewed: (userId: number) => [userId, "results", "unviewed"] as const,
-  patientsUnassigned: (userId: number, patientId?: number) =>
-    [userId, "patients", "unassigned", patientId ? "all" : patientId] as const,
-
-  patient: {
-    listLimitedHealthComments: (
-      userId: number,
-      patientId: number,
-      limit?: number,
-    ) =>
-      [
-        userId,
-        ...patientKeys.listLimitedHealthComments(patientId, limit),
-      ] as const,
-
-    listReferrals: (userId: number, patientId: number, limit?: number) =>
-      [userId, ...patientKeys.listReferrals(patientId, limit)] as const,
-    referral: (userId: number, patientId: number, referralId: number) =>
-      [userId, ...patientKeys.referral(patientId, referralId)] as const,
-
-    listResults: (userId: number, patientId: number, limit?: number) =>
-      [userId, ...patientKeys.listResults(patientId, limit)] as const,
-    result: (userId: number, patientId: number, resultId?: number) =>
-      [userId, ...patientKeys.result(patientId, resultId)] as const,
-    resultData: (userId: number, patientId: number, resultId?: number) =>
-      [userId, ...patientKeys.resultData(patientId, resultId)] as const,
-
-    listHealthForm: (userId: number, patientId: number, limit?: number) =>
-      [userId, ...patientKeys.listHealthForm(patientId, limit)] as const,
-    healthForm: (userId: number, patientId: number, healthFormId?: number) =>
-      [userId, ...patientKeys.healthForm(patientId, healthFormId)] as const,
+  patients: {
+    unassigned: (userId: number, limit?: PaginationData) =>
+      [userId, "patients", "unassigned", limit ? limit : "all"] as const,
+    list: (userId: number, limit?: PaginationData) =>
+      [userId, "patients", limit ? limit : "all"] as const,
   },
-};
-
-export const userKeys = {
-  userData: ["userData"] as const,
+  patient: {
+    specific: (userId: number, patientId: number) =>
+      [userId, patientKeys.info(patientId)] as const,
+    healthComments: {
+      list: (userId: number, patientId: number, limit?: PaginationData) =>
+        [userId, ...patientKeys.healthComments.list(patientId, limit)] as const,
+      core: (userId: number, patientId: number) =>
+        [userId, ...patientKeys.healthComments.core(patientId)] as const,
+    },
+    referrals: {
+      list: (userId: number, patientId: number, limit?: PaginationData) =>
+        [userId, ...patientKeys.referrals.list(patientId, limit)] as const,
+      specific: (userId: number, patientId: number, referralId: number) =>
+        [
+          userId,
+          ...patientKeys.referrals.specific(patientId, referralId),
+        ] as const,
+      core: (userId: number, patientId: number) =>
+        [userId, ...patientKeys.referrals.core(patientId)] as const,
+    },
+    results: {
+      list: (userId: number, patientId: number, limit?: PaginationData) =>
+        [userId, ...patientKeys.results.list(patientId, limit)] as const,
+      specific: (userId: number, patientId: number, resultId: number) =>
+        [userId, ...patientKeys.results.specific(patientId, resultId)] as const,
+      specificData: (userId: number, patientId: number, resultId: number) =>
+        [
+          userId,
+          ...patientKeys.results.specificData(patientId, resultId),
+        ] as const,
+      specificComments: (
+        userId: number,
+        patientId: number,
+        resultId: number,
+        pagination?: PaginationData,
+      ) =>
+        [
+          userId,
+          ...patientKeys.results.specificComments(
+            patientId,
+            resultId,
+            pagination,
+          ),
+        ] as const,
+      core: (userId: number, patientId: number) =>
+        [userId, ...patientKeys.results.core(patientId)] as const,
+    },
+    healthForms: {
+      list: (userId: number, patientId: number, limit?: PaginationData) =>
+        [userId, ...patientKeys.healthForms.list(patientId, limit)] as const,
+      specific: (userId: number, patientId: number, healthFormId?: number) =>
+        [
+          userId,
+          ...patientKeys.healthForms.specific(patientId, healthFormId),
+        ] as const,
+      core: (userId: number, patientId: number) =>
+        [userId, ...patientKeys.healthForms.core(patientId)] as const,
+    },
+    predictions: {
+      list: (userId: number, patientId: number, limit?: PaginationData) =>
+        [userId, patientId, "predictions", limit ? limit : "all"] as const,
+      // this endpoint does not exist yet
+      specific: (userId: number, patientId: number, predictionId: number) =>
+        [userId, patientId, "predictions", predictionId] as const,
+      core: (userId: number, patientId: number) =>
+        [userId, patientId, "predictions"] as const,
+    },
+  },
 };

@@ -21,6 +21,7 @@ export const useAiData = (currentUser: UserData, patientId: number) => {
   const patientResultsForAi = useFetchAllResultsByPatientId(
     currentUser,
     (data) => data.map(formatResultsForAiData),
+    null,
     patientId,
   );
 

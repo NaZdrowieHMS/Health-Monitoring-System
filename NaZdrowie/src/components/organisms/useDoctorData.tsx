@@ -1,7 +1,7 @@
 import { LinkButton, PrimaryButton, UserButton } from "components/atoms";
 import { PatientData, StringNavigation, UserData } from "properties/types";
 import {
-  useFetchHealthCommentsFiltered,
+  useFetchHealthComments,
   useSendHealthComment,
 } from "services/commentsData";
 import { currentDoctorCommentsCount, latestCount } from "services/config";
@@ -58,23 +58,23 @@ export const useDoctorData = (currentUser: UserData, patientId?: number) => {
   const latestPatients = useFetchPatients(
     currentUser,
     (data) => data.map(formatPatientsView),
-    latestCount,
+    { pageSize: latestCount },
   );
 
-  const currentDotorComments = useFetchHealthCommentsFiltered(
+  const currentDotorComments = useFetchHealthComments(
     currentUser,
+    (data) => data.map(formatCommentsData),
+    { pageSize: currentDoctorCommentsCount },
     patientId,
     CommentsFilter.Specific,
-    (data) => data.map(formatCommentsData),
-    currentDoctorCommentsCount,
   );
 
-  const otherDotorsComments = useFetchHealthCommentsFiltered(
+  const otherDotorsComments = useFetchHealthComments(
     currentUser,
+    (data) => data.map(formatCommentsData),
+    { pageSize: latestCount - currentDoctorCommentsCount },
     patientId,
     CommentsFilter.Others,
-    (data) => data.map(formatCommentsData),
-    latestCount - currentDoctorCommentsCount,
   );
 
   function formatNewPatients(patient: PatientData) {
