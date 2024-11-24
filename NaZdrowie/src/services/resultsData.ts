@@ -20,7 +20,7 @@ export const useFetchAllResultsByPatientId = <T = ResultOverview[]>(
 
   return useQuery<ResultOverview[], Error, T>({
     queryKey: [user, "results", patientId, url],
-    meta: { headers: { userId: user.id } },
+
     select,
   });
 };
@@ -33,7 +33,7 @@ export const useFetchResult = <T = DetailedResult>(
   const url = `results/${resultId}`;
   return useQuery<DetailedResult, Error, T>({
     queryKey: [user, "result", resultId, url],
-    meta: { headers: { userId: user.id } },
+
     select,
   });
 };

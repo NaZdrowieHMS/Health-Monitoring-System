@@ -1,14 +1,10 @@
 import { UserData } from "properties/types";
-import React, {
-  createContext,
-  Dispatch,
-  SetStateAction,
-  useState,
-} from "react";
+import React, { createContext, useState } from "react";
+import { setUserIdForAxios } from "services/axios";
 
 type UserProviderDispatch = {
   currentUser: UserData;
-  setCurrentUser: Dispatch<SetStateAction<{ id: number; isDoctor: boolean }>>;
+  setCurrentUser: (userData: UserData) => void;
 };
 
 const UserContext = createContext<UserProviderDispatch | null>(null);
@@ -16,11 +12,12 @@ const UserContext = createContext<UserProviderDispatch | null>(null);
 const UserProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const [currentUser, setCurrentUser] = useState<UserData>({
-    id: 2,
-    isDoctor: false,
-  });
+  const [currentUser, updateCurrentUser] = useState<UserData>(null);
 
+  const setCurrentUser = (userData: UserData) => {
+    setUserIdForAxios(userData.id);
+    updateCurrentUser(userData);
+  };
   return (
     <UserContext.Provider value={{ currentUser, setCurrentUser }}>
       {children}
