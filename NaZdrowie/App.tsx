@@ -20,8 +20,6 @@ import { MainScreen } from "screens/main";
 import { QrScannerScreen, AllResultsScreen } from "screens/patientScreens";
 import { HamburgerMenuProvider } from "components/organisms/context/HamburgerMenuProvider";
 import primaryColors from "properties/colors";
-import { axiosApi } from "services/axios";
-import { AxiosHeaders } from "axios";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -29,18 +27,6 @@ const queryClient = new QueryClient({
       retry: 2,
       retryDelay: 2000,
       staleTime: 60_000,
-      queryFn: async ({ queryKey, meta }) => {
-        const lastKey = queryKey[queryKey.length - 1];
-        const headers: AxiosHeaders = meta?.headers as AxiosHeaders;
-        if (typeof lastKey === "string") {
-          const { data } = await axiosApi.get(
-            lastKey,
-            headers && { headers: headers },
-          );
-          return data;
-        }
-        throw new Error("Invalid queryKey");
-      },
     },
   },
 });

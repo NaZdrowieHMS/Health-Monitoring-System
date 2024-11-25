@@ -24,7 +24,7 @@ export const ResultPreviewOverlay: React.FC<{
     currentUser,
     resultId,
     (data) => data.map(formatCommentsData),
-    cardCommentsCount,
+    { pageSize: cardCommentsCount },
   );
 
   return (

@@ -1,26 +1,32 @@
 import { useQuery } from "@tanstack/react-query";
 import { UserData } from "properties/types";
+import { PaginationData } from "properties/types/api";
 import {
   DetailedResult,
   ResultOverview,
 } from "properties/types/api/ResultProps";
+import { axiosApi } from "./axios";
+import { doctorKeys, patientKeys } from "./utils";
 
 export const useFetchAllResultsByPatientId = <T = ResultOverview[]>(
   user: UserData,
   select?: (data: ResultOverview[]) => T,
+  pagination?: PaginationData,
   patientId?: number,
-  numberOfResults?: number,
 ) => {
-  const resultsCount = numberOfResults
-    ? `&startIndex=0&pageSize=${numberOfResults}`
-    : "";
-
-  patientId = patientId ? patientId : user.id;
-  const url = `results?patientId=${patientId}${resultsCount}`;
-
   return useQuery<ResultOverview[], Error, T>({
-    queryKey: [user, "results", patientId, url],
-    meta: { headers: { userId: user.id } },
+    queryKey: patientId
+      ? doctorKeys.patient.results.list(user.id, patientId, pagination)
+      : patientKeys.results.list(user.id, pagination),
+    queryFn: async () => {
+      const { data } = await axiosApi.get("results", {
+        params: {
+          patientId,
+          ...pagination,
+        },
+      });
+      return data;
+    },
     select,
   });
 };
@@ -29,11 +35,16 @@ export const useFetchResult = <T = DetailedResult>(
   user: UserData,
   resultId: number,
   select?: (data: DetailedResult) => T,
+  patientId?: number,
 ) => {
-  const url = `results/${resultId}`;
   return useQuery<DetailedResult, Error, T>({
-    queryKey: [user, "result", resultId, url],
-    meta: { headers: { userId: user.id } },
+    queryKey: patientId
+      ? doctorKeys.patient.results.specific(user.id, patientId, resultId)
+      : patientKeys.results.specific(user.id, resultId),
+    queryFn: async () => {
+      const { data } = await axiosApi.get(`results/${resultId}`);
+      return data;
+    },
     select,
   });
 };
@@ -42,17 +53,18 @@ export const useFetchResult = <T = DetailedResult>(
 export const useFetchUnviewedResults = <T = ResultOverview[]>(
   user: UserData,
   select?: (data: ResultOverview[]) => T,
-  numberOfResults?: number,
+  pagination?: PaginationData,
 ) => {
-  const resultsCount = numberOfResults
-    ? `?startIndex=0&pageSize=${numberOfResults}`
-    : "";
-
-  const url = `results/unviewed${resultsCount}`;
-
   return useQuery<ResultOverview[], Error, T>({
-    meta: { headers: { userId: user.id } },
-    queryKey: [user, "unviewedResults", url],
+    queryKey: doctorKeys.resultsUnviewed(user.id),
+    queryFn: async () => {
+      const { data } = await axiosApi.get("results/unviewed", {
+        params: {
+          ...pagination,
+        },
+      });
+      return data;
+    },
     select,
   });
 };

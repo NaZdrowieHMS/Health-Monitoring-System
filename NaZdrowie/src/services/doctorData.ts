@@ -10,17 +10,24 @@ import {
 } from "properties/types/PatientDataProps";
 
 import { axiosApi } from "./axios";
+import { doctorKeys } from "./utils";
+import { PaginationData } from "properties/types/api";
 
 export const useFetchPatients = <T = PatientData[]>(
   user: UserData,
   select?: (data: PatientData[]) => T,
-  numberOfPatients?: number,
+  pagination?: PaginationData,
 ) => {
-  const patientsCount = numberOfPatients
-    ? `?startIndex=0&pageSize=${numberOfPatients}`
-    : "";
   return useQuery<PatientData[], Error, T>({
-    queryKey: [user, `doctors/${user.id}/patients${patientsCount}`],
+    queryKey: doctorKeys.patients.list(user.id, pagination),
+    queryFn: async () => {
+      const { data } = await axiosApi.get(`doctors/${user.id}/patients`, {
+        params: {
+          ...pagination,
+        },
+      });
+      return data;
+    },
     select,
   });
 };
@@ -28,25 +35,53 @@ export const useFetchPatients = <T = PatientData[]>(
 export const useFetchAllUnassignedPatients = <T = PatientData[]>(
   user: UserData,
   select?: (data: PatientData[]) => T,
+  pagination?: PaginationData,
 ) => {
   return useQuery<PatientData[], Error, T>({
-    queryKey: [user, `doctors/${user.id}/patients/unassigned`],
+    queryKey: doctorKeys.patients.unassigned.list(user.id, pagination),
+    queryFn: async () => {
+      const { data } = await axiosApi.get(
+        `doctors/${user.id}/patients/unassigned`,
+        {
+          params: {
+            ...pagination,
+          },
+        },
+      );
+      return data;
+    },
     select,
   });
 };
 
 export const useUploadReferral = (user: UserData) => {
   const queryClient = useQueryClient();
-
+  let patientId: number = null;
   return useMutation({
     mutationFn: async (referralUpload: PatientReferralUpload) => {
+      patientId = referralUpload.patientId;
       const { data } = await axiosApi.post("referrals", referralUpload);
       return data;
     },
-    onSuccess(data: PatientReferral) {
-      queryClient.invalidateQueries({
-        queryKey: [user, "referrals"],
-      });
+    onSuccess(newReferral: PatientReferral) {
+      // updated - all wueries with refferal data will have additional result (careful with pagination!!)
+      // and new referral is stored in cache - no request should be sent for details
+      queryClient.setQueriesData(
+        { queryKey: doctorKeys.patient.referrals.core(user.id, patientId) },
+        (oldReferrals: PatientReferral[]) => {
+          if (oldReferrals !== undefined) {
+            return [newReferral, ...oldReferrals];
+          }
+        },
+      );
+      queryClient.setQueryData(
+        doctorKeys.patient.referrals.specific(
+          user.id,
+          patientId,
+          newReferral.id,
+        ),
+        () => newReferral,
+      );
     },
   });
 };

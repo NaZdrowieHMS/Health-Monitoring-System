@@ -5,26 +5,35 @@ import {
   UserData,
   ResultCommentUpload,
 } from "properties/types";
-import { CommentsFilter } from "./utils";
+import { CommentsFilter, doctorDataPagination } from "./utils";
 import { axiosApi } from "./axios";
+import { PaginationData } from "properties/types/api";
+import { doctorKeys, patientKeys } from "./utils";
 
 export const useFetchResultCommentsData = <T = DoctorComment[]>(
   user: UserData,
   resultId: number,
   select?: (data: DoctorComment[]) => T,
-  numberOfComments?: number,
+  pagination?: PaginationData,
+  patientId?: number,
 ) => {
-  const commentsCount = numberOfComments
-    ? `?startIndex=0&pageSize=${numberOfComments}`
-    : "";
-
   return useQuery<DoctorComment[], Error, T>({
-    queryKey: [
-      user,
-      "resultComments",
-      `results/${resultId}/comments${commentsCount}`,
-    ],
-
+    queryKey: patientId
+      ? doctorKeys.patient.results.specificComments(
+          user.id,
+          patientId,
+          resultId,
+          pagination,
+        )
+      : patientKeys.results.specificComments(user.id, resultId, pagination),
+    queryFn: async () => {
+      const { data } = await axiosApi.get(`results/${resultId}/comments`, {
+        params: {
+          ...pagination,
+        },
+      });
+      return data;
+    },
     select,
   });
 };
@@ -32,41 +41,29 @@ export const useFetchResultCommentsData = <T = DoctorComment[]>(
 export const useFetchHealthComments = <T = DoctorComment[]>(
   user: UserData,
   select?: (data: DoctorComment[]) => T,
+  pagination?: PaginationData,
   patientId?: number,
-  numberOfComments?: number,
+  filter?: CommentsFilter,
 ) => {
-  const commentsCount = numberOfComments
-    ? `?startIndex=0&pageSize=${numberOfComments}`
-    : "";
-
   return useQuery<DoctorComment[], Error, T>({
-    queryKey: [
-      user,
-      "healthComments",
-      `patients/${patientId ? patientId : user.id}/health${commentsCount}`,
-    ],
-    select,
-  });
-};
-
-export const useFetchHealthCommentsFiltered = <T = DoctorComment[]>(
-  doctor: UserData,
-  patientId: number,
-  filter: CommentsFilter,
-  select?: (data: DoctorComment[]) => T,
-  numberOfComments?: number,
-) => {
-  const commentsCount = numberOfComments
-    ? `&startIndex=0&pageSize=${numberOfComments}`
-    : "";
-
-  return useQuery<DoctorComment[], Error, T>({
-    queryKey: [
-      doctor,
-      "healthComments",
-      `doctors/${doctor.id}/patient/${patientId}/health?filter=${filter}${commentsCount}`,
-    ],
-
+    queryKey: patientId
+      ? doctorKeys.patient.healthComments.list(
+          user.id,
+          patientId,
+          pagination,
+          filter,
+        )
+      : patientKeys.healthComments.list(user.id, pagination, filter),
+    queryFn: async () => {
+      const { data } = await axiosApi.get("health", {
+        params: {
+          ...pagination,
+          patientId,
+          filter,
+        },
+      });
+      return data;
+    },
     select,
   });
 };
@@ -74,31 +71,82 @@ export const useFetchHealthCommentsFiltered = <T = DoctorComment[]>(
 export const useSendHealthComment = (user: UserData) => {
   const queryClient = useQueryClient();
 
+  let patientId: number = null;
+
   return useMutation({
     mutationFn: async (comment: HealthCommentUpload) => {
+      patientId = comment.patientId;
       const { data } = await axiosApi.post("health", comment);
       return data;
     },
-    onSuccess(data: DoctorComment) {
-      queryClient.invalidateQueries({
-        queryKey: [user, "healthComments"],
-      });
+    onSuccess(newComments: DoctorComment) {
+      // currently updated - currentDoctorComments, all patient's health comments (if fetched before)
+      try {
+        queryClient.setQueryData(
+          doctorKeys.patient.healthComments.list(
+            user.id,
+            patientId,
+            doctorDataPagination.currentDotorComments,
+            CommentsFilter.Specific,
+          ),
+          (oldComments: DoctorComment[]) => {
+            if (oldComments !== undefined) {
+              return [newComments, ...oldComments.slice(0, -1)];
+            }
+          },
+        );
+        queryClient.setQueryData(
+          doctorKeys.patient.healthComments.list(user.id, patientId),
+          (oldComments: DoctorComment[]) => {
+            if (oldComments !== undefined) {
+              return [newComments, ...oldComments];
+            }
+            return oldComments;
+          },
+        );
+      } catch (error) {
+        console.error(error);
+      }
     },
   });
 };
 
-export const useSendResultComment = (user: UserData) => {
+export const useSendResultComment = (user: UserData, patientId: number) => {
   const queryClient = useQueryClient();
-
+  let resultId: number = null;
   return useMutation({
     mutationFn: async (comment: ResultCommentUpload) => {
+      resultId = comment.resultId;
       const { data } = await axiosApi.post("results/comments", comment);
       return data;
     },
-    onSuccess(data: DoctorComment) {
-      queryClient.invalidateQueries({
-        queryKey: [user, "resultComments"],
-      });
+    onSuccess(newComment: DoctorComment) {
+      // updated - result's displayed comment, all fethed comments (if fetched before)
+      queryClient.setQueryData(
+        doctorKeys.patient.results.specificComments(
+          user.id,
+          patientId,
+          resultId,
+          doctorDataPagination.resultComments,
+        ),
+        (oldComments: DoctorComment[]) => {
+          if (oldComments !== undefined) {
+            return [newComment, ...oldComments.slice(0, -1)];
+          }
+        },
+      );
+      queryClient.setQueryData(
+        doctorKeys.patient.results.specificComments(
+          user.id,
+          patientId,
+          resultId,
+        ),
+        (oldComments: DoctorComment[]) => {
+          if (oldComments !== undefined) {
+            return [newComment, ...oldComments];
+          }
+        },
+      );
     },
   });
 };

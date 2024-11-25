@@ -8,13 +8,16 @@ import {
 } from "properties/types";
 import { Alert, Linking } from "react-native";
 import { useFetchHealthComments } from "services/commentsData";
-import { latestCount } from "services/config";
 import {
   useFetchReferrals,
   useFetchHealthForms,
   useFetchPatient,
 } from "services/patientData";
-import { formatCommentsData, formatDate } from "services/utils";
+import {
+  formatCommentsData,
+  formatDate,
+  patientDataPagination,
+} from "services/utils";
 
 import { useDesiredOverlay } from "./useDesiredOverlay";
 import { useNavigation } from "@react-navigation/native";
@@ -88,19 +91,21 @@ export const usePatientData = (currentUser: UserData, patientId?: number) => {
   const healthComments = useFetchHealthComments(
     currentUser,
     (data) => data.map(formatCommentsData),
+    patientDataPagination.healthComments,
     patientId,
   );
 
   const latestHealthComments = useFetchHealthComments(
     currentUser,
     (data) => data.map(formatCommentsData),
+    patientDataPagination.latestHealthComments,
     patientId,
-    latestCount,
   );
 
   const referrals = useFetchReferrals(
     currentUser,
     (data) => data.map(formatReferralsView),
+    patientDataPagination.referrals,
     patientId,
   );
 
@@ -108,14 +113,15 @@ export const usePatientData = (currentUser: UserData, patientId?: number) => {
     currentUser,
     (data) =>
       data.filter((referral) => !referral.completed).map(formatReferralsView),
+    patientDataPagination.latestReferrals,
     patientId,
   );
 
   const latestHealthForm = useFetchHealthForms(
     currentUser,
     (data) => data.map(formatHealthFormView),
+    patientDataPagination.latestHealthForm,
     patientId,
-    1,
   );
 
   const patientData = useFetchPatient(currentUser, null, patientId);

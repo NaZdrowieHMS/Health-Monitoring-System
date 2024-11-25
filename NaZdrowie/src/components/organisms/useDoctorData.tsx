@@ -1,16 +1,20 @@
 import { LinkButton, PrimaryButton, UserButton } from "components/atoms";
 import { PatientData, StringNavigation, UserData } from "properties/types";
 import {
-  useFetchHealthCommentsFiltered,
+  useFetchHealthComments,
   useSendHealthComment,
 } from "services/commentsData";
-import { currentDoctorCommentsCount, latestCount } from "services/config";
+
 import {
   useFetchAllUnassignedPatients,
   useFetchPatients,
 } from "services/doctorData";
 import { useBindPatientToDoctor } from "services/patientData";
-import { CommentsFilter, formatCommentsData } from "services/utils";
+import {
+  CommentsFilter,
+  doctorDataPagination,
+  formatCommentsData,
+} from "services/utils";
 
 import { useOverlay } from "./context";
 import { useDesiredOverlay } from "./useDesiredOverlay";
@@ -58,23 +62,23 @@ export const useDoctorData = (currentUser: UserData, patientId?: number) => {
   const latestPatients = useFetchPatients(
     currentUser,
     (data) => data.map(formatPatientsView),
-    latestCount,
+    doctorDataPagination.latestPatients,
   );
 
-  const currentDotorComments = useFetchHealthCommentsFiltered(
+  const currentDotorComments = useFetchHealthComments(
     currentUser,
+    (data) => data.map(formatCommentsData),
+    doctorDataPagination.currentDotorComments,
     patientId,
     CommentsFilter.Specific,
-    (data) => data.map(formatCommentsData),
-    currentDoctorCommentsCount,
   );
 
-  const otherDotorsComments = useFetchHealthCommentsFiltered(
+  const otherDotorsComments = useFetchHealthComments(
     currentUser,
+    (data) => data.map(formatCommentsData),
+    doctorDataPagination.otherDotorsComments,
     patientId,
     CommentsFilter.Others,
-    (data) => data.map(formatCommentsData),
-    latestCount - currentDoctorCommentsCount,
   );
 
   function formatNewPatients(patient: PatientData) {
@@ -108,6 +112,7 @@ export const useDoctorData = (currentUser: UserData, patientId?: number) => {
   const unassignedPatients = useFetchAllUnassignedPatients(
     currentUser,
     (data) => data.map(formatNewPatients),
+    doctorDataPagination.unassignedPatients,
   );
 
   const filteredUnassignedPatients = (filterValue: string) => {

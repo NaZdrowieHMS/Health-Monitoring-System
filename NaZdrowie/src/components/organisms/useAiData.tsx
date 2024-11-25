@@ -4,7 +4,7 @@ import {
   useAddAiSelectedResults,
   useDeleteAiSelectedResults,
 } from "services/doctorData";
-import { formatDate } from "services/utils";
+import { aiDataPagination, formatDate } from "services/utils";
 
 import { useQueryClient } from "@tanstack/react-query";
 import { useCallback } from "react";
@@ -21,6 +21,7 @@ export const useAiData = (currentUser: UserData, patientId: number) => {
   const patientResultsForAi = useFetchAllResultsByPatientId(
     currentUser,
     (data) => data.map(formatResultsForAiData),
+    aiDataPagination.patientResultsForAi,
     patientId,
   );
 
@@ -125,6 +126,7 @@ export const useAiData = (currentUser: UserData, patientId: number) => {
     currentUser,
     patientId,
     (data) => data.map(formatPatientPredictions),
+    aiDataPagination.patientPredictions,
   );
 
   return {
