@@ -16,16 +16,18 @@ type OverlayProps = {
 
 export const Overlay = ({ children, ...props }: OverlayProps) => {
   return (
-    <RNModal
-      isVisible
-      animationInTiming={500}
-      animationOutTiming={500}
-      backdropTransitionInTiming={800}
-      backdropTransitionOutTiming={800}
-      {...props}
-    >
-      {children}
-    </RNModal>
+    <View>
+      <RNModal
+        isVisible
+        animationInTiming={500}
+        animationOutTiming={500}
+        backdropTransitionInTiming={800}
+        backdropTransitionOutTiming={800}
+        {...props}
+      >
+        {children}
+      </RNModal>
+    </View>
   );
 };
 
