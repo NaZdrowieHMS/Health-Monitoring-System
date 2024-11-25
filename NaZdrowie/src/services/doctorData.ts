@@ -10,7 +10,7 @@ import {
 } from "properties/types/PatientDataProps";
 
 import { axiosApi } from "./axios";
-import { doctorKeys } from "./queryKeyFactory";
+import { doctorKeys } from "./utils";
 import { PaginationData } from "properties/types/api";
 
 export const useFetchPatients = <T = PatientData[]>(
@@ -38,7 +38,7 @@ export const useFetchAllUnassignedPatients = <T = PatientData[]>(
   pagination?: PaginationData,
 ) => {
   return useQuery<PatientData[], Error, T>({
-    queryKey: doctorKeys.patients.unassigned(user.id, pagination),
+    queryKey: doctorKeys.patients.unassigned.list(user.id, pagination),
     queryFn: async () => {
       const { data } = await axiosApi.get(
         `doctors/${user.id}/patients/unassigned`,
@@ -54,24 +54,38 @@ export const useFetchAllUnassignedPatients = <T = PatientData[]>(
   });
 };
 
-// TODO
 export const useUploadReferral = (user: UserData) => {
   const queryClient = useQueryClient();
-
+  let patientId: number = null;
   return useMutation({
     mutationFn: async (referralUpload: PatientReferralUpload) => {
+      patientId = referralUpload.patientId;
       const { data } = await axiosApi.post("referrals", referralUpload);
       return data;
     },
-    onSuccess(data: PatientReferral) {
-      queryClient.invalidateQueries({
-        queryKey: doctorKeys.patient.referrals.list(user.id, data.patientId),
-      });
+    onSuccess(newReferral: PatientReferral) {
+      // updated - all wueries with refferal data will have additional result (careful with pagination!!)
+      // and new referral is stored in cache - no request should be sent for details
+      queryClient.setQueriesData(
+        { queryKey: doctorKeys.patient.referrals.core(user.id, patientId) },
+        (oldReferrals: PatientReferral[]) => {
+          if (oldReferrals !== undefined) {
+            return [newReferral, ...oldReferrals];
+          }
+        },
+      );
+      queryClient.setQueryData(
+        doctorKeys.patient.referrals.specific(
+          user.id,
+          patientId,
+          newReferral.id,
+        ),
+        () => newReferral,
+      );
     },
   });
 };
 
-// TODO
 export const useAddAiSelectedResults = () => {
   return useMutation({
     mutationFn: async (AiSelectedChanges: AiSelectedChange[]) => {
@@ -84,7 +98,6 @@ export const useAddAiSelectedResults = () => {
   });
 };
 
-// TODO
 export const useDeleteAiSelectedResults = () => {
   return useMutation({
     mutationFn: async (AiSelectedChanges: AiSelectedChange[]) => {

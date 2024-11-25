@@ -1,6 +1,5 @@
 import { LinkButton } from "components/atoms";
 import { StringNavigation, UserData } from "properties/types";
-import { latestCount } from "services/config";
 
 import { useDesiredOverlay } from "./useDesiredOverlay";
 import { ResultOverview } from "properties/types/api/ResultProps";
@@ -9,6 +8,7 @@ import {
   useFetchUnviewedResults,
 } from "services/resultsData";
 import { useNavigation } from "@react-navigation/native";
+import { resultsDataPagination } from "services/utils";
 
 export const useResultsData = (currentUser: UserData, patientId?: number) => {
   const { openResultOverlay } = useDesiredOverlay(currentUser);
@@ -53,7 +53,7 @@ export const useResultsData = (currentUser: UserData, patientId?: number) => {
   const latestResults = useFetchAllResultsByPatientId(
     currentUser,
     (data) => data.map(formatResultsView),
-    { pageSize: latestCount },
+    resultsDataPagination.latestResults,
     patientId,
   );
 
@@ -64,7 +64,7 @@ export const useResultsData = (currentUser: UserData, patientId?: number) => {
   const latestUnviewedResults = useFetchUnviewedResults(
     currentUser,
     (data) => data.map(formatResultsView),
-    { pageSize: latestCount },
+    resultsDataPagination.latestUnviewedResults,
   );
 
   return {

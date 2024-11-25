@@ -21,9 +21,8 @@ import {
   useFetchResultCommentsData,
   useSendResultComment,
 } from "services/commentsData";
-import { cardCommentsCount } from "services/config";
 import { useFetchResult } from "services/resultsData";
-import { formatCommentsData } from "services/utils";
+import { doctorDataPagination, formatCommentsData } from "services/utils";
 
 export const ResultPreviewScreen = ({
   route,
@@ -46,13 +45,13 @@ export const ResultPreviewScreen = ({
     currentUser,
     resultId,
     (data) => data.map(formatCommentsData),
-    { pageSize: cardCommentsCount },
+    doctorDataPagination.resultComments,
     patientId,
   );
 
   useFocusEffect(updateAiSelectedData);
 
-  const sendResultComment = useSendResultComment(currentUser);
+  const sendResultComment = useSendResultComment(currentUser, patientId);
 
   const handleSendComment = () => {
     if (comment.length > 0) {

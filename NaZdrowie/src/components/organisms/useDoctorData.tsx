@@ -4,13 +4,17 @@ import {
   useFetchHealthComments,
   useSendHealthComment,
 } from "services/commentsData";
-import { currentDoctorCommentsCount, latestCount } from "services/config";
+
 import {
   useFetchAllUnassignedPatients,
   useFetchPatients,
 } from "services/doctorData";
 import { useBindPatientToDoctor } from "services/patientData";
-import { CommentsFilter, formatCommentsData } from "services/utils";
+import {
+  CommentsFilter,
+  doctorDataPagination,
+  formatCommentsData,
+} from "services/utils";
 
 import { useOverlay } from "./context";
 import { useDesiredOverlay } from "./useDesiredOverlay";
@@ -58,13 +62,13 @@ export const useDoctorData = (currentUser: UserData, patientId?: number) => {
   const latestPatients = useFetchPatients(
     currentUser,
     (data) => data.map(formatPatientsView),
-    { pageSize: latestCount },
+    doctorDataPagination.latestPatients,
   );
 
   const currentDotorComments = useFetchHealthComments(
     currentUser,
     (data) => data.map(formatCommentsData),
-    { pageSize: currentDoctorCommentsCount },
+    doctorDataPagination.currentDotorComments,
     patientId,
     CommentsFilter.Specific,
   );
@@ -72,7 +76,7 @@ export const useDoctorData = (currentUser: UserData, patientId?: number) => {
   const otherDotorsComments = useFetchHealthComments(
     currentUser,
     (data) => data.map(formatCommentsData),
-    { pageSize: latestCount - currentDoctorCommentsCount },
+    doctorDataPagination.otherDotorsComments,
     patientId,
     CommentsFilter.Others,
   );
@@ -108,6 +112,7 @@ export const useDoctorData = (currentUser: UserData, patientId?: number) => {
   const unassignedPatients = useFetchAllUnassignedPatients(
     currentUser,
     (data) => data.map(formatNewPatients),
+    doctorDataPagination.unassignedPatients,
   );
 
   const filteredUnassignedPatients = (filterValue: string) => {

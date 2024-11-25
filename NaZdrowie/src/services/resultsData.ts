@@ -6,7 +6,7 @@ import {
   ResultOverview,
 } from "properties/types/api/ResultProps";
 import { axiosApi } from "./axios";
-import { doctorKeys, patientKeys } from "./queryKeyFactory";
+import { doctorKeys, patientKeys } from "./utils";
 
 export const useFetchAllResultsByPatientId = <T = ResultOverview[]>(
   user: UserData,
