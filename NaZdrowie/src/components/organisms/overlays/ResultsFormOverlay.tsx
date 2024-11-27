@@ -3,11 +3,11 @@ import { generalStyle, inputStyle } from "properties/styles";
 import { UserData } from "properties/types";
 import React, { useState } from "react";
 import { Text, View } from "react-native";
-import { useSendResult } from "services/patientData";
+import { useSendResult } from "services/resultsData";
 import { resultItems } from "services/utils";
 
 import { Overlay } from "./Overlay";
-import { PersonalizedImagePicker } from "../PersonalizedImagePicker";
+import { PersonalizedImagePicker } from "components/molecules";
 
 export const ResultsFormOverlay: React.FC<{
   currentUser: UserData;

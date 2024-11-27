@@ -12,7 +12,11 @@ import {
   LoadingCard,
   Navbar,
 } from "components/molecules";
-import { useAiData, usePatientData } from "components/organisms";
+import {
+  formatCommentsData,
+  useAiData,
+  usePatientData,
+} from "components/organisms";
 import { UserContext } from "components/organisms/context";
 import { generalStyle, mainStyle } from "properties/styles";
 import React, { useContext, useState } from "react";
@@ -22,7 +26,7 @@ import {
   useSendResultComment,
 } from "services/commentsData";
 import { useFetchResult } from "services/resultsData";
-import { doctorDataPagination, formatCommentsData } from "services/utils";
+import { doctorDataPagination } from "services/utils";
 
 export const ResultPreviewScreen = ({
   route,
@@ -34,28 +38,26 @@ export const ResultPreviewScreen = ({
     currentUser,
     resultId,
     null,
-    patientId,
+    patientId
   );
   const { patientData } = usePatientData(currentUser, patientId);
   const { handleCheckboxForAiSelection, updateAiSelectedData } = useAiData(
     currentUser,
-    patientId,
+    patientId
   );
   const resultComments = useFetchResultCommentsData(
     currentUser,
     resultId,
     (data) => data.map(formatCommentsData),
     doctorDataPagination.resultComments,
-    patientId,
+    patientId
   );
 
   useFocusEffect(updateAiSelectedData);
 
-  const sendResultComment = useSendResultComment(currentUser, patientId);
-
   const handleSendComment = () => {
     if (comment.length > 0) {
-      sendResultComment.mutateAsync({
+      useSendResultComment(currentUser, patientId).mutateAsync({
         resultId: resultId,
         doctorId: currentUser.id,
         content: comment,

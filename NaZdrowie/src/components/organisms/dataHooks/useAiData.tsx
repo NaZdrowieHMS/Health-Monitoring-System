@@ -3,7 +3,7 @@ import { AiPrediction, UserData } from "properties/types";
 import {
   useAddAiSelectedResults,
   useDeleteAiSelectedResults,
-} from "services/doctorData";
+} from "services/aiData";
 import { aiDataPagination, formatDate } from "services/utils";
 
 import { useQueryClient } from "@tanstack/react-query";
@@ -22,7 +22,7 @@ export const useAiData = (currentUser: UserData, patientId: number) => {
     currentUser,
     (data) => data.map(formatResultsForAiData),
     aiDataPagination.patientResultsForAi,
-    patientId,
+    patientId
   );
 
   function handleCheckboxForAiSelection(resultId: number) {
@@ -39,7 +39,7 @@ export const useAiData = (currentUser: UserData, patientId: number) => {
             return dataResult;
           }
         });
-      },
+      }
     );
   }
 
@@ -66,7 +66,7 @@ export const useAiData = (currentUser: UserData, patientId: number) => {
         const toAdd = selectedResults
           .filter(
             (result) =>
-              result.aiSelected === true && result.patientId === patientId,
+              result.aiSelected === true && result.patientId === patientId
           )
           .map((result) => ({
             resultId: result.id,
@@ -76,7 +76,7 @@ export const useAiData = (currentUser: UserData, patientId: number) => {
         const toDelete = selectedResults
           .filter(
             (result) =>
-              result.aiSelected === false && result.patientId === patientId,
+              result.aiSelected === false && result.patientId === patientId
           )
           .map((result) => ({
             resultId: result.id,
@@ -126,7 +126,7 @@ export const useAiData = (currentUser: UserData, patientId: number) => {
     currentUser,
     patientId,
     (data) => data.map(formatPatientPredictions),
-    aiDataPagination.patientPredictions,
+    aiDataPagination.patientPredictions
   );
 
   return {

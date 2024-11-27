@@ -25,3 +25,9 @@ export type AiAnalysisResultCardProps = {
     createdDate: string;
   }[];
 };
+
+export type AiSelectedChange = {
+  resultId: number;
+  patientId: number;
+  doctorId: number;
+};

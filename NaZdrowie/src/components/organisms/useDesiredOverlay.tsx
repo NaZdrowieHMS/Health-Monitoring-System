@@ -8,19 +8,18 @@ import {
   ResultPreviewOverlay,
   ReferralFormOverlay,
   ResultsFormOverlay,
-} from "components/molecules";
-import { PatientDetailsOverlay } from "components/molecules/overlays/PatientDetialsOverlay";
+} from "components/organisms";
 import {
   CommentData,
   HealthFormDisplayData,
   healthFormItems,
   PatientData,
-  PatientReferral,
   UserData,
 } from "properties/types";
 import React from "react";
 
 import { useOverlay } from "./context";
+import { PatientDetailsOverlay } from "./overlays/PatientDetialsOverlay";
 
 export const useDesiredOverlay = (currentUser: UserData) => {
   const { showOverlay, hideOverlay } = useOverlay();
@@ -36,11 +35,11 @@ export const useDesiredOverlay = (currentUser: UserData) => {
     ));
   };
 
-  const openReferralOverviewOverlay = (referral: PatientReferral) => {
+  const openReferralOverviewOverlay = (referralId: number) => {
     showOverlay(() => (
       <ReferralOverviewOverlay
         handleClose={hideOverlay}
-        referral={referral}
+        referralId={referralId}
         currentUser={currentUser}
       />
     ));
@@ -49,7 +48,7 @@ export const useDesiredOverlay = (currentUser: UserData) => {
   const openResultsFormOverlay = (
     patientId: number,
     referralId?: number,
-    testType?: string,
+    testType?: string
   ) => {
     showOverlay(() => (
       <ResultsFormOverlay
@@ -120,7 +119,7 @@ export const useDesiredOverlay = (currentUser: UserData) => {
 
   function openPatientInfoOverlay(
     patient: PatientData,
-    button?: React.JSX.Element,
+    button?: React.JSX.Element
   ) {
     showOverlay(() => (
       <PatientDetailsOverlay

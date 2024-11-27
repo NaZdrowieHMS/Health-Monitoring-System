@@ -15,7 +15,7 @@ export const useFetchResultCommentsData = <T = DoctorComment[]>(
   resultId: number,
   select?: (data: DoctorComment[]) => T,
   pagination?: PaginationData,
-  patientId?: number,
+  patientId?: number
 ) => {
   return useQuery<DoctorComment[], Error, T>({
     queryKey: patientId
@@ -23,7 +23,7 @@ export const useFetchResultCommentsData = <T = DoctorComment[]>(
           user.id,
           patientId,
           resultId,
-          pagination,
+          pagination
         )
       : patientKeys.results.specificComments(user.id, resultId, pagination),
     queryFn: async () => {
@@ -43,7 +43,7 @@ export const useFetchHealthComments = <T = DoctorComment[]>(
   select?: (data: DoctorComment[]) => T,
   pagination?: PaginationData,
   patientId?: number,
-  filter?: CommentsFilter,
+  filter?: CommentsFilter
 ) => {
   return useQuery<DoctorComment[], Error, T>({
     queryKey: patientId
@@ -51,7 +51,7 @@ export const useFetchHealthComments = <T = DoctorComment[]>(
           user.id,
           patientId,
           pagination,
-          filter,
+          filter
         )
       : patientKeys.healthComments.list(user.id, pagination, filter),
     queryFn: async () => {
@@ -87,13 +87,13 @@ export const useSendHealthComment = (user: UserData) => {
             user.id,
             patientId,
             doctorDataPagination.currentDotorComments,
-            CommentsFilter.Specific,
+            CommentsFilter.Specific
           ),
           (oldComments: DoctorComment[]) => {
             if (oldComments !== undefined) {
               return [newComments, ...oldComments.slice(0, -1)];
             }
-          },
+          }
         );
         queryClient.setQueryData(
           doctorKeys.patient.healthComments.list(user.id, patientId),
@@ -102,7 +102,7 @@ export const useSendHealthComment = (user: UserData) => {
               return [newComments, ...oldComments];
             }
             return oldComments;
-          },
+          }
         );
       } catch (error) {
         console.error(error);
@@ -127,25 +127,25 @@ export const useSendResultComment = (user: UserData, patientId: number) => {
           user.id,
           patientId,
           resultId,
-          doctorDataPagination.resultComments,
+          doctorDataPagination.resultComments
         ),
         (oldComments: DoctorComment[]) => {
           if (oldComments !== undefined) {
             return [newComment, ...oldComments.slice(0, -1)];
           }
-        },
+        }
       );
       queryClient.setQueryData(
         doctorKeys.patient.results.specificComments(
           user.id,
           patientId,
-          resultId,
+          resultId
         ),
         (oldComments: DoctorComment[]) => {
           if (oldComments !== undefined) {
             return [newComment, ...oldComments];
           }
-        },
+        }
       );
     },
   });

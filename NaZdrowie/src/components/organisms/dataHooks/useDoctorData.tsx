@@ -1,48 +1,23 @@
 import { LinkButton, PrimaryButton, UserButton } from "components/atoms";
-import { PatientData, StringNavigation, UserData } from "properties/types";
-import {
-  useFetchHealthComments,
-  useSendHealthComment,
-} from "services/commentsData";
+import { PatientData, UserData } from "properties/types";
 
 import {
   useFetchAllUnassignedPatients,
   useFetchPatients,
 } from "services/doctorData";
 import { useBindPatientToDoctor } from "services/patientData";
-import {
-  CommentsFilter,
-  doctorDataPagination,
-  formatCommentsData,
-} from "services/utils";
-
-import { useOverlay } from "./context";
-import { useDesiredOverlay } from "./useDesiredOverlay";
-import { useNavigation } from "@react-navigation/native";
+import { doctorDataPagination } from "services/utils";
+import { useOverlay } from "../context";
+import { useDesiredOverlay } from "../useDesiredOverlay";
+import { useScreensNavigation } from "../useScreenNavigation";
 
 export const useDoctorData = (currentUser: UserData, patientId?: number) => {
   const { openPatientInfoOverlay } = useDesiredOverlay(currentUser);
   const { hideOverlay } = useOverlay();
   const bind = useBindPatientToDoctor(currentUser);
-  const { navigate } = useNavigation<StringNavigation>();
-  const healthCommentUpload = {
-    sendComment: useSendHealthComment(currentUser),
-    comment: {
-      doctorId: currentUser.id,
-      patientId: patientId,
-      content: "",
-    },
-  };
 
-  const navigateToPatientScreen = (patientId: number) => {
-    navigate("PatientDetails", {
-      patientId,
-    });
-  };
-
-  const navigateToNewPatientsScreen = () => {
-    navigate("NewPatients");
-  };
+  const { navigateToPatientScreen, navigateToNewPatientsScreen } =
+    useScreensNavigation();
 
   function formatPatientsView(patient: PatientData) {
     return {
@@ -62,23 +37,7 @@ export const useDoctorData = (currentUser: UserData, patientId?: number) => {
   const latestPatients = useFetchPatients(
     currentUser,
     (data) => data.map(formatPatientsView),
-    doctorDataPagination.latestPatients,
-  );
-
-  const currentDotorComments = useFetchHealthComments(
-    currentUser,
-    (data) => data.map(formatCommentsData),
-    doctorDataPagination.currentDotorComments,
-    patientId,
-    CommentsFilter.Specific,
-  );
-
-  const otherDotorsComments = useFetchHealthComments(
-    currentUser,
-    (data) => data.map(formatCommentsData),
-    doctorDataPagination.otherDotorsComments,
-    patientId,
-    CommentsFilter.Others,
+    doctorDataPagination.latestPatients
   );
 
   function formatNewPatients(patient: PatientData) {
@@ -101,7 +60,7 @@ export const useDoctorData = (currentUser: UserData, patientId?: number) => {
                   });
                   hideOverlay();
                 }}
-              />,
+              />
             )
           }
         />
@@ -112,7 +71,7 @@ export const useDoctorData = (currentUser: UserData, patientId?: number) => {
   const unassignedPatients = useFetchAllUnassignedPatients(
     currentUser,
     (data) => data.map(formatNewPatients),
-    doctorDataPagination.unassignedPatients,
+    doctorDataPagination.unassignedPatients
   );
 
   const filteredUnassignedPatients = (filterValue: string) => {
@@ -129,13 +88,8 @@ export const useDoctorData = (currentUser: UserData, patientId?: number) => {
   };
 
   return {
-    navigateToNewPatientsScreen,
-    navigateToPatientScreen,
-    currentDotorComments,
-    otherDotorsComments,
     latestPatients,
     unassignedPatients,
     filteredUnassignedPatients,
-    healthCommentUpload,
   };
 };

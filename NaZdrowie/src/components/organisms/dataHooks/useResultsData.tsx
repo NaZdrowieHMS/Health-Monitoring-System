@@ -1,29 +1,18 @@
 import { LinkButton } from "components/atoms";
-import { StringNavigation, UserData } from "properties/types";
+import { UserData } from "properties/types";
 
-import { useDesiredOverlay } from "./useDesiredOverlay";
+import { useDesiredOverlay } from "../useDesiredOverlay";
 import { ResultOverview } from "properties/types/api/ResultProps";
 import {
   useFetchAllResultsByPatientId,
   useFetchUnviewedResults,
 } from "services/resultsData";
-import { useNavigation } from "@react-navigation/native";
 import { resultsDataPagination } from "services/utils";
+import { useScreensNavigation } from "../useScreenNavigation";
 
 export const useResultsData = (currentUser: UserData, patientId?: number) => {
   const { openResultOverlay } = useDesiredOverlay(currentUser);
-  const { navigate } = useNavigation<StringNavigation>();
-  const navigateToResultPreviewScreen = (
-    resultId: number,
-    patientId: number,
-    resultTitle: string,
-  ) => {
-    navigate("ResultPreview", {
-      resultId,
-      patientId,
-      resultTitle,
-    });
-  };
+  const { navigateToResultPreviewScreen } = useScreensNavigation();
 
   const formatResultsView = (result: ResultOverview) => ({
     text: result.testType,
@@ -35,7 +24,7 @@ export const useResultsData = (currentUser: UserData, patientId?: number) => {
             ? navigateToResultPreviewScreen(
                 result.id,
                 result.patientId,
-                result.testType,
+                result.testType
               )
             : openResultOverlay(result.id, result.testType)
         }
@@ -47,24 +36,24 @@ export const useResultsData = (currentUser: UserData, patientId?: number) => {
     currentUser,
     (data) => data.map(formatResultsView),
     null,
-    patientId,
+    patientId
   );
 
   const latestResults = useFetchAllResultsByPatientId(
     currentUser,
     (data) => data.map(formatResultsView),
     resultsDataPagination.latestResults,
-    patientId,
+    patientId
   );
 
   const unviewedResults = useFetchUnviewedResults(currentUser, (data) =>
-    data.map(formatResultsView),
+    data.map(formatResultsView)
   );
 
   const latestUnviewedResults = useFetchUnviewedResults(
     currentUser,
     (data) => data.map(formatResultsView),
-    resultsDataPagination.latestUnviewedResults,
+    resultsDataPagination.latestUnviewedResults
   );
 
   return {

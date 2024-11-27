@@ -2,7 +2,7 @@ import { PatientData } from "properties/types";
 import React from "react";
 
 import { Overlay } from "./Overlay";
-import { ObjectCard } from "../cards";
+import { ObjectCard } from "components/molecules";
 
 export const PatientDetailsOverlay: React.FC<{
   handleClose: () => void;

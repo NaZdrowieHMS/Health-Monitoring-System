@@ -1,4 +1,3 @@
-import { useNavigation } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "App";
 import {
@@ -6,12 +5,12 @@ import {
   PersonalizedTextInput,
   LinkButton,
 } from "components/atoms";
+import { useScreensNavigation } from "components/organisms";
 import primaryColors from "properties/colors";
 import {
   authenticationScreenStyle,
   registerScreenStyle,
 } from "properties/styles";
-import { StringNavigation } from "properties/types";
 import React from "react";
 import { Keyboard, ScrollView, Text, View, SafeAreaView } from "react-native";
 
@@ -19,14 +18,11 @@ export const RegisterScreen = ({
   route,
 }: NativeStackScreenProps<RootStackParamList, "Register">) => {
   const { doctorScreen } = route.params;
-  const { navigate } = useNavigation<StringNavigation>();
   const dismissKeyboard = () => {
     Keyboard.dismiss();
   };
 
-  const navigateToLoginScreen = () => {
-    navigate("Login");
-  };
+  const { navigateToLoginScreen } = useScreensNavigation();
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: primaryColors.white }}>

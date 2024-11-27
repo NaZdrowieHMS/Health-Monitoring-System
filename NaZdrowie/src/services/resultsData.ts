@@ -1,18 +1,24 @@
-import { useQuery } from "@tanstack/react-query";
-import { UserData } from "properties/types";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { Referral, UserData } from "properties/types";
 import { PaginationData } from "properties/types/api";
 import {
   DetailedResult,
   ResultOverview,
+  ResultUpload,
 } from "properties/types/api/ResultProps";
 import { axiosApi } from "./axios";
-import { doctorKeys, patientKeys } from "./utils";
+import {
+  doctorKeys,
+  patientDataPagination,
+  patientKeys,
+  resultsDataPagination,
+} from "./utils";
 
 export const useFetchAllResultsByPatientId = <T = ResultOverview[]>(
   user: UserData,
   select?: (data: ResultOverview[]) => T,
   pagination?: PaginationData,
-  patientId?: number,
+  patientId?: number
 ) => {
   return useQuery<ResultOverview[], Error, T>({
     queryKey: patientId
@@ -35,7 +41,7 @@ export const useFetchResult = <T = DetailedResult>(
   user: UserData,
   resultId: number,
   select?: (data: DetailedResult) => T,
-  patientId?: number,
+  patientId?: number
 ) => {
   return useQuery<DetailedResult, Error, T>({
     queryKey: patientId
@@ -53,7 +59,7 @@ export const useFetchResult = <T = DetailedResult>(
 export const useFetchUnviewedResults = <T = ResultOverview[]>(
   user: UserData,
   select?: (data: ResultOverview[]) => T,
-  pagination?: PaginationData,
+  pagination?: PaginationData
 ) => {
   return useQuery<ResultOverview[], Error, T>({
     queryKey: doctorKeys.resultsUnviewed(user.id),
@@ -66,5 +72,99 @@ export const useFetchUnviewedResults = <T = ResultOverview[]>(
       return data;
     },
     select,
+  });
+};
+
+export const useSendResult = (user: UserData, isreferralAssigned: boolean) => {
+  const queryClient = useQueryClient();
+  let referralId: number = undefined;
+  return useMutation({
+    mutationFn: async (resultUpload: ResultUpload) => {
+      referralId = resultUpload.referralId;
+      const { data } = await axiosApi.post("results", resultUpload);
+      return data;
+    },
+    onSuccess(newResult: DetailedResult) {
+      if (user.isDoctor) {
+        // insert new result in patient's "Moje Wyniki", and save detailed data (unvieved result doesn't make sense here)
+        queryClient.setQueryData(
+          doctorKeys.patient.results.list(
+            user.id,
+            newResult.patientId,
+            resultsDataPagination.latestResults
+          ),
+          (oldResults: ResultOverview[]) => [newResult, ...oldResults]
+        );
+        queryClient.setQueryData(
+          doctorKeys.patient.results.specific(
+            user.id,
+            newResult.patientId,
+            newResult.id
+          ),
+          () => newResult
+        );
+        if (isreferralAssigned) {
+          // delete from patient's "Moje skierowania" if assigned to referral, change completed to true
+          queryClient.setQueryData(
+            doctorKeys.patient.referrals.list(
+              user.id,
+              newResult.patientId,
+              patientDataPagination.latestReferrals
+            ),
+            (oldReferrals: Referral[]) =>
+              oldReferrals.filter((referral) => referral.id !== referralId)
+          );
+          queryClient.setQueriesData(
+            {
+              queryKey: doctorKeys.patient.referrals.core(
+                user.id,
+                newResult.patientId
+              ),
+            },
+            (oldReferrals: Referral[]) =>
+              oldReferrals.map((referral) =>
+                referral.id === referralId
+                  ? { ...referral, completed: true }
+                  : referral
+              )
+          );
+        }
+      } else {
+        // insert new result in "Moje Wyniki", and save detailed data
+        queryClient.setQueryData(
+          patientKeys.results.list(
+            user.id,
+            resultsDataPagination.latestResults
+          ),
+          (oldResults: ResultOverview[]) => [newResult, ...oldResults]
+        );
+        queryClient.setQueryData(
+          patientKeys.results.specific(user.id, newResult.id),
+          () => newResult
+        );
+        if (isreferralAssigned) {
+          // delete from "Moje skierowania" if assigned to referral, change completed to true
+          queryClient.setQueryData(
+            patientKeys.referrals.list(
+              user.id,
+              patientDataPagination.latestReferrals
+            ),
+            (oldReferrals: Referral[]) =>
+              oldReferrals.filter((referral) => referral.id !== referralId)
+          );
+          queryClient.setQueriesData(
+            {
+              queryKey: patientKeys.referrals.core(user.id),
+            },
+            (oldReferrals: Referral[]) =>
+              oldReferrals.map((referral) =>
+                referral.id === referralId
+                  ? { ...referral, completed: true }
+                  : referral
+              )
+          );
+        }
+      }
+    },
   });
 };

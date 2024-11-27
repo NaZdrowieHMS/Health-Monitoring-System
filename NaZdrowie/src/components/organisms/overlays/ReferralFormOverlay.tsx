@@ -7,7 +7,7 @@ import { generalStyle } from "properties/styles";
 import { UserData } from "properties/types";
 import { useState } from "react";
 import { Text } from "react-native";
-import { useUploadReferral } from "services/doctorData";
+import { useUploadReferral } from "services/referralsData";
 import { resultItems } from "services/utils";
 import React from "react";
 import { Overlay } from "./Overlay";

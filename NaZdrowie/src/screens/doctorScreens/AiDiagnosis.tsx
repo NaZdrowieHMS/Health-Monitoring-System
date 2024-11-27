@@ -26,6 +26,7 @@ export const AiDiagnosis = ({
     updateAiSelectedData,
     patientPredictions,
   } = useAiData(currentUser, patientId);
+
   useFocusEffect(updateAiSelectedData);
 
   return (
