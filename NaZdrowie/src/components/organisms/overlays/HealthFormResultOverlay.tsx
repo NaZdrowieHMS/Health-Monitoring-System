@@ -4,7 +4,7 @@ import React from "react";
 import { formatDate } from "services/utils";
 
 import { Overlay } from "./Overlay";
-import { ObjectCard } from "../cards";
+import { ObjectCard } from "components/molecules";
 
 export const HealthFormResultOverlay: React.FC<{
   handleClose: () => void;

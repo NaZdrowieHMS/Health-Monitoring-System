@@ -1,4 +1,5 @@
 import { GestureResponderEvent } from "react-native";
+import { DoctorAuthor } from "./api/DoctorDataProps";
 
 export type CommentData = {
   text: string;
@@ -21,5 +22,12 @@ export type HealthCommentUpload = {
 export type ResultCommentUpload = {
   resultId: number;
   doctorId: number;
+  content: string;
+};
+
+export type DoctorComment = {
+  id: number;
+  doctor: DoctorAuthor;
+  modifiedDate: string;
   content: string;
 };

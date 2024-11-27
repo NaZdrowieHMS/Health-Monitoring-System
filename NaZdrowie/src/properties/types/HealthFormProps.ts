@@ -1,6 +1,5 @@
 import { DropdownItem } from "components/atoms";
-
-import { ObjectCardElement } from "./ObjectCardProps";
+import { ObjectCardElement } from "./components";
 
 export enum HealthFormItemType {
   Input,

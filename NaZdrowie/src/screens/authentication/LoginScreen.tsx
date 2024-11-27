@@ -1,32 +1,29 @@
-import { useNavigation } from "@react-navigation/native";
 import {
   LinkButton,
   PrimaryButton,
   PersonalizedTextInput,
 } from "components/atoms";
+import { useScreensNavigation } from "components/organisms";
 import { UserContext } from "components/organisms/context";
 import primaryColors from "properties/colors";
 import {
   authenticationScreenStyle,
   registerScreenStyle,
 } from "properties/styles";
-import { StringNavigation } from "properties/types";
 import React, { useContext } from "react";
 import { Keyboard, Text, View, SafeAreaView, ScrollView } from "react-native";
 
 export const LoginScreen = () => {
   const [login, setLogin] = React.useState<string>("");
   const { setCurrentUser } = useContext(UserContext);
-  const { navigate } = useNavigation<StringNavigation>();
   const dismissKeyboard = () => {
     Keyboard.dismiss();
   };
 
-  const navigateToRegisterScreen = () => {
-    navigate("Choice");
-  };
+  const { navigateToRegisterScreen, navigateToMainScreen } =
+    useScreensNavigation();
 
-  const navigateToMainScreen = () => {
+  const processUserInformationAndNavigateToMainScreen = () => {
     const userInfo = login.split("-");
     if (userInfo.length === 2 && userInfo[1].length > 0) {
       // temporary solution to try out different data
@@ -39,7 +36,7 @@ export const LoginScreen = () => {
     } else {
       setCurrentUser({ id: 3, isDoctor: false });
     }
-    navigate("MainScreen");
+    navigateToMainScreen();
   };
 
   return (
@@ -67,7 +64,7 @@ export const LoginScreen = () => {
         <View style={authenticationScreenStyle.buttonsContainer}>
           <PrimaryButton
             title="Zaloguj się"
-            handleOnClick={navigateToMainScreen}
+            handleOnClick={processUserInformationAndNavigateToMainScreen}
           />
           <LinkButton
             title="Zarejestruj się"

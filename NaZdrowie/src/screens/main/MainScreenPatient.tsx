@@ -1,25 +1,26 @@
-import { useNavigation } from "@react-navigation/native";
 import { PrimaryButton } from "components/atoms";
 import { CommentsCard, ListCard, LoadingCard } from "components/molecules";
-import { useDesiredOverlay, usePatientData } from "components/organisms";
+import {
+  useCommentsData,
+  useDesiredOverlay,
+  useHealthFormData,
+  useReferralsData,
+  useResultsData,
+  useScreensNavigation,
+} from "components/organisms";
 import { UserContext } from "components/organisms/context";
-import { useResultsData } from "components/organisms/useResultsData";
 import { mainStyle } from "properties/styles";
-import { StringNavigation } from "properties/types";
 import React, { useContext } from "react";
 import { View, ScrollView } from "react-native";
 
 export const MainScreenPatient = () => {
   const { currentUser } = useContext(UserContext);
 
-  const {
-    latestHealthComments,
-    latestReferrals,
-    latestHealthForm,
-    navigateToQrScannerScreen,
-  } = usePatientData(currentUser);
-  const { navigate } = useNavigation<StringNavigation>();
+  const { navigateToQrScanner } = useScreensNavigation();
   const { latestResults } = useResultsData(currentUser);
+  const { latestReferrals } = useReferralsData(currentUser);
+  const { latestHealthComments } = useCommentsData(currentUser);
+  const { latestHealthForm } = useHealthFormData(currentUser);
 
   const {
     openCommentsOverlay,
@@ -27,13 +28,8 @@ export const MainScreenPatient = () => {
     openHealthFormFillOverlay,
   } = useDesiredOverlay(currentUser);
 
-  const navigateToAllReferals = () => {
-    // TODO
-  };
-
-  const navigateToAllResults = () => {
-    navigate("AllResults", { patientId: currentUser.id });
-  };
+  const { navigateToAllReferals, navigateToAllResults } =
+    useScreensNavigation();
 
   return (
     <ScrollView contentContainerStyle={mainStyle.container}>
@@ -50,7 +46,7 @@ export const MainScreenPatient = () => {
         />
         <PrimaryButton
           title="Dodaj lekarza"
-          handleOnClick={() => navigateToQrScannerScreen()}
+          handleOnClick={() => navigateToQrScanner()}
         />
         <PrimaryButton title="Czaty z lekarzami" />
       </View>
@@ -59,11 +55,7 @@ export const MainScreenPatient = () => {
       latestResults.isSuccess &&
       latestHealthForm.isSuccess ? (
         <>
-          <CommentsCard
-            title="Moje zdrowie"
-            data={latestHealthComments.data}
-            handleSeeMore={() => openCommentsOverlay(latestHealthComments.data)}
-          />
+          <CommentsCard title="Moje zdrowie" data={latestHealthComments.data} />
           <ListCard
             title="Moje skierowania"
             data={latestReferrals.data}
@@ -72,7 +64,7 @@ export const MainScreenPatient = () => {
           <ListCard
             title="Moje wyniki"
             data={[...latestResults.data, ...latestHealthForm.data]}
-            handleSeeMore={navigateToAllResults}
+            handleSeeMore={() => navigateToAllResults(currentUser.id)}
           />
         </>
       ) : (

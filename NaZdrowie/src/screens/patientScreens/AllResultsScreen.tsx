@@ -6,11 +6,10 @@ import { generalStyle, mainStyle } from "properties/styles";
 import { useContext } from "react";
 import { UserContext } from "components/organisms/context";
 import { useFetchPatient } from "services/patientData";
-import { ResultButton } from "components/atoms/buttons/ResultButton";
-import { useDesiredOverlay } from "components/organisms";
+import { useDesiredOverlay, useScreensNavigation } from "components/organisms";
 import { useFetchAllResultsByPatientId } from "services/resultsData";
-import { useNavigation } from "@react-navigation/native";
-import { StringNavigation } from "properties/types";
+import { ResultButton } from "components/atoms/buttons";
+import { ResultOverview } from "properties/types/api";
 
 export const AllResultsScreen = ({
   route,
@@ -21,9 +20,30 @@ export const AllResultsScreen = ({
     id: patientId,
     isDoctor: false,
   });
-  const { navigate } = useNavigation<StringNavigation>();
   const patient = useFetchPatient(currentUser, null, patientId);
   const { openResultOverlay } = useDesiredOverlay(currentUser);
+  const { navigateToResultPreviewScreen } = useScreensNavigation();
+
+  const formatResultButton = (result: ResultOverview) => {
+    return (
+      <ResultButton
+        title={result.testType}
+        date={result.createdDate}
+        key={result.id}
+        handleOnClick={
+          currentUser.isDoctor
+            ? () =>
+                navigateToResultPreviewScreen(
+                  result.id,
+                  result.patientId,
+                  result.testType
+                )
+            : () => openResultOverlay(result.id, result.testType)
+        }
+      />
+    );
+  };
+
   return (
     <>
       {results.isSuccess && currentUser.isDoctor ? (
@@ -39,23 +59,7 @@ export const AllResultsScreen = ({
       <SafeAreaView style={generalStyle.safeArea}>
         <ScrollView contentContainerStyle={mainStyle.container}>
           {results.isSuccess ? (
-            results.data.map((result) => (
-              <ResultButton
-                title={result.testType}
-                date={result.createdDate}
-                key={result.id}
-                handleOnClick={
-                  currentUser.isDoctor
-                    ? () =>
-                        navigate("ResultPreview", {
-                          resultId: result.id,
-                          patientId,
-                          resultTitle: result.testType,
-                        })
-                    : () => openResultOverlay(result.id, result.testType)
-                }
-              />
-            ))
+            results.data.map(formatResultButton)
           ) : (
             <LoadingCard />
           )}

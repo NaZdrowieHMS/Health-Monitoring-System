@@ -1,4 +1,3 @@
-import { useNavigation } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "App";
 import { PrimaryButton } from "components/atoms";
@@ -11,12 +10,13 @@ import {
 import {
   useDesiredOverlay,
   usePatientData,
-  useDoctorData,
+  useReferralsData,
+  useCommentsData,
+  useResultsData,
+  useScreensNavigation,
 } from "components/organisms";
 import { UserContext } from "components/organisms/context";
-import { useResultsData } from "components/organisms/useResultsData";
 import { generalStyle, mainStyle } from "properties/styles";
-import { StringNavigation } from "properties/types";
 import { useContext } from "react";
 import { View, ScrollView, SafeAreaView } from "react-native";
 
@@ -27,30 +27,18 @@ export const PatientDetailsScreen = ({
   const { currentUser } = useContext(UserContext);
   const { openResultsFormOverlay, openReferralFormOverlay } =
     useDesiredOverlay(currentUser);
-  const { navigate } = useNavigation<StringNavigation>();
-  const { latestReferrals, patientData } = usePatientData(
-    currentUser,
-    patientId,
-  );
 
-  const { currentDotorComments, otherDotorsComments, healthCommentUpload } =
-    useDoctorData(currentUser, patientId);
+  const { patientData } = usePatientData(currentUser, patientId);
 
   const { latestResults } = useResultsData(currentUser, patientId);
 
-  const navigateToAllReferals = () => {
-    // TODO
-  };
+  const { latestReferrals } = useReferralsData(currentUser, patientId);
 
-  const navigateToAllResults = () => {
-    navigate("AllResults", { patientId });
-  };
+  const { healthCommentUpload, currentDotorComments, otherDotorsComments } =
+    useCommentsData(currentUser, patientId);
 
-  const navigateToAiDiagnosis = () => {
-    navigate("AiDiagnosis", {
-      patientId,
-    });
-  };
+  const { navigateToAllReferals, navigateToAllResults, navigateToAiDiagnosis } =
+    useScreensNavigation();
 
   return (
     <>
@@ -65,7 +53,7 @@ export const PatientDetailsScreen = ({
         <ScrollView contentContainerStyle={mainStyle.container}>
           <View style={mainStyle.buttonContainer}>
             <PrimaryButton
-              handleOnClick={navigateToAiDiagnosis}
+              handleOnClick={() => navigateToAiDiagnosis(patientId)}
               title="Diagnozuj z AI"
             />
             <PrimaryButton title="Czat z pacjentem" />
@@ -98,7 +86,7 @@ export const PatientDetailsScreen = ({
               <ListCard
                 title="Wyniki pacjenta"
                 data={latestResults.data}
-                handleSeeMore={navigateToAllResults}
+                handleSeeMore={() => navigateToAllResults(patientId)}
               />
             </>
           ) : (

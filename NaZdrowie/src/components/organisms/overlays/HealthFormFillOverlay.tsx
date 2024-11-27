@@ -16,7 +16,7 @@ import React, { useState } from "react";
 import { Text, View } from "react-native";
 
 import { Overlay } from "./Overlay";
-import { useSendHealthForm } from "services/patientData";
+import { useSendHealthForm } from "services/healthFormsData";
 
 export const HealthFormFillOverlay: React.FC<{
   currentUser: UserData;
@@ -40,7 +40,7 @@ export const HealthFormFillOverlay: React.FC<{
     setHealthFormItems((prevItems) => ({
       ...prevItems,
       content: prevItems.content.map((item) =>
-        item.key === index ? { ...item, value: newValue } : item,
+        item.key === index ? { ...item, value: newValue } : item
       ),
     }));
   };
