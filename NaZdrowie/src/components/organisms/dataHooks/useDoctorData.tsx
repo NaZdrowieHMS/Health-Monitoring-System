@@ -11,13 +11,12 @@ import { useOverlay } from "../context";
 import { useDesiredOverlay } from "../useDesiredOverlay";
 import { useScreensNavigation } from "../useScreenNavigation";
 
-export const useDoctorData = (currentUser: UserData, patientId?: number) => {
+export const useDoctorData = (currentUser: UserData) => {
   const { openPatientInfoOverlay } = useDesiredOverlay(currentUser);
   const { hideOverlay } = useOverlay();
   const bind = useBindPatientToDoctor(currentUser);
 
-  const { navigateToPatientScreen, navigateToNewPatientsScreen } =
-    useScreensNavigation();
+  const { navigateToPatientScreen } = useScreensNavigation();
 
   function formatPatientsView(patient: PatientData) {
     return {
@@ -37,7 +36,7 @@ export const useDoctorData = (currentUser: UserData, patientId?: number) => {
   const latestPatients = useFetchPatients(
     currentUser,
     (data) => data.map(formatPatientsView),
-    doctorDataPagination.latestPatients
+    doctorDataPagination.latestPatients,
   );
 
   function formatNewPatients(patient: PatientData) {
@@ -60,7 +59,7 @@ export const useDoctorData = (currentUser: UserData, patientId?: number) => {
                   });
                   hideOverlay();
                 }}
-              />
+              />,
             )
           }
         />
@@ -71,7 +70,7 @@ export const useDoctorData = (currentUser: UserData, patientId?: number) => {
   const unassignedPatients = useFetchAllUnassignedPatients(
     currentUser,
     (data) => data.map(formatNewPatients),
-    doctorDataPagination.unassignedPatients
+    doctorDataPagination.unassignedPatients,
   );
 
   const filteredUnassignedPatients = (filterValue: string) => {

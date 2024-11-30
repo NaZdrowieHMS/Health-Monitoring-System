@@ -24,7 +24,7 @@ export const useResultsData = (currentUser: UserData, patientId?: number) => {
             ? navigateToResultPreviewScreen(
                 result.id,
                 result.patientId,
-                result.testType
+                result.testType,
               )
             : openResultOverlay(result.id, result.testType)
         }
@@ -36,24 +36,24 @@ export const useResultsData = (currentUser: UserData, patientId?: number) => {
     currentUser,
     (data) => data.map(formatResultsView),
     null,
-    patientId
+    patientId,
   );
 
   const latestResults = useFetchAllResultsByPatientId(
     currentUser,
     (data) => data.map(formatResultsView),
     resultsDataPagination.latestResults,
-    patientId
+    patientId,
   );
 
   const unviewedResults = useFetchUnviewedResults(currentUser, (data) =>
-    data.map(formatResultsView)
+    data.map(formatResultsView),
   );
 
   const latestUnviewedResults = useFetchUnviewedResults(
     currentUser,
     (data) => data.map(formatResultsView),
-    resultsDataPagination.latestUnviewedResults
+    resultsDataPagination.latestUnviewedResults,
   );
 
   return {

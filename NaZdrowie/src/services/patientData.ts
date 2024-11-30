@@ -9,7 +9,7 @@ import { doctorKeys, patientKeys } from "./utils";
 export const useFetchPatient = <T = PatientData>(
   user: UserData,
   select?: (data: PatientData) => T,
-  patientId?: number
+  patientId?: number,
 ) => {
   return useQuery<PatientData, Error, T>({
     queryKey: patientId
@@ -17,7 +17,7 @@ export const useFetchPatient = <T = PatientData>(
       : patientKeys.info(user.id),
     queryFn: async () => {
       const { data } = await axiosApi.get(
-        `patients/${patientId ? patientId : user.id}`
+        `patients/${patientId ? patientId : user.id}`,
       );
       return data;
     },
@@ -32,7 +32,7 @@ export const useBindPatientToDoctor = (user: UserData) => {
     mutationFn: async (usersInfo: { doctorId: number; patientId: number }) => {
       const { data } = await axiosApi.put(
         "doctors/patients/relation",
-        usersInfo
+        usersInfo,
       );
       return data;
     },

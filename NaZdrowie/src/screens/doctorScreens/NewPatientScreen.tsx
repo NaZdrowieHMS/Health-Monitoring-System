@@ -27,7 +27,7 @@ export const NewPatientsScreen = () => {
         <ScrollView contentContainerStyle={mainStyle.container}>
           {unassignedPatients.isSuccess ? (
             filteredUnassignedPatients(filterValue).map(
-              (element) => element.button
+              (element) => element.button,
             )
           ) : (
             <LoadingCard />

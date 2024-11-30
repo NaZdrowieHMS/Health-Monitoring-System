@@ -15,11 +15,10 @@ export const ReferralOverviewOverlay: React.FC<{
   referralId: number;
   currentUser?: UserData;
 }> = ({ handleClose, referralId, currentUser }) => {
-  const {
-    isSuccess,
-    isLoading,
-    data: referral,
-  } = useFetchReferral(currentUser, referralId);
+  const { isSuccess, data: referral } = useFetchReferral(
+    currentUser,
+    referralId,
+  );
 
   const editComment = () => {
     console.log(referral.id);

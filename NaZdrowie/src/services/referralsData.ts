@@ -8,7 +8,7 @@ export const useFetchReferrals = <T = Referral[]>(
   user: UserData,
   select?: (data: Referral[]) => T,
   pagination?: PaginationData,
-  patientId?: number
+  patientId?: number,
 ) => {
   return useQuery<Referral[], Error, T>({
     queryKey: patientId
@@ -31,7 +31,7 @@ export const useFetchReferral = <T = Referral>(
   user: UserData,
   referralId: number,
   select?: (data: Referral) => T,
-  patientId?: number
+  patientId?: number,
 ) => {
   return useQuery<Referral, Error, T>({
     queryKey: patientId
@@ -63,15 +63,15 @@ export const useUploadReferral = (user: UserData) => {
           if (oldReferrals !== undefined) {
             return [newReferral, ...oldReferrals];
           }
-        }
+        },
       );
       queryClient.setQueryData(
         doctorKeys.patient.referrals.specific(
           user.id,
           patientId,
-          newReferral.id
+          newReferral.id,
         ),
-        () => newReferral
+        () => newReferral,
       );
     },
   });

@@ -22,11 +22,8 @@ export const MainScreenPatient = () => {
   const { latestHealthComments } = useCommentsData(currentUser);
   const { latestHealthForm } = useHealthFormData(currentUser);
 
-  const {
-    openCommentsOverlay,
-    openResultsFormOverlay,
-    openHealthFormFillOverlay,
-  } = useDesiredOverlay(currentUser);
+  const { openResultsFormOverlay, openHealthFormFillOverlay } =
+    useDesiredOverlay(currentUser);
 
   const { navigateToAllReferals, navigateToAllResults } =
     useScreensNavigation();

@@ -11,7 +11,7 @@ import { formatDate } from "services/utils";
 export type ResultButtonElement = ReturnType<typeof ResultButton>;
 
 export const ResultButton: React.FC<ButtonProps & { date: string }> = (
-  props: ButtonProps & { date: string }
+  props: ButtonProps & { date: string },
 ) => {
   const { handleOnClick, title, date } = props;
 

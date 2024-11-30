@@ -48,7 +48,7 @@ export const useDesiredOverlay = (currentUser: UserData) => {
   const openResultsFormOverlay = (
     patientId: number,
     referralId?: number,
-    testType?: string
+    testType?: string,
   ) => {
     showOverlay(() => (
       <ResultsFormOverlay
@@ -119,7 +119,7 @@ export const useDesiredOverlay = (currentUser: UserData) => {
 
   function openPatientInfoOverlay(
     patient: PatientData,
-    button?: React.JSX.Element
+    button?: React.JSX.Element,
   ) {
     showOverlay(() => (
       <PatientDetailsOverlay

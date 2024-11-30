@@ -6,7 +6,7 @@ import { useDesiredOverlay } from "../useDesiredOverlay";
 
 export const useHealthFormData = (
   currentUser: UserData,
-  patientId?: number
+  patientId?: number,
 ) => {
   const { openHealthFormResultOverlay } = useDesiredOverlay(currentUser);
   const formatHealthFormView = (healthForm: HealthFormDisplayData) => ({
@@ -24,7 +24,7 @@ export const useHealthFormData = (
     currentUser,
     (data) => data.map(formatHealthFormView),
     patientDataPagination.latestHealthForm,
-    patientId
+    patientId,
   );
 
   return {

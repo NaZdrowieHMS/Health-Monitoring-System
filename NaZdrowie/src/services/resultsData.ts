@@ -18,7 +18,7 @@ export const useFetchAllResultsByPatientId = <T = ResultOverview[]>(
   user: UserData,
   select?: (data: ResultOverview[]) => T,
   pagination?: PaginationData,
-  patientId?: number
+  patientId?: number,
 ) => {
   return useQuery<ResultOverview[], Error, T>({
     queryKey: patientId
@@ -41,7 +41,7 @@ export const useFetchResult = <T = DetailedResult>(
   user: UserData,
   resultId: number,
   select?: (data: DetailedResult) => T,
-  patientId?: number
+  patientId?: number,
 ) => {
   return useQuery<DetailedResult, Error, T>({
     queryKey: patientId
@@ -59,7 +59,7 @@ export const useFetchResult = <T = DetailedResult>(
 export const useFetchUnviewedResults = <T = ResultOverview[]>(
   user: UserData,
   select?: (data: ResultOverview[]) => T,
-  pagination?: PaginationData
+  pagination?: PaginationData,
 ) => {
   return useQuery<ResultOverview[], Error, T>({
     queryKey: doctorKeys.resultsUnviewed(user.id),
@@ -91,17 +91,17 @@ export const useSendResult = (user: UserData, isreferralAssigned: boolean) => {
           doctorKeys.patient.results.list(
             user.id,
             newResult.patientId,
-            resultsDataPagination.latestResults
+            resultsDataPagination.latestResults,
           ),
-          (oldResults: ResultOverview[]) => [newResult, ...oldResults]
+          (oldResults: ResultOverview[]) => [newResult, ...oldResults],
         );
         queryClient.setQueryData(
           doctorKeys.patient.results.specific(
             user.id,
             newResult.patientId,
-            newResult.id
+            newResult.id,
           ),
-          () => newResult
+          () => newResult,
         );
         if (isreferralAssigned) {
           // delete from patient's "Moje skierowania" if assigned to referral, change completed to true
@@ -109,24 +109,24 @@ export const useSendResult = (user: UserData, isreferralAssigned: boolean) => {
             doctorKeys.patient.referrals.list(
               user.id,
               newResult.patientId,
-              patientDataPagination.latestReferrals
+              patientDataPagination.latestReferrals,
             ),
             (oldReferrals: Referral[]) =>
-              oldReferrals.filter((referral) => referral.id !== referralId)
+              oldReferrals.filter((referral) => referral.id !== referralId),
           );
           queryClient.setQueriesData(
             {
               queryKey: doctorKeys.patient.referrals.core(
                 user.id,
-                newResult.patientId
+                newResult.patientId,
               ),
             },
             (oldReferrals: Referral[]) =>
               oldReferrals.map((referral) =>
                 referral.id === referralId
                   ? { ...referral, completed: true }
-                  : referral
-              )
+                  : referral,
+              ),
           );
         }
       } else {
@@ -134,23 +134,23 @@ export const useSendResult = (user: UserData, isreferralAssigned: boolean) => {
         queryClient.setQueryData(
           patientKeys.results.list(
             user.id,
-            resultsDataPagination.latestResults
+            resultsDataPagination.latestResults,
           ),
-          (oldResults: ResultOverview[]) => [newResult, ...oldResults]
+          (oldResults: ResultOverview[]) => [newResult, ...oldResults],
         );
         queryClient.setQueryData(
           patientKeys.results.specific(user.id, newResult.id),
-          () => newResult
+          () => newResult,
         );
         if (isreferralAssigned) {
           // delete from "Moje skierowania" if assigned to referral, change completed to true
           queryClient.setQueryData(
             patientKeys.referrals.list(
               user.id,
-              patientDataPagination.latestReferrals
+              patientDataPagination.latestReferrals,
             ),
             (oldReferrals: Referral[]) =>
-              oldReferrals.filter((referral) => referral.id !== referralId)
+              oldReferrals.filter((referral) => referral.id !== referralId),
           );
           queryClient.setQueriesData(
             {
@@ -160,8 +160,8 @@ export const useSendResult = (user: UserData, isreferralAssigned: boolean) => {
               oldReferrals.map((referral) =>
                 referral.id === referralId
                   ? { ...referral, completed: true }
-                  : referral
-              )
+                  : referral,
+              ),
           );
         }
       }

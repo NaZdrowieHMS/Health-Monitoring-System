@@ -38,19 +38,19 @@ export const ResultPreviewScreen = ({
     currentUser,
     resultId,
     null,
-    patientId
+    patientId,
   );
   const { patientData } = usePatientData(currentUser, patientId);
   const { handleCheckboxForAiSelection, updateAiSelectedData } = useAiData(
     currentUser,
-    patientId
+    patientId,
   );
   const resultComments = useFetchResultCommentsData(
     currentUser,
     resultId,
     (data) => data.map(formatCommentsData),
     doctorDataPagination.resultComments,
-    patientId
+    patientId,
   );
 
   useFocusEffect(updateAiSelectedData);

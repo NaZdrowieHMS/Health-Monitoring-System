@@ -36,7 +36,7 @@ export const AllResultsScreen = ({
                 navigateToResultPreviewScreen(
                   result.id,
                   result.patientId,
-                  result.testType
+                  result.testType,
                 )
             : () => openResultOverlay(result.id, result.testType)
         }

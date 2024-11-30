@@ -40,7 +40,7 @@ export const HealthFormFillOverlay: React.FC<{
     setHealthFormItems((prevItems) => ({
       ...prevItems,
       content: prevItems.content.map((item) =>
-        item.key === index ? { ...item, value: newValue } : item
+        item.key === index ? { ...item, value: newValue } : item,
       ),
     }));
   };
