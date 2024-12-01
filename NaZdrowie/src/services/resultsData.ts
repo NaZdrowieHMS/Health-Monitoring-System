@@ -1,4 +1,9 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  QueryClient,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
 import { Referral, UserData } from "properties/types";
 import { PaginationData } from "properties/types/api";
 import {
@@ -14,12 +19,54 @@ import {
   resultsDataPagination,
 } from "./utils";
 
+export function markPatientSpecificResultDataAsStale(
+  queryClient: QueryClient,
+  doctorId: number,
+  patientId: number,
+  resultId: number,
+) {
+  queryClient.invalidateQueries({
+    queryKey: doctorKeys.patient.results.specific(
+      doctorId,
+      patientId,
+      resultId,
+    ),
+    exact: true,
+  });
+}
+
+function partiallyUpdateSpecificResultData(
+  queryClient: QueryClient,
+  doctorId: number,
+  patientId: number,
+  data: ResultOverview[],
+) {
+  data.forEach((result) => {
+    queryClient.setQueryData(
+      doctorKeys.patient.results.specific(doctorId, patientId, result.id),
+      (oldResult: DetailedResult | undefined) => {
+        if (oldResult !== undefined) {
+          return oldResult;
+        }
+        return result;
+      },
+    );
+    markPatientSpecificResultDataAsStale(
+      queryClient,
+      doctorId,
+      patientId,
+      result.id,
+    );
+  });
+}
+
 export const useFetchAllResultsByPatientId = <T = ResultOverview[]>(
   user: UserData,
   select?: (data: ResultOverview[]) => T,
   pagination?: PaginationData,
   patientId?: number,
 ) => {
+  const queryClient = useQueryClient();
   return useQuery<ResultOverview[], Error, T>({
     queryKey: patientId
       ? doctorKeys.patient.results.list(user.id, patientId, pagination)
@@ -33,7 +80,10 @@ export const useFetchAllResultsByPatientId = <T = ResultOverview[]>(
       });
       return data;
     },
-    select,
+    select: (data: ResultOverview[]) => {
+      partiallyUpdateSpecificResultData(queryClient, user.id, patientId, data);
+      return select ? select(data) : (data as T);
+    },
   });
 };
 

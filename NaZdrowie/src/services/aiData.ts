@@ -85,9 +85,7 @@ export const useDeleteAiSelectedResults = () => {
   return useMutation({
     mutationFn: async (AiSelectedChanges: AiSelectedChange[]) => {
       const { data } = await axiosApi.delete("results/ai-selected", {
-        data: {
-          source: AiSelectedChanges,
-        },
+        data: AiSelectedChanges,
       });
       return data;
     },

@@ -8,7 +8,7 @@ import {
   ResultPreviewOverlay,
   ReferralFormOverlay,
   ResultsFormOverlay,
-} from "components/organisms";
+} from "components/organisms/overlays";
 import {
   CommentData,
   HealthFormDisplayData,
@@ -20,6 +20,7 @@ import React from "react";
 
 import { useOverlay } from "./context";
 import { PatientDetailsOverlay } from "./overlays/PatientDetialsOverlay";
+import { doctorKeys } from "services/utils";
 
 export const useDesiredOverlay = (currentUser: UserData) => {
   const { showOverlay, hideOverlay } = useOverlay();
@@ -104,7 +105,7 @@ export const useDesiredOverlay = (currentUser: UserData) => {
   const hideAndRefreshData = () => {
     hideOverlay();
     queryClient.invalidateQueries({
-      queryKey: [currentUser, `doctors/${currentUser.id}/patients`],
+      queryKey: doctorKeys.patients.core(currentUser.id),
     });
   };
 

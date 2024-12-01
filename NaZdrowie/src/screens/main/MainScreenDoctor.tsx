@@ -1,12 +1,8 @@
 import { PrimaryButton } from "components/atoms";
 import { ListCard, LoadingCard } from "components/molecules";
-import {
-  useDesiredOverlay,
-  useDoctorData,
-  useResultsData,
-  useScreensNavigation,
-} from "components/organisms";
+import { useDesiredOverlay, useScreensNavigation } from "components/organisms";
 import { UserContext } from "components/organisms/context";
+import { useDoctorData, useResultsData } from "components/organisms/dataHooks";
 import { mainStyle } from "properties/styles/mainStyle";
 import React, { useContext } from "react";
 import { View, ScrollView } from "react-native";

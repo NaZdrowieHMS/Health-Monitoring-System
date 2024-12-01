@@ -1,14 +1,13 @@
 import { PrimaryButton } from "components/atoms";
 import { CommentsCard, ListCard, LoadingCard } from "components/molecules";
-import {
-  useCommentsData,
-  useDesiredOverlay,
-  useHealthFormData,
-  useReferralsData,
-  useResultsData,
-  useScreensNavigation,
-} from "components/organisms";
+import { useDesiredOverlay, useScreensNavigation } from "components/organisms";
 import { UserContext } from "components/organisms/context";
+import {
+  useResultsData,
+  useReferralsData,
+  useCommentsData,
+  useHealthFormData,
+} from "components/organisms/dataHooks";
 import { mainStyle } from "properties/styles";
 import React, { useContext } from "react";
 import { View, ScrollView } from "react-native";

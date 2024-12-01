@@ -27,6 +27,7 @@ const queryClient = new QueryClient({
       retry: 2,
       retryDelay: 2000,
       staleTime: 60_000,
+      gcTime: 300_000,
     },
   },
 });

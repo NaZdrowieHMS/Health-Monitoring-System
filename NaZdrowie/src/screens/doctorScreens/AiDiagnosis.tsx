@@ -8,8 +8,8 @@ import {
   LoadingCard,
   Navbar,
 } from "components/molecules";
-import { useAiData, usePatientData } from "components/organisms";
 import { UserContext } from "components/organisms/context";
+import { useAiData, usePatientData } from "components/organisms/dataHooks";
 import { generalStyle, mainStyle } from "properties/styles";
 import React, { useContext } from "react";
 import { ScrollView, SafeAreaView } from "react-native";
@@ -21,11 +21,13 @@ export const AiDiagnosis = ({
   const { currentUser } = useContext(UserContext);
   const { patientData } = usePatientData(currentUser, patientId);
   const {
-    patientResultsForAi,
+    usePatientResultsForAi,
     startAiDiagnosis,
     updateAiSelectedData,
     patientPredictions,
   } = useAiData(currentUser, patientId);
+
+  const patientResultsForAi = usePatientResultsForAi();
 
   useFocusEffect(updateAiSelectedData);
 

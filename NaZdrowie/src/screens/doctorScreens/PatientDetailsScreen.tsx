@@ -7,15 +7,14 @@ import {
   LoadingCard,
   Navbar,
 } from "components/molecules";
+import { useDesiredOverlay, useScreensNavigation } from "components/organisms";
+import { UserContext } from "components/organisms/context";
 import {
-  useDesiredOverlay,
   usePatientData,
+  useResultsData,
   useReferralsData,
   useCommentsData,
-  useResultsData,
-  useScreensNavigation,
-} from "components/organisms";
-import { UserContext } from "components/organisms/context";
+} from "components/organisms/dataHooks";
 import { generalStyle, mainStyle } from "properties/styles";
 import { useContext } from "react";
 import { View, ScrollView, SafeAreaView } from "react-native";

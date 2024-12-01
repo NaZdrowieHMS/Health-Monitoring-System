@@ -12,15 +12,17 @@ import {
   LoadingCard,
   Navbar,
 } from "components/molecules";
-import {
-  formatCommentsData,
-  useAiData,
-  usePatientData,
-} from "components/organisms";
+
 import { UserContext } from "components/organisms/context";
+import {
+  usePatientData,
+  useAiData,
+  formatCommentsData,
+} from "components/organisms/dataHooks";
 import { generalStyle, mainStyle } from "properties/styles";
 import React, { useContext, useState } from "react";
 import { ScrollView, View, Text, SafeAreaView } from "react-native";
+
 import {
   useFetchResultCommentsData,
   useSendResultComment,
@@ -77,7 +79,7 @@ export const ResultPreviewScreen = ({
       <SafeAreaView style={generalStyle.safeArea}>
         <ScrollView contentContainerStyle={mainStyle.container}>
           <Text style={generalStyle.titleText}>{resultTitle}</Text>
-          {isSuccess ? (
+          {isSuccess && result.content !== undefined ? (
             <>
               <ImageCard
                 title="Podgląd"

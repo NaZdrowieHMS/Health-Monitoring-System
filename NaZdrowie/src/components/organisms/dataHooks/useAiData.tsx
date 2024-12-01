@@ -4,107 +4,106 @@ import {
   useAddAiSelectedResults,
   useDeleteAiSelectedResults,
 } from "services/aiData";
-import { aiDataPagination, formatDate } from "services/utils";
+import { aiDataPagination, doctorKeys, formatDate } from "services/utils";
 
 import { useQueryClient } from "@tanstack/react-query";
 import { useCallback } from "react";
 import { useAnalyzeWithAi, useFetchPatientPredictions } from "services/aiData";
-import { useFetchAllResultsByPatientId } from "services/resultsData";
-import { ResultOverview } from "properties/types/api/ResultProps";
+import {
+  markPatientSpecificResultDataAsStale,
+  useFetchAllResultsByPatientId,
+} from "services/resultsData";
+import {
+  DetailedResult,
+  ResultOverview,
+} from "properties/types/api/ResultProps";
+import { useScreensNavigation } from "../useScreenNavigation";
 
 export const useAiData = (currentUser: UserData, patientId: number) => {
   const queryClient = useQueryClient();
   const addAiSelectedResults = useAddAiSelectedResults();
   const deleteAiSelectedResults = useDeleteAiSelectedResults();
   const analyzeWithAi = useAnalyzeWithAi(currentUser, patientId);
+  const { navigateToResultPreviewScreen } = useScreensNavigation();
 
-  const patientResultsForAi = useFetchAllResultsByPatientId(
-    currentUser,
-    (data) => data.map(formatResultsForAiData),
-    aiDataPagination.patientResultsForAi,
-    patientId,
-  );
+  function usePatientResultsForAi() {
+    return useFetchAllResultsByPatientId(
+      currentUser,
+      (data) => data.map(formatResultsForAiData),
+      aiDataPagination.patientResultsForAi,
+      patientId,
+    );
+  }
 
   function handleCheckboxForAiSelection(resultId: number) {
+    let isTemporary = false;
     queryClient.setQueryData(
-      [currentUser, patientId, "results", ""],
-      (data: ResultOverview[]) => {
-        return data.map((dataResult: ResultOverview) => {
-          if (dataResult.id === resultId) {
-            return {
-              ...dataResult,
-              aiSelected: !dataResult.aiSelected,
-            };
-          } else {
-            return dataResult;
-          }
-        });
+      doctorKeys.patient.results.specific(currentUser.id, patientId, resultId),
+      (data: DetailedResult) => {
+        if (data.content === undefined) isTemporary = true;
+        return {
+          ...data,
+          aiSelected: !data.aiSelected,
+        };
       },
     );
+    if (isTemporary)
+      markPatientSpecificResultDataAsStale(
+        queryClient,
+        currentUser.id,
+        patientId,
+        resultId,
+      );
   }
 
   function formatResultsForAiData(result: ResultOverview) {
     return {
       checkbox: {
-        checkboxStatus: result.aiSelected,
+        checkboxStatus: queryClient.getQueryData<DetailedResult>(
+          doctorKeys.patient.results.specific(
+            currentUser.id,
+            patientId,
+            result.id,
+          ),
+        ).aiSelected,
         checkboxHandler: () => handleCheckboxForAiSelection(result.id),
       },
       text: result.testType,
-      buttons: [<LinkButton title="Podgląd" />],
+      buttons: [
+        <LinkButton
+          title="Podgląd"
+          handleOnClick={() =>
+            navigateToResultPreviewScreen(
+              result.id,
+              result.patientId,
+              result.testType,
+            )
+          }
+        />,
+      ],
     };
   }
 
   const updateAiSelectedData = useCallback(() => {
     return () => {
-      const selectedResults = queryClient.getQueryData<ResultOverview[]>([
-        currentUser,
-        patientId,
-        "results",
-        "",
-      ]);
+      const selectedResults = getCurrentPatientResultDetails();
       if (selectedResults) {
-        const toAdd = selectedResults
-          .filter(
-            (result) =>
-              result.aiSelected === true && result.patientId === patientId,
-          )
-          .map((result) => ({
-            resultId: result.id,
-            patientId: patientId,
-            doctorId: currentUser.id,
-          }));
-        const toDelete = selectedResults
-          .filter(
-            (result) =>
-              result.aiSelected === false && result.patientId === patientId,
-          )
-          .map((result) => ({
-            resultId: result.id,
-            patientId: patientId,
-            doctorId: currentUser.id,
-          }));
+        const toAdd = selectedResults.filter((elem) => elem.aiSelected);
+        const toDelete = selectedResults.filter((elem) => !elem.aiSelected);
         addAiSelectedResults.mutateAsync(toAdd);
         deleteAiSelectedResults.mutateAsync(toDelete);
-        // maybe verify whether it was succesfull
+        // maybe verify whether it was succesfull, or make it optimal
       }
     };
   }, []);
 
   const startAiDiagnosis = () => {
-    const results = queryClient.getQueryData<ResultOverview[]>([
-      currentUser,
-      patientId,
-      "results",
-      "",
-    ]);
+    const results = getCurrentPatientResultDetails();
 
     const selectedResults = results
-      ? results
-          .filter((result) => {
-            return result.aiSelected === true && patientId === result.patientId;
-          })
-          .map((result) => result.id)
-      : [];
+      .filter((elem) => elem.aiSelected === true)
+      .map((elem) => elem.resultId);
+
     analyzeWithAi.mutate({
       patientId: patientId,
       doctorId: currentUser.id,
@@ -129,8 +128,28 @@ export const useAiData = (currentUser: UserData, patientId: number) => {
     aiDataPagination.patientPredictions,
   );
 
+  function getCurrentPatientResultDetails() {
+    return queryClient
+      .getQueriesData<DetailedResult>({
+        predicate: (query) =>
+          query.queryKey.length ===
+            doctorKeys.patient.results.specific(currentUser.id, patientId, 0)
+              .length &&
+          doctorKeys.patient.results
+            .core(currentUser.id, patientId)
+            .every((elem) => query.queryKey.includes(elem)) &&
+          typeof query.queryKey[3] === "number",
+      })
+      .map(([, data]) => ({
+        resultId: data.id,
+        aiSelected: data.aiSelected,
+        patientId,
+        doctorId: currentUser.id,
+      }));
+  }
+
   return {
-    patientResultsForAi,
+    usePatientResultsForAi,
     handleCheckboxForAiSelection,
     startAiDiagnosis,
     updateAiSelectedData,
