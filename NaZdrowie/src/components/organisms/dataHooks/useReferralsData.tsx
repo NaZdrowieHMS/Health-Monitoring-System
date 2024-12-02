@@ -23,7 +23,7 @@ export const useReferralsData = (currentUser: UserData, patientId?: number) => {
                 openResultsFormOverlay(
                   referral.patientId,
                   referral.id,
-                  referral.testType
+                  referral.testType,
                 )
               }
             />,
@@ -40,7 +40,7 @@ export const useReferralsData = (currentUser: UserData, patientId?: number) => {
     currentUser,
     (data) => data.map(formatReferralsView),
     patientDataPagination.referrals,
-    patientId
+    patientId,
   );
 
   const latestReferrals = useFetchReferrals(
@@ -48,7 +48,7 @@ export const useReferralsData = (currentUser: UserData, patientId?: number) => {
     (data) =>
       data.filter((referral) => !referral.completed).map(formatReferralsView),
     patientDataPagination.latestReferrals,
-    patientId
+    patientId,
   );
 
   return {

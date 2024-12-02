@@ -1,7 +1,7 @@
 import { PersonalizedTextInput } from "components/atoms";
 import { LoadingCard, Navbar } from "components/molecules";
-import { useDoctorData } from "components/organisms";
 import { UserContext } from "components/organisms/context";
+import { useDoctorData } from "components/organisms/dataHooks";
 import { cardStyle, generalStyle, mainStyle } from "properties/styles";
 import { useContext, useState } from "react";
 import { View, ScrollView, Text, SafeAreaView } from "react-native";
@@ -27,7 +27,7 @@ export const NewPatientsScreen = () => {
         <ScrollView contentContainerStyle={mainStyle.container}>
           {unassignedPatients.isSuccess ? (
             filteredUnassignedPatients(filterValue).map(
-              (element) => element.button
+              (element) => element.button,
             )
           ) : (
             <LoadingCard />

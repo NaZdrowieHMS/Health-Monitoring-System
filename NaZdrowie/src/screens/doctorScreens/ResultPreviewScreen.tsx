@@ -12,15 +12,17 @@ import {
   LoadingCard,
   Navbar,
 } from "components/molecules";
-import {
-  formatCommentsData,
-  useAiData,
-  usePatientData,
-} from "components/organisms";
+
 import { UserContext } from "components/organisms/context";
+import {
+  usePatientData,
+  useAiData,
+  formatCommentsData,
+} from "components/organisms/dataHooks";
 import { generalStyle, mainStyle } from "properties/styles";
-import React, { useContext, useState } from "react";
+import React, { useCallback, useContext, useState } from "react";
 import { ScrollView, View, Text, SafeAreaView } from "react-native";
+
 import {
   useFetchResultCommentsData,
   useSendResultComment,
@@ -38,22 +40,26 @@ export const ResultPreviewScreen = ({
     currentUser,
     resultId,
     null,
-    patientId
+    patientId,
   );
   const { patientData } = usePatientData(currentUser, patientId);
   const { handleCheckboxForAiSelection, updateAiSelectedData } = useAiData(
     currentUser,
-    patientId
+    patientId,
   );
   const resultComments = useFetchResultCommentsData(
     currentUser,
     resultId,
     (data) => data.map(formatCommentsData),
     doctorDataPagination.resultComments,
-    patientId
+    patientId,
   );
 
-  useFocusEffect(updateAiSelectedData);
+  useFocusEffect(
+    useCallback(() => {
+      return updateAiSelectedData;
+    }, []),
+  );
 
   const handleSendComment = () => {
     if (comment.length > 0) {
@@ -77,7 +83,7 @@ export const ResultPreviewScreen = ({
       <SafeAreaView style={generalStyle.safeArea}>
         <ScrollView contentContainerStyle={mainStyle.container}>
           <Text style={generalStyle.titleText}>{resultTitle}</Text>
-          {isSuccess ? (
+          {isSuccess && result.content !== undefined ? (
             <>
               <ImageCard
                 title="Podgląd"
@@ -88,8 +94,8 @@ export const ResultPreviewScreen = ({
                 <Text style={generalStyle.titleText}>Uzyj do analizy AI</Text>
                 <PersonalizedCheckbox
                   checkboxInitialValue={result.aiSelected}
-                  handleValueChange={() =>
-                    handleCheckboxForAiSelection(result.id)
+                  handleValueChange={(value: boolean) =>
+                    handleCheckboxForAiSelection(result.id, value)
                   }
                 />
               </View>

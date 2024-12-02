@@ -12,7 +12,7 @@ export const useFetchHealthForms = <T = HealthFormDisplayData[]>(
   user: UserData,
   select?: (data: HealthFormDisplayData[]) => T,
   pagination?: PaginationData,
-  patientId?: number
+  patientId?: number,
 ) => {
   return useQuery<HealthFormDisplayData[], Error, T>({
     queryKey: patientId
@@ -35,14 +35,14 @@ export const useFetchHealthForm = <T = HealthFormDisplayData>(
   user: UserData,
   healthFormId: number,
   select?: (data: HealthFormDisplayData) => T,
-  patientId?: number
+  patientId?: number,
 ) => {
   return useQuery<HealthFormDisplayData, Error, T>({
     queryKey: patientId
       ? doctorKeys.patient.healthForms.specific(
           user.id,
           patientId,
-          healthFormId
+          healthFormId,
         )
       : patientKeys.healthForms.specific(user.id, healthFormId),
     queryFn: async () => {
@@ -66,13 +66,13 @@ export const useSendHealthForm = (user: UserData) => {
       queryClient.setQueryData(
         patientKeys.healthForms.list(
           user.id,
-          patientDataPagination.latestHealthForm
+          patientDataPagination.latestHealthForm,
         ),
-        () => newHealthForm
+        () => newHealthForm,
       );
       queryClient.setQueryData(
         patientKeys.healthForms.specific(user.id, newHealthForm.id),
-        () => newHealthForm
+        () => newHealthForm,
       );
     },
   });

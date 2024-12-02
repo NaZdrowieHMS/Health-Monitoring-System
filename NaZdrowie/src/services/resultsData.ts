@@ -1,4 +1,9 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  QueryClient,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
 import { Referral, UserData } from "properties/types";
 import { PaginationData } from "properties/types/api";
 import {
@@ -14,12 +19,54 @@ import {
   resultsDataPagination,
 } from "./utils";
 
+export function markPatientSpecificResultDataAsStale(
+  queryClient: QueryClient,
+  doctorId: number,
+  patientId: number,
+  resultId: number,
+) {
+  queryClient.invalidateQueries({
+    queryKey: doctorKeys.patient.results.specific(
+      doctorId,
+      patientId,
+      resultId,
+    ),
+    exact: true,
+  });
+}
+
+function partiallyUpdateSpecificResultData(
+  queryClient: QueryClient,
+  doctorId: number,
+  patientId: number,
+  data: ResultOverview[],
+) {
+  data.forEach((result) => {
+    queryClient.setQueryData(
+      doctorKeys.patient.results.specific(doctorId, patientId, result.id),
+      (oldResult: DetailedResult | undefined) => {
+        if (oldResult !== undefined) {
+          return oldResult;
+        }
+        return result;
+      },
+    );
+    markPatientSpecificResultDataAsStale(
+      queryClient,
+      doctorId,
+      patientId,
+      result.id,
+    );
+  });
+}
+
 export const useFetchAllResultsByPatientId = <T = ResultOverview[]>(
   user: UserData,
   select?: (data: ResultOverview[]) => T,
   pagination?: PaginationData,
-  patientId?: number
+  patientId?: number,
 ) => {
+  const queryClient = useQueryClient();
   return useQuery<ResultOverview[], Error, T>({
     queryKey: patientId
       ? doctorKeys.patient.results.list(user.id, patientId, pagination)
@@ -33,7 +80,10 @@ export const useFetchAllResultsByPatientId = <T = ResultOverview[]>(
       });
       return data;
     },
-    select,
+    select: (data: ResultOverview[]) => {
+      partiallyUpdateSpecificResultData(queryClient, user.id, patientId, data);
+      return select ? select(data) : (data as T);
+    },
   });
 };
 
@@ -41,7 +91,7 @@ export const useFetchResult = <T = DetailedResult>(
   user: UserData,
   resultId: number,
   select?: (data: DetailedResult) => T,
-  patientId?: number
+  patientId?: number,
 ) => {
   return useQuery<DetailedResult, Error, T>({
     queryKey: patientId
@@ -59,7 +109,7 @@ export const useFetchResult = <T = DetailedResult>(
 export const useFetchUnviewedResults = <T = ResultOverview[]>(
   user: UserData,
   select?: (data: ResultOverview[]) => T,
-  pagination?: PaginationData
+  pagination?: PaginationData,
 ) => {
   return useQuery<ResultOverview[], Error, T>({
     queryKey: doctorKeys.resultsUnviewed(user.id),
@@ -91,17 +141,17 @@ export const useSendResult = (user: UserData, isreferralAssigned: boolean) => {
           doctorKeys.patient.results.list(
             user.id,
             newResult.patientId,
-            resultsDataPagination.latestResults
+            resultsDataPagination.latestResults,
           ),
-          (oldResults: ResultOverview[]) => [newResult, ...oldResults]
+          (oldResults: ResultOverview[]) => [newResult, ...oldResults],
         );
         queryClient.setQueryData(
           doctorKeys.patient.results.specific(
             user.id,
             newResult.patientId,
-            newResult.id
+            newResult.id,
           ),
-          () => newResult
+          () => newResult,
         );
         if (isreferralAssigned) {
           // delete from patient's "Moje skierowania" if assigned to referral, change completed to true
@@ -109,24 +159,24 @@ export const useSendResult = (user: UserData, isreferralAssigned: boolean) => {
             doctorKeys.patient.referrals.list(
               user.id,
               newResult.patientId,
-              patientDataPagination.latestReferrals
+              patientDataPagination.latestReferrals,
             ),
             (oldReferrals: Referral[]) =>
-              oldReferrals.filter((referral) => referral.id !== referralId)
+              oldReferrals.filter((referral) => referral.id !== referralId),
           );
           queryClient.setQueriesData(
             {
               queryKey: doctorKeys.patient.referrals.core(
                 user.id,
-                newResult.patientId
+                newResult.patientId,
               ),
             },
             (oldReferrals: Referral[]) =>
               oldReferrals.map((referral) =>
                 referral.id === referralId
                   ? { ...referral, completed: true }
-                  : referral
-              )
+                  : referral,
+              ),
           );
         }
       } else {
@@ -134,23 +184,23 @@ export const useSendResult = (user: UserData, isreferralAssigned: boolean) => {
         queryClient.setQueryData(
           patientKeys.results.list(
             user.id,
-            resultsDataPagination.latestResults
+            resultsDataPagination.latestResults,
           ),
-          (oldResults: ResultOverview[]) => [newResult, ...oldResults]
+          (oldResults: ResultOverview[]) => [newResult, ...oldResults],
         );
         queryClient.setQueryData(
           patientKeys.results.specific(user.id, newResult.id),
-          () => newResult
+          () => newResult,
         );
         if (isreferralAssigned) {
           // delete from "Moje skierowania" if assigned to referral, change completed to true
           queryClient.setQueryData(
             patientKeys.referrals.list(
               user.id,
-              patientDataPagination.latestReferrals
+              patientDataPagination.latestReferrals,
             ),
             (oldReferrals: Referral[]) =>
-              oldReferrals.filter((referral) => referral.id !== referralId)
+              oldReferrals.filter((referral) => referral.id !== referralId),
           );
           queryClient.setQueriesData(
             {
@@ -160,8 +210,8 @@ export const useSendResult = (user: UserData, isreferralAssigned: boolean) => {
               oldReferrals.map((referral) =>
                 referral.id === referralId
                   ? { ...referral, completed: true }
-                  : referral
-              )
+                  : referral,
+              ),
           );
         }
       }

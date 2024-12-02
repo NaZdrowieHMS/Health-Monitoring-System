@@ -15,14 +15,14 @@ export const useCommentsData = (currentUser: UserData, patientId?: number) => {
     currentUser,
     (data) => data.map(formatCommentsData),
     patientDataPagination.healthComments,
-    patientId
+    patientId,
   );
 
   const latestHealthComments = useFetchHealthComments(
     currentUser,
     (data) => data.map(formatCommentsData),
     patientDataPagination.latestHealthComments,
-    patientId
+    patientId,
   );
 
   const healthCommentUpload = {
@@ -39,7 +39,7 @@ export const useCommentsData = (currentUser: UserData, patientId?: number) => {
     (data) => data.map(formatCommentsData),
     doctorDataPagination.currentDotorComments,
     patientId,
-    CommentsFilter.Specific
+    CommentsFilter.Specific,
   );
 
   const otherDotorsComments = useFetchHealthComments(
@@ -47,7 +47,7 @@ export const useCommentsData = (currentUser: UserData, patientId?: number) => {
     (data) => data.map(formatCommentsData),
     doctorDataPagination.otherDotorsComments,
     patientId,
-    CommentsFilter.Others
+    CommentsFilter.Others,
   );
 
   return {

@@ -5,7 +5,7 @@ import { Overlay } from "./Overlay";
 import { cardCommentsCount } from "services/config";
 import { useFetchResult } from "services/resultsData";
 import { LoadingCard, ImageCard, CommentsCard } from "components/molecules";
-import { formatCommentsData } from "../dataHooks";
+import { formatCommentsData } from "../dataHooks/dataFormatHelpers";
 
 export const ResultPreviewOverlay: React.FC<{
   currentUser: UserData;
@@ -23,7 +23,7 @@ export const ResultPreviewOverlay: React.FC<{
     currentUser,
     resultId,
     (data) => data.map(formatCommentsData),
-    { pageSize: cardCommentsCount }
+    { pageSize: cardCommentsCount },
   );
 
   return (

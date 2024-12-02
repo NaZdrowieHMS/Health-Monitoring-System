@@ -69,7 +69,7 @@ export const useScreensNavigation = () => {
         [
           { text: "Cancel", style: "cancel" },
           { text: "Open Settings", onPress: () => Linking.openSettings() },
-        ]
+        ],
       );
     }
   };
@@ -77,7 +77,7 @@ export const useScreensNavigation = () => {
   const navigateToResultPreviewScreen = (
     resultId: number,
     patientId: number,
-    resultTitle: string
+    resultTitle: string,
   ) => {
     navigate("ResultPreview", {
       resultId,

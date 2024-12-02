@@ -1,5 +1,4 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { RootStackParamList } from "../../../App";
 import { LoadingCard, Navbar } from "components/molecules";
 import { SafeAreaView, ScrollView } from "react-native";
 import { generalStyle, mainStyle } from "properties/styles";
@@ -10,6 +9,7 @@ import { useDesiredOverlay, useScreensNavigation } from "components/organisms";
 import { useFetchAllResultsByPatientId } from "services/resultsData";
 import { ResultButton } from "components/atoms/buttons";
 import { ResultOverview } from "properties/types/api";
+import { RootStackParamList } from "App";
 
 export const AllResultsScreen = ({
   route,
@@ -36,7 +36,7 @@ export const AllResultsScreen = ({
                 navigateToResultPreviewScreen(
                   result.id,
                   result.patientId,
-                  result.testType
+                  result.testType,
                 )
             : () => openResultOverlay(result.id, result.testType)
         }

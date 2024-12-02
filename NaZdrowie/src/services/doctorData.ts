@@ -9,7 +9,7 @@ import { PaginationData } from "properties/types/api";
 export const useFetchPatients = <T = PatientData[]>(
   user: UserData,
   select?: (data: PatientData[]) => T,
-  pagination?: PaginationData
+  pagination?: PaginationData,
 ) => {
   return useQuery<PatientData[], Error, T>({
     queryKey: doctorKeys.patients.list(user.id, pagination),
@@ -28,7 +28,7 @@ export const useFetchPatients = <T = PatientData[]>(
 export const useFetchAllUnassignedPatients = <T = PatientData[]>(
   user: UserData,
   select?: (data: PatientData[]) => T,
-  pagination?: PaginationData
+  pagination?: PaginationData,
 ) => {
   return useQuery<PatientData[], Error, T>({
     queryKey: doctorKeys.patients.unassigned.list(user.id, pagination),
@@ -39,7 +39,7 @@ export const useFetchAllUnassignedPatients = <T = PatientData[]>(
           params: {
             ...pagination,
           },
-        }
+        },
       );
       return data;
     },
