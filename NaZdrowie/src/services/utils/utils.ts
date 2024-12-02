@@ -12,6 +12,16 @@ export const formatDate = (unformattedDate: string) => {
   }).format(date);
 };
 
+export const formatShortDate = (unformattedDate: string) => {
+  const date = new Date(unformattedDate);
+  return new Intl.DateTimeFormat("pl-PL", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+    hour12: false,
+  }).format(date);
+};
+
 export const resultItems: DropdownItem[] = [
   { label: "USG piersi", value: "USG piersi" },
   { label: "Mammografia", value: "Mammografia" },
