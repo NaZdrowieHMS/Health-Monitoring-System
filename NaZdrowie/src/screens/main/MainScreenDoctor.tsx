@@ -10,13 +10,15 @@ import { View, ScrollView } from "react-native";
 export const MainScreenDoctor = () => {
   const { currentUser } = useContext(UserContext);
 
-  const { latestPatients } = useDoctorData(currentUser);
+  const { prepareLatestPatients } = useDoctorData(currentUser);
   const { navigateToNewPatientsScreen } = useScreensNavigation();
 
-  const { unviewedResults } = useResultsData(currentUser);
+  const { prepareUnviewedResults } = useResultsData(currentUser);
   const { openQrDisplayOverlay } = useDesiredOverlay(currentUser);
   const { navigateToAllPatientsScreen } = useScreensNavigation();
 
+  const unviewedResults = prepareUnviewedResults();
+  const latestPatients = prepareLatestPatients();
   return (
     <ScrollView contentContainerStyle={mainStyle.container}>
       <View style={mainStyle.buttonContainer}>
