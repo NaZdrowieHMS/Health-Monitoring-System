@@ -4,7 +4,7 @@ import React from "react";
 
 type CheckboxElement = {
   checkboxStatus: boolean;
-  checkboxHandler: () => void;
+  checkboxHandler: (value: boolean) => void;
 };
 
 export type ListCardElement = {

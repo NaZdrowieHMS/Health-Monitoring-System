@@ -20,7 +20,7 @@ import {
   formatCommentsData,
 } from "components/organisms/dataHooks";
 import { generalStyle, mainStyle } from "properties/styles";
-import React, { useContext, useState } from "react";
+import React, { useCallback, useContext, useState } from "react";
 import { ScrollView, View, Text, SafeAreaView } from "react-native";
 
 import {
@@ -55,7 +55,11 @@ export const ResultPreviewScreen = ({
     patientId,
   );
 
-  useFocusEffect(updateAiSelectedData);
+  useFocusEffect(
+    useCallback(() => {
+      return updateAiSelectedData;
+    }, []),
+  );
 
   const handleSendComment = () => {
     if (comment.length > 0) {
@@ -90,8 +94,8 @@ export const ResultPreviewScreen = ({
                 <Text style={generalStyle.titleText}>Uzyj do analizy AI</Text>
                 <PersonalizedCheckbox
                   checkboxInitialValue={result.aiSelected}
-                  handleValueChange={() =>
-                    handleCheckboxForAiSelection(result.id)
+                  handleValueChange={(value: boolean) =>
+                    handleCheckboxForAiSelection(result.id, value)
                   }
                 />
               </View>

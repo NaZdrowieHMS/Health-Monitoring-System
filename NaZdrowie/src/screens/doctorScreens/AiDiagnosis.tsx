@@ -11,7 +11,7 @@ import {
 import { UserContext } from "components/organisms/context";
 import { useAiData, usePatientData } from "components/organisms/dataHooks";
 import { generalStyle, mainStyle } from "properties/styles";
-import React, { useContext } from "react";
+import React, { useCallback, useContext } from "react";
 import { ScrollView, SafeAreaView } from "react-native";
 
 export const AiDiagnosis = ({
@@ -21,15 +21,21 @@ export const AiDiagnosis = ({
   const { currentUser } = useContext(UserContext);
   const { patientData } = usePatientData(currentUser, patientId);
   const {
-    usePatientResultsForAi,
+    preparePatientResultsForAi,
     startAiDiagnosis,
     updateAiSelectedData,
     patientPredictions,
+    refreshKey,
   } = useAiData(currentUser, patientId);
 
-  const patientResultsForAi = usePatientResultsForAi();
+  const patientResultsForAi = preparePatientResultsForAi();
 
-  useFocusEffect(updateAiSelectedData);
+  useFocusEffect(
+    useCallback(() => {
+      patientResultsForAi.refetch();
+      return updateAiSelectedData;
+    }, [patientResultsForAi.refetch]),
+  );
 
   return (
     <>
@@ -44,6 +50,7 @@ export const AiDiagnosis = ({
         <ScrollView contentContainerStyle={mainStyle.container}>
           {patientResultsForAi.isSuccess ? (
             <ListCard
+              key={refreshKey}
               title="Załączone badania"
               data={patientResultsForAi.data}
               extraButton={

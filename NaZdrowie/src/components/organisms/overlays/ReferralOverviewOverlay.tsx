@@ -8,7 +8,7 @@ import { formatDate } from "services/utils";
 import { Overlay } from "./Overlay";
 import { LoadingCard, ObjectCard } from "components/molecules";
 import { useFetchReferral } from "services/referralsData";
-import { formatReferralInfo } from "../dataHooks";
+import { formatReferralInfo } from "../dataHooks/dataFormatHelpers";
 
 export const ReferralOverviewOverlay: React.FC<{
   handleClose: () => void;

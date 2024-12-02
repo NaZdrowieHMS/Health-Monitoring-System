@@ -7,7 +7,7 @@ import {
 import { aiDataPagination, doctorKeys, formatDate } from "services/utils";
 
 import { useQueryClient } from "@tanstack/react-query";
-import { useCallback } from "react";
+import { useState } from "react";
 import { useAnalyzeWithAi, useFetchPatientPredictions } from "services/aiData";
 import {
   markPatientSpecificResultDataAsStale,
@@ -26,27 +26,35 @@ export const useAiData = (currentUser: UserData, patientId: number) => {
   const analyzeWithAi = useAnalyzeWithAi(currentUser, patientId);
   const { navigateToResultPreviewScreen } = useScreensNavigation();
 
-  function usePatientResultsForAi() {
-    return useFetchAllResultsByPatientId(
+  const [refreshKey, setRefreshKey] = useState(0);
+
+  const preparePatientResultsForAi = () =>
+    useFetchAllResultsByPatientId(
       currentUser,
       (data) => data.map(formatResultsForAiData),
       aiDataPagination.patientResultsForAi,
       patientId,
     );
-  }
 
-  function handleCheckboxForAiSelection(resultId: number) {
+  function handleCheckboxForAiSelection(resultId: number, value: boolean) {
     let isTemporary = false;
     queryClient.setQueryData(
       doctorKeys.patient.results.specific(currentUser.id, patientId, resultId),
       (data: DetailedResult) => {
-        if (data.content === undefined) isTemporary = true;
+        if (data?.content === undefined) isTemporary = true;
+        if (data === undefined) {
+          return {
+            resultId,
+            aiSelected: value,
+          };
+        }
         return {
           ...data,
-          aiSelected: !data.aiSelected,
+          aiSelected: value,
         };
       },
     );
+    setRefreshKey((prev) => prev++);
     if (isTemporary)
       markPatientSpecificResultDataAsStale(
         queryClient,
@@ -66,7 +74,8 @@ export const useAiData = (currentUser: UserData, patientId: number) => {
             result.id,
           ),
         ).aiSelected,
-        checkboxHandler: () => handleCheckboxForAiSelection(result.id),
+        checkboxHandler: (value: boolean) =>
+          handleCheckboxForAiSelection(result.id, value),
       },
       text: result.testType,
       buttons: [
@@ -84,18 +93,16 @@ export const useAiData = (currentUser: UserData, patientId: number) => {
     };
   }
 
-  const updateAiSelectedData = useCallback(() => {
-    return () => {
-      const selectedResults = getCurrentPatientResultDetails();
-      if (selectedResults) {
-        const toAdd = selectedResults.filter((elem) => elem.aiSelected);
-        const toDelete = selectedResults.filter((elem) => !elem.aiSelected);
-        addAiSelectedResults.mutateAsync(toAdd);
-        deleteAiSelectedResults.mutateAsync(toDelete);
-        // maybe verify whether it was succesfull, or make it optimal
-      }
-    };
-  }, []);
+  const updateAiSelectedData = () => {
+    const selectedResults = getCurrentPatientResultDetails();
+    if (selectedResults) {
+      const toAdd = selectedResults.filter((elem) => elem.aiSelected);
+      const toDelete = selectedResults.filter((elem) => !elem.aiSelected);
+      addAiSelectedResults.mutateAsync(toAdd);
+      deleteAiSelectedResults.mutateAsync(toDelete);
+      // maybe verify whether it was succesfull, or make it optimal
+    }
+  };
 
   const startAiDiagnosis = () => {
     const results = getCurrentPatientResultDetails();
@@ -149,10 +156,11 @@ export const useAiData = (currentUser: UserData, patientId: number) => {
   }
 
   return {
-    usePatientResultsForAi,
+    preparePatientResultsForAi,
     handleCheckboxForAiSelection,
     startAiDiagnosis,
     updateAiSelectedData,
     patientPredictions,
+    refreshKey,
   };
 };
