@@ -20,14 +20,15 @@ export const useHealthFormData = (
     ],
   });
 
-  const latestHealthForm = useFetchHealthForms(
-    currentUser,
-    (data) => data.map(formatHealthFormView),
-    patientDataPagination.latestHealthForm,
-    patientId,
-  );
+  const prepareLatestHealthForm = () =>
+    useFetchHealthForms(
+      currentUser,
+      (data) => data.map(formatHealthFormView),
+      patientDataPagination.latestHealthForm,
+      patientId,
+    );
 
   return {
-    latestHealthForm,
+    prepareLatestHealthForm,
   };
 };

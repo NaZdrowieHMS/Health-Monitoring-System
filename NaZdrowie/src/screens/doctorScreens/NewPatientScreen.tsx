@@ -10,9 +10,10 @@ export const NewPatientsScreen = () => {
   const { currentUser } = useContext(UserContext);
   const [filterValue, setFilterValue] = useState<string>("");
 
-  const { unassignedPatients, filteredUnassignedPatients } =
+  const { prepareUnassignedPatients, filteredUnassignedPatients } =
     useDoctorData(currentUser);
 
+  const unassignedPatients = prepareUnassignedPatients();
   return (
     <>
       <Navbar navbarDescriptionTitle="Nowi pacjenci" />
@@ -26,9 +27,10 @@ export const NewPatientsScreen = () => {
         </View>
         <ScrollView contentContainerStyle={mainStyle.container}>
           {unassignedPatients.isSuccess ? (
-            filteredUnassignedPatients(filterValue).map(
-              (element) => element.button,
-            )
+            filteredUnassignedPatients(
+              unassignedPatients.data,
+              filterValue,
+            ).map((element) => element.button)
           ) : (
             <LoadingCard />
           )}

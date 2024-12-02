@@ -8,8 +8,9 @@ import { ScrollView, SafeAreaView } from "react-native";
 export const AllPatientsScreen = () => {
   const { currentUser } = useContext(UserContext);
 
-  const { allPatients } = usePatientData(currentUser);
+  const { prepareAllPatients } = usePatientData(currentUser);
 
+  const allPatients = prepareAllPatients();
   return (
     <>
       <Navbar navbarDescriptionTitle="Moi pacjenci" />

@@ -16,10 +16,15 @@ export const MainScreenPatient = () => {
   const { currentUser } = useContext(UserContext);
 
   const { navigateToQrScanner } = useScreensNavigation();
-  const { latestResults } = useResultsData(currentUser);
-  const { latestReferrals } = useReferralsData(currentUser);
-  const { latestHealthComments } = useCommentsData(currentUser);
-  const { latestHealthForm } = useHealthFormData(currentUser);
+  const { prepareLatestResults } = useResultsData(currentUser);
+  const { prepareLatestReferrals } = useReferralsData(currentUser);
+  const { prepareLatestHealthComments } = useCommentsData(currentUser);
+  const { prepareLatestHealthForm } = useHealthFormData(currentUser);
+
+  const latestResults = prepareLatestResults();
+  const latestHealthForm = prepareLatestHealthForm();
+  const latestReferrals = prepareLatestReferrals();
+  const latestHealthComments = prepareLatestHealthComments();
 
   const { openResultsFormOverlay, openHealthFormFillOverlay } =
     useDesiredOverlay(currentUser);

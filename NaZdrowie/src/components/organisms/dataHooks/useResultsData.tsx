@@ -9,6 +9,7 @@ import {
 } from "services/resultsData";
 import { resultsDataPagination } from "services/utils";
 import { useScreensNavigation } from "../useScreenNavigation";
+import { ResultButton } from "components/atoms/buttons";
 
 export const useResultsData = (currentUser: UserData, patientId?: number) => {
   const { openResultOverlay } = useDesiredOverlay(currentUser);
@@ -32,34 +33,65 @@ export const useResultsData = (currentUser: UserData, patientId?: number) => {
     ],
   });
 
-  const results = useFetchAllResultsByPatientId(
-    currentUser,
-    (data) => data.map(formatResultsView),
-    null,
-    patientId,
-  );
+  const formatResultButton = (result: ResultOverview) => {
+    return (
+      <ResultButton
+        title={result.testType}
+        date={result.createdDate}
+        key={result.id}
+        handleOnClick={
+          currentUser.isDoctor
+            ? () =>
+                navigateToResultPreviewScreen(
+                  result.id,
+                  result.patientId,
+                  result.testType,
+                )
+            : () => openResultOverlay(result.id, result.testType)
+        }
+      />
+    );
+  };
 
-  const latestResults = useFetchAllResultsByPatientId(
-    currentUser,
-    (data) => data.map(formatResultsView),
-    resultsDataPagination.latestResults,
-    patientId,
-  );
+  const prepareResults = () =>
+    useFetchAllResultsByPatientId(
+      currentUser,
+      (data) => data.map(formatResultsView),
+      null,
+      patientId,
+    );
 
-  const unviewedResults = useFetchUnviewedResults(currentUser, (data) =>
-    data.map(formatResultsView),
-  );
+  const prepareLatestResults = () =>
+    useFetchAllResultsByPatientId(
+      currentUser,
+      (data) => data.map(formatResultsView),
+      resultsDataPagination.latestResults,
+      patientId,
+    );
 
-  const latestUnviewedResults = useFetchUnviewedResults(
-    currentUser,
-    (data) => data.map(formatResultsView),
-    resultsDataPagination.latestUnviewedResults,
-  );
+  const prepareResultsHistory = () =>
+    useFetchAllResultsByPatientId(
+      currentUser,
+      (data) => data.map(formatResultButton),
+      null,
+      patientId,
+    );
+
+  const prepareUnviewedResults = () =>
+    useFetchUnviewedResults(currentUser, (data) => data.map(formatResultsView));
+
+  const prepareLatestUnviewedResults = () =>
+    useFetchUnviewedResults(
+      currentUser,
+      (data) => data.map(formatResultsView),
+      resultsDataPagination.latestUnviewedResults,
+    );
 
   return {
-    results,
-    latestResults,
-    unviewedResults,
-    latestUnviewedResults,
+    prepareResults,
+    prepareLatestResults,
+    prepareUnviewedResults,
+    prepareLatestUnviewedResults,
+    prepareResultsHistory,
   };
 };

@@ -42,7 +42,7 @@ export const ResultPreviewScreen = ({
     null,
     patientId,
   );
-  const { patientData } = usePatientData(currentUser, patientId);
+  const { preparePatientData } = usePatientData(currentUser, patientId);
   const { handleCheckboxForAiSelection, updateAiSelectedData } = useAiData(
     currentUser,
     patientId,
@@ -54,6 +54,8 @@ export const ResultPreviewScreen = ({
     doctorDataPagination.resultComments,
     patientId,
   );
+
+  const patientData = preparePatientData();
 
   useFocusEffect(
     useCallback(() => {

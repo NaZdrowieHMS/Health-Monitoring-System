@@ -19,7 +19,7 @@ export const AiDiagnosis = ({
 }: NativeStackScreenProps<RootStackParamList, "AiDiagnosis">) => {
   const { patientId } = route.params;
   const { currentUser } = useContext(UserContext);
-  const { patientData } = usePatientData(currentUser, patientId);
+  const { preparePatientData } = usePatientData(currentUser, patientId);
   const {
     preparePatientResultsForAi,
     startAiDiagnosis,
@@ -28,6 +28,7 @@ export const AiDiagnosis = ({
     refreshKey,
   } = useAiData(currentUser, patientId);
 
+  const patientData = preparePatientData();
   const patientResultsForAi = preparePatientResultsForAi();
 
   useFocusEffect(

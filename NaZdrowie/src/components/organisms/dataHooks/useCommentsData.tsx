@@ -11,19 +11,21 @@ import {
 import { formatCommentsData } from "./dataFormatHelpers";
 
 export const useCommentsData = (currentUser: UserData, patientId?: number) => {
-  const healthComments = useFetchHealthComments(
-    currentUser,
-    (data) => data.map(formatCommentsData),
-    patientDataPagination.healthComments,
-    patientId,
-  );
+  const prepareHealthComments = () =>
+    useFetchHealthComments(
+      currentUser,
+      (data) => data.map(formatCommentsData),
+      patientDataPagination.healthComments,
+      patientId,
+    );
 
-  const latestHealthComments = useFetchHealthComments(
-    currentUser,
-    (data) => data.map(formatCommentsData),
-    patientDataPagination.latestHealthComments,
-    patientId,
-  );
+  const prepareLatestHealthComments = () =>
+    useFetchHealthComments(
+      currentUser,
+      (data) => data.map(formatCommentsData),
+      patientDataPagination.latestHealthComments,
+      patientId,
+    );
 
   const healthCommentUpload = {
     sendComment: useSendHealthComment(currentUser),
@@ -34,27 +36,29 @@ export const useCommentsData = (currentUser: UserData, patientId?: number) => {
     },
   };
 
-  const currentDotorComments = useFetchHealthComments(
-    currentUser,
-    (data) => data.map(formatCommentsData),
-    doctorDataPagination.currentDotorComments,
-    patientId,
-    CommentsFilter.Specific,
-  );
+  const prepareCurrentDotorComments = () =>
+    useFetchHealthComments(
+      currentUser,
+      (data) => data.map(formatCommentsData),
+      doctorDataPagination.currentDotorComments,
+      patientId,
+      CommentsFilter.Specific,
+    );
 
-  const otherDotorsComments = useFetchHealthComments(
-    currentUser,
-    (data) => data.map(formatCommentsData),
-    doctorDataPagination.otherDotorsComments,
-    patientId,
-    CommentsFilter.Others,
-  );
+  const prepareOtherDotorsComments = () =>
+    useFetchHealthComments(
+      currentUser,
+      (data) => data.map(formatCommentsData),
+      doctorDataPagination.otherDotorsComments,
+      patientId,
+      CommentsFilter.Others,
+    );
 
   return {
-    healthComments,
-    latestHealthComments,
+    prepareHealthComments,
+    prepareLatestHealthComments,
     healthCommentUpload,
-    currentDotorComments,
-    otherDotorsComments,
+    prepareCurrentDotorComments,
+    prepareOtherDotorsComments,
   };
 };
