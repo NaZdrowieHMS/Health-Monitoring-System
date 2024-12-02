@@ -53,5 +53,11 @@ export const useBindPatientToDoctor = (user: UserData) => {
         // refetch list of all doctors (for patient) - curerntly not implemented
       }
     },
+    onError(error) {
+      Alert.alert(
+        "Błąd przy przypisywaniu pacjenta",
+        "Wiadomość błędu:" + error.message,
+      );
+    },
   });
 };
