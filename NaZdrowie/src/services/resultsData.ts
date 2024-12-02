@@ -35,7 +35,7 @@ export function markPatientSpecificResultDataAsStale(
   });
 }
 
-function partiallyUpdateSpecificResultData(
+function partiallyUpdateSpecificResultCache(
   queryClient: QueryClient,
   doctorId: number,
   patientId: number,
@@ -81,7 +81,7 @@ export const useFetchAllResultsByPatientId = <T = ResultOverview[]>(
       return data;
     },
     select: (data: ResultOverview[]) => {
-      partiallyUpdateSpecificResultData(queryClient, user.id, patientId, data);
+      partiallyUpdateSpecificResultCache(queryClient, user.id, patientId, data);
       return select ? select(data) : (data as T);
     },
   });

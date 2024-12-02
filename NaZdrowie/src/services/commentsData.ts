@@ -1,4 +1,9 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  QueryClient,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
 import {
   HealthCommentUpload,
   DoctorComment,
@@ -9,6 +14,7 @@ import { CommentsFilter, doctorDataPagination } from "./utils";
 import { axiosApi } from "./axios";
 import { PaginationData } from "properties/types/api";
 import { doctorKeys, patientKeys } from "./utils";
+import { Alert } from "react-native";
 
 export const useFetchResultCommentsData = <T = DoctorComment[]>(
   user: UserData,
@@ -68,44 +74,65 @@ export const useFetchHealthComments = <T = DoctorComment[]>(
   });
 };
 
-export const useSendHealthComment = (user: UserData) => {
-  const queryClient = useQueryClient();
+const updateCurrentDoctorHealthCommentsCache = (
+  queryClient: QueryClient,
+  userId: number,
+  patientId: number,
+  newComment: DoctorComment,
+) => {
+  queryClient.setQueryData(
+    doctorKeys.patient.healthComments.list(
+      userId,
+      patientId,
+      doctorDataPagination.currentDotorComments,
+      CommentsFilter.Specific,
+    ),
+    (oldComments: DoctorComment[]) => {
+      if (oldComments !== undefined) {
+        return [newComment, ...oldComments.slice(0, -1)];
+      }
+      return oldComments;
+    },
+  );
+};
 
-  let patientId: number = null;
+// TODO when healthComments screen will be implemented with example below
+const updatePatientHealthCommentsCache = () =>
+  // queryClient: QueryClient,
+  // userId: number,
+  // patientId: number,
+  // newComment: DoctorComment,
+  {
+    // queryClient.setQueryData(
+    //   doctorKeys.patient.healthComments.list(userId, patientId),
+    //   (oldComments: DoctorComment[]) => {
+    //     if (oldComments !== undefined) {
+    //       return [newComment, ...oldComments];
+    //     }
+    //     return oldComments;
+    //   },
+    // );
+  };
+
+export const useSendHealthComment = (user: UserData, patientId: number) => {
+  const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: async (comment: HealthCommentUpload) => {
-      patientId = comment.patientId;
       const { data } = await axiosApi.post("health", comment);
       return data;
     },
-    onSuccess(newComments: DoctorComment) {
-      // currently updated - currentDoctorComments, all patient's health comments (if fetched before)
+    onSuccess(newComment: DoctorComment) {
       try {
-        queryClient.setQueryData(
-          doctorKeys.patient.healthComments.list(
-            user.id,
-            patientId,
-            doctorDataPagination.currentDotorComments,
-            CommentsFilter.Specific,
-          ),
-          (oldComments: DoctorComment[]) => {
-            if (oldComments !== undefined) {
-              return [newComments, ...oldComments.slice(0, -1)];
-            }
-          },
+        updateCurrentDoctorHealthCommentsCache(
+          queryClient,
+          user.id,
+          patientId,
+          newComment,
         );
-        queryClient.setQueryData(
-          doctorKeys.patient.healthComments.list(user.id, patientId),
-          (oldComments: DoctorComment[]) => {
-            if (oldComments !== undefined) {
-              return [newComments, ...oldComments];
-            }
-            return oldComments;
-          },
-        );
+        updatePatientHealthCommentsCache();
       } catch (error) {
-        console.error(error);
+        console.error(error.message, error.stack);
       }
     },
   });
@@ -146,6 +173,12 @@ export const useSendResultComment = (user: UserData, patientId: number) => {
             return [newComment, ...oldComments];
           }
         },
+      );
+    },
+    onError(error) {
+      Alert.alert(
+        "Błąd przy wysyłaniu komentarza dla pacjenta",
+        "Wiadomość błędu:" + error.message,
       );
     },
   });

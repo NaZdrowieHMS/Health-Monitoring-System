@@ -28,7 +28,7 @@ export const useCommentsData = (currentUser: UserData, patientId?: number) => {
     );
 
   const healthCommentUpload = {
-    sendComment: useSendHealthComment(currentUser),
+    sendComment: useSendHealthComment(currentUser, patientId),
     comment: {
       doctorId: currentUser.id,
       patientId: patientId,
