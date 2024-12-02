@@ -36,23 +36,25 @@ export const useReferralsData = (currentUser: UserData, patientId?: number) => {
           ],
   });
 
-  const referrals = useFetchReferrals(
-    currentUser,
-    (data) => data.map(formatReferralsView),
-    patientDataPagination.referrals,
-    patientId,
-  );
+  const prepareReferrals = () =>
+    useFetchReferrals(
+      currentUser,
+      (data) => data.map(formatReferralsView),
+      patientDataPagination.referrals,
+      patientId,
+    );
 
-  const latestReferrals = useFetchReferrals(
-    currentUser,
-    (data) =>
-      data.filter((referral) => !referral.completed).map(formatReferralsView),
-    patientDataPagination.latestReferrals,
-    patientId,
-  );
+  const prepareLatestReferrals = () =>
+    useFetchReferrals(
+      currentUser,
+      (data) =>
+        data.filter((referral) => !referral.completed).map(formatReferralsView),
+      patientDataPagination.latestReferrals,
+      patientId,
+    );
 
   return {
-    referrals,
-    latestReferrals,
+    prepareReferrals,
+    prepareLatestReferrals,
   };
 };

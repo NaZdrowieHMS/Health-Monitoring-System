@@ -18,64 +18,65 @@ export const useDoctorData = (currentUser: UserData) => {
 
   const { navigateToPatientScreen } = useScreensNavigation();
 
-  function formatPatientsView(patient: PatientData) {
-    return {
-      text: `${patient.name} ${patient.surname}`,
-      buttons: [
-        <LinkButton
-          key={patient.id}
-          title="Przejdź"
-          handleOnClick={() => {
-            navigateToPatientScreen(patient.id);
-          }}
-        />,
-      ],
-    };
-  }
+  const formatPatientsView = (patient: PatientData) => ({
+    text: `${patient.name} ${patient.surname}`,
+    buttons: [
+      <LinkButton
+        key={patient.id}
+        title="Przejdź"
+        handleOnClick={() => {
+          navigateToPatientScreen(patient.id);
+        }}
+      />,
+    ],
+  });
 
-  const latestPatients = useFetchPatients(
-    currentUser,
-    (data) => data.map(formatPatientsView),
-    doctorDataPagination.latestPatients,
-  );
+  const prepareLatestPatients = () =>
+    useFetchPatients(
+      currentUser,
+      (data) => data.map(formatPatientsView),
+      doctorDataPagination.latestPatients,
+    );
 
-  function formatNewPatients(patient: PatientData) {
-    return {
-      pesel: Number(patient.pesel),
-      fullName: `${patient.name} ${patient.surname}`,
-      button: (
-        <UserButton
-          key={patient.id}
-          title={`${patient.name} ${patient.surname}`}
-          handleOnClick={() =>
-            openPatientInfoOverlay(
-              patient,
-              <PrimaryButton
-                title="Dodaj pacjenta"
-                handleOnClick={() => {
-                  bind.mutate({
-                    doctorId: currentUser.id,
-                    patientId: patient.id,
-                  });
-                  hideOverlay();
-                }}
-              />,
-            )
-          }
-        />
-      ),
-    };
-  }
+  const formatNewPatients = (patient: PatientData) => ({
+    pesel: Number(patient.pesel),
+    fullName: `${patient.name} ${patient.surname}`,
+    button: (
+      <UserButton
+        key={patient.id}
+        title={`${patient.name} ${patient.surname}`}
+        handleOnClick={() =>
+          openPatientInfoOverlay(
+            patient,
+            <PrimaryButton
+              title="Dodaj pacjenta"
+              handleOnClick={() => {
+                bind.mutate({
+                  doctorId: currentUser.id,
+                  patientId: patient.id,
+                });
+                hideOverlay();
+              }}
+            />,
+          )
+        }
+      />
+    ),
+  });
 
-  const unassignedPatients = useFetchAllUnassignedPatients(
-    currentUser,
-    (data) => data.map(formatNewPatients),
-    doctorDataPagination.unassignedPatients,
-  );
+  const prepareUnassignedPatients = () =>
+    useFetchAllUnassignedPatients(
+      currentUser,
+      (data) => data.map(formatNewPatients),
+      doctorDataPagination.unassignedPatients,
+    );
 
-  const filteredUnassignedPatients = (filterValue: string) => {
+  const filteredUnassignedPatients = (
+    unassignedPatients: ReturnType<typeof formatNewPatients>[],
+    filterValue: string,
+  ) => {
     return filterValue
-      ? unassignedPatients.data?.filter((patientCard) => {
+      ? unassignedPatients?.filter((patientCard) => {
           return (
             patientCard.pesel.toString().includes(filterValue.toLowerCase()) ||
             patientCard.fullName
@@ -83,12 +84,12 @@ export const useDoctorData = (currentUser: UserData) => {
               .includes(filterValue.toLowerCase())
           );
         })
-      : unassignedPatients.data;
+      : unassignedPatients;
   };
 
   return {
-    latestPatients,
-    unassignedPatients,
+    prepareLatestPatients,
+    prepareUnassignedPatients,
     filteredUnassignedPatients,
   };
 };

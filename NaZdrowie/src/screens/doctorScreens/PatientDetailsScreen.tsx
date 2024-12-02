@@ -27,14 +27,20 @@ export const PatientDetailsScreen = ({
   const { openResultsFormOverlay, openReferralFormOverlay } =
     useDesiredOverlay(currentUser);
 
-  const { patientData } = usePatientData(currentUser, patientId);
+  const { preparePatientData } = usePatientData(currentUser, patientId);
+  const { prepareLatestResults } = useResultsData(currentUser, patientId);
+  const { prepareLatestReferrals } = useReferralsData(currentUser, patientId);
+  const {
+    healthCommentUpload,
+    prepareCurrentDotorComments,
+    prepareOtherDotorsComments,
+  } = useCommentsData(currentUser, patientId);
 
-  const { latestResults } = useResultsData(currentUser, patientId);
-
-  const { latestReferrals } = useReferralsData(currentUser, patientId);
-
-  const { healthCommentUpload, currentDotorComments, otherDotorsComments } =
-    useCommentsData(currentUser, patientId);
+  const latestResults = prepareLatestResults();
+  const latestReferrals = prepareLatestReferrals();
+  const patientData = preparePatientData();
+  const currentDotorComments = prepareCurrentDotorComments();
+  const otherDotorsComments = prepareOtherDotorsComments();
 
   const { navigateToAllReferals, navigateToAllResults, navigateToAiDiagnosis } =
     useScreensNavigation();
