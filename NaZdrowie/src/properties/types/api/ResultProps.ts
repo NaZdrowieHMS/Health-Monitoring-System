@@ -1,4 +1,4 @@
-export type ResultData = {
+export type ResultContent = {
   data: string;
   type: string;
 };
@@ -12,7 +12,7 @@ export type ResultOverview = {
 };
 
 export type DetailedResult = ResultOverview & {
-  content: ResultData;
+  content: ResultContent;
   viewed?: boolean;
 };
 
@@ -20,5 +20,5 @@ export type ResultUpload = {
   patientId: number;
   referralId?: number;
   testType: string;
-  content: ResultData;
+  content: ResultContent;
 };

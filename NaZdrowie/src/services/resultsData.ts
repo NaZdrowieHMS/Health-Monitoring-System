@@ -8,6 +8,7 @@ import { Referral, UserData } from "properties/types";
 import { PaginationData } from "properties/types/api";
 import {
   DetailedResult,
+  ResultContent,
   ResultOverview,
   ResultUpload,
 } from "properties/types/api/ResultProps";
@@ -102,6 +103,22 @@ export const useFetchResult = <T = DetailedResult>(
       return data;
     },
     select,
+  });
+};
+
+export const useFetchResultContent = <T = ResultContent>(
+  user: UserData,
+  resultId: number,
+  patientId?: number,
+) => {
+  return useQuery<ResultContent, Error, T>({
+    queryKey: patientId
+      ? doctorKeys.patient.results.specificContent(user.id, patientId, resultId)
+      : patientKeys.results.specificContent(user.id, resultId),
+    queryFn: async () => {
+      const { data } = await axiosApi.get(`results/${resultId}/data`);
+      return data;
+    },
   });
 };
 
