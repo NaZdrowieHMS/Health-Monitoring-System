@@ -1,7 +1,7 @@
 import { LinkButton } from "components/atoms";
 import { HealthFormDisplayData, UserData } from "properties/types";
 import { useFetchHealthForms } from "services/healthFormsData";
-import { formatDate, patientDataPagination } from "services/utils";
+import { formatShortDate, patientDataPagination } from "services/utils";
 import { useDesiredOverlay } from "../useDesiredOverlay";
 
 export const useHealthFormData = (
@@ -10,7 +10,7 @@ export const useHealthFormData = (
 ) => {
   const { openHealthFormResultOverlay } = useDesiredOverlay(currentUser);
   const formatHealthFormView = (healthForm: HealthFormDisplayData) => ({
-    text: `Formularz zdrowia ${formatDate(healthForm.createDate)}`,
+    text: `Formularz zdrowia ${formatShortDate(healthForm.createDate)}`,
     buttons: [
       <LinkButton
         key="view-health-form"

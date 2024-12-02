@@ -14,6 +14,7 @@ import {
   useResultsData,
   useReferralsData,
   useCommentsData,
+  useHealthFormData,
 } from "components/organisms/dataHooks";
 import { generalStyle, mainStyle } from "properties/styles";
 import { useContext } from "react";
@@ -30,6 +31,7 @@ export const PatientDetailsScreen = ({
   const { preparePatientData } = usePatientData(currentUser, patientId);
   const { prepareLatestResults } = useResultsData(currentUser, patientId);
   const { prepareLatestReferrals } = useReferralsData(currentUser, patientId);
+  const { prepareLatestHealthForm } = useHealthFormData(currentUser, patientId);
   const {
     healthCommentUpload,
     prepareCurrentDotorComments,
@@ -37,6 +39,7 @@ export const PatientDetailsScreen = ({
   } = useCommentsData(currentUser, patientId);
 
   const latestResults = prepareLatestResults();
+  const latestHealthForm = prepareLatestHealthForm();
   const latestReferrals = prepareLatestReferrals();
   const patientData = preparePatientData();
   const currentDotorComments = prepareCurrentDotorComments();
@@ -75,7 +78,8 @@ export const PatientDetailsScreen = ({
           {latestReferrals.isSuccess &&
           currentDotorComments.isSuccess &&
           otherDotorsComments.isSuccess &&
-          latestResults.isSuccess ? (
+          latestResults.isSuccess &&
+          latestHealthForm.isSuccess ? (
             <>
               <CommentsCardForDoctor
                 title="Zdrowie pacjenta"
@@ -90,7 +94,7 @@ export const PatientDetailsScreen = ({
               />
               <ListCard
                 title="Wyniki pacjenta"
-                data={latestResults.data}
+                data={[...latestResults.data, ...latestHealthForm.data]}
                 handleSeeMore={() => navigateToAllResults(patientId)}
               />
             </>

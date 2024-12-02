@@ -29,7 +29,7 @@ export const CommentsCardForDoctor: React.FC<
   const handleSendComment = () => {
     if (comment.length > 0) {
       commentUpload.comment.content = comment;
-      commentUpload.sendComment.mutateAsync(commentUpload.comment); // here you can define onSuccess, onError and onSettled logic
+      commentUpload.sendComment.mutateAsync(commentUpload.comment);
     }
   };
 

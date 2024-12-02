@@ -3,7 +3,7 @@ import React from "react";
 import { useFetchResultCommentsData } from "services/commentsData";
 import { Overlay } from "./Overlay";
 import { cardCommentsCount } from "services/config";
-import { useFetchResult } from "services/resultsData";
+import { useFetchResult, useFetchResultContent } from "services/resultsData";
 import { LoadingCard, ImageCard, CommentsCard } from "components/molecules";
 import { formatCommentsData } from "../dataHooks/dataFormatHelpers";
 
@@ -18,7 +18,7 @@ export const ResultPreviewOverlay: React.FC<{
     isLoading,
     data: result,
   } = useFetchResult(currentUser, resultId);
-
+  const resultContent = useFetchResultContent(currentUser, resultId);
   const resultComments = useFetchResultCommentsData(
     currentUser,
     resultId,
@@ -34,11 +34,15 @@ export const ResultPreviewOverlay: React.FC<{
         {isSuccess && result && (
           <>
             <Overlay.Body>
-              <ImageCard
-                title="Podgląd"
-                imageData={result.content.data}
-                imageType={result.content.type}
-              />
+              {resultContent.isSuccess ? (
+                <ImageCard
+                  title="Podgląd"
+                  imageData={result.content.data}
+                  imageType={result.content.type}
+                />
+              ) : (
+                <LoadingCard title="Podgląd" />
+              )}
               {resultComments.isSuccess ? (
                 <CommentsCard
                   title="Komentarze do badania"

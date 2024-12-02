@@ -21,7 +21,7 @@ export const patientKeys = {
       [userId, "results", limit ? limit : "all"] as const,
     specific: (userId: number, resultId: number) =>
       [userId, "results", resultId] as const,
-    specificData: (userId: number, resultId: number) =>
+    specificContent: (userId: number, resultId: number) =>
       [userId, "results", resultId, "data"] as const,
     specificComments: (
       userId: number,
@@ -85,10 +85,10 @@ export const doctorKeys = {
         [userId, ...patientKeys.results.list(patientId, limit)] as const,
       specific: (userId: number, patientId: number, resultId: number) =>
         [userId, ...patientKeys.results.specific(patientId, resultId)] as const,
-      specificData: (userId: number, patientId: number, resultId: number) =>
+      specificContent: (userId: number, patientId: number, resultId: number) =>
         [
           userId,
-          ...patientKeys.results.specificData(patientId, resultId),
+          ...patientKeys.results.specificContent(patientId, resultId),
         ] as const,
       specificComments: (
         userId: number,

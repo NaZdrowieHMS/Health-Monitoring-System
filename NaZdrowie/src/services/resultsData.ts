@@ -8,6 +8,7 @@ import { Referral, UserData } from "properties/types";
 import { PaginationData } from "properties/types/api";
 import {
   DetailedResult,
+  ResultContent,
   ResultOverview,
   ResultUpload,
 } from "properties/types/api/ResultProps";
@@ -35,7 +36,7 @@ export function markPatientSpecificResultDataAsStale(
   });
 }
 
-function partiallyUpdateSpecificResultData(
+function partiallyUpdateSpecificResultCache(
   queryClient: QueryClient,
   doctorId: number,
   patientId: number,
@@ -81,7 +82,7 @@ export const useFetchAllResultsByPatientId = <T = ResultOverview[]>(
       return data;
     },
     select: (data: ResultOverview[]) => {
-      partiallyUpdateSpecificResultData(queryClient, user.id, patientId, data);
+      partiallyUpdateSpecificResultCache(queryClient, user.id, patientId, data);
       return select ? select(data) : (data as T);
     },
   });
@@ -105,6 +106,22 @@ export const useFetchResult = <T = DetailedResult>(
   });
 };
 
+export const useFetchResultContent = <T = ResultContent>(
+  user: UserData,
+  resultId: number,
+  patientId?: number,
+) => {
+  return useQuery<ResultContent, Error, T>({
+    queryKey: patientId
+      ? doctorKeys.patient.results.specificContent(user.id, patientId, resultId)
+      : patientKeys.results.specificContent(user.id, resultId),
+    queryFn: async () => {
+      const { data } = await axiosApi.get(`results/${resultId}/data`);
+      return data;
+    },
+  });
+};
+
 // Currently only for doctors, for patient it will return authentication error
 export const useFetchUnviewedResults = <T = ResultOverview[]>(
   user: UserData,
@@ -125,7 +142,112 @@ export const useFetchUnviewedResults = <T = ResultOverview[]>(
   });
 };
 
-export const useSendResult = (user: UserData, isreferralAssigned: boolean) => {
+const updatePatientResultCardCache = (
+  queryClient: QueryClient,
+  user: UserData,
+  newResult: DetailedResult,
+) => {
+  if (user.isDoctor)
+    queryClient.setQueryData(
+      doctorKeys.patient.results.list(
+        user.id,
+        newResult.patientId,
+        resultsDataPagination.latestResults,
+      ),
+      (oldResults: ResultOverview[]) => [newResult, ...oldResults.slice(0, -1)],
+    );
+  else
+    queryClient.setQueryData(
+      patientKeys.results.list(user.id, resultsDataPagination.latestResults),
+      (oldResults: ResultOverview[]) => [newResult, ...oldResults.slice(0, -1)],
+    );
+};
+
+const setNewResultDataCache = (
+  queryClient: QueryClient,
+  user: UserData,
+  newResult: DetailedResult,
+) => {
+  if (user.isDoctor) {
+    queryClient.setQueryData(
+      doctorKeys.patient.results.specific(
+        user.id,
+        newResult.patientId,
+        newResult.id,
+      ),
+      () => newResult,
+    );
+  } else {
+    queryClient.setQueryData(
+      patientKeys.results.specific(user.id, newResult.id),
+      () => newResult,
+    );
+  }
+};
+
+const updatePatientReferralCardCache = (
+  queryClient: QueryClient,
+  user: UserData,
+  newResult: DetailedResult,
+  referralId: number,
+) => {
+  if (user.isDoctor)
+    queryClient.setQueryData(
+      doctorKeys.patient.referrals.list(
+        user.id,
+        newResult.patientId,
+        patientDataPagination.latestReferrals,
+      ),
+      (oldReferrals: Referral[]) =>
+        oldReferrals.filter((referral) => referral.id !== referralId),
+    );
+  else
+    queryClient.setQueryData(
+      patientKeys.referrals.list(
+        user.id,
+        patientDataPagination.latestReferrals,
+      ),
+      (oldReferrals: Referral[]) =>
+        oldReferrals.filter((referral) => referral.id !== referralId),
+    );
+};
+
+const updatePatientReferralCacheAsCompleted = (
+  queryClient: QueryClient,
+  user: UserData,
+  newResult: DetailedResult,
+  referralId: number,
+) => {
+  if (user.isDoctor)
+    queryClient.setQueriesData(
+      {
+        queryKey: doctorKeys.patient.referrals.core(
+          user.id,
+          newResult.patientId,
+        ),
+      },
+      (oldReferrals: Referral[]) =>
+        oldReferrals.map((referral) =>
+          referral.id === referralId
+            ? { ...referral, completed: true }
+            : referral,
+        ),
+    );
+  else
+    queryClient.setQueriesData(
+      {
+        queryKey: patientKeys.referrals.core(user.id),
+      },
+      (oldReferrals: Referral[]) =>
+        oldReferrals.map((referral) =>
+          referral.id === referralId
+            ? { ...referral, completed: true }
+            : referral,
+        ),
+    );
+};
+
+export const useSendResult = (user: UserData, isReferralAssigned: boolean) => {
   const queryClient = useQueryClient();
   let referralId: number = undefined;
   return useMutation({
@@ -135,85 +257,22 @@ export const useSendResult = (user: UserData, isreferralAssigned: boolean) => {
       return data;
     },
     onSuccess(newResult: DetailedResult) {
-      if (user.isDoctor) {
-        // insert new result in patient's "Moje Wyniki", and save detailed data (unvieved result doesn't make sense here)
-        queryClient.setQueryData(
-          doctorKeys.patient.results.list(
-            user.id,
-            newResult.patientId,
-            resultsDataPagination.latestResults,
-          ),
-          (oldResults: ResultOverview[]) => [newResult, ...oldResults],
+      console.log(referralId);
+      updatePatientResultCardCache(queryClient, user, newResult);
+      setNewResultDataCache(queryClient, user, newResult);
+      if (isReferralAssigned) {
+        updatePatientReferralCardCache(
+          queryClient,
+          user,
+          newResult,
+          referralId,
         );
-        queryClient.setQueryData(
-          doctorKeys.patient.results.specific(
-            user.id,
-            newResult.patientId,
-            newResult.id,
-          ),
-          () => newResult,
+        updatePatientReferralCacheAsCompleted(
+          queryClient,
+          user,
+          newResult,
+          referralId,
         );
-        if (isreferralAssigned) {
-          // delete from patient's "Moje skierowania" if assigned to referral, change completed to true
-          queryClient.setQueryData(
-            doctorKeys.patient.referrals.list(
-              user.id,
-              newResult.patientId,
-              patientDataPagination.latestReferrals,
-            ),
-            (oldReferrals: Referral[]) =>
-              oldReferrals.filter((referral) => referral.id !== referralId),
-          );
-          queryClient.setQueriesData(
-            {
-              queryKey: doctorKeys.patient.referrals.core(
-                user.id,
-                newResult.patientId,
-              ),
-            },
-            (oldReferrals: Referral[]) =>
-              oldReferrals.map((referral) =>
-                referral.id === referralId
-                  ? { ...referral, completed: true }
-                  : referral,
-              ),
-          );
-        }
-      } else {
-        // insert new result in "Moje Wyniki", and save detailed data
-        queryClient.setQueryData(
-          patientKeys.results.list(
-            user.id,
-            resultsDataPagination.latestResults,
-          ),
-          (oldResults: ResultOverview[]) => [newResult, ...oldResults],
-        );
-        queryClient.setQueryData(
-          patientKeys.results.specific(user.id, newResult.id),
-          () => newResult,
-        );
-        if (isreferralAssigned) {
-          // delete from "Moje skierowania" if assigned to referral, change completed to true
-          queryClient.setQueryData(
-            patientKeys.referrals.list(
-              user.id,
-              patientDataPagination.latestReferrals,
-            ),
-            (oldReferrals: Referral[]) =>
-              oldReferrals.filter((referral) => referral.id !== referralId),
-          );
-          queryClient.setQueriesData(
-            {
-              queryKey: patientKeys.referrals.core(user.id),
-            },
-            (oldReferrals: Referral[]) =>
-              oldReferrals.map((referral) =>
-                referral.id === referralId
-                  ? { ...referral, completed: true }
-                  : referral,
-              ),
-          );
-        }
       }
     },
   });

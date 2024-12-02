@@ -27,7 +27,7 @@ import {
   useFetchResultCommentsData,
   useSendResultComment,
 } from "services/commentsData";
-import { useFetchResult } from "services/resultsData";
+import { useFetchResult, useFetchResultContent } from "services/resultsData";
 import { doctorDataPagination } from "services/utils";
 
 export const ResultPreviewScreen = ({
@@ -36,17 +36,18 @@ export const ResultPreviewScreen = ({
   const { currentUser } = useContext(UserContext);
   const { resultId, patientId, resultTitle } = route.params;
   const [comment, setComment] = useState<string>();
+  const { preparePatientData } = usePatientData(currentUser, patientId);
+  const { handleCheckboxForAiSelection, updateAiSelectedData } = useAiData(
+    currentUser,
+    patientId,
+  );
   const { isSuccess, data: result } = useFetchResult(
     currentUser,
     resultId,
     null,
     patientId,
   );
-  const { preparePatientData } = usePatientData(currentUser, patientId);
-  const { handleCheckboxForAiSelection, updateAiSelectedData } = useAiData(
-    currentUser,
-    patientId,
-  );
+  const resultContent = useFetchResultContent(currentUser, resultId, patientId);
   const resultComments = useFetchResultCommentsData(
     currentUser,
     resultId,
@@ -85,13 +86,17 @@ export const ResultPreviewScreen = ({
       <SafeAreaView style={generalStyle.safeArea}>
         <ScrollView contentContainerStyle={mainStyle.container}>
           <Text style={generalStyle.titleText}>{resultTitle}</Text>
-          {isSuccess && result.content !== undefined ? (
+          {isSuccess ? (
             <>
-              <ImageCard
-                title="Podgląd"
-                imageData={result.content.data}
-                imageType={result.content.type}
-              />
+              {resultContent.isSuccess ? (
+                <ImageCard
+                  title="Podgląd"
+                  imageData={resultContent.data.data}
+                  imageType={resultContent.data.type}
+                />
+              ) : (
+                <LoadingCard title="Podgląd" />
+              )}
               <View style={generalStyle.rowSpread}>
                 <Text style={generalStyle.titleText}>Uzyj do analizy AI</Text>
                 <PersonalizedCheckbox
