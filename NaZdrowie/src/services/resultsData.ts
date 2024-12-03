@@ -19,6 +19,7 @@ import {
   patientKeys,
   resultsDataPagination,
 } from "./utils";
+import { Alert } from "react-native";
 
 export function markPatientSpecificResultDataAsStale(
   queryClient: QueryClient,
@@ -274,6 +275,12 @@ export const useSendResult = (user: UserData, isReferralAssigned: boolean) => {
           referralId,
         );
       }
+    },
+    onError(error) {
+      Alert.alert(
+        "Błąd przy wysyłaniu wyniku",
+        "Wiadomość błędu:" + error.message,
+      );
     },
   });
 };

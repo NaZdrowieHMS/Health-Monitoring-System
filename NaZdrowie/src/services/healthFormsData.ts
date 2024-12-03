@@ -7,6 +7,7 @@ import {
 import { PaginationData } from "properties/types/api";
 import { axiosApi } from "./axios";
 import { doctorKeys, patientDataPagination, patientKeys } from "./utils";
+import { Alert } from "react-native";
 
 export const useFetchHealthForms = <T = HealthFormDisplayData[]>(
   user: UserData,
@@ -73,6 +74,12 @@ export const useSendHealthForm = (user: UserData) => {
       queryClient.setQueryData(
         patientKeys.healthForms.specific(user.id, newHealthForm.id),
         () => newHealthForm,
+      );
+    },
+    onError(error) {
+      Alert.alert(
+        "Błąd przy wysyłaniu formularza",
+        "Wiadomość błędu:" + error.message,
       );
     },
   });
