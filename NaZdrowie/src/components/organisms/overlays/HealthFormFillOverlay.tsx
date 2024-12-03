@@ -27,7 +27,7 @@ export const HealthFormFillOverlay: React.FC<{
     patientId: healthFormData.patientId,
     content: healthFormData.content.map((item) => ({
       key: item.title,
-      value: item.type == HealthFormItemType.Checkbox ? "false" : "",
+      value: item.type == HealthFormItemType.Checkbox ? false : "",
     })),
   };
 
@@ -36,7 +36,13 @@ export const HealthFormFillOverlay: React.FC<{
 
   const sendFormResult = useSendHealthForm(currentUser);
 
-  const handleValueChange = (index: string, newValue: string) => {
+  const prepareHealthFormItems = (healthForm: HealthFormUpload) => {
+    healthForm.content = healthForm.content.filter((item) => item.value);
+    // optionally add here padding to data / data verification
+    return healthForm;
+  };
+
+  const handleValueChange = (index: string, newValue: string | boolean) => {
     setHealthFormItems((prevItems) => ({
       ...prevItems,
       content: prevItems.content.map((item) =>
@@ -46,7 +52,7 @@ export const HealthFormFillOverlay: React.FC<{
   };
 
   const handleSendFormData = () => {
-    sendFormResult.mutate(healthFormItems);
+    sendFormResult.mutate(prepareHealthFormItems(healthFormItems));
     handleClose();
   };
 
@@ -81,7 +87,7 @@ export const HealthFormFillOverlay: React.FC<{
                 <PersonalizedCheckbox
                   checkboxInitialValue={false}
                   handleValueChange={(value) => {
-                    handleValueChange(item.title, value.toString());
+                    handleValueChange(item.title, value);
                   }}
                 />
               )}

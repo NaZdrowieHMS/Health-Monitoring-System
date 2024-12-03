@@ -123,6 +123,8 @@ export const doctorKeys = {
         [userId, patientId, "predictions", limit ? limit : "all"] as const,
       specific: (userId: number, patientId: number, predictionId: number) =>
         [userId, patientId, "predictions", predictionId] as const,
+      healthForm: (userId: number, patientId: number) =>
+        [userId, patientId, "predictions", "healthForm"] as const,
       core: (userId: number, patientId: number) =>
         [userId, patientId, "predictions"] as const,
     },

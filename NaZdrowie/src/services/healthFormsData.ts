@@ -6,7 +6,8 @@ import {
 } from "properties/types";
 import { PaginationData } from "properties/types/api";
 import { axiosApi } from "./axios";
-import { doctorKeys, patientDataPagination, patientKeys } from "./utils";
+import { doctorKeys, patientKeys } from "./utils";
+import { Alert } from "react-native";
 
 export const useFetchHealthForms = <T = HealthFormDisplayData[]>(
   user: UserData,
@@ -64,15 +65,18 @@ export const useSendHealthForm = (user: UserData) => {
     onSuccess(newHealthForm: HealthFormDisplayData) {
       // update latest health form and save it in cache
       queryClient.setQueryData(
-        patientKeys.healthForms.list(
-          user.id,
-          patientDataPagination.latestHealthForm,
-        ),
+        patientKeys.healthForms.list(user.id, { pageSize: 1 }),
         () => newHealthForm,
       );
       queryClient.setQueryData(
         patientKeys.healthForms.specific(user.id, newHealthForm.id),
         () => newHealthForm,
+      );
+    },
+    onError(error) {
+      Alert.alert(
+        "Błąd przy wysyłaniu formularza",
+        "Wiadomość błędu:" + error.message,
       );
     },
   });

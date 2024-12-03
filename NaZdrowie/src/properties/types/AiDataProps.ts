@@ -17,6 +17,7 @@ export type AiPredictionInfo = {
 };
 
 export type AiAnalysisResultCardProps = {
+  title: string;
   data: {
     status: string;
     sourceResults: number[]; // TODO
@@ -26,8 +27,22 @@ export type AiAnalysisResultCardProps = {
   }[];
 };
 
+export type AiAnalysisHealthFormCardProps = {
+  title: string;
+  data: AiHealthFormAnalysis;
+};
+
 export type AiSelectedChange = {
   resultId: number;
   patientId: number;
   doctorId: number;
+};
+
+export type AiHealthFormAnalysis = {
+  id: number;
+  patientId: number;
+  formId: number;
+  diagnoses: string[];
+  recommendations: string[];
+  createdDate: string;
 };

@@ -7,13 +7,14 @@ import React from "react";
 import { View, Text } from "react-native";
 
 export const AiAnalysisResultCard: React.FC<AiAnalysisResultCardProps> = ({
+  title,
   data,
 }) => {
   return (
     <View style={cardStyle.container}>
-      <Text style={generalStyle.titleText}>Wyniki poprzednich analiz AI</Text>
+      <Text style={generalStyle.titleText}>{title}</Text>
       {data.map((prediction, index) => (
-        <View key={index} style={{ rowGap: paddingSize.mediumBig }}>
+        <View key={index} style={{ rowGap: paddingSize.medium }}>
           <Text style={generalStyle.titleText}>{prediction.status}</Text>
           <Text style={generalStyle.basicText}>{prediction.createdDate}</Text>
           <Text
