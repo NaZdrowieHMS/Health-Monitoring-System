@@ -1,11 +1,16 @@
-import { AiPrediction, AiPredictionInfo } from "properties/types/AiDataProps";
+import {
+  AiHealthFormAnalysis,
+  AiPrediction,
+  AiPredictionInfo,
+} from "properties/types/AiDataProps";
 import { axiosAiApi, axiosApi } from "./axios";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { AiSelectedChange, UserData } from "properties/types";
 import { PaginationData } from "properties/types/api";
 import { doctorKeys } from "./utils";
+import { Alert } from "react-native";
 
-export const useAnalyzeWithAi = (user: UserData, patientId: number) => {
+export const useAnalyzeResultsWithAi = (user: UserData, patientId: number) => {
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -21,10 +26,15 @@ export const useAnalyzeWithAi = (user: UserData, patientId: number) => {
       // fetch new prediction info
       useFetchPrediciton(user, patientId, requestId);
     },
+    onError(error) {
+      Alert.alert(
+        "Błąd przy wysyłaniu wyników badań do predykcji",
+        "Wiadomość błędu:" + error.message,
+      );
+    },
   });
 };
 
-// why is this endpoint in regular API?
 export const useFetchPatientPredictions = <T = AiPrediction[]>(
   user: UserData,
   patientId: number,
@@ -63,6 +73,41 @@ export const useFetchPrediciton = <T = AiPrediction>(
     ),
     queryFn: async () => {
       const { data } = await axiosAiApi.get(`ai/predictions/${predictionId}`);
+      return data;
+    },
+    select,
+  });
+};
+
+export const useFetchNewHealthFormAnalysis = <T = AiHealthFormAnalysis>(
+  user: UserData,
+  patientId: number,
+  healthFormId: number,
+  select?: (data: AiPrediction) => T,
+) => {
+  return useQuery<AiPrediction, Error, T>({
+    queryKey: doctorKeys.patient.predictions.healthForm(user.id, patientId),
+    queryFn: async () => {
+      const { data } = await axiosAiApi.get(
+        `ai/forms/${healthFormId}/analysis`,
+      );
+      return data;
+    },
+    select,
+    enabled: false,
+  });
+};
+
+export const useFetchLatestHealthFormAnalysis = <T = AiHealthFormAnalysis>(
+  user: UserData,
+  patientId: number,
+  healthFormId: number,
+  select?: (data: AiPrediction) => T,
+) => {
+  return useQuery<AiPrediction, Error, T>({
+    queryKey: doctorKeys.patient.predictions.healthForm(user.id, patientId),
+    queryFn: async () => {
+      const { data } = await axiosApi.get(`forms/${healthFormId}/analysis`);
       return data;
     },
     select,

@@ -3,6 +3,7 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "App";
 import { PrimaryButton } from "components/atoms";
 import {
+  AiAnalysisHealthFormCard,
   AiAnalysisResultCard,
   ListCard,
   LoadingCard,
@@ -12,30 +13,34 @@ import { UserContext } from "components/organisms/context";
 import { useAiData, usePatientData } from "components/organisms/dataHooks";
 import { generalStyle, mainStyle } from "properties/styles";
 import React, { useCallback, useContext } from "react";
-import { ScrollView, SafeAreaView } from "react-native";
+import { ScrollView, SafeAreaView, Text } from "react-native";
 
 export const AiDiagnosis = ({
   route,
 }: NativeStackScreenProps<RootStackParamList, "AiDiagnosis">) => {
   const { patientId } = route.params;
-  const { currentUser } = useContext(UserContext);
+  const { currentUser, latestHealthFormId } = useContext(UserContext);
   const { preparePatientData } = usePatientData(currentUser, patientId);
   const {
     preparePatientResultsForAi,
     startAiDiagnosis,
     updateAiSelectedData,
-    patientPredictions,
-    refreshKey,
+    preparePatientLatestPrediction,
+    prepareLatestHealthFormForAi,
+    prepareLatestHealthFormReport,
   } = useAiData(currentUser, patientId);
 
   const patientData = preparePatientData();
   const patientResultsForAi = preparePatientResultsForAi();
+  const latestHealthForm = prepareLatestHealthFormForAi();
+  const patientLatestPrediction = preparePatientLatestPrediction();
+  const latestHealthFormReport =
+    prepareLatestHealthFormReport(latestHealthFormId);
 
   useFocusEffect(
     useCallback(() => {
-      patientResultsForAi.refetch();
       return updateAiSelectedData;
-    }, [patientResultsForAi.refetch]),
+    }, []),
   );
 
   return (
@@ -49,11 +54,10 @@ export const AiDiagnosis = ({
       )}
       <SafeAreaView style={generalStyle.safeArea}>
         <ScrollView contentContainerStyle={mainStyle.container}>
-          {patientResultsForAi.isSuccess ? (
+          {patientResultsForAi.isSuccess && latestHealthForm.isSuccess ? (
             <ListCard
-              key={refreshKey}
               title="Załączone badania"
-              data={patientResultsForAi.data}
+              data={[...latestHealthForm.data, ...patientResultsForAi.data]}
               extraButton={
                 <PrimaryButton
                   title="Poproś AI o analizę"
@@ -64,8 +68,26 @@ export const AiDiagnosis = ({
           ) : (
             <LoadingCard title="Załączone badania" />
           )}
-          {patientPredictions.isSuccess ? (
-            <AiAnalysisResultCard data={patientPredictions.data} />
+          {latestHealthFormReport.isError && (
+            <Text>
+              {latestHealthFormReport.error.message +
+                " " +
+                latestHealthFormReport.error.stack}
+            </Text>
+          )}
+          {latestHealthFormReport.isSuccess ? (
+            <AiAnalysisHealthFormCard
+              data={latestHealthFormReport.data}
+              title={"Analiza ostatniego formularza zdrowia"}
+            />
+          ) : (
+            <LoadingCard title="Analiza ostatniego formularza zdrowia" />
+          )}
+          {patientLatestPrediction.isSuccess ? (
+            <AiAnalysisResultCard
+              data={patientLatestPrediction.data}
+              title={"Wyniki poprzednich analiz AI"}
+            />
           ) : (
             <LoadingCard title="Wyniki poprzednich analiz AI" />
           )}

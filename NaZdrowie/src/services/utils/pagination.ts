@@ -1,4 +1,5 @@
 import {
+  AiResultPredictionsCardCount,
   cardCommentsCount,
   currentDoctorCommentsCount,
   latestCount,
@@ -13,14 +14,13 @@ export const doctorDataPagination = {
 };
 
 export const aiDataPagination = {
-  patientPredictions: null,
+  patientPredictions: { pageSize: AiResultPredictionsCardCount },
   patientResultsForAi: null,
 };
 
 export const patientDataPagination = {
   referrals: null,
   latestReferrals: null,
-  latestHealthForm: { pageSize: 1 },
   latestHealthComments: { pageSize: latestCount },
   healthComments: null,
 };

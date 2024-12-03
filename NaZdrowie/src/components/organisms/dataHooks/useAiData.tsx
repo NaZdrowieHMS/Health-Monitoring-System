@@ -1,14 +1,28 @@
 import { LinkButton } from "components/atoms";
-import { AiPrediction, UserData } from "properties/types";
+import {
+  AiPrediction,
+  HealthFormDisplayData,
+  UserData,
+} from "properties/types";
 import {
   useAddAiSelectedResults,
   useDeleteAiSelectedResults,
+  useFetchLatestHealthFormAnalysis,
+  useFetchNewHealthFormAnalysis,
 } from "services/aiData";
-import { aiDataPagination, doctorKeys, formatDate } from "services/utils";
+import {
+  aiDataPagination,
+  doctorKeys,
+  formatDate,
+  formatShortDate,
+} from "services/utils";
 
 import { useQueryClient } from "@tanstack/react-query";
-import { useState } from "react";
-import { useAnalyzeWithAi, useFetchPatientPredictions } from "services/aiData";
+import { useContext, useState } from "react";
+import {
+  useAnalyzeResultsWithAi,
+  useFetchPatientPredictions,
+} from "services/aiData";
 import {
   markPatientSpecificResultDataAsStale,
   useFetchAllResultsByPatientId,
@@ -18,25 +32,29 @@ import {
   ResultOverview,
 } from "properties/types/api/ResultProps";
 import { useScreensNavigation } from "../useScreenNavigation";
+import { useFetchHealthForms } from "services/healthFormsData";
+import { useDesiredOverlay } from "../useDesiredOverlay";
+import { Alert } from "react-native";
+import { UserContext } from "../context";
 
 export const useAiData = (currentUser: UserData, patientId: number) => {
+  const { setLatestHealthFormId } = useContext(UserContext);
   const queryClient = useQueryClient();
   const addAiSelectedResults = useAddAiSelectedResults();
   const deleteAiSelectedResults = useDeleteAiSelectedResults();
-  const analyzeWithAi = useAnalyzeWithAi(currentUser, patientId);
+  const analyzeResultsWithAi = useAnalyzeResultsWithAi(currentUser, patientId);
+
   const { navigateToResultPreviewScreen } = useScreensNavigation();
+  const { openHealthFormResultOverlay } = useDesiredOverlay(currentUser);
+  const [predictHealthFormId, setPredictHealthFormId] = useState<number>(null);
 
-  const [refreshKey, setRefreshKey] = useState(0);
+  // const newHealthFormReport = useFetchNewHealthFormAnalysis(
+  //   currentUser,
+  //   patientId,
+  //   predictHealthFormId,
+  // );
 
-  const preparePatientResultsForAi = () =>
-    useFetchAllResultsByPatientId(
-      currentUser,
-      (data) => data.map(formatResultsForAiData),
-      aiDataPagination.patientResultsForAi,
-      patientId,
-    );
-
-  function handleCheckboxForAiSelection(resultId: number, value: boolean) {
+  const handleCheckboxForAiSelection = (resultId: number, value: boolean) => {
     let isTemporary = false;
     queryClient.setQueryData(
       doctorKeys.patient.results.specific(currentUser.id, patientId, resultId),
@@ -54,7 +72,6 @@ export const useAiData = (currentUser: UserData, patientId: number) => {
         };
       },
     );
-    setRefreshKey((prev) => prev++);
     if (isTemporary)
       markPatientSpecificResultDataAsStale(
         queryClient,
@@ -62,9 +79,9 @@ export const useAiData = (currentUser: UserData, patientId: number) => {
         patientId,
         resultId,
       );
-  }
+  };
 
-  function formatResultsForAiData(result: ResultOverview) {
+  const formatResultsForAiData = (result: ResultOverview) => {
     return {
       checkbox: {
         checkboxStatus: queryClient.getQueryData<DetailedResult>(
@@ -91,7 +108,15 @@ export const useAiData = (currentUser: UserData, patientId: number) => {
         />,
       ],
     };
-  }
+  };
+
+  const preparePatientResultsForAi = () =>
+    useFetchAllResultsByPatientId(
+      currentUser,
+      (data) => data.map(formatResultsForAiData),
+      aiDataPagination.patientResultsForAi,
+      patientId,
+    );
 
   const updateAiSelectedData = () => {
     const selectedResults = getCurrentPatientResultDetails();
@@ -111,11 +136,25 @@ export const useAiData = (currentUser: UserData, patientId: number) => {
       .filter((elem) => elem.aiSelected === true)
       .map((elem) => elem.resultId);
 
-    analyzeWithAi.mutate({
-      patientId: patientId,
-      doctorId: currentUser.id,
-      resultIds: selectedResults,
-    });
+    if (!!selectedResults && !predictHealthFormId)
+      Alert.alert("Proszę zaznczyć wyniki badań do wysłania");
+    else if (selectedResults.length > 0)
+      analyzeResultsWithAi.mutate({
+        patientId: patientId,
+        doctorId: currentUser.id,
+        resultIds: selectedResults,
+      });
+    if (predictHealthFormId) {
+      try {
+        // newHealthFormReport.refetch();
+        console.log("Fetch new Health form AI report");
+      } catch (error) {
+        Alert.alert(
+          "Wystąpił problem z przesłaniem formularza do analizy",
+          "Wiadomość błędu: " + error.message,
+        );
+      }
+    }
   };
 
   function formatPatientPredictions(prediction: AiPrediction) {
@@ -128,12 +167,13 @@ export const useAiData = (currentUser: UserData, patientId: number) => {
     };
   }
 
-  const patientPredictions = useFetchPatientPredictions(
-    currentUser,
-    patientId,
-    (data) => data.map(formatPatientPredictions),
-    aiDataPagination.patientPredictions,
-  );
+  const preparePatientLatestPrediction = () =>
+    useFetchPatientPredictions(
+      currentUser,
+      patientId,
+      (data) => data.map(formatPatientPredictions),
+      aiDataPagination.patientPredictions,
+    );
 
   function getCurrentPatientResultDetails() {
     return queryClient
@@ -155,12 +195,43 @@ export const useAiData = (currentUser: UserData, patientId: number) => {
       }));
   }
 
+  const formatHealthFormView = (healthForm: HealthFormDisplayData) => ({
+    text: `Formularz zdrowia ${formatShortDate(healthForm.createDate)}`,
+    buttons: [
+      <LinkButton
+        key="view-health-form"
+        title="Podgląd"
+        handleOnClick={() => openHealthFormResultOverlay(healthForm)}
+      />,
+    ],
+    checkbox: {
+      checkboxStatus: false,
+      checkboxHandler: (value: boolean) =>
+        setPredictHealthFormId(value ? healthForm.id : null),
+    },
+  });
+
+  const prepareLatestHealthFormForAi = () =>
+    useFetchHealthForms(
+      currentUser,
+      (data) => {
+        setLatestHealthFormId(data[0].id);
+        return data.map(formatHealthFormView);
+      },
+      { pageSize: 1 },
+      patientId,
+    );
+
+  const prepareLatestHealthFormReport = (healthFormId: number) =>
+    useFetchLatestHealthFormAnalysis(currentUser, patientId, healthFormId);
+
   return {
     preparePatientResultsForAi,
     handleCheckboxForAiSelection,
     startAiDiagnosis,
     updateAiSelectedData,
-    patientPredictions,
-    refreshKey,
+    preparePatientLatestPrediction,
+    prepareLatestHealthFormForAi,
+    prepareLatestHealthFormReport,
   };
 };
