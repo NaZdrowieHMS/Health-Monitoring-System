@@ -16,15 +16,15 @@ export const useAnalyzeResultsWithAi = (user: UserData, patientId: number) => {
   return useMutation({
     mutationFn: async (predictionData: AiPredictionInfo) => {
       const { data } = await axiosAiApi.post("ai/predictions", predictionData);
-      return data;
+      return data as { requestId: number };
     },
-    onSuccess({ requestId }: { requestId: number }) {
+    onSuccess({ requestId }) {
       // when pagination is defined for this data - use it here
       queryClient.invalidateQueries({
         queryKey: doctorKeys.patient.predictions.list(user.id, patientId),
       });
       // fetch new prediction info
-      useFetchPrediciton(user, patientId, requestId);
+      // useFetchPrediciton(user, patientId, requestId);
     },
     onError(error) {
       Alert.alert(
@@ -79,22 +79,22 @@ export const useFetchPrediciton = <T = AiPrediction>(
   });
 };
 
-export const useFetchNewHealthFormAnalysis = <T = AiHealthFormAnalysis>(
-  user: UserData,
-  patientId: number,
-  healthFormId: number,
-  select?: (data: AiPrediction) => T,
-) => {
-  return useQuery<AiPrediction, Error, T>({
-    queryKey: doctorKeys.patient.predictions.healthForm(user.id, patientId),
-    queryFn: async () => {
+export const useAnalyzeNewHealthForm = (user: UserData, patientId: number) => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    // queryKey: doctorKeys.patient.predictions.healthForm(user.id, patientId),
+    mutationFn: async (healthFormId: number) => {
       const { data } = await axiosAiApi.get(
         `ai/forms/${healthFormId}/analysis`,
       );
-      return data;
+      return data as AiHealthFormAnalysis;
     },
-    select,
-    enabled: false,
+    onSuccess(newHealthFormAnalysis) {
+      queryClient.setQueryData(
+        doctorKeys.patient.predictions.healthForm(user.id, patientId),
+        newHealthFormAnalysis,
+      );
+    },
   });
 };
 

@@ -8,7 +8,7 @@ import {
   useAddAiSelectedResults,
   useDeleteAiSelectedResults,
   useFetchLatestHealthFormAnalysis,
-  useFetchNewHealthFormAnalysis,
+  useAnalyzeNewHealthForm,
 } from "services/aiData";
 import {
   aiDataPagination,
@@ -48,11 +48,7 @@ export const useAiData = (currentUser: UserData, patientId: number) => {
   const { openHealthFormResultOverlay } = useDesiredOverlay(currentUser);
   const [predictHealthFormId, setPredictHealthFormId] = useState<number>(null);
 
-  // const newHealthFormReport = useFetchNewHealthFormAnalysis(
-  //   currentUser,
-  //   patientId,
-  //   predictHealthFormId,
-  // );
+  const analyzeNewHealthForm = useAnalyzeNewHealthForm(currentUser, patientId);
 
   const handleCheckboxForAiSelection = (resultId: number, value: boolean) => {
     let isTemporary = false;
@@ -136,7 +132,7 @@ export const useAiData = (currentUser: UserData, patientId: number) => {
       .filter((elem) => elem.aiSelected === true)
       .map((elem) => elem.resultId);
 
-    if (!!selectedResults && !predictHealthFormId)
+    if (selectedResults.length === 0 && !predictHealthFormId)
       Alert.alert("Proszę zaznczyć wyniki badań do wysłania");
     else if (selectedResults.length > 0)
       analyzeResultsWithAi.mutate({
@@ -146,8 +142,7 @@ export const useAiData = (currentUser: UserData, patientId: number) => {
       });
     if (predictHealthFormId) {
       try {
-        // newHealthFormReport.refetch();
-        console.log("Fetch new Health form AI report");
+        analyzeNewHealthForm.mutate(predictHealthFormId);
       } catch (error) {
         Alert.alert(
           "Wystąpił problem z przesłaniem formularza do analizy",
