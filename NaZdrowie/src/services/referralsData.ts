@@ -3,6 +3,7 @@ import { Referral, ReferralUpload, UserData } from "properties/types";
 import { PaginationData } from "properties/types/api";
 import { axiosApi } from "./axios";
 import { doctorKeys, patientKeys } from "./utils";
+import Toast from "react-native-toast-message";
 
 export const useFetchReferrals = <T = Referral[]>(
   user: UserData,
@@ -73,6 +74,13 @@ export const useUploadReferral = (user: UserData) => {
         ),
         () => newReferral,
       );
+    },
+    onError(error) {
+      Toast.show({
+        type: "error",
+        text1: "Błąd przy tworzeniu skierowania",
+        text2: "Wiadomość błędu:" + error.message,
+      });
     },
   });
 };
