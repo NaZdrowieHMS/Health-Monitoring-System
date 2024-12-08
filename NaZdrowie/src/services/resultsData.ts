@@ -21,12 +21,12 @@ import {
 } from "./utils";
 import { Alert } from "react-native";
 
-export function markPatientSpecificResultDataAsStale(
+export const markPatientSpecificResultDataAsStale = (
   queryClient: QueryClient,
   doctorId: number,
   patientId: number,
   resultId: number,
-) {
+) => {
   queryClient.invalidateQueries({
     queryKey: doctorKeys.patient.results.specific(
       doctorId,
@@ -35,14 +35,14 @@ export function markPatientSpecificResultDataAsStale(
     ),
     exact: true,
   });
-}
+};
 
-function partiallyUpdateSpecificResultCache(
+const partiallyUpdateSpecificResultCache = (
   queryClient: QueryClient,
   doctorId: number,
   patientId: number,
   data: ResultOverview[],
-) {
+) => {
   data.forEach((result) => {
     queryClient.setQueryData(
       doctorKeys.patient.results.specific(doctorId, patientId, result.id),
@@ -60,7 +60,7 @@ function partiallyUpdateSpecificResultCache(
       result.id,
     );
   });
-}
+};
 
 export const useFetchAllResultsByPatientId = <T = ResultOverview[]>(
   user: UserData,

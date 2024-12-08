@@ -57,34 +57,32 @@ export const useAiData = (currentUser: UserData, patientId: number) => {
       );
   };
 
-  const formatResultsForAiData = (result: ResultOverview) => {
-    return {
-      checkbox: {
-        checkboxStatus: queryClient.getQueryData<DetailedResult>(
-          doctorKeys.patient.results.specific(
-            currentUser.id,
-            patientId,
+  const formatResultsForAiData = (result: ResultOverview) => ({
+    checkbox: {
+      checkboxStatus: queryClient.getQueryData<DetailedResult>(
+        doctorKeys.patient.results.specific(
+          currentUser.id,
+          patientId,
+          result.id,
+        ),
+      ).aiSelected,
+      checkboxHandler: (value: boolean) =>
+        handleCheckboxForAiSelection(result.id, value),
+    },
+    text: `${result.testType} ${formatShortDate(result.createdDate)}`,
+    buttons: [
+      <LinkButton
+        title="Podgląd"
+        handleOnClick={() =>
+          navigateToResultPreviewScreen(
             result.id,
-          ),
-        ).aiSelected,
-        checkboxHandler: (value: boolean) =>
-          handleCheckboxForAiSelection(result.id, value),
-      },
-      text: `${result.testType} ${formatShortDate(result.createdDate)}`,
-      buttons: [
-        <LinkButton
-          title="Podgląd"
-          handleOnClick={() =>
-            navigateToResultPreviewScreen(
-              result.id,
-              result.patientId,
-              result.testType,
-            )
-          }
-        />,
-      ],
-    };
-  };
+            result.patientId,
+            result.testType,
+          )
+        }
+      />,
+    ],
+  });
 
   const preparePatientResultsForAi = () =>
     useFetchAllResultsByPatientId(
@@ -93,6 +91,26 @@ export const useAiData = (currentUser: UserData, patientId: number) => {
       aiDataPagination.patientResultsForAi,
       patientId,
     );
+
+  const getCurrentPatientResultDetails = () => {
+    return queryClient
+      .getQueriesData<DetailedResult>({
+        predicate: (query) =>
+          query.queryKey.length ===
+            doctorKeys.patient.results.specific(currentUser.id, patientId, 0)
+              .length &&
+          doctorKeys.patient.results
+            .core(currentUser.id, patientId)
+            .every((elem) => query.queryKey.includes(elem)) &&
+          typeof query.queryKey[3] === "number",
+      })
+      .map(([, data]) => ({
+        resultId: data.id,
+        aiSelected: data.aiSelected,
+        patientId,
+        doctorId: currentUser.id,
+      }));
+  };
 
   const updateAiSelectedData = () => {
     const selectedResults = getCurrentPatientResultDetails();
@@ -122,40 +140,26 @@ export const useAiData = (currentUser: UserData, patientId: number) => {
       });
   };
 
-  const formatPatientPredictions = (prediction: AiPrediction) => {
-    console.log(
-      prediction.resultAiAnalysis?.results.map((result) => ({
-        title: `${result.testType} ${formatShortDate(result.createdDate)}`,
-        onClick: () =>
-          navigateToResultPreviewScreen(
-            result.resultId,
-            patientId,
-            result.testType,
-          ),
-      })),
-    );
-    return {
-      status: prediction.status,
-      prediction: prediction.resultAiAnalysis?.prediction,
-      confidence: prediction.resultAiAnalysis?.confidence,
-      sourceResults: prediction.resultAiAnalysis?.results.map((result) => ({
-        title: `${result.testType} ${formatShortDate(result.createdDate)}`,
-        onClick: () =>
-          navigateToResultPreviewScreen(
-            result.resultId,
-            patientId,
-            result.testType,
-          ),
-      })),
-      predictionDate: formatShortDate(prediction.createdDate),
-      diagnoses: prediction.formAiAnalysis?.diagnoses,
-      recommendations: prediction.formAiAnalysis?.recommendations,
-      healthFormDate: prediction.formAiAnalysis?.formCreatedDate
-        ? formatShortDate(prediction.formAiAnalysis?.formCreatedDate)
-        : "",
-    };
-  };
-
+  const formatPatientPredictions = (prediction: AiPrediction) => ({
+    status: prediction.status,
+    prediction: prediction.resultAiAnalysis?.prediction,
+    confidence: prediction.resultAiAnalysis?.confidence,
+    sourceResults: prediction.resultAiAnalysis?.results.map((result) => ({
+      title: `${result.testType} ${formatShortDate(result.createdDate)}`,
+      onClick: () =>
+        navigateToResultPreviewScreen(
+          result.resultId,
+          patientId,
+          result.testType,
+        ),
+    })),
+    predictionDate: formatShortDate(prediction.createdDate),
+    diagnoses: prediction.formAiAnalysis?.diagnoses,
+    recommendations: prediction.formAiAnalysis?.recommendations,
+    healthFormDate: prediction.formAiAnalysis?.formCreatedDate
+      ? formatShortDate(prediction.formAiAnalysis?.formCreatedDate)
+      : "",
+  });
   const preparePatientLatestPrediction = () =>
     useFetchPatientPredictions(
       currentUser,
@@ -163,26 +167,6 @@ export const useAiData = (currentUser: UserData, patientId: number) => {
       (data) => data.map(formatPatientPredictions),
       aiDataPagination.patientPredictions,
     );
-
-  function getCurrentPatientResultDetails() {
-    return queryClient
-      .getQueriesData<DetailedResult>({
-        predicate: (query) =>
-          query.queryKey.length ===
-            doctorKeys.patient.results.specific(currentUser.id, patientId, 0)
-              .length &&
-          doctorKeys.patient.results
-            .core(currentUser.id, patientId)
-            .every((elem) => query.queryKey.includes(elem)) &&
-          typeof query.queryKey[3] === "number",
-      })
-      .map(([, data]) => ({
-        resultId: data.id,
-        aiSelected: data.aiSelected,
-        patientId,
-        doctorId: currentUser.id,
-      }));
-  }
 
   return {
     preparePatientResultsForAi,
