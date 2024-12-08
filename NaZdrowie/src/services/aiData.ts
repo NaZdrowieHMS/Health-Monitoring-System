@@ -1,8 +1,4 @@
-import {
-  AiHealthFormAnalysis,
-  AiPrediction,
-  AiPredictionInfo,
-} from "properties/types/AiDataProps";
+import { AiPrediction, AiPredictionInfo } from "properties/types/AiDataProps";
 import { axiosAiApi, axiosApi } from "./axios";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { AiSelectedChange, UserData } from "properties/types";
@@ -18,13 +14,10 @@ export const useAnalyzeResultsWithAi = (user: UserData, patientId: number) => {
       const { data } = await axiosAiApi.post("ai/predictions", predictionData);
       return data as { requestId: number };
     },
-    onSuccess({ requestId }) {
-      // when pagination is defined for this data - use it here
+    onSuccess() {
       queryClient.invalidateQueries({
-        queryKey: doctorKeys.patient.predictions.list(user.id, patientId),
+        queryKey: doctorKeys.patient.predictions.core(user.id, patientId),
       });
-      // fetch new prediction info
-      // useFetchPrediciton(user, patientId, requestId);
     },
     onError(error) {
       Alert.alert(
@@ -48,9 +41,10 @@ export const useFetchPatientPredictions = <T = AiPrediction[]>(
       pagination,
     ),
     queryFn: async () => {
-      const { data } = await axiosApi.get(`patients/${patientId}/predictions`, {
+      const { data } = await axiosApi.get("predictions/request", {
         params: {
           ...pagination,
+          patientId,
         },
       });
       return data;
@@ -73,41 +67,6 @@ export const useFetchPrediciton = <T = AiPrediction>(
     ),
     queryFn: async () => {
       const { data } = await axiosAiApi.get(`ai/predictions/${predictionId}`);
-      return data;
-    },
-    select,
-  });
-};
-
-export const useAnalyzeNewHealthForm = (user: UserData, patientId: number) => {
-  const queryClient = useQueryClient();
-  return useMutation({
-    // queryKey: doctorKeys.patient.predictions.healthForm(user.id, patientId),
-    mutationFn: async (healthFormId: number) => {
-      const { data } = await axiosAiApi.get(
-        `ai/forms/${healthFormId}/analysis`,
-      );
-      return data as AiHealthFormAnalysis;
-    },
-    onSuccess(newHealthFormAnalysis) {
-      queryClient.setQueryData(
-        doctorKeys.patient.predictions.healthForm(user.id, patientId),
-        newHealthFormAnalysis,
-      );
-    },
-  });
-};
-
-export const useFetchLatestHealthFormAnalysis = <T = AiHealthFormAnalysis>(
-  user: UserData,
-  patientId: number,
-  healthFormId: number,
-  select?: (data: AiPrediction) => T,
-) => {
-  return useQuery<AiPrediction, Error, T>({
-    queryKey: doctorKeys.patient.predictions.healthForm(user.id, patientId),
-    queryFn: async () => {
-      const { data } = await axiosApi.get(`forms/${healthFormId}/analysis`);
       return data;
     },
     select,

@@ -5,7 +5,7 @@ import Animated, {
   useAnimatedStyle,
   useDerivedValue,
 } from "react-native-reanimated";
-import { HamburgerButtonStyle } from "properties/styles/hamburgerButtonStyle";
+import { HamburgerButtonStyle } from "properties/styles";
 import { HamburgerMenuContext } from "components/organisms/context/HamburgerMenuProvider";
 import { DefaultStyle } from "react-native-reanimated/lib/typescript/hook/commonTypes";
 
