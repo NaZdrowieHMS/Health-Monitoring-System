@@ -123,25 +123,30 @@ export const useAiData = (currentUser: UserData, patientId: number) => {
   };
 
   const formatPatientPredictions = (prediction: AiPrediction) => {
+    console.log(
+      prediction.resultAiAnalysis?.results.map((result) => ({
+        title: `${result.testType} ${formatShortDate(result.createdDate)}`,
+        onClick: () =>
+          navigateToResultPreviewScreen(
+            result.resultId,
+            patientId,
+            result.testType,
+          ),
+      })),
+    );
     return {
       status: prediction.status,
       prediction: prediction.resultAiAnalysis?.prediction,
       confidence: prediction.resultAiAnalysis?.confidence,
-      sourceResults: prediction.resultAiAnalysis?.results.map(
-        (result, iter) => (
-          <LinkButton
-            key={iter}
-            title={`${result.testType} ${formatShortDate(result.createdDate)}`}
-            handleOnClick={() =>
-              navigateToResultPreviewScreen(
-                result.resultId,
-                patientId,
-                result.testType,
-              )
-            }
-          />
-        ),
-      ),
+      sourceResults: prediction.resultAiAnalysis?.results.map((result) => ({
+        title: `${result.testType} ${formatShortDate(result.createdDate)}`,
+        onClick: () =>
+          navigateToResultPreviewScreen(
+            result.resultId,
+            patientId,
+            result.testType,
+          ),
+      })),
       predictionDate: formatShortDate(prediction.createdDate),
       diagnoses: prediction.formAiAnalysis?.diagnoses,
       recommendations: prediction.formAiAnalysis?.recommendations,

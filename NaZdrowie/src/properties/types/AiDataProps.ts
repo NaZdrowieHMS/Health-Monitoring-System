@@ -46,7 +46,7 @@ export type AiAnalysisResultCardProps = {
     status: PredictionStatus;
     prediction: PredictionOutcome;
     confidence: number;
-    sourceResults: React.JSX.Element[];
+    sourceResults: { title: string; onClick: () => void }[];
     predictionDate: string;
     diagnoses: string[];
     recommendations: string[];

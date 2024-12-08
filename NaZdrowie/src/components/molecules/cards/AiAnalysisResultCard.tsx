@@ -22,7 +22,7 @@ export const AiAnalysisResultCard: React.FC<AiAnalysisResultCardProps> = ({
       case PredictionOutcome.benign:
         return (
           <Text style={aiDiagnosis.benignPrediction}>
-            {`Nowotwór łagodny - pewność ${confidence.toPrecision(4)}%`}
+            {`Drobne zmiany nowotworowe - pewność ${confidence.toPrecision(4)}%`}
           </Text>
         );
       case PredictionOutcome.malignant:
@@ -57,9 +57,14 @@ export const AiAnalysisResultCard: React.FC<AiAnalysisResultCardProps> = ({
               aiPrediction.confidence,
             )}
             <Text style={generalStyle.basicText}>Na podstawie wyników:</Text>
-            <Text style={generalStyle.basicText}>
-              {aiPrediction.sourceResults.map((result) => result)}
-            </Text>
+            {aiPrediction.sourceResults.map((result) => (
+              <UnorderedListElement
+                text={result.title}
+                onClick={result.onClick}
+                icon="document"
+                color={primaryColors.darkBlue}
+              />
+            ))}
             <Text style={generalStyle.titleText}>
               Diagnoza dla Formularza zdrowia {aiPrediction.healthFormDate}
             </Text>
