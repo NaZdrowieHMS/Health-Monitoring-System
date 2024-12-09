@@ -87,7 +87,7 @@ export const useSendHealthForm = (user: UserData) => {
   return useMutation({
     mutationFn: async (form: HealthFormUpload) => {
       if (form.content.length === 0) {
-        throw new Error("Proszę nie wysyłąć pustego formularza zdrowia");
+        throw new Error("Proszę nie wysyłać pustego formularza zdrowia");
       } else {
         const { data } = await axiosApi.post("forms", form);
         return data;
@@ -106,7 +106,7 @@ export const useSendHealthForm = (user: UserData) => {
       Toast.show({
         type: "error",
         text1: "Błąd przy wysyłaniu formularza",
-        text2: "Wiadomość błędu:" + error.message,
+        text2: "Wiadomość błędu: " + error.message,
       });
     },
   });
