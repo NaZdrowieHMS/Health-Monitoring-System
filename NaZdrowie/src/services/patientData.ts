@@ -1,10 +1,10 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { UserData } from "properties/types";
 import { PatientData } from "properties/types/api/PatientDataProps";
-import { Alert } from "react-native";
 
 import { axiosApi } from "./axios";
 import { doctorKeys, patientKeys } from "./utils";
+import Toast from "react-native-toast-message";
 
 export const useFetchPatient = <T = PatientData>(
   user: UserData,
@@ -38,7 +38,6 @@ export const useBindPatientToDoctor = (user: UserData) => {
     },
     onSuccess(data: { doctorId: number; patientId: number }) {
       // big changes, maybe later add cache updating
-      Alert.alert("Połączenie zostało utworzone pomyślnie");
       if (user.isDoctor) {
         queryClient.invalidateQueries({
           queryKey: doctorKeys.patients.unassigned.core(data.doctorId),
@@ -52,12 +51,17 @@ export const useBindPatientToDoctor = (user: UserData) => {
       } else {
         // refetch list of all doctors (for patient) - curerntly not implemented
       }
+      Toast.show({
+        type: "info",
+        text1: "Połączenie zostało utworzone pomyślnie",
+      });
     },
     onError(error) {
-      Alert.alert(
-        "Błąd przy przypisywaniu pacjenta",
-        "Wiadomość błędu:" + error.message,
-      );
+      Toast.show({
+        type: "error",
+        text1: "Błąd przy przypisywaniu pacjenta",
+        text2: "Wiadomość błędu:" + error.message,
+      });
     },
   });
 };

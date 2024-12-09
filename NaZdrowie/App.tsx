@@ -20,6 +20,8 @@ import { MainScreen } from "screens/main";
 import { QrScannerScreen, AllResultsScreen } from "screens/patientScreens";
 import { HamburgerMenuProvider } from "components/organisms/context/HamburgerMenuProvider";
 import primaryColors from "properties/colors";
+import Toast from "react-native-toast-message";
+import { toastConfig } from "services/toastConfig";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -28,6 +30,9 @@ const queryClient = new QueryClient({
       retryDelay: 2000,
       staleTime: 60_000,
       gcTime: 300_000,
+    },
+    mutations: {
+      retry: false,
     },
   },
 });
@@ -113,6 +118,7 @@ const App = (): React.JSX.Element => {
                   />
                 </Stack.Navigator>
               </NavigationContainer>
+              <Toast config={toastConfig} topOffset={55} />
             </View>
           </HamburgerMenuProvider>
         </UserProvider>

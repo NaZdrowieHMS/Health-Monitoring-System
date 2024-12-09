@@ -57,8 +57,9 @@ export const AiAnalysisResultCard: React.FC<AiAnalysisResultCardProps> = ({
               aiPrediction.confidence,
             )}
             <Text style={generalStyle.basicText}>Na podstawie wyników:</Text>
-            {aiPrediction.sourceResults.map((result) => (
+            {aiPrediction.sourceResults.map((result, index) => (
               <UnorderedListElement
+                key={index}
                 text={result.title}
                 onClick={result.onClick}
                 icon="document"
@@ -68,16 +69,18 @@ export const AiAnalysisResultCard: React.FC<AiAnalysisResultCardProps> = ({
             <Text style={generalStyle.titleText}>
               Diagnoza dla Formularza zdrowia {aiPrediction.healthFormDate}
             </Text>
-            {aiPrediction.diagnoses.map((diagnosis) => (
+            {aiPrediction.diagnoses.map((diagnosis, index) => (
               <UnorderedListElement
+                key={index}
                 text={diagnosis}
                 icon="warning"
                 color={primaryColors.red}
               />
             ))}
             <Text style={generalStyle.titleText}>Zalecenia</Text>
-            {aiPrediction.recommendations.map((recommendation) => (
+            {aiPrediction.recommendations.map((recommendation, index) => (
               <UnorderedListElement
+                key={index}
                 text={recommendation}
                 icon="checkcircle"
                 color={primaryColors.lightGreen}

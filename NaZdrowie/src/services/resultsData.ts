@@ -14,7 +14,7 @@ import {
 } from "properties/types/api/ResultProps";
 import { axiosApi } from "./axios";
 import { doctorKeys, patientKeys, resultsDataPagination } from "./utils";
-import { Alert } from "react-native";
+import Toast from "react-native-toast-message";
 
 export const markPatientSpecificResultDataAsStale = (
   queryClient: QueryClient,
@@ -236,12 +236,17 @@ export const useSendResult = (user: UserData, isReferralAssigned: boolean) => {
           referralId,
         );
       }
+      Toast.show({
+        type: "success",
+        text1: "Pomyślnie dodano wynik badania",
+      });
     },
     onError(error) {
-      Alert.alert(
-        "Błąd przy wysyłaniu wyniku",
-        "Wiadomość błędu:" + error.message,
-      );
+      Toast.show({
+        type: "error",
+        text1: "Błąd przy wysyłaniu wyniku",
+        text2: "Wiadomość błędu:" + error.message,
+      });
     },
   });
 };

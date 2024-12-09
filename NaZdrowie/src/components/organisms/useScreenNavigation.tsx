@@ -62,7 +62,7 @@ export const useScreensNavigation = () => {
     if (status === "granted") {
       navigate("QrScanner");
     } else {
-      // This needs to be replaced with our custom alert or sth
+      // Here action is required - so Alert stays
       Alert.alert(
         "Permission required",
         "Permission to use the camera is required to scan QR codes. Please enable it in your settings.",

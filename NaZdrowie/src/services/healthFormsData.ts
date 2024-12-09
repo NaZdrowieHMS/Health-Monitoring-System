@@ -1,4 +1,9 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  QueryClient,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
 import {
   HealthFormDisplayData,
   HealthFormUpload,
@@ -7,7 +12,7 @@ import {
 import { PaginationData } from "properties/types/api";
 import { axiosApi } from "./axios";
 import { doctorKeys, patientKeys } from "./utils";
-import { Alert } from "react-native";
+import Toast from "react-native-toast-message";
 
 export const useFetchHealthForms = <T = HealthFormDisplayData[]>(
   user: UserData,
@@ -54,30 +59,55 @@ export const useFetchHealthForm = <T = HealthFormDisplayData>(
   });
 };
 
+const updateLatestHealthFormCardCache = (
+  queryClient: QueryClient,
+  userId: number,
+  newHealthForm: HealthFormDisplayData,
+) => {
+  queryClient.setQueryData(
+    patientKeys.healthForms.list(userId, { pageSize: 1 }),
+    () => [newHealthForm],
+  );
+};
+
+const updateWithNewHealthFormCache = (
+  queryClient: QueryClient,
+  userId: number,
+  newHealthForm: HealthFormDisplayData,
+) => {
+  queryClient.setQueryData(
+    patientKeys.healthForms.specific(userId, newHealthForm.id),
+    () => [newHealthForm],
+  );
+};
+
 export const useSendHealthForm = (user: UserData) => {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: async (form: HealthFormUpload) => {
-      const { data } = await axiosApi.post("forms", form);
-      return data;
+      if (form.content.length === 0) {
+        throw new Error("Proszę nie wysyłać pustego formularza zdrowia");
+      } else {
+        const { data } = await axiosApi.post("forms", form);
+        return data;
+      }
     },
     onSuccess(newHealthForm: HealthFormDisplayData) {
       // update latest health form and save it in cache
-      queryClient.setQueryData(
-        patientKeys.healthForms.list(user.id, { pageSize: 1 }),
-        () => newHealthForm,
-      );
-      queryClient.setQueryData(
-        patientKeys.healthForms.specific(user.id, newHealthForm.id),
-        () => newHealthForm,
-      );
+      updateLatestHealthFormCardCache(queryClient, user.id, newHealthForm);
+      updateWithNewHealthFormCache(queryClient, user.id, newHealthForm);
+      Toast.show({
+        type: "success",
+        text1: "Pomyślnie wysłano formularz zdrowia",
+      });
     },
     onError(error) {
-      Alert.alert(
-        "Błąd przy wysyłaniu formularza",
-        "Wiadomość błędu:" + error.message,
-      );
+      Toast.show({
+        type: "error",
+        text1: "Błąd przy wysyłaniu formularza",
+        text2: "Wiadomość błędu: " + error.message,
+      });
     },
   });
 };

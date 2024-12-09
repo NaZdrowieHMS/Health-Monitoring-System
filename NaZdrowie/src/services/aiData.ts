@@ -4,7 +4,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { AiSelectedChange, UserData } from "properties/types";
 import { PaginationData } from "properties/types/api";
 import { doctorKeys } from "./utils";
-import { Alert } from "react-native";
+import Toast from "react-native-toast-message";
 
 export const useAnalyzeResultsWithAi = (user: UserData, patientId: number) => {
   const queryClient = useQueryClient();
@@ -18,12 +18,17 @@ export const useAnalyzeResultsWithAi = (user: UserData, patientId: number) => {
       queryClient.invalidateQueries({
         queryKey: doctorKeys.patient.predictions.core(user.id, patientId),
       });
+      Toast.show({
+        type: "success",
+        text1: "Pomyślnie wysłano wyniki do przetworzenia",
+      });
     },
     onError(error) {
-      Alert.alert(
-        "Błąd przy wysyłaniu wyników badań do predykcji",
-        "Wiadomość błędu:" + error.message,
-      );
+      Toast.show({
+        type: "error",
+        text1: "Błąd przy wysyłaniu wyników badań do predykcji",
+        text2: "Wiadomość błędu:" + error.message,
+      });
     },
   });
 };
