@@ -118,7 +118,7 @@ const App = (): React.JSX.Element => {
                   />
                 </Stack.Navigator>
               </NavigationContainer>
-              <Toast config={toastConfig} />
+              <Toast config={toastConfig} topOffset={55} />
             </View>
           </HamburgerMenuProvider>
         </UserProvider>
