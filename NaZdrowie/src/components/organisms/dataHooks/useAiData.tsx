@@ -20,7 +20,7 @@ import {
   ResultOverview,
 } from "properties/types/api/ResultProps";
 import { useScreensNavigation } from "../useScreenNavigation";
-import { Alert } from "react-native";
+import Toast from "react-native-toast-message";
 
 export const useAiData = (currentUser: UserData, patientId: number) => {
   const queryClient = useQueryClient();
@@ -131,7 +131,10 @@ export const useAiData = (currentUser: UserData, patientId: number) => {
       .map((elem) => elem.resultId);
 
     if (selectedResults.length === 0)
-      Alert.alert("Proszę zaznczyć wyniki badań do wysłania");
+      Toast.show({
+        type: "info",
+        text1: "Proszę zaznczyć wyniki badań do wysłania",
+      });
     else if (selectedResults.length > 0)
       analyzeResultsWithAi.mutate({
         patientId,

@@ -38,10 +38,6 @@ export const useBindPatientToDoctor = (user: UserData) => {
     },
     onSuccess(data: { doctorId: number; patientId: number }) {
       // big changes, maybe later add cache updating
-      Toast.show({
-        type: "info",
-        text1: "Połączenie zostało utworzone pomyślnie",
-      });
       if (user.isDoctor) {
         queryClient.invalidateQueries({
           queryKey: doctorKeys.patients.unassigned.core(data.doctorId),
@@ -55,6 +51,10 @@ export const useBindPatientToDoctor = (user: UserData) => {
       } else {
         // refetch list of all doctors (for patient) - curerntly not implemented
       }
+      Toast.show({
+        type: "info",
+        text1: "Połączenie zostało utworzone pomyślnie",
+      });
     },
     onError(error) {
       Toast.show({

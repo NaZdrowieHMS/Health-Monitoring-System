@@ -14,7 +14,7 @@ import { CommentsFilter, doctorDataPagination } from "./utils";
 import { axiosApi } from "./axios";
 import { PaginationData } from "properties/types/api";
 import { doctorKeys, patientKeys } from "./utils";
-import { Alert } from "react-native";
+import Toast from "react-native-toast-message";
 
 export const useFetchResultCommentsData = <T = DoctorComment[]>(
   user: UserData,
@@ -134,8 +134,58 @@ export const useSendHealthComment = (user: UserData, patientId: number) => {
       } catch (error) {
         console.error(error.message, error.stack);
       }
+      Toast.show({
+        type: "success",
+        text1: "Pomyślnie wysłano komentarz zdrowia pacjenta",
+      });
+    },
+    onError(error) {
+      Toast.show({
+        type: "error",
+        text1: "Bład w trakcie wysyłania komentarza zdrowia",
+        text2: "Wiadomość błędu: " + error.message,
+      });
     },
   });
+};
+
+const updateResultDisplayedCommentCache = (
+  queryClient: QueryClient,
+  userId: number,
+  patientId: number,
+  resultId: number,
+  newComment: DoctorComment,
+) => {
+  queryClient.setQueryData(
+    doctorKeys.patient.results.specificComments(
+      userId,
+      patientId,
+      resultId,
+      doctorDataPagination.resultComments,
+    ),
+    (oldComments: DoctorComment[]) => {
+      if (oldComments !== undefined) {
+        return [newComment, ...oldComments.slice(0, -1)];
+      }
+    },
+  );
+};
+
+const updateResultCommentsCache = (
+  queryClient: QueryClient,
+  userId: number,
+  patientId: number,
+  resultId: number,
+  newComment: DoctorComment,
+) => {
+  queryClient.setQueryData(
+    doctorKeys.patient.results.specificComments(userId, patientId, resultId),
+    (oldComments: DoctorComment[]) => {
+      if (oldComments !== undefined) {
+        return [newComment, ...oldComments];
+      }
+    },
+  );
 };
 
 export const useSendResultComment = (user: UserData, patientId: number) => {
@@ -149,37 +199,31 @@ export const useSendResultComment = (user: UserData, patientId: number) => {
     },
     onSuccess(newComment: DoctorComment) {
       // updated - result's displayed comment, all fethed comments (if fetched before)
-      queryClient.setQueryData(
-        doctorKeys.patient.results.specificComments(
-          user.id,
-          patientId,
-          resultId,
-          doctorDataPagination.resultComments,
-        ),
-        (oldComments: DoctorComment[]) => {
-          if (oldComments !== undefined) {
-            return [newComment, ...oldComments.slice(0, -1)];
-          }
-        },
+      updateResultDisplayedCommentCache(
+        queryClient,
+        user.id,
+        patientId,
+        resultId,
+        newComment,
       );
-      queryClient.setQueryData(
-        doctorKeys.patient.results.specificComments(
-          user.id,
-          patientId,
-          resultId,
-        ),
-        (oldComments: DoctorComment[]) => {
-          if (oldComments !== undefined) {
-            return [newComment, ...oldComments];
-          }
-        },
+      updateResultCommentsCache(
+        queryClient,
+        user.id,
+        patientId,
+        resultId,
+        newComment,
       );
+      Toast.show({
+        type: "success",
+        text1: "Pomyślnie wysłano komentarz zdrowia pacjenta",
+      });
     },
     onError(error) {
-      Alert.alert(
-        "Błąd przy wysyłaniu komentarza dla pacjenta",
-        "Wiadomość błędu:" + error.message,
-      );
+      Toast.show({
+        type: "error",
+        text1: "Błąd przy wysyłaniu komentarza dla pacjenta",
+        text2: "Wiadomość błędu:" + error.message,
+      });
     },
   });
 };

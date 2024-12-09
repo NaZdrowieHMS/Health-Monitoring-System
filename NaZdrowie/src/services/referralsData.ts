@@ -1,4 +1,9 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  QueryClient,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
 import { Referral, ReferralUpload, UserData } from "properties/types";
 import { PaginationData } from "properties/types/api";
 import { axiosApi } from "./axios";
@@ -46,6 +51,26 @@ export const useFetchReferral = <T = Referral>(
   });
 };
 
+const updateReferralsCacheWithNewReferral = (
+  queryClient: QueryClient,
+  userId: number,
+  patientId: number,
+  newReferral: Referral,
+) => {
+  queryClient.setQueriesData(
+    { queryKey: doctorKeys.patient.referrals.core(userId, patientId) },
+    (oldReferrals: Referral[]) => {
+      if (oldReferrals !== undefined) {
+        return [newReferral, ...oldReferrals];
+      }
+    },
+  );
+  queryClient.setQueryData(
+    doctorKeys.patient.referrals.specific(userId, patientId, newReferral.id),
+    () => newReferral,
+  );
+};
+
 export const useUploadReferral = (user: UserData) => {
   const queryClient = useQueryClient();
   let patientId: number = null;
@@ -56,24 +81,16 @@ export const useUploadReferral = (user: UserData) => {
       return data;
     },
     onSuccess(newReferral: Referral) {
-      // updated - all wueries with refferal data will have additional result (careful with pagination!!)
-      // and new referral is stored in cache - no request should be sent for details
-      queryClient.setQueriesData(
-        { queryKey: doctorKeys.patient.referrals.core(user.id, patientId) },
-        (oldReferrals: Referral[]) => {
-          if (oldReferrals !== undefined) {
-            return [newReferral, ...oldReferrals];
-          }
-        },
+      updateReferralsCacheWithNewReferral(
+        queryClient,
+        user.id,
+        patientId,
+        newReferral,
       );
-      queryClient.setQueryData(
-        doctorKeys.patient.referrals.specific(
-          user.id,
-          patientId,
-          newReferral.id,
-        ),
-        () => newReferral,
-      );
+      Toast.show({
+        type: "success",
+        text1: "Pomyślnie utworzono skierowanie",
+      });
     },
     onError(error) {
       Toast.show({
