@@ -1,4 +1,3 @@
-export * from "./AiAnalysisHealthFormCard";
 export * from "./AiAnalysisResultCard";
 export * from "./CommentsCard";
 export * from "./CommentsCardForDoctor";

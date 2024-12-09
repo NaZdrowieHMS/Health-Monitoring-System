@@ -118,10 +118,10 @@ export const useDesiredOverlay = (currentUser: UserData) => {
     ));
   };
 
-  function openPatientInfoOverlay(
+  const openPatientInfoOverlay = (
     patient: PatientData,
     button?: React.JSX.Element,
-  ) {
+  ) => {
     showOverlay(() => (
       <PatientDetailsOverlay
         handleClose={hideOverlay}
@@ -129,7 +129,7 @@ export const useDesiredOverlay = (currentUser: UserData) => {
         button={button}
       />
     ));
-  }
+  };
 
   return {
     openCommentsOverlay,
