@@ -55,7 +55,11 @@ export const ResultPreviewScreen = ({
     doctorDataPagination.resultComments,
     patientId,
   );
-
+  const sendResultComment = useSendResultComment(
+    currentUser,
+    patientId,
+    resultId,
+  );
   const patientData = preparePatientData();
 
   useFocusEffect(
@@ -66,7 +70,7 @@ export const ResultPreviewScreen = ({
 
   const handleSendComment = () => {
     if (comment.length > 0) {
-      useSendResultComment(currentUser, patientId).mutateAsync({
+      sendResultComment.mutateAsync({
         resultId: resultId,
         doctorId: currentUser.id,
         content: comment,
@@ -106,15 +110,15 @@ export const ResultPreviewScreen = ({
                   }
                 />
               </View>
-              <PersonalizedTextInput
-                placeholder="Wpisz nowy komentarz"
-                onChange={setComment}
-                iconButton={<SendButton handleOnClick={handleSendComment} />}
-              />
             </>
           ) : (
             <LoadingCard />
           )}
+          <PersonalizedTextInput
+            placeholder="Wpisz nowy komentarz"
+            onChange={setComment}
+            iconButton={<SendButton handleOnClick={handleSendComment} />}
+          />
           {resultComments.isSuccess ? (
             <CommentsCard
               title="Komentarze do badania"

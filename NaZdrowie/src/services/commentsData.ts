@@ -166,7 +166,7 @@ const updateResultDisplayedCommentCache = (
     (oldComments: DoctorComment[]) => {
       if (oldComments !== undefined) {
         return [newComment, ...oldComments.slice(0, -1)];
-      }
+      } else return [newComment];
     },
   );
 };
@@ -183,17 +183,19 @@ const updateResultCommentsCache = (
     (oldComments: DoctorComment[]) => {
       if (oldComments !== undefined) {
         return [newComment, ...oldComments];
-      }
+      } else return [newComment];
     },
   );
 };
 
-export const useSendResultComment = (user: UserData, patientId: number) => {
+export const useSendResultComment = (
+  user: UserData,
+  patientId: number,
+  resultId: number,
+) => {
   const queryClient = useQueryClient();
-  let resultId: number = null;
   return useMutation({
     mutationFn: async (comment: ResultCommentUpload) => {
-      resultId = comment.resultId;
       const { data } = await axiosApi.post("results/comments", comment);
       return data;
     },

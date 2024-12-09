@@ -5,6 +5,7 @@ import { BaseToast, ToastConfig } from "react-native-toast-message";
 export const toastConfig: ToastConfig = {
   info: (props) => (
     <BaseToast
+      text1NumberOfLines={0}
       text2NumberOfLines={0}
       style={{ borderLeftColor: primaryColors.darkBlue, height: "auto" }}
       {...props}
@@ -14,6 +15,7 @@ export const toastConfig: ToastConfig = {
   ),
   success: (props) => (
     <BaseToast
+      text1NumberOfLines={0}
       text2NumberOfLines={0}
       style={{ borderLeftColor: primaryColors.lightGreen, height: "auto" }}
       {...props}
@@ -23,6 +25,7 @@ export const toastConfig: ToastConfig = {
   ),
   error: (props) => (
     <BaseToast
+      text1NumberOfLines={0}
       text2NumberOfLines={0}
       style={{ borderLeftColor: primaryColors.red, height: "auto" }}
       {...props}
