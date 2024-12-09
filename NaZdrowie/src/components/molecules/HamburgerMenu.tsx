@@ -2,7 +2,7 @@ import { View } from "react-native";
 import { useContext } from "react";
 import { LinkButton } from "components/atoms";
 import { HamburgerMenuContext } from "components/organisms/context/HamburgerMenuProvider";
-import { HamburgerMenuStyle } from "properties/styles/hamburgerMenuStyle";
+import { HamburgerMenuStyle } from "properties/styles";
 import { useNavigation } from "@react-navigation/native";
 import { StringNavigation } from "properties/types";
 

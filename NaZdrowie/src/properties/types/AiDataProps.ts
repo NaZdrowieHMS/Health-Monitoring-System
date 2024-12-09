@@ -1,13 +1,37 @@
 export type AiPrediction = {
   id: number;
-  status: string;
+  status: PredictionStatus;
   patientId: number;
   doctorId: number;
-  resultIds: number[];
-  prediction: string;
-  confidence: number;
   createdDate: string;
   modifiedDate: string;
+  resultAiAnalysis: ResultAiAnalysis;
+  formAiAnalysis: HealthFormAiAnalysis;
+};
+
+export enum PredictionStatus {
+  inProgress = "IN PROGRESS",
+  completed = "COMPLETED",
+  failed = "FAILED",
+}
+
+export enum PredictionOutcome {
+  benign = "benign",
+  malignant = "malignant",
+  normal = "normal",
+}
+
+export type ResultAiAnalysis = {
+  results: ResultShortInfo[];
+  prediction: PredictionOutcome;
+  confidence: number;
+};
+
+export type HealthFormAiAnalysis = {
+  formId: number;
+  diagnoses: string[];
+  recommendations: string[];
+  formCreatedDate: string;
 };
 
 export type AiPredictionInfo = {
@@ -18,31 +42,31 @@ export type AiPredictionInfo = {
 
 export type AiAnalysisResultCardProps = {
   title: string;
-  data: {
-    status: string;
-    sourceResults: number[]; // TODO
-    prediction: string;
+  aiPrediction: {
+    status: PredictionStatus;
+    prediction: PredictionOutcome;
     confidence: number;
-    createdDate: string;
-  }[];
+    sourceResults: { title: string; onClick: () => void }[];
+    predictionDate: string;
+    diagnoses: string[];
+    recommendations: string[];
+    healthFormDate: string;
+  };
 };
 
 export type AiAnalysisHealthFormCardProps = {
   title: string;
-  data: AiHealthFormAnalysis;
+  data: HealthFormAiAnalysis;
+};
+
+export type ResultShortInfo = {
+  resultId: number;
+  testType: string;
+  createdDate: string;
 };
 
 export type AiSelectedChange = {
   resultId: number;
   patientId: number;
   doctorId: number;
-};
-
-export type AiHealthFormAnalysis = {
-  id: number;
-  patientId: number;
-  formId: number;
-  diagnoses: string[];
-  recommendations: string[];
-  createdDate: string;
 };

@@ -10,30 +10,29 @@ export const useReferralsData = (currentUser: UserData, patientId?: number) => {
 
   const formatReferralsView = (referral: Referral) => ({
     text: referral.testType,
-    buttons:
-      !referral.completed && !currentUser.isDoctor
-        ? [
-            <LinkButton
-              title="Podgląd"
-              handleOnClick={() => openReferralOverviewOverlay(referral.id)}
-            />,
-            <LinkButton
-              title="Załącz wynik"
-              handleOnClick={() =>
-                openResultsFormOverlay(
-                  referral.patientId,
-                  referral.id,
-                  referral.testType,
-                )
-              }
-            />,
-          ]
-        : [
-            <LinkButton
-              title="Podgląd"
-              handleOnClick={() => openReferralOverviewOverlay(referral.id)}
-            />,
-          ],
+    buttons: !referral.completed
+      ? [
+          <LinkButton
+            title="Podgląd"
+            handleOnClick={() => openReferralOverviewOverlay(referral.id)}
+          />,
+          <LinkButton
+            title="Załącz wynik"
+            handleOnClick={() =>
+              openResultsFormOverlay(
+                referral.patientId,
+                referral.id,
+                referral.testType,
+              )
+            }
+          />,
+        ]
+      : [
+          <LinkButton
+            title="Podgląd"
+            handleOnClick={() => openReferralOverviewOverlay(referral.id)}
+          />,
+        ],
   });
 
   const prepareReferrals = () =>

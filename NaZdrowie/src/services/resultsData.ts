@@ -13,20 +13,15 @@ import {
   ResultUpload,
 } from "properties/types/api/ResultProps";
 import { axiosApi } from "./axios";
-import {
-  doctorKeys,
-  patientDataPagination,
-  patientKeys,
-  resultsDataPagination,
-} from "./utils";
+import { doctorKeys, patientKeys, resultsDataPagination } from "./utils";
 import { Alert } from "react-native";
 
-export function markPatientSpecificResultDataAsStale(
+export const markPatientSpecificResultDataAsStale = (
   queryClient: QueryClient,
   doctorId: number,
   patientId: number,
   resultId: number,
-) {
+) => {
   queryClient.invalidateQueries({
     queryKey: doctorKeys.patient.results.specific(
       doctorId,
@@ -35,14 +30,14 @@ export function markPatientSpecificResultDataAsStale(
     ),
     exact: true,
   });
-}
+};
 
-function partiallyUpdateSpecificResultCache(
+const partiallyUpdateSpecificResultCache = (
   queryClient: QueryClient,
   doctorId: number,
   patientId: number,
   data: ResultOverview[],
-) {
+) => {
   data.forEach((result) => {
     queryClient.setQueryData(
       doctorKeys.patient.results.specific(doctorId, patientId, result.id),
@@ -60,7 +55,7 @@ function partiallyUpdateSpecificResultCache(
       result.id,
     );
   });
-}
+};
 
 export const useFetchAllResultsByPatientId = <T = ResultOverview[]>(
   user: UserData,
@@ -186,33 +181,6 @@ const setNewResultDataCache = (
   }
 };
 
-const updatePatientReferralCardCache = (
-  queryClient: QueryClient,
-  user: UserData,
-  newResult: DetailedResult,
-  referralId: number,
-) => {
-  if (user.isDoctor)
-    queryClient.setQueryData(
-      doctorKeys.patient.referrals.list(
-        user.id,
-        newResult.patientId,
-        patientDataPagination.latestReferrals,
-      ),
-      (oldReferrals: Referral[]) =>
-        oldReferrals.filter((referral) => referral.id !== referralId),
-    );
-  else
-    queryClient.setQueryData(
-      patientKeys.referrals.list(
-        user.id,
-        patientDataPagination.latestReferrals,
-      ),
-      (oldReferrals: Referral[]) =>
-        oldReferrals.filter((referral) => referral.id !== referralId),
-    );
-};
-
 const updatePatientReferralCacheAsCompleted = (
   queryClient: QueryClient,
   user: UserData,
@@ -258,16 +226,9 @@ export const useSendResult = (user: UserData, isReferralAssigned: boolean) => {
       return data;
     },
     onSuccess(newResult: DetailedResult) {
-      console.log(referralId);
       updatePatientResultCardCache(queryClient, user, newResult);
       setNewResultDataCache(queryClient, user, newResult);
       if (isReferralAssigned) {
-        updatePatientReferralCardCache(
-          queryClient,
-          user,
-          newResult,
-          referralId,
-        );
         updatePatientReferralCacheAsCompleted(
           queryClient,
           user,
