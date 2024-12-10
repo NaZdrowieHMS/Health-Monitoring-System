@@ -16,6 +16,10 @@ export const generalStyle = StyleSheet.create({
     color: primaryColors.darkGrey,
     fontSize: fontSize.baseFontSize,
   },
+  smallText: {
+    color: primaryColors.darkGrey,
+    fontSize: fontSize.smallFontSize,
+  },
   titleText: {
     fontSize: fontSize.titleFontSize,
     color: primaryColors.darkBlue,
