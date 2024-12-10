@@ -64,11 +64,11 @@ export const useScreensNavigation = () => {
     } else {
       // Here action is required - so Alert stays
       Alert.alert(
-        "Permission required",
-        "Permission to use the camera is required to scan QR codes. Please enable it in your settings.",
+        "Brak upoważnień do kamery",
+        "Dostęp do kamery znacząco polepsza korzystanie z funkcjonalności skanowania kodów QR.",
         [
-          { text: "Cancel", style: "cancel" },
-          { text: "Open Settings", onPress: () => Linking.openSettings() },
+          { text: "Anuluj", style: "cancel" },
+          { text: "Otwórz ustawienia", onPress: () => Linking.openSettings() },
         ],
       );
     }
