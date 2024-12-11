@@ -6,12 +6,8 @@ import {
   PersonalizedTextInput,
   SendButton,
 } from "components/atoms";
-import {
-  ImageCard,
-  CommentsCard,
-  LoadingCard,
-  Navbar,
-} from "components/molecules";
+import { ImageCard, CommentsCard, Navbar } from "components/molecules";
+import { QueryWrapper } from "components/organisms";
 
 import { UserContext } from "components/organisms/context";
 import {
@@ -41,14 +37,13 @@ export const ResultPreviewScreen = ({
     currentUser,
     patientId,
   );
-  const { isSuccess, data: result } = useFetchResult(
+  const resultQuery = useFetchResult(currentUser, resultId, null, patientId);
+  const resultContentQuery = useFetchResultContent(
     currentUser,
     resultId,
-    null,
     patientId,
   );
-  const resultContent = useFetchResultContent(currentUser, resultId, patientId);
-  const resultComments = useFetchResultCommentsData(
+  const resultCommentsQuery = useFetchResultCommentsData(
     currentUser,
     resultId,
     (data) => data.map(formatCommentsData),
@@ -90,43 +85,48 @@ export const ResultPreviewScreen = ({
       <SafeAreaView style={generalStyle.safeArea}>
         <ScrollView contentContainerStyle={mainStyle.container}>
           <Text style={generalStyle.titleText}>{resultTitle}</Text>
-          {isSuccess ? (
-            <>
-              {resultContent.isSuccess ? (
-                <ImageCard
-                  title="Podgląd"
-                  imageData={resultContent.data.data}
-                  imageType={resultContent.data.type}
+          <QueryWrapper
+            queries={[resultQuery]}
+            renderSuccess={([result]) => (
+              <>
+                <QueryWrapper
+                  queries={[resultContentQuery]}
+                  temporaryTitle="Podgląd"
+                  renderSuccess={([resultContent]) => (
+                    <ImageCard
+                      title="Podgląd"
+                      imageData={resultContent.data}
+                      imageType={resultContent.type}
+                    />
+                  )}
                 />
-              ) : (
-                <LoadingCard title="Podgląd" />
-              )}
-              <View style={generalStyle.rowSpread}>
-                <Text style={generalStyle.titleText}>Uzyj do analizy AI</Text>
-                <PersonalizedCheckbox
-                  checkboxInitialValue={result.aiSelected}
-                  handleValueChange={(value: boolean) =>
-                    handleCheckboxForAiSelection(result.id, value)
-                  }
-                />
-              </View>
-            </>
-          ) : (
-            <LoadingCard />
-          )}
+                <View style={generalStyle.rowSpread}>
+                  <Text style={generalStyle.titleText}>Uzyj do analizy AI</Text>
+                  <PersonalizedCheckbox
+                    checkboxInitialValue={result.aiSelected}
+                    handleValueChange={(value: boolean) =>
+                      handleCheckboxForAiSelection(result.id, value)
+                    }
+                  />
+                </View>
+              </>
+            )}
+          />
           <PersonalizedTextInput
             placeholder="Wpisz nowy komentarz"
             onChange={setComment}
             iconButton={<SendButton handleOnClick={handleSendComment} />}
           />
-          {resultComments.isSuccess ? (
-            <CommentsCard
-              title="Komentarze do badania"
-              data={resultComments.data}
-            />
-          ) : (
-            <LoadingCard />
-          )}
+          <QueryWrapper
+            queries={[resultCommentsQuery]}
+            temporaryTitle="Komentarze do badania"
+            renderSuccess={([resultComments]) => (
+              <CommentsCard
+                title="Komentarze do badania"
+                data={resultComments}
+              />
+            )}
+          />
         </ScrollView>
       </SafeAreaView>
     </>

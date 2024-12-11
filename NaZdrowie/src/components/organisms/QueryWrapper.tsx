@@ -3,23 +3,27 @@ import { LoadingCard } from "components/molecules";
 import { ErrorCard } from "components/molecules/cards/ErrorCard";
 
 type QueryWrapperProps<T> = {
-  query: UseQueryResult<T>;
-  temporaryTitle: string;
-  renderSuccess: (data: T) => JSX.Element;
+  queries: UseQueryResult<T>[];
+  temporaryTitle?: string;
+  renderSuccess: (data: T[]) => JSX.Element;
   renderLoading?: () => JSX.Element;
-  renderError?: () => JSX.Element;
+  renderError?: (errors: string[]) => JSX.Element;
 };
 
 export const QueryWrapper = <T,>({
-  query,
+  queries,
   temporaryTitle,
   renderSuccess,
   renderLoading,
   renderError,
 }: QueryWrapperProps<T>): JSX.Element => {
-  const { isLoading, isError, isSuccess, data, error } = query;
+  const areLoading = queries.some((query) => query.isLoading);
+  const areErrors = queries
+    .filter((query) => query.isError)
+    .map((q) => q.error.message);
+  const areSuccess = queries.every((query) => query.isSuccess);
 
-  if (isLoading) {
+  if (areLoading) {
     return renderLoading ? (
       renderLoading()
     ) : (
@@ -27,19 +31,20 @@ export const QueryWrapper = <T,>({
     );
   }
 
-  if (isError) {
-    console.error(error.message, error.stack);
+  if (areErrors.length > 0) {
+    console.error(areErrors);
     return renderError ? (
-      renderError()
+      renderError(areErrors)
     ) : (
       <ErrorCard
         title={temporaryTitle}
-        message={"Błąd w trakcie pobierania informacji: " + error.message}
+        message={`Błąd w trakcie pobierania informacji: ${areErrors.join(", ")}`}
       />
     );
   }
 
-  if (isSuccess && data) {
+  if (areSuccess) {
+    const data = queries.map((query) => query.data!);
     return renderSuccess(data);
   }
 

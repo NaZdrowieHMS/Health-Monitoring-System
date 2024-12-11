@@ -1,5 +1,5 @@
 import { PrimaryButton } from "components/atoms";
-import { ListCard, LoadingCard } from "components/molecules";
+import { ListCard } from "components/molecules";
 import {
   QueryWrapper,
   useDesiredOverlay,
@@ -41,17 +41,19 @@ export const MainScreenDoctor = () => {
         />
       </View>
       <QueryWrapper
-        query={latestPatients}
+        queries={[latestPatients]}
         temporaryTitle="Ostatnio leczeni pacjenci"
-        renderSuccess={(data) => (
-          <ListCard title="Ostatnio leczeni pacjenci" data={data} />
+        renderSuccess={([patients]) => (
+          <ListCard title="Ostatnio leczeni pacjenci" data={patients} />
         )}
       />
-      {unviewedResults.isSuccess ? (
-        <ListCard title="Nowe wyniki badań" data={unviewedResults.data} />
-      ) : (
-        <LoadingCard title="Nowe wyniki badań" />
-      )}
+      <QueryWrapper
+        queries={[unviewedResults]}
+        temporaryTitle="Nowe wyniki badań"
+        renderSuccess={([results]) => (
+          <ListCard title="Nowe wyniki badań" data={results} />
+        )}
+      />
     </ScrollView>
   );
 };

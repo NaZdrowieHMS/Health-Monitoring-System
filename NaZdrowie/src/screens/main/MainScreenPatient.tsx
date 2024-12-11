@@ -1,6 +1,10 @@
 import { PrimaryButton } from "components/atoms";
-import { CommentsCard, ListCard, LoadingCard } from "components/molecules";
-import { useDesiredOverlay, useScreensNavigation } from "components/organisms";
+import { CommentsCard, ListCard } from "components/molecules";
+import {
+  QueryWrapper,
+  useDesiredOverlay,
+  useScreensNavigation,
+} from "components/organisms";
 import { UserContext } from "components/organisms/context";
 import {
   useResultsData,
@@ -51,26 +55,35 @@ export const MainScreenPatient = () => {
         />
         <PrimaryButton title="Czaty z lekarzami" />
       </View>
-      {latestHealthComments.isSuccess &&
-      latestReferrals.isSuccess &&
-      latestResults.isSuccess &&
-      latestHealthForm.isSuccess ? (
-        <>
-          <CommentsCard title="Moje zdrowie" data={latestHealthComments.data} />
+      <QueryWrapper
+        temporaryTitle="Moje zdrowie"
+        queries={[latestHealthComments]}
+        renderSuccess={([healthComments]) => (
+          <CommentsCard title="Moje zdrowie" data={healthComments} />
+        )}
+      />
+      <QueryWrapper
+        temporaryTitle="Moje skierowania"
+        queries={[latestReferrals]}
+        renderSuccess={([referrals]) => (
           <ListCard
             title="Moje skierowania"
-            data={latestReferrals.data}
+            data={referrals}
             handleSeeMore={navigateToAllReferals}
           />
+        )}
+      />
+      <QueryWrapper
+        queries={[latestResults, latestHealthForm]}
+        temporaryTitle="Moje dane"
+        renderSuccess={([results, healthForm]) => (
           <ListCard
             title="Moje wyniki"
-            data={[...latestResults.data, ...latestHealthForm.data]}
+            data={[...results, ...healthForm]}
             handleSeeMore={() => navigateToAllResults(currentUser.id)}
           />
-        </>
-      ) : (
-        <LoadingCard />
-      )}
+        )}
+      />
     </ScrollView>
   );
 };
