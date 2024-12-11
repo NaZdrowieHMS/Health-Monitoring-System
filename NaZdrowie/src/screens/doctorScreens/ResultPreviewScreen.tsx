@@ -18,6 +18,7 @@ import {
 import { generalStyle, mainStyle } from "properties/styles";
 import React, { useCallback, useContext, useState } from "react";
 import { ScrollView, View, Text, SafeAreaView } from "react-native";
+import Toast from "react-native-toast-message";
 
 import {
   useFetchResultCommentsData,
@@ -75,13 +76,23 @@ export const ResultPreviewScreen = ({
 
   return (
     <>
-      {patientData.isSuccess ? (
-        <Navbar
-          navbarDescriptionTitle={`${patientData.data.name} ${patientData.data.surname}`}
-        />
-      ) : (
-        <Navbar navbarDescriptionTitle="..." />
-      )}
+      <QueryWrapper
+        queries={[patientData]}
+        renderSuccess={([patient]) => (
+          <Navbar
+            navbarDescriptionTitle={`${patient.name} ${patient.surname}`}
+          />
+        )}
+        renderLoading={() => <Navbar navbarDescriptionTitle="..." />}
+        renderError={(errors) => {
+          Toast.show({
+            type: "error",
+            text1: "Błąd w pobieraniu informacji o pacjenice",
+            text2: errors.join(" "),
+          });
+          return <Navbar navbarDescriptionTitle="..." />;
+        }}
+      />
       <SafeAreaView style={generalStyle.safeArea}>
         <ScrollView contentContainerStyle={mainStyle.container}>
           <Text style={generalStyle.titleText}>{resultTitle}</Text>
