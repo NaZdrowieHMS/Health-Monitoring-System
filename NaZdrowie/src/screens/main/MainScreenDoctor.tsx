@@ -1,6 +1,10 @@
 import { PrimaryButton } from "components/atoms";
-import { ListCard, LoadingCard } from "components/molecules";
-import { useDesiredOverlay, useScreensNavigation } from "components/organisms";
+import { ListCard } from "components/molecules";
+import {
+  QueryWrapper,
+  useDesiredOverlay,
+  useScreensNavigation,
+} from "components/organisms";
 import { UserContext } from "components/organisms/context";
 import { useDoctorData, useResultsData } from "components/organisms/dataHooks";
 import { mainStyle } from "properties/styles/mainStyle";
@@ -36,17 +40,20 @@ export const MainScreenDoctor = () => {
           handleOnClick={navigateToNewPatientsScreen}
         />
       </View>
-      {latestPatients.isSuccess && unviewedResults.isSuccess ? (
-        <>
-          <ListCard
-            title="Ostatnio leczeni pacjenci"
-            data={latestPatients.data}
-          />
-          <ListCard title="Nowe wyniki badań" data={unviewedResults.data} />
-        </>
-      ) : (
-        <LoadingCard />
-      )}
+      <QueryWrapper
+        queries={[latestPatients]}
+        temporaryTitle="Ostatnio leczeni pacjenci"
+        renderSuccess={([patients]) => (
+          <ListCard title="Ostatnio leczeni pacjenci" data={patients} />
+        )}
+      />
+      <QueryWrapper
+        queries={[unviewedResults]}
+        temporaryTitle="Nowe wyniki badań"
+        renderSuccess={([results]) => (
+          <ListCard title="Nowe wyniki badań" data={results} />
+        )}
+      />
     </ScrollView>
   );
 };

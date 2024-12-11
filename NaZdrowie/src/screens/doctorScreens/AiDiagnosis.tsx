@@ -2,12 +2,8 @@ import { useFocusEffect } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "App";
 import { PrimaryButton } from "components/atoms";
-import {
-  AiAnalysisResultCard,
-  ListCard,
-  LoadingCard,
-  Navbar,
-} from "components/molecules";
+import { AiAnalysisResultCard, ListCard, Navbar } from "components/molecules";
+import { QueryWrapper } from "components/organisms";
 import { UserContext } from "components/organisms/context";
 import {
   useAiData,
@@ -17,6 +13,7 @@ import {
 import { generalStyle, mainStyle } from "properties/styles";
 import React, { useCallback, useContext } from "react";
 import { ScrollView, SafeAreaView } from "react-native";
+import Toast from "react-native-toast-message";
 
 export const AiDiagnosis = ({
   route,
@@ -44,43 +41,57 @@ export const AiDiagnosis = ({
 
   return (
     <>
-      {patientData.isSuccess ? (
-        <Navbar
-          navbarDescriptionTitle={`${patientData.data.name} ${patientData.data.surname}`}
-        />
-      ) : (
-        <Navbar navbarDescriptionTitle="..." /> // maybe loading here or sth idk
-      )}
+      <QueryWrapper
+        queries={[patientData]}
+        renderSuccess={([patient]) => (
+          <Navbar
+            navbarDescriptionTitle={`${patient.name} ${patient.surname}`}
+          />
+        )}
+        renderLoading={() => <Navbar navbarDescriptionTitle="..." />}
+        renderError={(errors) => {
+          Toast.show({
+            type: "error",
+            text1: "Błąd w pobieraniu informacji o pacjenice",
+            text2: errors.join(", "),
+          });
+          return <Navbar navbarDescriptionTitle="..." />;
+        }}
+      />
       <SafeAreaView style={generalStyle.safeArea}>
         <ScrollView contentContainerStyle={mainStyle.container}>
-          {patientResultsForAi.isSuccess && latestHealthForm.isSuccess ? (
-            <ListCard
-              title="Załączone badania"
-              data={[...latestHealthForm.data, ...patientResultsForAi.data]}
-              extraButton={
-                <PrimaryButton
-                  title="Poproś AI o analizę"
-                  handleOnClick={() => {
-                    startAiDiagnosis();
-                    patientLatestPrediction.refetch();
-                  }}
-                />
-              }
-            />
-          ) : (
-            <LoadingCard title="Załączone badania" />
-          )}
-          {patientLatestPrediction.isSuccess ? (
-            <AiAnalysisResultCard
-              aiPrediction={patientLatestPrediction.data[0]}
-              title={
-                "Wyniki ostatnio przeprowadzonej analizy AI z dnia " +
-                patientLatestPrediction.data[0].predictionDate
-              }
-            />
-          ) : (
-            <LoadingCard title="Wyniki ostatnio przeprowadzonej analizy AI" />
-          )}
+          <QueryWrapper
+            queries={[patientResultsForAi, latestHealthForm]}
+            temporaryTitle="Załączone badania"
+            renderSuccess={([results, healthForm]) => (
+              <ListCard
+                title="Załączone badania"
+                data={[...healthForm, ...results]}
+                extraButton={
+                  <PrimaryButton
+                    title="Poproś AI o analizę"
+                    handleOnClick={() => {
+                      startAiDiagnosis();
+                      patientLatestPrediction.refetch();
+                    }}
+                  />
+                }
+              />
+            )}
+          />
+          <QueryWrapper
+            queries={[patientLatestPrediction]}
+            temporaryTitle="Wyniki ostatnio przeprowadzonej analizy AI"
+            renderSuccess={([prediction]) => (
+              <AiAnalysisResultCard
+                aiPrediction={prediction[0]}
+                title={
+                  "Wyniki ostatnio przeprowadzonej analizy AI z dnia " +
+                  prediction[0].predictionDate
+                }
+              />
+            )}
+          />
         </ScrollView>
       </SafeAreaView>
     </>

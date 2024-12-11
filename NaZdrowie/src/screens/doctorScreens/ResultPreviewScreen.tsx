@@ -6,12 +6,8 @@ import {
   PersonalizedTextInput,
   SendButton,
 } from "components/atoms";
-import {
-  ImageCard,
-  CommentsCard,
-  LoadingCard,
-  Navbar,
-} from "components/molecules";
+import { ImageCard, CommentsCard, Navbar } from "components/molecules";
+import { QueryWrapper } from "components/organisms";
 
 import { UserContext } from "components/organisms/context";
 import {
@@ -22,6 +18,7 @@ import {
 import { generalStyle, mainStyle } from "properties/styles";
 import React, { useCallback, useContext, useState } from "react";
 import { ScrollView, View, Text, SafeAreaView } from "react-native";
+import Toast from "react-native-toast-message";
 
 import {
   useFetchResultCommentsData,
@@ -41,14 +38,13 @@ export const ResultPreviewScreen = ({
     currentUser,
     patientId,
   );
-  const { isSuccess, data: result } = useFetchResult(
+  const resultQuery = useFetchResult(currentUser, resultId, null, patientId);
+  const resultContentQuery = useFetchResultContent(
     currentUser,
     resultId,
-    null,
     patientId,
   );
-  const resultContent = useFetchResultContent(currentUser, resultId, patientId);
-  const resultComments = useFetchResultCommentsData(
+  const resultCommentsQuery = useFetchResultCommentsData(
     currentUser,
     resultId,
     (data) => data.map(formatCommentsData),
@@ -80,53 +76,68 @@ export const ResultPreviewScreen = ({
 
   return (
     <>
-      {patientData.isSuccess ? (
-        <Navbar
-          navbarDescriptionTitle={`${patientData.data.name} ${patientData.data.surname}`}
-        />
-      ) : (
-        <Navbar navbarDescriptionTitle="..." />
-      )}
+      <QueryWrapper
+        queries={[patientData]}
+        renderSuccess={([patient]) => (
+          <Navbar
+            navbarDescriptionTitle={`${patient.name} ${patient.surname}`}
+          />
+        )}
+        renderLoading={() => <Navbar navbarDescriptionTitle="..." />}
+        renderError={(errors) => {
+          Toast.show({
+            type: "error",
+            text1: "Błąd w pobieraniu informacji o pacjenice",
+            text2: errors.join(" "),
+          });
+          return <Navbar navbarDescriptionTitle="..." />;
+        }}
+      />
       <SafeAreaView style={generalStyle.safeArea}>
         <ScrollView contentContainerStyle={mainStyle.container}>
           <Text style={generalStyle.titleText}>{resultTitle}</Text>
-          {isSuccess ? (
-            <>
-              {resultContent.isSuccess ? (
-                <ImageCard
-                  title="Podgląd"
-                  imageData={resultContent.data.data}
-                  imageType={resultContent.data.type}
+          <QueryWrapper
+            queries={[resultQuery]}
+            renderSuccess={([result]) => (
+              <>
+                <QueryWrapper
+                  queries={[resultContentQuery]}
+                  temporaryTitle="Podgląd"
+                  renderSuccess={([resultContent]) => (
+                    <ImageCard
+                      title="Podgląd"
+                      imageData={resultContent.data}
+                      imageType={resultContent.type}
+                    />
+                  )}
                 />
-              ) : (
-                <LoadingCard title="Podgląd" />
-              )}
-              <View style={generalStyle.rowSpread}>
-                <Text style={generalStyle.titleText}>Uzyj do analizy AI</Text>
-                <PersonalizedCheckbox
-                  checkboxInitialValue={result.aiSelected}
-                  handleValueChange={(value: boolean) =>
-                    handleCheckboxForAiSelection(result.id, value)
-                  }
-                />
-              </View>
-            </>
-          ) : (
-            <LoadingCard />
-          )}
+                <View style={generalStyle.rowSpread}>
+                  <Text style={generalStyle.titleText}>Uzyj do analizy AI</Text>
+                  <PersonalizedCheckbox
+                    checkboxInitialValue={result.aiSelected}
+                    handleValueChange={(value: boolean) =>
+                      handleCheckboxForAiSelection(result.id, value)
+                    }
+                  />
+                </View>
+              </>
+            )}
+          />
           <PersonalizedTextInput
             placeholder="Wpisz nowy komentarz"
             onChange={setComment}
             iconButton={<SendButton handleOnClick={handleSendComment} />}
           />
-          {resultComments.isSuccess ? (
-            <CommentsCard
-              title="Komentarze do badania"
-              data={resultComments.data}
-            />
-          ) : (
-            <LoadingCard />
-          )}
+          <QueryWrapper
+            queries={[resultCommentsQuery]}
+            temporaryTitle="Komentarze do badania"
+            renderSuccess={([resultComments]) => (
+              <CommentsCard
+                title="Komentarze do badania"
+                data={resultComments}
+              />
+            )}
+          />
         </ScrollView>
       </SafeAreaView>
     </>

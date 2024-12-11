@@ -1,13 +1,12 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "App";
 import { PrimaryButton } from "components/atoms";
+import { CommentsCardForDoctor, ListCard, Navbar } from "components/molecules";
 import {
-  CommentsCardForDoctor,
-  ListCard,
-  LoadingCard,
-  Navbar,
-} from "components/molecules";
-import { useDesiredOverlay, useScreensNavigation } from "components/organisms";
+  QueryWrapper,
+  useDesiredOverlay,
+  useScreensNavigation,
+} from "components/organisms";
 import { UserContext } from "components/organisms/context";
 import {
   usePatientData,
@@ -19,6 +18,7 @@ import {
 import { generalStyle, mainStyle } from "properties/styles";
 import { useContext } from "react";
 import { View, ScrollView, SafeAreaView } from "react-native";
+import Toast from "react-native-toast-message";
 
 export const PatientDetailsScreen = ({
   route,
@@ -42,21 +42,31 @@ export const PatientDetailsScreen = ({
   const latestHealthForm = prepareLatestHealthForm();
   const latestReferrals = prepareLatestReferrals();
   const patientData = preparePatientData();
-  const currentDotorComments = prepareCurrentDotorComments();
-  const otherDotorsComments = prepareOtherDotorsComments();
+  const currentDotorCommentsQuery = prepareCurrentDotorComments();
+  const otherDotorsCommentsQuery = prepareOtherDotorsComments();
 
   const { navigateToAllReferals, navigateToAllResults, navigateToAiDiagnosis } =
     useScreensNavigation();
 
   return (
     <>
-      {patientData.isSuccess ? (
-        <Navbar
-          navbarDescriptionTitle={`${patientData.data.name} ${patientData.data.surname}`}
-        />
-      ) : (
-        <Navbar navbarDescriptionTitle="..." /> // maybe loading here or sth idk
-      )}
+      <QueryWrapper
+        queries={[patientData]}
+        renderSuccess={([patient]) => (
+          <Navbar
+            navbarDescriptionTitle={`${patient.name} ${patient.surname}`}
+          />
+        )}
+        renderLoading={() => <Navbar navbarDescriptionTitle="..." />}
+        renderError={(errors) => {
+          Toast.show({
+            type: "error",
+            text1: "Błąd w pobieraniu informacji o pacjenice",
+            text2: errors.join(", "),
+          });
+          return <Navbar navbarDescriptionTitle="..." />;
+        }}
+      />
       <SafeAreaView style={generalStyle.safeArea}>
         <ScrollView contentContainerStyle={mainStyle.container}>
           <View style={mainStyle.buttonContainer}>
@@ -74,33 +84,40 @@ export const PatientDetailsScreen = ({
               handleOnClick={() => openReferralFormOverlay(patientId)}
             />
           </View>
-
-          {latestReferrals.isSuccess &&
-          currentDotorComments.isSuccess &&
-          otherDotorsComments.isSuccess &&
-          latestResults.isSuccess &&
-          latestHealthForm.isSuccess ? (
-            <>
+          <QueryWrapper
+            temporaryTitle="Zdrowie pacjenta"
+            queries={[currentDotorCommentsQuery, otherDotorsCommentsQuery]}
+            renderSuccess={([currentDotorComments, otherDotorsComments]) => (
               <CommentsCardForDoctor
                 title="Zdrowie pacjenta"
-                data={currentDotorComments.data}
-                dataOthers={otherDotorsComments.data}
+                data={currentDotorComments}
+                dataOthers={otherDotorsComments}
                 commentUpload={healthCommentUpload}
               />
+            )}
+          />
+          <QueryWrapper
+            queries={[latestReferrals]}
+            temporaryTitle="Aktywne skierowania pacjenta"
+            renderSuccess={([referrals]) => (
               <ListCard
                 title="Aktywne skierowania pacjenta"
-                data={latestReferrals.data}
+                data={referrals}
                 handleSeeMore={navigateToAllReferals}
               />
+            )}
+          />
+          <QueryWrapper
+            queries={[latestResults, latestHealthForm]}
+            temporaryTitle="Wyniki pacjenta"
+            renderSuccess={([results, healthForm]) => (
               <ListCard
                 title="Wyniki pacjenta"
-                data={[...latestResults.data, ...latestHealthForm.data]}
+                data={[...results, ...healthForm]}
                 handleSeeMore={() => navigateToAllResults(patientId)}
               />
-            </>
-          ) : (
-            <LoadingCard />
-          )}
+            )}
+          />
         </ScrollView>
       </SafeAreaView>
     </>

@@ -1,5 +1,6 @@
 import { PersonalizedTextInput } from "components/atoms";
-import { LoadingCard, Navbar } from "components/molecules";
+import { Navbar } from "components/molecules";
+import { QueryWrapper } from "components/organisms";
 import { UserContext } from "components/organisms/context";
 import { useDoctorData } from "components/organisms/dataHooks";
 import { cardStyle, generalStyle, mainStyle } from "properties/styles";
@@ -14,6 +15,7 @@ export const NewPatientsScreen = () => {
     useDoctorData(currentUser);
 
   const unassignedPatients = prepareUnassignedPatients();
+
   return (
     <>
       <Navbar navbarDescriptionTitle="Nowi pacjenci" />
@@ -26,14 +28,16 @@ export const NewPatientsScreen = () => {
           />
         </View>
         <ScrollView contentContainerStyle={mainStyle.container}>
-          {unassignedPatients.isSuccess ? (
-            filteredUnassignedPatients(
-              unassignedPatients.data,
-              filterValue,
-            ).map((element) => element.button)
-          ) : (
-            <LoadingCard />
-          )}
+          <QueryWrapper
+            queries={[unassignedPatients]}
+            renderSuccess={([patients]) => (
+              <>
+                {filteredUnassignedPatients(patients, filterValue).map(
+                  (patient) => patient.button,
+                )}
+              </>
+            )}
+          />
         </ScrollView>
       </SafeAreaView>
     </>

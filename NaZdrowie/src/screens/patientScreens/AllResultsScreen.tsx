@@ -1,5 +1,5 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { LoadingCard, Navbar } from "components/molecules";
+import { Navbar } from "components/molecules";
 import { SafeAreaView, ScrollView } from "react-native";
 import { generalStyle, mainStyle } from "properties/styles";
 import { useContext } from "react";
@@ -7,6 +7,8 @@ import { UserContext } from "components/organisms/context";
 import { useFetchPatient } from "services/patientData";
 import { RootStackParamList } from "App";
 import { useResultsData } from "components/organisms/dataHooks";
+import { QueryWrapper } from "components/organisms";
+import Toast from "react-native-toast-message";
 
 export const AllResultsScreen = ({
   route,
@@ -14,24 +16,39 @@ export const AllResultsScreen = ({
   const { currentUser } = useContext(UserContext);
   const { patientId } = route.params;
   const { prepareResultsHistory } = useResultsData(currentUser, patientId);
-  const results = prepareResultsHistory();
-  const patient = useFetchPatient(currentUser, null, patientId);
+  const resultsQuery = prepareResultsHistory();
+  const patientQuery = useFetchPatient(currentUser, null, patientId);
 
   return (
     <>
-      {results.isSuccess && currentUser.isDoctor ? (
-        <Navbar
-          navbarDescriptionTitle={`${patient.data.name} ${patient.data.surname}`}
-          navbarDescriptionSubtitle="Historia wyników"
+      {currentUser.isDoctor ? (
+        <QueryWrapper
+          queries={[patientQuery]}
+          renderSuccess={([patient]) => (
+            <Navbar
+              navbarDescriptionTitle={`${patient.name} ${patient.surname}`}
+              navbarDescriptionSubtitle="Historia wyników"
+            />
+          )}
+          renderLoading={() => <Navbar navbarDescriptionTitle="..." />}
+          renderError={(errors) => {
+            Toast.show({
+              type: "error",
+              text1: "Błąd w pobieraniu informacji o pacjenice",
+              text2: errors.join(", "),
+            });
+            return <Navbar navbarDescriptionTitle="..." />;
+          }}
         />
-      ) : results.isSuccess && !currentUser.isDoctor ? (
-        <Navbar navbarDescriptionTitle="Historia wyników" />
       ) : (
-        <Navbar navbarDescriptionTitle="..." />
+        <Navbar navbarDescriptionTitle="Historia wyników" />
       )}
       <SafeAreaView style={generalStyle.safeArea}>
         <ScrollView contentContainerStyle={mainStyle.container}>
-          {results.isSuccess ? results.data : <LoadingCard />}
+          <QueryWrapper
+            queries={[resultsQuery]}
+            renderSuccess={([results]) => <>{results}</>}
+          />
         </ScrollView>
       </SafeAreaView>
     </>

@@ -1,4 +1,5 @@
-import { LoadingCard, Navbar } from "components/molecules";
+import { Navbar } from "components/molecules";
+import { QueryWrapper } from "components/organisms";
 import { UserContext } from "components/organisms/context";
 import { usePatientData } from "components/organisms/dataHooks";
 import { generalStyle, mainStyle } from "properties/styles";
@@ -16,7 +17,10 @@ export const AllPatientsScreen = () => {
       <Navbar navbarDescriptionTitle="Moi pacjenci" />
       <SafeAreaView style={generalStyle.safeArea}>
         <ScrollView contentContainerStyle={mainStyle.container}>
-          {allPatients.isSuccess ? allPatients.data : <LoadingCard />}
+          <QueryWrapper
+            queries={[allPatients]}
+            renderSuccess={([patients]) => <>{patients}</>}
+          />
         </ScrollView>
       </SafeAreaView>
     </>

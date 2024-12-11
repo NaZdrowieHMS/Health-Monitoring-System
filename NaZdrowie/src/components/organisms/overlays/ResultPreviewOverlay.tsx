@@ -3,9 +3,10 @@ import React from "react";
 import { useFetchResultCommentsData } from "services/commentsData";
 import { Overlay } from "./Overlay";
 import { cardCommentsCount } from "services/config";
-import { useFetchResult, useFetchResultContent } from "services/resultsData";
-import { LoadingCard, ImageCard, CommentsCard } from "components/molecules";
+import { useFetchResultContent } from "services/resultsData";
+import { ImageCard, CommentsCard } from "components/molecules";
 import { formatCommentsData } from "../dataHooks/dataFormatHelpers";
+import { QueryWrapper } from "../QueryWrapper";
 
 export const ResultPreviewOverlay: React.FC<{
   currentUser: UserData;
@@ -13,11 +14,6 @@ export const ResultPreviewOverlay: React.FC<{
   resultId: number;
   resultTitle: string;
 }> = ({ currentUser, handleClose, resultId, resultTitle }) => {
-  const {
-    isSuccess,
-    isLoading,
-    data: result,
-  } = useFetchResult(currentUser, resultId);
   const resultContent = useFetchResultContent(currentUser, resultId);
   const resultComments = useFetchResultCommentsData(
     currentUser,
@@ -30,31 +26,27 @@ export const ResultPreviewOverlay: React.FC<{
     <Overlay>
       <Overlay.Container>
         <Overlay.Header title={resultTitle} handleClose={handleClose} />
-        {isLoading && <LoadingCard />}
-        {isSuccess && result && (
-          <>
-            <Overlay.Body>
-              {resultContent.isSuccess ? (
-                <ImageCard
-                  title="Podgląd"
-                  imageData={result.content.data}
-                  imageType={result.content.type}
-                />
-              ) : (
-                <LoadingCard title="Podgląd" />
-              )}
-              {resultComments.isSuccess ? (
-                <CommentsCard
-                  title="Komentarze do badania"
-                  data={resultComments.data}
-                />
-              ) : (
-                <LoadingCard />
-              )}
-            </Overlay.Body>
-            <Overlay.Footer />
-          </>
-        )}
+        <Overlay.Body>
+          <QueryWrapper
+            queries={[resultContent]}
+            temporaryTitle="Podgląd"
+            renderSuccess={([content]) => (
+              <ImageCard
+                title="Podgląd"
+                imageData={content.data}
+                imageType={content.type}
+              />
+            )}
+          />
+          <QueryWrapper
+            queries={[resultComments]}
+            temporaryTitle="Komentarze do badania"
+            renderSuccess={([comments]) => (
+              <CommentsCard title="Komentarze do badania" data={comments} />
+            )}
+          />
+        </Overlay.Body>
+        <Overlay.Footer />
       </Overlay.Container>
     </Overlay>
   );
