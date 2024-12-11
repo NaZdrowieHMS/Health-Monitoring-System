@@ -16,6 +16,10 @@ export const generalStyle = StyleSheet.create({
     color: primaryColors.darkGrey,
     fontSize: fontSize.baseFontSize,
   },
+  errorText: {
+    color: primaryColors.red,
+    fontSize: fontSize.baseFontSize,
+  },
   smallText: {
     color: primaryColors.darkGrey,
     fontSize: fontSize.smallFontSize,
