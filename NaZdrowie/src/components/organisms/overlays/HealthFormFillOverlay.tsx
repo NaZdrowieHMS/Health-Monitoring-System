@@ -40,14 +40,14 @@ export const HealthFormFillOverlay: React.FC<{
     setHealthFormItems((prevItems) => ({
       ...prevItems,
       content: prevItems.content.map((item) =>
-        item.key === index ? { ...item, value: newValue } : item
+        item.key === index ? { ...item, value: newValue } : item,
       ),
     }));
   };
 
   function getItemValue(index: string): string | boolean {
     const foundItem = healthFormItems.content.find(
-      (item) => item.key === index
+      (item) => item.key === index,
     );
     return foundItem?.value || null;
   }

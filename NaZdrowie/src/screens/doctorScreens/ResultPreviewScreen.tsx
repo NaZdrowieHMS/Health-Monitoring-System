@@ -36,32 +36,32 @@ export const ResultPreviewScreen = ({
   const { preparePatientData } = usePatientData(currentUser, patientId);
   const { handleCheckboxForAiSelection, updateAiSelectedData } = useAiData(
     currentUser,
-    patientId
+    patientId,
   );
   const resultQuery = useFetchResult(currentUser, resultId, null, patientId);
   const resultContentQuery = useFetchResultContent(
     currentUser,
     resultId,
-    patientId
+    patientId,
   );
   const resultCommentsQuery = useFetchResultCommentsData(
     currentUser,
     resultId,
     (data) => data.map(formatCommentsData),
     doctorDataPagination.resultComments,
-    patientId
+    patientId,
   );
   const sendResultComment = useSendResultComment(
     currentUser,
     patientId,
-    resultId
+    resultId,
   );
   const patientData = preparePatientData();
 
   useFocusEffect(
     useCallback(() => {
       return updateAiSelectedData;
-    }, [])
+    }, []),
   );
 
   const handleSendComment = async () => {

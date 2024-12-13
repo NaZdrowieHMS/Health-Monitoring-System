@@ -6,7 +6,7 @@ import { Text, View } from "react-native";
 import primaryColors from "properties/colors";
 
 export const ObjectCard: React.FC<ObjectCardProps> = (
-  props: ObjectCardProps
+  props: ObjectCardProps,
 ) => {
   const { data, keyStyle } = props;
 
