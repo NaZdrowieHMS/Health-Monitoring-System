@@ -45,6 +45,13 @@ export const HealthFormFillOverlay: React.FC<{
     }));
   };
 
+  function getItemValue(index: string): string | boolean {
+    const foundItem = healthFormItems.content.find(
+      (item) => item.key === index
+    );
+    return foundItem?.value || null;
+  }
+
   const handleSendFormData = () => {
     sendFormResult.mutate(healthFormItems);
     handleClose();

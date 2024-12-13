@@ -26,10 +26,15 @@ export const CommentsCardForDoctor: React.FC<
   const { title, data, dataOthers, commentUpload } = props;
   const [comment, setComment] = useState<string>();
 
-  const handleSendComment = () => {
+  const handleSendComment = async () => {
     if (comment.length > 0) {
-      commentUpload.comment.content = comment;
-      commentUpload.sendComment.mutateAsync(commentUpload.comment);
+      if (comment.trim().length > 0) {
+        commentUpload.comment.content = comment;
+        try {
+          await commentUpload.sendComment.mutateAsync(commentUpload.comment);
+          setComment("");
+        } catch (error) {}
+      }
     }
   };
 
@@ -40,6 +45,7 @@ export const CommentsCardForDoctor: React.FC<
         <PersonalizedTextInput
           placeholder="Wpisz nowy komentarz"
           onChange={setComment}
+          value={comment}
           iconButton={<SendButton handleOnClick={handleSendComment} />}
         />
       )}

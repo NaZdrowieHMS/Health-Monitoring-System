@@ -21,7 +21,7 @@ export const useFetchResultCommentsData = <T = DoctorComment[]>(
   resultId: number,
   select?: (data: DoctorComment[]) => T,
   pagination?: PaginationData,
-  patientId?: number,
+  patientId?: number
 ) => {
   return useQuery<DoctorComment[], Error, T>({
     queryKey: patientId
@@ -29,7 +29,7 @@ export const useFetchResultCommentsData = <T = DoctorComment[]>(
           user.id,
           patientId,
           resultId,
-          pagination,
+          pagination
         )
       : patientKeys.results.specificComments(user.id, resultId, pagination),
     queryFn: async () => {
@@ -49,7 +49,7 @@ export const useFetchHealthComments = <T = DoctorComment[]>(
   select?: (data: DoctorComment[]) => T,
   pagination?: PaginationData,
   patientId?: number,
-  filter?: CommentsFilter,
+  filter?: CommentsFilter
 ) => {
   return useQuery<DoctorComment[], Error, T>({
     queryKey: patientId
@@ -57,7 +57,7 @@ export const useFetchHealthComments = <T = DoctorComment[]>(
           user.id,
           patientId,
           pagination,
-          filter,
+          filter
         )
       : patientKeys.healthComments.list(user.id, pagination, filter),
     queryFn: async () => {
@@ -78,21 +78,21 @@ const updateCurrentDoctorHealthCommentsCache = (
   queryClient: QueryClient,
   userId: number,
   patientId: number,
-  newComment: DoctorComment,
+  newComment: DoctorComment
 ) => {
   queryClient.setQueryData(
     doctorKeys.patient.healthComments.list(
       userId,
       patientId,
       doctorDataPagination.currentDotorComments,
-      CommentsFilter.Specific,
+      CommentsFilter.Specific
     ),
     (oldComments: DoctorComment[]) => {
       if (oldComments !== undefined) {
         return [newComment, ...oldComments.slice(0, -1)];
       }
       return oldComments;
-    },
+    }
   );
 };
 
@@ -128,7 +128,7 @@ export const useSendHealthComment = (user: UserData, patientId: number) => {
           queryClient,
           user.id,
           patientId,
-          newComment,
+          newComment
         );
         updatePatientHealthCommentsCache();
       } catch (error) {
@@ -154,20 +154,20 @@ const updateResultDisplayedCommentCache = (
   userId: number,
   patientId: number,
   resultId: number,
-  newComment: DoctorComment,
+  newComment: DoctorComment
 ) => {
   queryClient.setQueryData(
     doctorKeys.patient.results.specificComments(
       userId,
       patientId,
       resultId,
-      doctorDataPagination.resultComments,
+      doctorDataPagination.resultComments
     ),
     (oldComments: DoctorComment[]) => {
       if (oldComments !== undefined) {
         return [newComment, ...oldComments.slice(0, -1)];
       } else return [newComment];
-    },
+    }
   );
 };
 
@@ -176,7 +176,7 @@ const updateResultCommentsCache = (
   userId: number,
   patientId: number,
   resultId: number,
-  newComment: DoctorComment,
+  newComment: DoctorComment
 ) => {
   queryClient.setQueryData(
     doctorKeys.patient.results.specificComments(userId, patientId, resultId),
@@ -184,14 +184,14 @@ const updateResultCommentsCache = (
       if (oldComments !== undefined) {
         return [newComment, ...oldComments];
       } else return [newComment];
-    },
+    }
   );
 };
 
 export const useSendResultComment = (
   user: UserData,
   patientId: number,
-  resultId: number,
+  resultId: number
 ) => {
   const queryClient = useQueryClient();
   return useMutation({
@@ -206,14 +206,14 @@ export const useSendResultComment = (
         user.id,
         patientId,
         resultId,
-        newComment,
+        newComment
       );
       updateResultCommentsCache(
         queryClient,
         user.id,
         patientId,
         resultId,
-        newComment,
+        newComment
       );
       Toast.show({
         type: "success",
