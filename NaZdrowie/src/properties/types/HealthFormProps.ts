@@ -11,6 +11,7 @@ type HealthFormItem = {
   title: string;
   type: HealthFormItemType;
   placeholder?: string;
+  unitsPlaceholder?: string;
   options?: DropdownItem[];
 };
 
@@ -31,6 +32,7 @@ export const healthFormItems: HealthFormItem[] = [
     title: "Temperatura",
     type: HealthFormItemType.Input,
     placeholder: "Temperatura ciała w °C",
+    unitsPlaceholder: "°C",
   },
   {
     title: "Ciśnienie",
@@ -38,9 +40,10 @@ export const healthFormItems: HealthFormItem[] = [
     placeholder: "np. 120/80",
   },
   {
-    title: "Cukier",
+    title: "Glikemia",
     type: HealthFormItemType.Input,
-    placeholder: "np. 120/80",
+    placeholder: "Glikemia w mg/dl",
+    unitsPlaceholder: "mg/dl",
   },
   {
     title: "Ból głowy",

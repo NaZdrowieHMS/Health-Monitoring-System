@@ -6,6 +6,7 @@ import { generalStyle } from "./generalStyle";
 
 export const inputStyle = StyleSheet.create({
   input: {
+    flexGrow: 1,
     borderWidth: 1,
     padding: paddingSize.medium,
     borderRadius: borderRadiusSize.medium,
