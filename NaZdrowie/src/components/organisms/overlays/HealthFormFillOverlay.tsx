@@ -36,23 +36,17 @@ export const HealthFormFillOverlay: React.FC<{
 
   const sendFormResult = useSendHealthForm(currentUser);
 
-  const prepareHealthFormItems = (healthForm: HealthFormUpload) => {
-    healthForm.content = healthForm.content.filter((item) => item.value);
-    // optionally add here padding to data / data verification
-    return healthForm;
-  };
-
   const handleValueChange = (index: string, newValue: string | boolean) => {
     setHealthFormItems((prevItems) => ({
       ...prevItems,
       content: prevItems.content.map((item) =>
-        item.key === index ? { ...item, value: newValue } : item,
+        item.key === index ? { ...item, value: newValue } : item
       ),
     }));
   };
 
   const handleSendFormData = () => {
-    sendFormResult.mutate(prepareHealthFormItems(healthFormItems));
+    sendFormResult.mutate(healthFormItems);
     handleClose();
   };
 
@@ -76,10 +70,18 @@ export const HealthFormFillOverlay: React.FC<{
             >
               <Text style={generalStyle.secondaryTitle}>{item.title}</Text>
               {item.type === HealthFormItemType.Input && (
-                <View style={{ paddingTop: paddingSize.xxSmall }}>
+                <View
+                  style={{
+                    paddingTop: paddingSize.xxSmall,
+                    display: "flex",
+                    flexDirection: "row",
+                    columnGap: paddingSize.medium,
+                  }}
+                >
                   <PersonalizedTextInput
                     placeholder={item.placeholder}
                     onChange={(value) => handleValueChange(item.title, value)}
+                    inputInsideText={item.unitsPlaceholder}
                   />
                 </View>
               )}

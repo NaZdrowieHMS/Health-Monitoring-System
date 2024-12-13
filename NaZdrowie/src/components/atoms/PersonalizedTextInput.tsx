@@ -2,12 +2,12 @@ import primaryColors from "properties/colors";
 import { generalStyle, inputStyle } from "properties/styles";
 import { InputProps } from "properties/types";
 import React, { useEffect } from "react";
-import { TextInput, View } from "react-native";
+import { TextInput, View, Text } from "react-native";
 
 export const PersonalizedTextInput: React.FC<InputProps> = (
-  props: InputProps,
+  props: InputProps
 ) => {
-  const { placeholder, iconButton, onChange } = props;
+  const { placeholder, iconButton, inputInsideText, onChange } = props;
   const [text, onChangeText] = React.useState("");
 
   useEffect(() => {
@@ -29,6 +29,7 @@ export const PersonalizedTextInput: React.FC<InputProps> = (
         placeholderTextColor={primaryColors.lightGrey}
       />
       {iconButton}
+      <Text style={generalStyle.basicText}>{inputInsideText}</Text>
     </View>
   );
 };
