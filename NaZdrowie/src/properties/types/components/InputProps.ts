@@ -6,4 +6,5 @@ export type InputProps = {
   iconButton?: React.ReactElement<IconButtonProps>;
   inputInsideText?: string;
   onChange?: (value: string) => void;
+  value?: string;
 };

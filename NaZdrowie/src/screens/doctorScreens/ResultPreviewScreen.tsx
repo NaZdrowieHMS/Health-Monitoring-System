@@ -64,13 +64,18 @@ export const ResultPreviewScreen = ({
     }, []),
   );
 
-  const handleSendComment = () => {
+  const handleSendComment = async () => {
     if (comment.length > 0) {
-      sendResultComment.mutateAsync({
-        resultId: resultId,
-        doctorId: currentUser.id,
-        content: comment,
-      }); // here you can define onSuccess, onError and onSettled logic
+      if (comment.trim().length > 0) {
+        try {
+          await sendResultComment.mutateAsync({
+            resultId: resultId,
+            doctorId: currentUser.id,
+            content: comment,
+          });
+          setComment("");
+        } catch (error) {}
+      }
     }
   };
 
@@ -126,6 +131,7 @@ export const ResultPreviewScreen = ({
           <PersonalizedTextInput
             placeholder="Wpisz nowy komentarz"
             onChange={setComment}
+            value={comment}
             iconButton={<SendButton handleOnClick={handleSendComment} />}
           />
           <QueryWrapper
