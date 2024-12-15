@@ -7,7 +7,11 @@ import {
   useFetchAllResultsByPatientId,
   useFetchUnviewedResults,
 } from "services/resultsData";
-import { resultsDataPagination } from "services/utils";
+import {
+  formatDate,
+  formatShortDate,
+  resultsDataPagination,
+} from "services/utils";
 import { useScreensNavigation } from "../useScreenNavigation";
 import { ResultButton } from "components/atoms/buttons";
 
@@ -16,7 +20,7 @@ export const useResultsData = (currentUser: UserData, patientId?: number) => {
   const { navigateToResultPreviewScreen } = useScreensNavigation();
 
   const formatResultsView = (result: ResultOverview) => ({
-    text: result.testType,
+    text: result.testType + " " + formatShortDate(result.createdDate),
     buttons: [
       <LinkButton
         title="Podgląd"
@@ -25,15 +29,19 @@ export const useResultsData = (currentUser: UserData, patientId?: number) => {
             ? navigateToResultPreviewScreen(
                 result.id,
                 result.patientId,
-                result.testType,
+                result.testType + " " + formatDate(result.createdDate),
               )
-            : openResultOverlay(result.id, result.testType)
+            : openResultOverlay(
+                result.id,
+                result.testType + " " + formatDate(result.createdDate),
+              )
         }
       />,
     ],
   });
 
   const formatResultButton = (result: ResultOverview) => {
+    const title = result.testType + " " + formatShortDate(result.createdDate);
     return (
       <ResultButton
         title={result.testType}
@@ -45,9 +53,9 @@ export const useResultsData = (currentUser: UserData, patientId?: number) => {
                 navigateToResultPreviewScreen(
                   result.id,
                   result.patientId,
-                  result.testType,
+                  title,
                 )
-            : () => openResultOverlay(result.id, result.testType)
+            : () => openResultOverlay(result.id, title)
         }
       />
     );

@@ -113,7 +113,7 @@ export const PatientDetailsScreen = ({
             renderSuccess={([results, healthForm]) => (
               <ListCard
                 title="Wyniki pacjenta"
-                data={[...results, ...healthForm]}
+                data={[...healthForm, ...results]}
                 handleSeeMore={() => navigateToAllResults(patientId)}
               />
             )}

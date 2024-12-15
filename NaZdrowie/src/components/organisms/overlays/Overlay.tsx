@@ -43,7 +43,15 @@ const OverlayHeader = ({
   handleClose: (event: GestureResponderEvent) => void;
 }) => (
   <View style={overlayStyle.header}>
-    <Text style={generalStyle.titleText}>{title}</Text>
+    <Text
+      style={
+        title?.length < 30
+          ? generalStyle.titleText
+          : generalStyle.secondaryTitle
+      }
+    >
+      {title}
+    </Text>
     <Pressable onPress={handleClose}>
       <Text style={[generalStyle.titleText, { fontSize: fontSize.xFontSize }]}>
         ×
