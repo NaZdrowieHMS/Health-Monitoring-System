@@ -79,7 +79,7 @@ export const MainScreenPatient = () => {
         renderSuccess={([results, healthForm]) => (
           <ListCard
             title="Moje wyniki"
-            data={[...results, ...healthForm]}
+            data={[...healthForm, ...results]}
             handleSeeMore={() => navigateToAllResults(currentUser.id)}
           />
         )}
