@@ -42,8 +42,8 @@ export const useScreensNavigation = () => {
     navigate("MainScreen");
   };
 
-  const navigateToAllReferals = () => {
-    // TODO
+  const navigateToAllReferrals = (patientId: number) => {
+    navigate("AllReferrals", { patientId });
   };
 
   const navigateToAllResults = (patientId: number) => {
@@ -94,7 +94,7 @@ export const useScreensNavigation = () => {
     navigateToLoginScreen,
     navigateToRegisterScreen,
     navigateToMainScreen,
-    navigateToAllReferals,
+    navigateToAllReferrals,
     navigateToAllResults,
     navigateToAiDiagnosis,
     navigateToQrScanner,

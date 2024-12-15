@@ -45,8 +45,11 @@ export const PatientDetailsScreen = ({
   const currentDotorCommentsQuery = prepareCurrentDotorComments();
   const otherDotorsCommentsQuery = prepareOtherDotorsComments();
 
-  const { navigateToAllReferals, navigateToAllResults, navigateToAiDiagnosis } =
-    useScreensNavigation();
+  const {
+    navigateToAllReferrals,
+    navigateToAllResults,
+    navigateToAiDiagnosis,
+  } = useScreensNavigation();
 
   return (
     <>
@@ -103,7 +106,7 @@ export const PatientDetailsScreen = ({
               <ListCard
                 title="Aktywne skierowania pacjenta"
                 data={referrals}
-                handleSeeMore={navigateToAllReferals}
+                handleSeeMore={() => navigateToAllReferrals(patientId)}
               />
             )}
           />

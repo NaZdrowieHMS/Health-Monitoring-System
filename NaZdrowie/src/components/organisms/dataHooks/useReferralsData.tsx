@@ -1,8 +1,9 @@
-import { LinkButton } from "components/atoms";
-import { UserData, Referral } from "properties/types";
+import { LinkButton, ResultButton } from "components/atoms";
+import { UserData, Referral, ResultOverview } from "properties/types";
 import { useFetchReferrals } from "services/referralsData";
 import { patientDataPagination } from "services/utils";
 import { useDesiredOverlay } from "../useDesiredOverlay";
+import { ReferralEntry } from "components/atoms/ReferralEntry";
 
 export const useReferralsData = (currentUser: UserData, patientId?: number) => {
   const { openReferralOverviewOverlay, openResultsFormOverlay } =
@@ -35,6 +36,19 @@ export const useReferralsData = (currentUser: UserData, patientId?: number) => {
         ],
   });
 
+  const formatReferralButton = (referral: Referral) => {
+    return (
+      <ReferralEntry
+        patientId={referral.patientId}
+        id={referral.id}
+        completed={referral.completed}
+        title={referral.testType}
+        createdDate={referral.createdDate}
+        key={referral.id}
+      />
+    );
+  };
+
   const prepareReferrals = () =>
     useFetchReferrals(
       currentUser,
@@ -52,8 +66,17 @@ export const useReferralsData = (currentUser: UserData, patientId?: number) => {
       patientId,
     );
 
+  const prepareAllReferrals = () =>
+    useFetchReferrals(
+      currentUser,
+      (data) => data.map(formatReferralButton),
+      patientDataPagination.referrals,
+      patientId,
+    );
+
   return {
     prepareReferrals,
+    prepareAllReferrals,
     prepareLatestReferrals,
   };
 };

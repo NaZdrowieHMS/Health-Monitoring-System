@@ -22,6 +22,7 @@ import { HamburgerMenuProvider } from "components/organisms/context/HamburgerMen
 import primaryColors from "properties/colors";
 import Toast from "react-native-toast-message";
 import { toastConfig } from "services/toastConfig";
+import { AllReferralsScreen } from "screens/patientScreens/AllReferralsScreen";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -50,6 +51,7 @@ export type RootStackParamList = {
   AiDiagnosis: { patientId: number };
   ResultPreview: { resultId: number; patientId: number; resultTitle: string };
   AllResults: { patientId: number };
+  AllReferrals: { patientId: number };
 };
 
 const App = (): React.JSX.Element => {
@@ -115,6 +117,14 @@ const App = (): React.JSX.Element => {
                     name="AllResults"
                     component={AllResultsScreen}
                     options={{ title: "Historia wyników", headerShown: false }}
+                  />
+                  <Stack.Screen
+                    name="AllReferrals"
+                    component={AllReferralsScreen}
+                    options={{
+                      title: "Historia skierowań",
+                      headerShown: false,
+                    }}
                   />
                 </Stack.Navigator>
               </NavigationContainer>

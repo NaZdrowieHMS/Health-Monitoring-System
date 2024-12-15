@@ -6,17 +6,20 @@ import { useContext } from "react";
 import { UserContext } from "components/organisms/context";
 import { useFetchPatient } from "services/patientData";
 import { RootStackParamList } from "App";
-import { useResultsData } from "components/organisms/dataHooks";
+import {
+  useReferralsData,
+  useResultsData,
+} from "components/organisms/dataHooks";
 import { QueryWrapper } from "components/organisms";
 import Toast from "react-native-toast-message";
 
-export const AllResultsScreen = ({
+export const AllReferralsScreen = ({
   route,
-}: NativeStackScreenProps<RootStackParamList, "AllResults">) => {
+}: NativeStackScreenProps<RootStackParamList, "AllReferrals">) => {
   const { currentUser } = useContext(UserContext);
   const { patientId } = route.params;
-  const { prepareResultsHistory } = useResultsData(currentUser, patientId);
-  const resultsQuery = prepareResultsHistory();
+  const { prepareAllReferrals } = useReferralsData(currentUser, patientId);
+  const referralsQuery = prepareAllReferrals();
   const patientQuery = useFetchPatient(currentUser, null, patientId);
 
   return (
@@ -27,7 +30,7 @@ export const AllResultsScreen = ({
           renderSuccess={([patient]) => (
             <Navbar
               navbarDescriptionTitle={`${patient.name} ${patient.surname}`}
-              navbarDescriptionSubtitle="Historia wyników"
+              navbarDescriptionSubtitle="Historia skierowań"
             />
           )}
           renderLoading={() => <Navbar navbarDescriptionTitle="..." />}
@@ -41,13 +44,13 @@ export const AllResultsScreen = ({
           }}
         />
       ) : (
-        <Navbar navbarDescriptionTitle="Historia wyników" />
+        <Navbar navbarDescriptionTitle="Historia skierowań" />
       )}
       <SafeAreaView style={generalStyle.safeArea}>
         <ScrollView contentContainerStyle={mainStyle.container}>
           <QueryWrapper
-            queries={[resultsQuery]}
-            renderSuccess={([results]) => <>{results}</>}
+            queries={[referralsQuery]}
+            renderSuccess={([referrals]) => <>{referrals}</>}
           />
         </ScrollView>
       </SafeAreaView>
