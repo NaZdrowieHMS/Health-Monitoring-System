@@ -28,3 +28,7 @@ export const DownloadButton: React.FC<IconButtonProps> = ({ ...props }) => {
 export const SendButton: React.FC<IconButtonProps> = ({ ...props }) => {
   return <IconButton type="doubleright" {...props} />;
 };
+
+export const InfoButton: React.FC<IconButtonProps> = ({ ...props }) => {
+  return <IconButton type="infocirlceo" {...props} />;
+};

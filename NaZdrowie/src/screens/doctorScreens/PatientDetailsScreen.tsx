@@ -1,6 +1,6 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "App";
-import { PrimaryButton } from "components/atoms";
+import { InfoButton, PrimaryButton } from "components/atoms";
 import { CommentsCardForDoctor, ListCard, Navbar } from "components/molecules";
 import {
   QueryWrapper,
@@ -15,6 +15,7 @@ import {
   useCommentsData,
   useHealthFormData,
 } from "components/organisms/dataHooks";
+import primaryColors from "properties/colors";
 import { generalStyle, mainStyle } from "properties/styles";
 import { useContext } from "react";
 import { View, ScrollView, SafeAreaView } from "react-native";
@@ -25,8 +26,11 @@ export const PatientDetailsScreen = ({
 }: NativeStackScreenProps<RootStackParamList, "PatientDetails">) => {
   const { patientId } = route.params;
   const { currentUser } = useContext(UserContext);
-  const { openResultsFormOverlay, openReferralFormOverlay } =
-    useDesiredOverlay(currentUser);
+  const {
+    openResultsFormOverlay,
+    openReferralFormOverlay,
+    openPatientInfoOverlay,
+  } = useDesiredOverlay(currentUser);
 
   const { preparePatientData } = usePatientData(currentUser, patientId);
   const { prepareLatestResults } = useResultsData(currentUser, patientId);
@@ -55,6 +59,14 @@ export const PatientDetailsScreen = ({
         renderSuccess={([patient]) => (
           <Navbar
             navbarDescriptionTitle={`${patient.name} ${patient.surname}`}
+            navbarDescriptionButton={
+              <InfoButton
+                color={primaryColors.white}
+                handleOnClick={() => {
+                  openPatientInfoOverlay(patient);
+                }}
+              />
+            }
           />
         )}
         renderLoading={() => <Navbar navbarDescriptionTitle="..." />}

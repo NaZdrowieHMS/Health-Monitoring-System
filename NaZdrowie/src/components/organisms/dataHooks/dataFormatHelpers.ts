@@ -9,7 +9,7 @@ import { formatDate } from "services/utils";
 export const formatCommentsData = (comment: DoctorComment): CommentData => ({
   date: formatDate(comment.modifiedDate),
   text: comment.content,
-  author: `${comment.doctor.name} ${comment.doctor.surname}`,
+  author: `lek. med. ${comment.doctor.name} ${comment.doctor.surname}`,
 });
 
 export const formatReferralInfo = (referral: Referral): ObjectCardElement[] => {
@@ -20,7 +20,8 @@ export const formatReferralInfo = (referral: Referral): ObjectCardElement[] => {
     },
     {
       key: "Wystawiający",
-      value: "dr " + referral.doctor.name + " " + referral.doctor.surname,
+      value:
+        "lek. med. " + referral.doctor.name + " " + referral.doctor.surname,
     },
     {
       key: "Rodzaj badania:",
