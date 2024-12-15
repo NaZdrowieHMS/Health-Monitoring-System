@@ -33,7 +33,7 @@ export const MainScreenPatient = () => {
   const { openResultsFormOverlay, openHealthFormFillOverlay } =
     useDesiredOverlay(currentUser);
 
-  const { navigateToAllReferals, navigateToAllResults } =
+  const { navigateToAllReferrals, navigateToAllResults } =
     useScreensNavigation();
 
   return (
@@ -69,7 +69,7 @@ export const MainScreenPatient = () => {
           <ListCard
             title="Moje skierowania"
             data={referrals}
-            handleSeeMore={navigateToAllReferals}
+            handleSeeMore={() => navigateToAllReferrals(currentUser.id)}
           />
         )}
       />

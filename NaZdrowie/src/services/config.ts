@@ -1,4 +1,5 @@
-export const API_URL: string = "http://localhost:8080/api/";
+export const API_URL: string =
+  "http://localhost:8080/api/";
 export const AI_API_URL: string = "http://localhost:8082/api/";
 
 export const latestCount = 3;
