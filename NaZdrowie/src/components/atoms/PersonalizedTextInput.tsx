@@ -19,16 +19,18 @@ export const PersonalizedTextInput: React.FC<InputProps> = (
     <View style={inputStyle.input}>
       <TextInput
         style={{
-          flexGrow: 1,
+          flex: 1,
           ...generalStyle.basicText,
         }}
         onChangeText={handleChangeText}
         value={value}
         placeholder={placeholder}
         placeholderTextColor={primaryColors.lightGrey}
+        multiline={true}
+        scrollEnabled={true}
       />
+      <Text style={[generalStyle.basicText]}>{inputInsideText}</Text>
       {iconButton}
-      <Text style={generalStyle.basicText}>{inputInsideText}</Text>
     </View>
   );
 };
