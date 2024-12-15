@@ -32,3 +32,7 @@ export const SendButton: React.FC<IconButtonProps> = ({ ...props }) => {
 export const InfoButton: React.FC<IconButtonProps> = ({ ...props }) => {
   return <IconButton type="infocirlceo" {...props} />;
 };
+
+export const DeleteButton: React.FC<IconButtonProps> = ({ ...props }) => {
+  return <IconButton type="delete" {...props} />;
+};

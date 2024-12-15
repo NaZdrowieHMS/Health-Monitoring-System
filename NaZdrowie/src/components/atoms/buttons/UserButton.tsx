@@ -3,6 +3,8 @@ import { buttonStyle, generalStyle, userButtonStyle } from "properties/styles";
 import { ButtonProps } from "properties/types";
 import React from "react";
 import { Pressable, Text } from "react-native";
+import AntDesign from "@expo/vector-icons/AntDesign";
+import { paddingSize } from "properties/vars";
 
 export type UserButtonElement = ReturnType<typeof UserButton>;
 
@@ -13,9 +15,14 @@ export const UserButton: React.FC<ButtonProps & { online?: boolean }> = (
 
   return (
     <Pressable
-      style={[buttonStyle.buttonContainer, userButtonStyle.buttonContainer]}
+      style={[
+        buttonStyle.buttonContainer,
+        userButtonStyle.buttonContainer,
+        { columnGap: paddingSize.small },
+      ]}
       onPress={handleOnClick}
     >
+      <AntDesign name="user" size={24} color={primaryColors.lightGrey} />
       <Text style={generalStyle.basicText}>{title}</Text>
       {online != null && (
         <Text

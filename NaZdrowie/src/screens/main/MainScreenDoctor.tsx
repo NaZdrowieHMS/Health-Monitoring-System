@@ -10,6 +10,11 @@ import { useDoctorData, useResultsData } from "components/organisms/dataHooks";
 import { mainStyle } from "properties/styles/mainStyle";
 import React, { useContext } from "react";
 import { View, ScrollView } from "react-native";
+import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
+import primaryColors from "properties/colors";
+import AntDesign from "@expo/vector-icons/AntDesign";
+import Entypo from "@expo/vector-icons/Entypo";
+import Ionicons from "@expo/vector-icons/Ionicons";
 
 export const MainScreenDoctor = () => {
   const { currentUser } = useContext(UserContext);
@@ -29,15 +34,18 @@ export const MainScreenDoctor = () => {
         <PrimaryButton
           handleOnClick={navigateToAllPatientsScreen}
           title="Moi pacjenci"
+          icon="team"
         />
-        <PrimaryButton title="Czaty z pacjentami" />
+        <PrimaryButton title="Czaty z pacjentami" icon="chatbubbles-outline" />
         <PrimaryButton
           title="Wygeneruj kod QR"
           handleOnClick={() => openQrDisplayOverlay()}
+          icon="qr-code-outline"
         />
         <PrimaryButton
           title="Znajdź nowego pacjenta"
           handleOnClick={navigateToNewPatientsScreen}
+          icon="magnifying-glass"
         />
       </View>
       <QueryWrapper

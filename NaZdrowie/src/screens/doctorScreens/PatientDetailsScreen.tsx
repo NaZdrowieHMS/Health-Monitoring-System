@@ -85,15 +85,21 @@ export const PatientDetailsScreen = ({
             <PrimaryButton
               handleOnClick={() => navigateToAiDiagnosis(patientId)}
               title="Diagnozuj z AI"
+              icon="robot-happy-outline"
             />
-            <PrimaryButton title="Czat z pacjentem" />
+            <PrimaryButton
+              title="Czat z pacjentem"
+              icon="chatbubbles-outline"
+            />
             <PrimaryButton
               title="Załącz wynik badania"
               handleOnClick={() => openResultsFormOverlay(patientId)}
+              icon="document-attach-outline"
             />
             <PrimaryButton
               title="Wystaw skierowanie"
               handleOnClick={() => openReferralFormOverlay(patientId)}
+              icon="document-text-outline"
             />
           </View>
           <QueryWrapper
