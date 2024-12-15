@@ -34,7 +34,7 @@ export enum CommentsFilter {
 
 export function parsePeselToDateOfBirth(pesel: string): string | null {
   if (!/^\d{11}$/.test(pesel)) {
-    throw new Error("Invalid PESEL format. PESEL must have 11 digits.");
+    return null;
   }
 
   const year = parseInt(pesel.slice(0, 2), 10);
@@ -58,7 +58,7 @@ export function parsePeselToDateOfBirth(pesel: string): string | null {
     fullYear = 1800 + year;
     month -= 80;
   } else {
-    throw new Error("Invalid PESEL month value.");
+    return null;
   }
 
   const dateOfBirth = new Date(fullYear, month - 1, day);

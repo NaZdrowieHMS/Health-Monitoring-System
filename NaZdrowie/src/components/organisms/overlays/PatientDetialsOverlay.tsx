@@ -3,6 +3,7 @@ import React from "react";
 
 import { Overlay } from "./Overlay";
 import { ObjectCard } from "components/molecules";
+import { parsePeselToDateOfBirth } from "services/utils";
 
 export const PatientDetailsOverlay: React.FC<{
   handleClose: () => void;
@@ -17,6 +18,10 @@ export const PatientDetailsOverlay: React.FC<{
     {
       key: "PESEL",
       value: patient.pesel,
+    },
+    {
+      key: "Data urodzenia",
+      value: parsePeselToDateOfBirth(patient.pesel),
     },
   ];
   return (
