@@ -5,7 +5,7 @@ import React from "react";
 import { TextInput, View, Text } from "react-native";
 
 export const PersonalizedTextInput: React.FC<InputProps> = (
-  props: InputProps
+  props: InputProps,
 ) => {
   const { placeholder, iconButton, inputInsideText, onChange, value } = props;
 
