@@ -10,6 +10,10 @@ export const buttonStyle = StyleSheet.create({
     borderRadius: borderRadiusSize.big,
     paddingVertical: paddingSize.medium,
     paddingHorizontal: paddingSize.mediumBig,
+    display: "flex",
+    flexDirection: "row",
+    columnGap: paddingSize.xSmall,
+    alignItems: "center",
   },
   buttonText: {
     color: primaryColors.white,

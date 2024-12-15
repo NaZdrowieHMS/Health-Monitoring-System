@@ -44,16 +44,19 @@ export const MainScreenPatient = () => {
           handleOnClick={() => {
             openHealthFormFillOverlay(currentUser.id);
           }}
+          icon="form"
         />
         <PrimaryButton
           title="Załącz wynik badania"
           handleOnClick={() => openResultsFormOverlay(currentUser.id)}
+          icon="document-attach-outline"
         />
         <PrimaryButton
           title="Dodaj lekarza"
           handleOnClick={() => navigateToQrScanner()}
+          icon="scan"
         />
-        <PrimaryButton title="Czaty z lekarzami" />
+        <PrimaryButton title="Czaty z lekarzami" icon="chatbubbles-outline" />
       </View>
       <QueryWrapper
         temporaryTitle="Moje zdrowie"
