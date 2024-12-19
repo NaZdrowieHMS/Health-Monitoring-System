@@ -6,3 +6,4 @@ export const latestCount = 3;
 export const cardCommentsCount = 1;
 export const currentDoctorCommentsCount = 1;
 export const AiResultPredictionsCardCount = 1;
+export const allDoctorCommentsCount = 50

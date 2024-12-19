@@ -84,7 +84,7 @@ const updateCurrentDoctorHealthCommentsCache = (
     doctorKeys.patient.healthComments.list(
       userId,
       patientId,
-      doctorDataPagination.currentDotorComments,
+      doctorDataPagination.currentDoctorComments,
       CommentsFilter.Specific,
     ),
     (oldComments: DoctorComment[]) => {

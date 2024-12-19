@@ -13,9 +13,12 @@ import {
 } from "properties/types";
 import React, { useState } from "react";
 import { Text, View } from "react-native";
+import {useNavigation} from "@react-navigation/native";
+import {useScreensNavigation} from "components/organisms";
 
 export const CommentsCardForDoctor: React.FC<
   CommentsCardProps & {
+    patientId: number;
     dataOthers: CommentData[];
     commentUpload?: {
       sendComment: UseMutationResult<HealthCommentUpload, Error>;
@@ -23,8 +26,10 @@ export const CommentsCardForDoctor: React.FC<
     };
   }
 > = (props) => {
-  const { title, data, dataOthers, commentUpload } = props;
+  const { patientId, title, data, dataOthers, commentUpload } = props;
   const [comment, setComment] = useState<string>();
+
+  const { navigateToAllHealthComments } = useScreensNavigation();
 
   const handleSendComment = async () => {
     if (comment.length > 0) {
@@ -59,7 +64,7 @@ export const CommentsCardForDoctor: React.FC<
         <Comment item={item} index={index} key={index} />
       ))}
       <View style={cardStyle.floatRight}>
-        <LinkButton title="Zobacz więcej..." />
+        <LinkButton title="Zobacz więcej..." handleOnClick={() => navigateToAllHealthComments(patientId)}/>
       </View>
     </View>
   );

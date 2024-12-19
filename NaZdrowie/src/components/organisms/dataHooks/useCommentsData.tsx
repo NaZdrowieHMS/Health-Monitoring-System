@@ -36,29 +36,38 @@ export const useCommentsData = (currentUser: UserData, patientId?: number) => {
     },
   };
 
-  const prepareCurrentDotorComments = () =>
+  const prepareCurrentDoctorComments = () =>
     useFetchHealthComments(
       currentUser,
       (data) => data.map(formatCommentsData),
-      doctorDataPagination.currentDotorComments,
+      doctorDataPagination.currentDoctorComments,
       patientId,
       CommentsFilter.Specific,
     );
 
-  const prepareOtherDotorsComments = () =>
+  const prepareOtherDoctorsComments = () =>
     useFetchHealthComments(
       currentUser,
       (data) => data.map(formatCommentsData),
-      doctorDataPagination.otherDotorsComments,
+      doctorDataPagination.otherDoctorsComments,
       patientId,
       CommentsFilter.Others,
+    );
+
+  const prepareAllDoctorsComments = () =>
+    useFetchHealthComments(
+      currentUser,
+      (data) => data.map(formatCommentsData),
+      doctorDataPagination.allDoctorsComments,
+      patientId,
     );
 
   return {
     prepareHealthComments,
     prepareLatestHealthComments,
     healthCommentUpload,
-    prepareCurrentDotorComments,
-    prepareOtherDotorsComments,
+    prepareCurrentDoctorComments,
+    prepareOtherDoctorsComments,
+    prepareAllDoctorsComments,
   };
 };

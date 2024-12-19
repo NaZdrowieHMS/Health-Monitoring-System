@@ -50,6 +50,10 @@ export const useScreensNavigation = () => {
     navigate("AllResults", { patientId });
   };
 
+  const navigateToAllHealthComments = (patientId: number) => {
+    navigate("AllHealthComments", { patientId });
+  };
+
   const navigateToAiDiagnosis = (patientId: number) => {
     navigate("AiDiagnosis", {
       patientId,
@@ -100,5 +104,6 @@ export const useScreensNavigation = () => {
     navigateToQrScanner,
     navigateToResultPreviewScreen,
     navigateToAllPatientsScreen,
+    navigateToAllHealthComments,
   };
 };

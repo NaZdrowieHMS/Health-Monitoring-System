@@ -10,11 +10,6 @@ import { useDoctorData, useResultsData } from "components/organisms/dataHooks";
 import { mainStyle } from "properties/styles/mainStyle";
 import React, { useContext } from "react";
 import { View, ScrollView } from "react-native";
-import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
-import primaryColors from "properties/colors";
-import AntDesign from "@expo/vector-icons/AntDesign";
-import Entypo from "@expo/vector-icons/Entypo";
-import Ionicons from "@expo/vector-icons/Ionicons";
 
 export const MainScreenDoctor = () => {
   const { currentUser } = useContext(UserContext);

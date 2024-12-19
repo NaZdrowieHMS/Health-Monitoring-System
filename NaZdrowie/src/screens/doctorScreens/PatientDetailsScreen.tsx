@@ -38,16 +38,16 @@ export const PatientDetailsScreen = ({
   const { prepareLatestHealthForm } = useHealthFormData(currentUser, patientId);
   const {
     healthCommentUpload,
-    prepareCurrentDotorComments,
-    prepareOtherDotorsComments,
+    prepareCurrentDoctorComments,
+    prepareOtherDoctorsComments,
   } = useCommentsData(currentUser, patientId);
 
   const latestResults = prepareLatestResults();
   const latestHealthForm = prepareLatestHealthForm();
   const latestReferrals = prepareLatestReferrals();
   const patientData = preparePatientData();
-  const currentDotorCommentsQuery = prepareCurrentDotorComments();
-  const otherDotorsCommentsQuery = prepareOtherDotorsComments();
+  const currentDotorCommentsQuery = prepareCurrentDoctorComments();
+  const otherDotorsCommentsQuery = prepareOtherDoctorsComments();
 
   const {
     navigateToAllReferrals,
@@ -114,6 +114,7 @@ export const PatientDetailsScreen = ({
                 data={currentDotorComments}
                 dataOthers={otherDotorsComments}
                 commentUpload={healthCommentUpload}
+                patientId={patientId}
               />
             )}
           />

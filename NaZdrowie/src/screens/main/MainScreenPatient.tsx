@@ -33,7 +33,7 @@ export const MainScreenPatient = () => {
   const { openResultsFormOverlay, openHealthFormFillOverlay } =
     useDesiredOverlay(currentUser);
 
-  const { navigateToAllReferrals, navigateToAllResults } =
+  const { navigateToAllReferrals, navigateToAllResults, navigateToAllHealthComments } =
     useScreensNavigation();
 
   return (
@@ -62,7 +62,7 @@ export const MainScreenPatient = () => {
         temporaryTitle="Moje zdrowie"
         queries={[latestHealthComments]}
         renderSuccess={([healthComments]) => (
-          <CommentsCard title="Moje zdrowie" data={healthComments} />
+          <CommentsCard title="Moje zdrowie" data={healthComments} handleSeeMore={() => navigateToAllHealthComments(currentUser.id)} />
         )}
       />
       <QueryWrapper
