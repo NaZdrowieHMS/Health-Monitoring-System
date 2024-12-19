@@ -39,7 +39,6 @@ export const ReferralEntry: React.FC<ReferralProps> = (
           handleOnClick={() => openResultsFormOverlay(patientId, id, title)}
         />
       )}
-      ,
     </View>
   );
 };

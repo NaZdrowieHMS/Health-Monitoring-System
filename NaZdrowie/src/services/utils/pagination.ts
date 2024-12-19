@@ -1,5 +1,5 @@
 import {
-  AiResultPredictionsCardCount,
+  AiResultPredictionsCardCount, allDoctorCommentsCount,
   cardCommentsCount,
   currentDoctorCommentsCount,
   latestCount,
@@ -7,8 +7,9 @@ import {
 
 export const doctorDataPagination = {
   latestPatients: { pageSize: latestCount },
-  currentDotorComments: { pageSize: currentDoctorCommentsCount },
-  otherDotorsComments: { pageSize: latestCount - currentDoctorCommentsCount },
+  currentDoctorComments: { pageSize: currentDoctorCommentsCount },
+  otherDoctorsComments: { pageSize: latestCount - currentDoctorCommentsCount },
+  allDoctorsComments: { pageSize: allDoctorCommentsCount },
   unassignedPatients: null,
   resultComments: { pageSize: cardCommentsCount },
 };
