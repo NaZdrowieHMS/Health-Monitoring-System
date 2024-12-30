@@ -2,6 +2,7 @@ import {
   LinkButton,
   PrimaryButton,
   PersonalizedTextInput,
+  LoginWithGoogle,
 } from "components/atoms";
 import { useScreensNavigation } from "components/organisms";
 import { UserContext } from "components/organisms/context";
@@ -73,6 +74,7 @@ export const LoginScreen = () => {
             fontWeight="bold"
             handleOnClick={navigateToRegisterScreen}
           />
+          <LoginWithGoogle />
         </View>
       </ScrollView>
     </SafeAreaView>

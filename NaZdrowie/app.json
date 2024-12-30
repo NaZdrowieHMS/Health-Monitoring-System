@@ -2,6 +2,8 @@
   "expo": {
     "name": "NaZdrowie",
     "slug": "NaZdrowie",
+    "scheme": "nazdrowie",
+    "owner": "health-monitoring-system",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -15,9 +17,22 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.HMS.NaZdrowie",
+      "config": {
+        "googleSignIn": {
+          "reservedClientId": "803246590614-0ng1i6v3el9m8hvb1iij390oj0mq24j1.apps.googleusercontent.com"
+        }
+      }
     },
     "android": {
+      "package": "com.HMS.NaZdrowie",
+      "config": {
+        "googleSignIn": {
+          "certificateHash": "3F:EB:77:58:FF:8D:F7:64:C6:B1:C5:98:F5:CD:B8:76:87:99:8F:F6",
+          "webClientId": "803246590614-bsd1n5hgjlmacnt6abjspj5lrdagf6f2.apps.googleusercontent.com"
+        }
+      },
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
@@ -25,8 +40,7 @@
       "permissions": [
         "android.permission.CAMERA",
         "android.permission.RECORD_AUDIO"
-      ],
-      "package": "com.swoojcik.NaZdrowie"
+      ]
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -39,7 +53,18 @@
           "microphonePermission": "Allow $(PRODUCT_NAME) to access your microphone",
           "recordAudioAndroid": true
         }
+      ],
+      [
+        "@react-native-google-signin/google-signin",
+        {
+          "iosUrlScheme": "com.googleusercontent.apps.803246590614-0ng1i6v3el9m8hvb1iij390oj0mq24j1"
+        }
       ]
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "389d1057-1b6a-4e8f-8a49-36a5a1db6a5a"
+      }
+    }
   }
 }
