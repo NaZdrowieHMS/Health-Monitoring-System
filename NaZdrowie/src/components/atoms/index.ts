@@ -11,7 +11,6 @@ export * from "./ReferralEntry";
 export * from "./UnorderedListElement";
 export * from "./buttons/IconButton";
 export * from "./buttons/LinkButton";
-export * from "./buttons/LoginWithGoogle";
 export * from "./buttons/PrimaryButton";
 export * from "./buttons/ResultButton";
 export * from "./buttons/SecondaryButton";

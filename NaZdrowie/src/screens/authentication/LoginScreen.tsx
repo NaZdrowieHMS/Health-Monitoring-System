@@ -2,7 +2,6 @@ import {
   LinkButton,
   PrimaryButton,
   PersonalizedTextInput,
-  LoginWithGoogle,
 } from "components/atoms";
 import { useScreensNavigation } from "components/organisms";
 import { UserContext } from "components/organisms/context";
@@ -15,8 +14,9 @@ import React, { useContext } from "react";
 import { Keyboard, Text, View, SafeAreaView, ScrollView } from "react-native";
 
 export const LoginScreen = () => {
-  const [login, setLogin] = React.useState<string>("");
-  const { setCurrentUser } = useContext(UserContext);
+  const [email, setEmail] = React.useState<string>("");
+  const [password, setPassword] = React.useState<string>("");
+  const { vanillaSignin, googleSignin } = useContext(UserContext);
   const dismissKeyboard = () => {
     Keyboard.dismiss();
   };
@@ -24,19 +24,12 @@ export const LoginScreen = () => {
   const { navigateToRegisterScreen, navigateToMainScreen } =
     useScreensNavigation();
 
-  const processUserInformationAndNavigateToMainScreen = () => {
-    const userInfo = login.split("-");
-    if (userInfo.length === 2 && userInfo[1].length > 0) {
-      // temporary solution to try out different data
-      setCurrentUser({
-        id: parseInt(userInfo[1], 10),
-        isDoctor: userInfo[0] !== "p",
-      });
-    } else if (login !== "patient") {
-      setCurrentUser({ id: 1, isDoctor: true });
-    } else {
-      setCurrentUser({ id: 3, isDoctor: false });
-    }
+  const handleVanillaSignIn = () => {
+    vanillaSignin(email, password);
+    navigateToMainScreen();
+  };
+  const handleGoogleSignIn = () => {
+    googleSignin();
     navigateToMainScreen();
   };
 
@@ -53,9 +46,9 @@ export const LoginScreen = () => {
           </Text>
         </View>
         <View style={authenticationScreenStyle.inputContainer}>
-          <PersonalizedTextInput placeholder="login" onChange={setLogin} />
+          <PersonalizedTextInput placeholder="email" onChange={setEmail} />
           <View style={authenticationScreenStyle.buttonsContainer}>
-            <PersonalizedTextInput placeholder="password" />
+            <PersonalizedTextInput placeholder="hasło" onChange={setPassword} />
             <LinkButton
               title="Zapomniałeś hasła?"
               color={primaryColors.lightGrey}
@@ -65,7 +58,12 @@ export const LoginScreen = () => {
         <View style={authenticationScreenStyle.buttonsContainer}>
           <PrimaryButton
             title="Zaloguj się"
-            handleOnClick={processUserInformationAndNavigateToMainScreen}
+            handleOnClick={handleVanillaSignIn}
+          />
+          <PrimaryButton
+            title="Zaloguj się poprzez Google"
+            handleOnClick={handleGoogleSignIn}
+            icon="google"
           />
           <LinkButton
             title="Zarejestruj się"
@@ -74,7 +72,6 @@ export const LoginScreen = () => {
             fontWeight="bold"
             handleOnClick={navigateToRegisterScreen}
           />
-          <LoginWithGoogle />
         </View>
       </ScrollView>
     </SafeAreaView>

@@ -1,8 +1,9 @@
 import { PaginationData } from "properties/types/api";
 import { CommentsFilter } from ".";
 
+export const userInfo = (userId: number) => [userId, "details"] as const;
+
 export const patientKeys = {
-  info: (userId: number) => [userId, "details"] as const,
   healthComments: {
     list: (userId: number, limit?: PaginationData, filter?: CommentsFilter) =>
       [userId, "healthComments", limit ? limit : "all", filter] as const,
@@ -54,7 +55,7 @@ export const doctorKeys = {
   },
   patient: {
     specific: (userId: number, patientId: number) =>
-      [userId, patientKeys.info(patientId)] as const,
+      [userId, userInfo(patientId)] as const,
     healthComments: {
       list: (
         userId: number,
