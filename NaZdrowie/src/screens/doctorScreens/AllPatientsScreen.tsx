@@ -3,6 +3,7 @@ import { QueryWrapper } from "components/organisms";
 import { UserContext } from "components/organisms/context";
 import { usePatientData } from "components/organisms/dataHooks";
 import { generalStyle, mainStyle } from "properties/styles";
+import React from "react";
 import { useContext } from "react";
 import { ScrollView, SafeAreaView } from "react-native";
 

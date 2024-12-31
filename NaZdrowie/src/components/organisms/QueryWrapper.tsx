@@ -1,5 +1,5 @@
 import { UseQueryResult } from "@tanstack/react-query";
-import { LoadingCard } from "components/molecules";
+import { LoadingCard } from "components/molecules/cards";
 import { ErrorCard } from "components/molecules/cards/ErrorCard";
 
 type QueryWrapperProps<T> = {

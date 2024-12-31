@@ -7,16 +7,15 @@ import { CommentData } from "properties/types";
 export const OtherCommentsDoctorCard: React.FC<{
   dataOthers: CommentData[];
   title: string;
-}
-> = (props) => {
+}> = (props) => {
   const { dataOthers, title } = props;
 
   return (
     <View style={cardStyle.container}>
-        <Text style={generalStyle.keyText}>{title}</Text>
-        {dataOthers.map((item, index) => (
-            <Comment item={item} index={index} key={index} />
-        ))}
+      <Text style={generalStyle.keyText}>{title}</Text>
+      {dataOthers.map((item, index) => (
+        <Comment item={item} index={index} key={index} />
+      ))}
     </View>
   );
 };

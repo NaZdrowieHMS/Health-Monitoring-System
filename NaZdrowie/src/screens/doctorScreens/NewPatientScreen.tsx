@@ -4,6 +4,7 @@ import { QueryWrapper } from "components/organisms";
 import { UserContext } from "components/organisms/context";
 import { useDoctorData } from "components/organisms/dataHooks";
 import { cardStyle, generalStyle, mainStyle } from "properties/styles";
+import React from "react";
 import { useContext, useState } from "react";
 import { View, ScrollView, Text, SafeAreaView } from "react-native";
 

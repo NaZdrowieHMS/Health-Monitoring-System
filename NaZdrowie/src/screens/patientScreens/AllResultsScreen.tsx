@@ -9,6 +9,7 @@ import { RootStackParamList } from "App";
 import { useResultsData } from "components/organisms/dataHooks";
 import { QueryWrapper } from "components/organisms";
 import Toast from "react-native-toast-message";
+import React from "react";
 
 export const AllResultsScreen = ({
   route,

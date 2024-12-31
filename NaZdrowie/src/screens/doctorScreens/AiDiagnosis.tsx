@@ -2,7 +2,8 @@ import { useFocusEffect } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "App";
 import { PrimaryButton } from "components/atoms";
-import { AiAnalysisResultCard, ListCard, Navbar } from "components/molecules";
+import { AiAnalysisResultCard, ListCard } from "components/molecules/cards";
+import { Navbar } from "components/molecules";
 import { QueryWrapper } from "components/organisms";
 import { UserContext } from "components/organisms/context";
 import {

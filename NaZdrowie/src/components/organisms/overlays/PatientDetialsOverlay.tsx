@@ -2,7 +2,7 @@ import { PatientData } from "properties/types";
 import React from "react";
 
 import { Overlay } from "./Overlay";
-import { ObjectCard } from "components/molecules";
+import { ObjectCard } from "components/molecules/cards";
 import { parsePeselToDateOfBirth } from "services/utils";
 
 export const PatientDetailsOverlay: React.FC<{

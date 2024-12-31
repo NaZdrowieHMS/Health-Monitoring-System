@@ -4,7 +4,7 @@ import { useFetchResultCommentsData } from "services/commentsData";
 import { Overlay } from "./Overlay";
 import { cardCommentsCount } from "services/config";
 import { useFetchResultContent } from "services/resultsData";
-import { ImageCard, CommentsCard } from "components/molecules";
+import { ImageCard, CommentsCard } from "components/molecules/cards";
 import { formatCommentsData } from "../dataHooks/dataFormatHelpers";
 import { QueryWrapper } from "../QueryWrapper";
 

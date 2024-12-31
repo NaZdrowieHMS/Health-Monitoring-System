@@ -1,5 +1,5 @@
 import { PrimaryButton } from "components/atoms";
-import { CommentsCard, ListCard } from "components/molecules";
+import { CommentsCard, ListCard } from "components/molecules/cards";
 import {
   QueryWrapper,
   useDesiredOverlay,
@@ -33,8 +33,11 @@ export const MainScreenPatient = () => {
   const { openResultsFormOverlay, openHealthFormFillOverlay } =
     useDesiredOverlay(currentUser);
 
-  const { navigateToAllReferrals, navigateToAllResults, navigateToAllHealthComments } =
-    useScreensNavigation();
+  const {
+    navigateToAllReferrals,
+    navigateToAllResults,
+    navigateToAllHealthComments,
+  } = useScreensNavigation();
 
   return (
     <ScrollView contentContainerStyle={mainStyle.container}>
@@ -62,7 +65,11 @@ export const MainScreenPatient = () => {
         temporaryTitle="Moje zdrowie"
         queries={[latestHealthComments]}
         renderSuccess={([healthComments]) => (
-          <CommentsCard title="Moje zdrowie" data={healthComments} handleSeeMore={() => navigateToAllHealthComments(currentUser.id)} />
+          <CommentsCard
+            title="Moje zdrowie"
+            data={healthComments}
+            handleSeeMore={() => navigateToAllHealthComments(currentUser.id)}
+          />
         )}
       />
       <QueryWrapper

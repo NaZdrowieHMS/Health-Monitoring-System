@@ -6,7 +6,7 @@ import { View, Text } from "react-native";
 import { formatDate } from "services/utils";
 
 import { Overlay } from "./Overlay";
-import { ObjectCard } from "components/molecules";
+import { ObjectCard } from "components/molecules/cards/ObjectCard";
 import { useFetchReferral } from "services/referralsData";
 import { formatReferralInfo } from "../dataHooks/dataFormatHelpers";
 import { QueryWrapper } from "../QueryWrapper";

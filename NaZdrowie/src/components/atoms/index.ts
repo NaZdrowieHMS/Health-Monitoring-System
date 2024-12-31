@@ -7,7 +7,6 @@ export * from "./PersonalizedCheckbox";
 export * from "./PersonalizedQrCode";
 export * from "./PersonalizedTextInput";
 export * from "./RNPickerSelect";
-export * from "./ReferralEntry";
 export * from "./UnorderedListElement";
 export * from "./buttons/IconButton";
 export * from "./buttons/LinkButton";

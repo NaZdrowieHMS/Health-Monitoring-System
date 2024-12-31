@@ -6,7 +6,8 @@ import {
   PersonalizedTextInput,
   SendButton,
 } from "components/atoms";
-import { ImageCard, CommentsCard, Navbar } from "components/molecules";
+import { ImageCard, CommentsCard } from "components/molecules/cards";
+import { Navbar } from "components/molecules";
 import { QueryWrapper } from "components/organisms";
 
 import { UserContext } from "components/organisms/context";
@@ -74,7 +75,9 @@ export const ResultPreviewScreen = ({
             content: comment,
           });
           setComment("");
-        } catch (error) {}
+        } catch (error) {
+          console.error(error);
+        }
       }
     }
   };

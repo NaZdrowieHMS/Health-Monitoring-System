@@ -1,5 +1,5 @@
 import { PrimaryButton } from "components/atoms";
-import { ListCard } from "components/molecules";
+import { ListCard } from "components/molecules/cards";
 import {
   QueryWrapper,
   useDesiredOverlay,

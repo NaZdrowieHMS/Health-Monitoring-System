@@ -6,42 +6,44 @@ import React, { useState } from "react";
 import { Text, View } from "react-native";
 
 export const CurrentCommentDoctorCard: React.FC<
-    CommentsCardProps & {
+  CommentsCardProps & {
     commentUpload?: {
-        sendComment: UseMutationResult<HealthCommentUpload, Error>;
-        comment: HealthCommentUpload;
+      sendComment: UseMutationResult<HealthCommentUpload, Error>;
+      comment: HealthCommentUpload;
     };
-}
+  }
 > = (props) => {
-    const { data, commentUpload } = props;
-    const [comment, setComment] = useState<string>();
+  const { data, commentUpload } = props;
+  const [comment, setComment] = useState<string>();
 
-    const handleSendComment = async () => {
-        if (comment.length > 0) {
-            if (comment.trim().length > 0) {
-                commentUpload.comment.content = comment;
-                try {
-                    await commentUpload.sendComment.mutateAsync(commentUpload.comment);
-                    setComment("");
-                } catch (error) {}
-            }
+  const handleSendComment = async () => {
+    if (comment.length > 0) {
+      if (comment.trim().length > 0) {
+        commentUpload.comment.content = comment;
+        try {
+          await commentUpload.sendComment.mutateAsync(commentUpload.comment);
+          setComment("");
+        } catch (error) {
+          console.error(error);
         }
-    };
+      }
+    }
+  };
 
-    return (
-        <View style={cardStyle.container}>
-            {commentUpload && (
-                <PersonalizedTextInput
-                    placeholder="Wpisz nowy komentarz"
-                    onChange={setComment}
-                    value={comment}
-                    iconButton={<SendButton handleOnClick={handleSendComment} />}
-                />
-            )}
-            <Text style={generalStyle.keyText}>Twój ostatni komentarz</Text>
-            {data.map((item, index) => (
-                <Comment item={item} index={index} key={index} />
-            ))}
-        </View>
-    );
+  return (
+    <View style={cardStyle.container}>
+      {commentUpload && (
+        <PersonalizedTextInput
+          placeholder="Wpisz nowy komentarz"
+          onChange={setComment}
+          value={comment}
+          iconButton={<SendButton handleOnClick={handleSendComment} />}
+        />
+      )}
+      <Text style={generalStyle.keyText}>Twój ostatni komentarz</Text>
+      {data.map((item, index) => (
+        <Comment item={item} index={index} key={index} />
+      ))}
+    </View>
+  );
 };

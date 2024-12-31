@@ -1,7 +1,8 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "App";
 import { InfoButton, PrimaryButton } from "components/atoms";
-import { CommentsCardForDoctor, ListCard, Navbar } from "components/molecules";
+import { Navbar } from "components/molecules";
+import { CommentsCardForDoctor, ListCard } from "components/molecules/cards";
 import {
   QueryWrapper,
   useDesiredOverlay,
@@ -17,6 +18,7 @@ import {
 } from "components/organisms/dataHooks";
 import primaryColors from "properties/colors";
 import { generalStyle, mainStyle } from "properties/styles";
+import React from "react";
 import { useContext } from "react";
 import { View, ScrollView, SafeAreaView } from "react-native";
 import Toast from "react-native-toast-message";

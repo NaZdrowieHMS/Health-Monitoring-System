@@ -13,8 +13,7 @@ import {
 } from "properties/types";
 import React, { useState } from "react";
 import { Text, View } from "react-native";
-import {useNavigation} from "@react-navigation/native";
-import {useScreensNavigation} from "components/organisms";
+import { useScreensNavigation } from "components/organisms";
 
 export const CommentsCardForDoctor: React.FC<
   CommentsCardProps & {
@@ -38,7 +37,9 @@ export const CommentsCardForDoctor: React.FC<
         try {
           await commentUpload.sendComment.mutateAsync(commentUpload.comment);
           setComment("");
-        } catch (error) {}
+        } catch (error) {
+          console.error(error);
+        }
       }
     }
   };
@@ -64,7 +65,10 @@ export const CommentsCardForDoctor: React.FC<
         <Comment item={item} index={index} key={index} />
       ))}
       <View style={cardStyle.floatRight}>
-        <LinkButton title="Zobacz więcej..." handleOnClick={() => navigateToAllHealthComments(patientId)}/>
+        <LinkButton
+          title="Zobacz więcej..."
+          handleOnClick={() => navigateToAllHealthComments(patientId)}
+        />
       </View>
     </View>
   );
