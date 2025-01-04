@@ -48,6 +48,7 @@ export const AiAnalysisResultCard: React.FC<AiAnalysisResultCardProps> = ({
   };
 
   const handleAiPredictionStatus = () => {
+    console.log("handleAiPredictionStatus", aiPrediction);
     switch (aiPrediction.status) {
       case PredictionStatus.completed: {
         return (
@@ -69,23 +70,35 @@ export const AiAnalysisResultCard: React.FC<AiAnalysisResultCardProps> = ({
             <Text style={generalStyle.titleText}>
               Diagnoza dla Formularza zdrowia {aiPrediction.healthFormDate}
             </Text>
-            {aiPrediction.diagnoses.map((diagnosis, index) => (
+            {aiPrediction.diagnoses ? (
+              aiPrediction.diagnoses.map((diagnosis, index) => (
+                <UnorderedListElement
+                  key={index}
+                  text={diagnosis}
+                  icon="warning"
+                  color={primaryColors.red}
+                />
+              ))
+            ) : (
+              <Text style={generalStyle.basicText}>Brak danych</Text>
+            )}
+            <Text style={generalStyle.titleText}>Zalecenia</Text>
+            {aiPrediction.recommendations ? (
+              aiPrediction.recommendations.map((recommendation, index) => (
+                <UnorderedListElement
+                  key={index}
+                  text={recommendation}
+                  icon="checkcircle"
+                  color={primaryColors.lightGreen}
+                />
+              ))
+            ) : (
               <UnorderedListElement
-                key={index}
-                text={diagnosis}
+                text={"Wypełnić formularz zdrowia"}
                 icon="warning"
                 color={primaryColors.red}
               />
-            ))}
-            <Text style={generalStyle.titleText}>Zalecenia</Text>
-            {aiPrediction.recommendations.map((recommendation, index) => (
-              <UnorderedListElement
-                key={index}
-                text={recommendation}
-                icon="checkcircle"
-                color={primaryColors.lightGreen}
-              />
-            ))}
+            )}
           </>
         );
       }
@@ -100,6 +113,12 @@ export const AiAnalysisResultCard: React.FC<AiAnalysisResultCardProps> = ({
         return (
           <Text style={generalStyle.titleText}>
             Wystąpił błąd z przetwarzaniem predykcji.
+          </Text>
+        );
+      default:
+        return (
+          <Text style={generalStyle.titleText}>
+            Brak danych o ostatniej predykcji.
           </Text>
         );
     }
