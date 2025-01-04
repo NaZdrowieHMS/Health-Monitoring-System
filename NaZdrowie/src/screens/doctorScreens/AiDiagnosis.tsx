@@ -12,7 +12,7 @@ import {
 } from "components/organisms/dataHooks";
 import { generalStyle, mainStyle } from "properties/styles";
 import React, { useCallback, useContext } from "react";
-import { ScrollView, SafeAreaView } from "react-native";
+import { ScrollView, SafeAreaView, Text } from "react-native";
 import Toast from "react-native-toast-message";
 
 export const AiDiagnosis = ({
@@ -83,13 +83,21 @@ export const AiDiagnosis = ({
             queries={[patientLatestPrediction]}
             temporaryTitle="Wyniki ostatnio przeprowadzonej analizy AI"
             renderSuccess={([prediction]) => (
-              <AiAnalysisResultCard
-                aiPrediction={prediction[0]}
-                title={
-                  "Wyniki ostatnio przeprowadzonej analizy AI z dnia " +
-                  prediction[0].predictionDate
-                }
-              />
+              <>
+                {prediction[0] ? (
+                  <AiAnalysisResultCard
+                    aiPrediction={prediction[0]}
+                    title={
+                      "Wyniki ostatnio przeprowadzonej analizy AI z dnia " +
+                      prediction[0].predictionDate
+                    }
+                  />
+                ) : (
+                  <Text style={generalStyle.basicText}>
+                    Brak informacji o ostatniej predykcji.
+                  </Text>
+                )}
+              </>
             )}
           />
         </ScrollView>

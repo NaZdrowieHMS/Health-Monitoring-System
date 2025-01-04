@@ -48,7 +48,6 @@ export const AiAnalysisResultCard: React.FC<AiAnalysisResultCardProps> = ({
   };
 
   const handleAiPredictionStatus = () => {
-    console.log("handleAiPredictionStatus", aiPrediction);
     switch (aiPrediction.status) {
       case PredictionStatus.completed: {
         return (
