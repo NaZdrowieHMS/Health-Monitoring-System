@@ -10,5 +10,10 @@ export type UserRegisterData = {
   email: string;
   pesel: string;
   password: string;
+  password2: string;
   pwz?: string;
+};
+export type UserLoginData = {
+  email: string;
+  password: string;
 };

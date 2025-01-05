@@ -14,6 +14,9 @@ import {
 import { UserRegisterData } from "properties/types";
 import React, { useState } from "react";
 import { Keyboard, ScrollView, Text, View, SafeAreaView } from "react-native";
+import Toast from "react-native-toast-message";
+import { useRegisterUser } from "services/userData";
+import * as Crypto from "expo-crypto";
 
 export const RegisterScreen = ({
   route,
@@ -27,6 +30,7 @@ export const RegisterScreen = ({
     email: "",
     pesel: "",
     password: "",
+    password2: "",
     pwz: null,
   });
 
@@ -37,10 +41,10 @@ export const RegisterScreen = ({
   };
 
   const { navigateToLoginScreen } = useScreensNavigation();
-
+  const register = useRegisterUser();
   const handleFormItemChange = (
     field: keyof UserRegisterData,
-    value: string | null
+    value: string | null,
   ) => {
     setUserFormItems((prevState) => ({
       ...prevState,
@@ -77,17 +81,32 @@ export const RegisterScreen = ({
     if (!userFormItems.password || userFormItems.password.length < 6) {
       newErrors.password = "Hasło musi mieć co najmniej 6 znaków";
     }
+    if (userFormItems.password !== userFormItems.password2) {
+      newErrors.password = "Hasła nie są identyczne.";
+    }
 
     setErrors(newErrors);
 
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleRegister = () => {
+  const handleRegister = async () => {
     if (validateForm()) {
+      userFormItems.password = await Crypto.digestStringAsync(
+        Crypto.CryptoDigestAlgorithm.SHA512,
+        userFormItems.password,
+      );
       console.log("Form is valid", userFormItems);
+      register.mutate(userFormItems);
+      if (register.isSuccess) {
+        navigateToLoginScreen();
+      }
     } else {
-      console.log("Błąd rejestracji", "Popraw błędy w formularzu");
+      Toast.show({
+        type: "error",
+        text1: "Błąd rejestracji",
+        text2: "Popraw błędy w formularzu",
+      });
     }
   };
   return (
@@ -133,7 +152,11 @@ export const RegisterScreen = ({
             onChange={(value) => handleFormItemChange("password", value)}
             error={errors.password}
           />
-          <PersonalizedTextInput placeholder="Powtórz hasło" />
+          <PersonalizedTextInput
+            placeholder="Powtórz hasło"
+            onChange={(value) => handleFormItemChange("password2", value)}
+            error={errors.password2}
+          />
         </View>
         <View style={authenticationScreenStyle.buttonsContainer}>
           <PrimaryButton
