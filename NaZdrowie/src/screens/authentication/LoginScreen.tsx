@@ -68,7 +68,6 @@ export const LoginScreen = () => {
           userFormItems.password,
         ),
       };
-      console.log("Form is valid", userFormItems, userData);
       login.mutate(userData);
     } else {
       Toast.show({

@@ -17,7 +17,9 @@ export const QueryWrapper = <T,>({
   renderLoading,
   renderError,
 }: QueryWrapperProps<T>): JSX.Element => {
-  const areLoading = queries.some((query) => query.isLoading);
+  const areLoading = queries.some(
+    (query) => query.isLoading || query.isFetching,
+  );
   const areErrors = queries
     .filter((query) => query.isError)
     .map((q) => q.error.message);

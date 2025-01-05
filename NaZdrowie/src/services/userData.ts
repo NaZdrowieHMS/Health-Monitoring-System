@@ -39,11 +39,9 @@ export const useLoginUser = (
   return useMutation({
     mutationFn: async (userData: UserLoginData) => {
       const { data } = await axiosApi.post("users/login", userData);
-      console.log("Mutation login", data);
       return data;
     },
     onSuccess(userData: UserLoginDataResponse) {
-      console.log(userData);
       Toast.show({
         type: "success",
         text1: "Pomyślnie zalogowano użytkownika",
