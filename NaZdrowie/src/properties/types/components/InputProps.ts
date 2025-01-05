@@ -7,4 +7,5 @@ export type InputProps = {
   inputInsideText?: string;
   onChange?: (value: string) => void;
   value?: string;
+  error?: string;
 };

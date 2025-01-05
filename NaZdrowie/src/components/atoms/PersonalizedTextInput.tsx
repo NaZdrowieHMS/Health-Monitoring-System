@@ -5,9 +5,10 @@ import React from "react";
 import { TextInput, View, Text } from "react-native";
 
 export const PersonalizedTextInput: React.FC<InputProps> = (
-  props: InputProps,
+  props: InputProps
 ) => {
-  const { placeholder, iconButton, inputInsideText, onChange, value } = props;
+  const { placeholder, iconButton, inputInsideText, onChange, value, error } =
+    props;
 
   const handleChangeText = (newText: string) => {
     if (onChange) {
@@ -16,21 +17,28 @@ export const PersonalizedTextInput: React.FC<InputProps> = (
   };
 
   return (
-    <View style={inputStyle.input}>
-      <TextInput
-        style={{
-          flex: 1,
-          ...generalStyle.basicText,
-        }}
-        onChangeText={handleChangeText}
-        value={value}
-        placeholder={placeholder}
-        placeholderTextColor={primaryColors.lightGrey}
-        multiline={true}
-        scrollEnabled={true}
-      />
-      <Text style={[generalStyle.basicText]}>{inputInsideText}</Text>
-      {iconButton}
+    <View>
+      <View style={inputStyle.input}>
+        <TextInput
+          style={{
+            flex: 1,
+            ...generalStyle.basicText,
+          }}
+          onChangeText={handleChangeText}
+          value={value}
+          placeholder={placeholder}
+          placeholderTextColor={primaryColors.lightGrey}
+          multiline={true}
+          scrollEnabled={true}
+        />
+        <Text style={[generalStyle.basicText]}>{inputInsideText}</Text>
+        {iconButton}
+      </View>
+      {error && (
+        <Text style={[generalStyle.basicText, { color: primaryColors.red }]}>
+          {error}
+        </Text>
+      )}
     </View>
   );
 };
