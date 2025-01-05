@@ -13,7 +13,19 @@ export type UserRegisterData = {
   password2: string;
   pwz?: string;
 };
+
 export type UserLoginData = {
   email: string;
   password: string;
+};
+
+export enum UserRole {
+  doctor = "DOCTOR",
+  patient = "PATIENT",
+}
+
+export type UserLoginDataResponse = {
+  role: UserRole;
+  id: number;
+  jwt: string;
 };

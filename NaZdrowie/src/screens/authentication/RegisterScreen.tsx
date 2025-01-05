@@ -41,7 +41,7 @@ export const RegisterScreen = ({
   };
 
   const { navigateToLoginScreen } = useScreensNavigation();
-  const register = useRegisterUser();
+  const register = useRegisterUser(navigateToLoginScreen);
   const handleFormItemChange = (
     field: keyof UserRegisterData,
     value: string | null,
@@ -92,15 +92,14 @@ export const RegisterScreen = ({
 
   const handleRegister = async () => {
     if (validateForm()) {
-      userFormItems.password = await Crypto.digestStringAsync(
-        Crypto.CryptoDigestAlgorithm.SHA512,
-        userFormItems.password,
-      );
-      console.log("Form is valid", userFormItems);
-      register.mutate(userFormItems);
-      if (register.isSuccess) {
-        navigateToLoginScreen();
-      }
+      const userData = {
+        ...userFormItems,
+        password: await Crypto.digestStringAsync(
+          Crypto.CryptoDigestAlgorithm.SHA512,
+          userFormItems.password,
+        ),
+      };
+      register.mutate(userData);
     } else {
       Toast.show({
         type: "error",
