@@ -17,7 +17,7 @@ export const PersonalizedTextInput: React.FC<InputProps> = (
   };
 
   return (
-    <View>
+    <>
       <View style={inputStyle.input}>
         <TextInput
           style={{
@@ -39,6 +39,6 @@ export const PersonalizedTextInput: React.FC<InputProps> = (
           {error}
         </Text>
       )}
-    </View>
+    </>
   );
 };
