@@ -71,7 +71,7 @@ const RNPickerSelect = ({
         key={item.value}
         label={item.label}
         value={item.value}
-        color={item.color}
+        color={primaryColors.darkGrey}
       />
     ));
   };
@@ -153,7 +153,7 @@ RNPickerSelect.propTypes = {
       label: PropTypes.string.isRequired,
       value: PropTypes.any.isRequired,
       color: PropTypes.string,
-    }),
+    })
   ).isRequired,
   value: PropTypes.any,
   placeholder: PropTypes.shape({

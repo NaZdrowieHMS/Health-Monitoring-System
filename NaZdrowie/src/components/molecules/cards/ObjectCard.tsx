@@ -6,7 +6,7 @@ import { Text, View } from "react-native";
 import primaryColors from "properties/colors";
 
 export const ObjectCard: React.FC<ObjectCardProps> = (
-  props: ObjectCardProps,
+  props: ObjectCardProps
 ) => {
   const { data, keyStyle } = props;
 
@@ -18,7 +18,12 @@ export const ObjectCard: React.FC<ObjectCardProps> = (
             <Text style={keyStyle}>{item.key}</Text>
           </View>
           <View style={cardStyle.elementButtons}>
-            <Text style={generalStyle.basicText}>
+            <Text
+              style={[
+                generalStyle.basicText,
+                { flexWrap: "wrap", width: "80%" },
+              ]}
+            >
               {item.value == "true" ? (
                 <AntDesign
                   name="checkcircleo"
