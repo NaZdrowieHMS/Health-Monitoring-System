@@ -17,7 +17,12 @@ import {
 } from "screens/doctorScreens";
 import { ResultPreviewScreen } from "screens/doctorScreens/ResultPreviewScreen";
 import { MainScreen } from "screens/main";
-import { QrScannerScreen, AllResultsScreen, AllReferralsScreen, AllHealthComments } from "screens/patientScreens";
+import {
+  QrScannerScreen,
+  AllResultsScreen,
+  AllReferralsScreen,
+  AllHealthComments,
+} from "screens/patientScreens";
 import { HamburgerMenuProvider } from "components/organisms/context/HamburgerMenuProvider";
 import primaryColors from "properties/colors";
 import Toast from "react-native-toast-message";
@@ -121,12 +126,18 @@ const App = (): React.JSX.Element => {
                   <Stack.Screen
                     name="AllReferrals"
                     component={AllReferralsScreen}
-                    options={{ title: "Historia skierowań", headerShown: false }}
+                    options={{
+                      title: "Historia skierowań",
+                      headerShown: false,
+                    }}
                   />
                   <Stack.Screen
-                      name="AllHealthComments"
-                      component={AllHealthComments}
-                      options={{ title: "Komentarze zdrowia", headerShown: false }}
+                    name="AllHealthComments"
+                    component={AllHealthComments}
+                    options={{
+                      title: "Komentarze zdrowia",
+                      headerShown: false,
+                    }}
                   />
                 </Stack.Navigator>
               </NavigationContainer>

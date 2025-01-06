@@ -20,7 +20,7 @@ export const QueryWrapper = <T,>({
   loading,
 }: QueryWrapperProps<T>): JSX.Element => {
   const areLoading = queries.some(
-    (query) => query.isLoading || query.isFetching || loading
+    (query) => query.isLoading || query.isFetching || loading,
   );
   const areErrors = queries
     .filter((query) => query.isError)

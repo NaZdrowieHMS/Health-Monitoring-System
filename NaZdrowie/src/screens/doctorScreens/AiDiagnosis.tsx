@@ -37,7 +37,7 @@ export const AiDiagnosis = ({
   useFocusEffect(
     useCallback(() => {
       return updateAiSelectedData;
-    }, [])
+    }, []),
   );
 
   return (

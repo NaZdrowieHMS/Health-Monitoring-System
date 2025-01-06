@@ -1,5 +1,5 @@
-import { LinkButton, ResultButton } from "components/atoms";
-import { UserData, Referral, ResultOverview } from "properties/types";
+import { LinkButton } from "components/atoms";
+import { UserData, Referral } from "properties/types";
 import { useFetchReferrals } from "services/referralsData";
 import { patientDataPagination } from "services/utils";
 import { useDesiredOverlay } from "../useDesiredOverlay";

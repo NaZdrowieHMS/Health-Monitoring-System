@@ -72,14 +72,12 @@ export const ResultPreviewScreen = ({
   const handleSendComment = async () => {
     if (comment.length > 0) {
       if (comment.trim().length > 0) {
-        try {
-          await sendResultComment.mutateAsync({
-            resultId: resultId,
-            doctorId: currentUser.id,
-            content: comment,
-          });
-          setComment("");
-        } catch (error) {}
+        await sendResultComment.mutateAsync({
+          resultId: resultId,
+          doctorId: currentUser.id,
+          content: comment,
+        });
+        setComment("");
       }
     }
   };
