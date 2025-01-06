@@ -13,12 +13,16 @@ import { CurrentCommentDoctorCard } from "components/molecules/cards/CurrentComm
 import { OtherCommentsDoctorCard } from "components/molecules/cards/OtherCommentsDoctorCard";
 
 export const AllHealthComments = ({
-   route,
+  route,
 }: NativeStackScreenProps<RootStackParamList, "AllHealthComments">) => {
   const { currentUser } = useContext(UserContext);
   const { patientId } = route.params;
   const patientQuery = useFetchPatient(currentUser, null, patientId);
-  const { prepareCurrentDoctorComments, prepareAllDoctorsComments, healthCommentUpload } = useCommentsData(currentUser, patientId)
+  const {
+    prepareCurrentDoctorComments,
+    prepareAllDoctorsComments,
+    healthCommentUpload,
+  } = useCommentsData(currentUser, patientId);
 
   const currentDoctorCommentsQuery = prepareCurrentDoctorComments();
   const allDoctorsComments = prepareAllDoctorsComments();
@@ -30,8 +34,8 @@ export const AllHealthComments = ({
           queries={[patientQuery]}
           renderSuccess={([patient]) => (
             <Navbar
-                navbarDescriptionTitle={`${patient.name} ${patient.surname}`}
-                navbarDescriptionSubtitle="Komentarze zdrowia"
+              navbarDescriptionTitle={`${patient.name} ${patient.surname}`}
+              navbarDescriptionSubtitle="Komentarze zdrowia"
             />
           )}
           renderLoading={() => <Navbar navbarDescriptionTitle="..." />}
@@ -44,34 +48,46 @@ export const AllHealthComments = ({
             return <Navbar navbarDescriptionTitle="..." />;
           }}
         />
-        ) : (
-            <Navbar navbarDescriptionTitle="Komentarze zdrowia" />
-        )}
+      ) : (
+        <Navbar navbarDescriptionTitle="Komentarze zdrowia" />
+      )}
       <SafeAreaView style={generalStyle.safeArea}>
         <ScrollView contentContainerStyle={mainStyle.container}>
           <QueryWrapper
             queries={[currentDoctorCommentsQuery, allDoctorsComments]}
             renderSuccess={([currentDoctorComments, allDoctorsComments]) => {
-                if (!currentUser.isDoctor) {
-                  return <OtherCommentsDoctorCard dataOthers={allDoctorsComments} title="Komentarze zdrowia" />;
-                }
-                if (currentDoctorComments.length !== 0) {
-                    const indexToRemove = allDoctorsComments.findIndex(comment =>
-                        comment.author === currentDoctorComments[0].author &&
-                        comment.date === currentDoctorComments[0].date &&
-                        comment.text === currentDoctorComments[0].text
-                    );
+              if (!currentUser.isDoctor) {
+                return (
+                  <OtherCommentsDoctorCard
+                    dataOthers={allDoctorsComments}
+                    title="Komentarze zdrowia"
+                  />
+                );
+              }
+              if (currentDoctorComments.length !== 0) {
+                const indexToRemove = allDoctorsComments.findIndex(
+                  (comment) =>
+                    comment.author === currentDoctorComments[0].author &&
+                    comment.date === currentDoctorComments[0].date &&
+                    comment.text === currentDoctorComments[0].text,
+                );
 
-                    if (indexToRemove !== -1) {
-                        allDoctorsComments.splice(indexToRemove, 1);
-                    }
+                if (indexToRemove !== -1) {
+                  allDoctorsComments.splice(indexToRemove, 1);
                 }
+              }
 
               return (
                 <>
-                    <CurrentCommentDoctorCard title={"Zdrowie pacjenta"} data={currentDoctorComments}
-                                              commentUpload={healthCommentUpload}/>
-                    <OtherCommentsDoctorCard dataOthers={allDoctorsComments} title="Pozostałe komentarze" />
+                  <CurrentCommentDoctorCard
+                    title={"Zdrowie pacjenta"}
+                    data={currentDoctorComments}
+                    commentUpload={healthCommentUpload}
+                  />
+                  <OtherCommentsDoctorCard
+                    dataOthers={allDoctorsComments}
+                    title="Pozostałe komentarze"
+                  />
                 </>
               );
             }}

@@ -18,7 +18,12 @@ export const ObjectCard: React.FC<ObjectCardProps> = (
             <Text style={keyStyle}>{item.key}</Text>
           </View>
           <View style={cardStyle.elementButtons}>
-            <Text style={generalStyle.basicText}>
+            <Text
+              style={[
+                generalStyle.basicText,
+                { flexWrap: "wrap", width: "80%" },
+              ]}
+            >
               {item.value == "true" ? (
                 <AntDesign
                   name="checkcircleo"

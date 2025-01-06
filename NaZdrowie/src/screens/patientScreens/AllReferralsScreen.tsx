@@ -6,12 +6,10 @@ import { useContext } from "react";
 import { UserContext } from "components/organisms/context";
 import { useFetchPatient } from "services/patientData";
 import { RootStackParamList } from "App";
-import {
-  useReferralsData,
-  useResultsData,
-} from "components/organisms/dataHooks";
+import { useReferralsData } from "components/organisms/dataHooks";
 import { QueryWrapper } from "components/organisms";
 import Toast from "react-native-toast-message";
+import React from "react";
 
 export const AllReferralsScreen = ({
   route,

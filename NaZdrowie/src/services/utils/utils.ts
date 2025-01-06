@@ -23,8 +23,14 @@ export const formatShortDate = (unformattedDate: string) => {
 };
 
 export const resultItems: DropdownItem[] = [
-  { label: "USG piersi", value: "USG piersi" },
+  { label: "Cytologia", value: "Cytologia" },
+  { label: "EKG", value: "EKG" },
+  { label: "Gastroskopia", value: "Gastroskopia" },
+  { label: "Kolonoskopia", value: "Kolonoskopia" },
   { label: "Mammografia", value: "Mammografia" },
+  { label: "Tomografia", value: "Tomografia" },
+  { label: "USG jamy brzusznej", value: "USG jamy brzusznej" },
+  { label: "USG piersi", value: "USG piersi" },
 ];
 
 export enum CommentsFilter {

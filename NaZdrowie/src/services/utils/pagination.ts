@@ -1,5 +1,6 @@
 import {
-  AiResultPredictionsCardCount, allDoctorCommentsCount,
+  AiResultPredictionsCardCount,
+  allDoctorCommentsCount,
   cardCommentsCount,
   currentDoctorCommentsCount,
   latestCount,

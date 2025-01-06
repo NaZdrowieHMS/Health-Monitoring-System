@@ -4,7 +4,7 @@ import {
   useQuery,
   useQueryClient,
 } from "@tanstack/react-query";
-import { Referral, UserData } from "properties/types";
+import { Referral, ResultChange, UserData } from "properties/types";
 import { PaginationData } from "properties/types/api";
 import {
   DetailedResult,
@@ -246,6 +246,22 @@ export const useSendResult = (user: UserData, isReferralAssigned: boolean) => {
         type: "error",
         text1: "Błąd przy wysyłaniu wyniku",
         text2: "Wiadomość błędu:" + error.message,
+      });
+    },
+  });
+};
+
+export const useMarkResultAsViewed = (user: UserData) => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (ResultChange: ResultChange) => {
+      const { data } = await axiosApi.put("results/view", ResultChange);
+      return data;
+    },
+    onSuccess() {
+      queryClient.invalidateQueries({
+        queryKey: doctorKeys.resultsUnviewed(user.id),
+        exact: true,
       });
     },
   });

@@ -1,4 +1,5 @@
 import AntDesign from "@expo/vector-icons/AntDesign";
+import { Ionicons } from "@expo/vector-icons";
 import { IconButtonProps } from "properties/types";
 import { Pressable } from "react-native";
 
@@ -35,4 +36,10 @@ export const InfoButton: React.FC<IconButtonProps> = ({ ...props }) => {
 
 export const DeleteButton: React.FC<IconButtonProps> = ({ ...props }) => {
   return <IconButton type="delete" {...props} />;
+};
+export const EyeButton: React.FC<IconButtonProps> = ({ ...props }) => {
+  return <IconButton type="eye" {...props} />;
+};
+export const EyeOffButton: React.FC<IconButtonProps> = ({ ...props }) => {
+  return <Ionicons name="eye-off" size={30} {...props} />;
 };

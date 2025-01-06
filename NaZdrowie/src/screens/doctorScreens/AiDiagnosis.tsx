@@ -11,7 +11,7 @@ import {
   usePatientData,
 } from "components/organisms/dataHooks";
 import { cardStyle, generalStyle, mainStyle } from "properties/styles";
-import React, { useCallback, useContext } from "react";
+import React, { useCallback, useContext, useState } from "react";
 import { ScrollView, SafeAreaView, Text, View } from "react-native";
 import Toast from "react-native-toast-message";
 
@@ -32,6 +32,7 @@ export const AiDiagnosis = ({
   const patientResultsForAi = preparePatientResultsForAi();
   const latestHealthForm = prepareLatestHealthForm();
   const patientLatestPrediction = preparePatientLatestPrediction();
+  const [loading, setLoading] = useState(false);
 
   useFocusEffect(
     useCallback(() => {
@@ -71,10 +72,13 @@ export const AiDiagnosis = ({
                     data={[...healthForm, ...results]}
                     extraButton={
                       <PrimaryButton
+                        disabled={loading}
                         title="Poproś AI o analizę"
                         handleOnClick={() => {
+                          setLoading(true);
                           startAiDiagnosis();
                           patientLatestPrediction.refetch();
+                          setLoading(false);
                         }}
                       />
                     }
@@ -95,6 +99,7 @@ export const AiDiagnosis = ({
           <QueryWrapper
             queries={[patientLatestPrediction]}
             temporaryTitle="Wyniki ostatnio przeprowadzonej analizy AI"
+            loading={loading}
             renderSuccess={([prediction]) => (
               <>
                 {prediction[0] ? (

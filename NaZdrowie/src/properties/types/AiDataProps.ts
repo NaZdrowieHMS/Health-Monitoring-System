@@ -65,7 +65,7 @@ export type ResultShortInfo = {
   createdDate: string;
 };
 
-export type AiSelectedChange = {
+export type ResultChange = {
   resultId: number;
   patientId: number;
   doctorId: number;

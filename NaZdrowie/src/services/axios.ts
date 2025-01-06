@@ -3,10 +3,14 @@ import axios from "axios";
 import { API_URL, AI_API_URL } from "./config";
 
 let userId: number | null = null;
+let userToken: string | null = null;
 
 // Utility to set the userId
 export const setUserIdForAxios = (id: number) => {
   userId = id;
+};
+export const setUserTokenForAxios = (token: string) => {
+  userToken = token;
 };
 
 const axiosApi = axios.create({
@@ -22,8 +26,10 @@ const axiosApi = axios.create({
 axiosApi.interceptors.request.use(
   (config) => {
     const currentUserId = userId;
-    if (currentUserId) {
+    const currentUserToken = userToken;
+    if (currentUserId && currentUserToken) {
       config.headers["userId"] = currentUserId;
+      config.headers["Authorization"] = `Bearer ${currentUserToken}`;
     }
     return config;
   },
@@ -49,8 +55,10 @@ const axiosAiApi = axios.create({
 axiosAiApi.interceptors.request.use(
   (config) => {
     const currentUserId = userId;
-    if (currentUserId) {
+    const currentUserToken = userToken;
+    if (currentUserId && currentUserToken) {
       config.headers["userId"] = currentUserId;
+      config.headers["Authorization"] = `Bearer ${currentUserToken}`;
     }
     return config;
   },
