@@ -25,7 +25,11 @@ import {
   useFetchResultCommentsData,
   useSendResultComment,
 } from "services/commentsData";
-import { useFetchResult, useFetchResultContent } from "services/resultsData";
+import {
+  useFetchResult,
+  useFetchResultContent,
+  useMarkResultAsViewed,
+} from "services/resultsData";
 import { doctorDataPagination } from "services/utils";
 
 export const ResultPreviewScreen = ({
@@ -39,6 +43,7 @@ export const ResultPreviewScreen = ({
     currentUser,
     patientId,
   );
+  const viewResult = useMarkResultAsViewed(currentUser);
   const resultQuery = useFetchResult(currentUser, resultId, null, patientId);
   const resultContentQuery = useFetchResultContent(
     currentUser,
@@ -58,9 +63,9 @@ export const ResultPreviewScreen = ({
     resultId,
   );
   const patientData = preparePatientData();
-
   useFocusEffect(
     useCallback(() => {
+      viewResult.mutate({ patientId, resultId, doctorId: currentUser.id });
       return updateAiSelectedData;
     }, []),
   );
@@ -68,16 +73,12 @@ export const ResultPreviewScreen = ({
   const handleSendComment = async () => {
     if (comment.length > 0) {
       if (comment.trim().length > 0) {
-        try {
-          await sendResultComment.mutateAsync({
-            resultId: resultId,
-            doctorId: currentUser.id,
-            content: comment,
-          });
-          setComment("");
-        } catch (error) {
-          console.error(error);
-        }
+        await sendResultComment.mutateAsync({
+          resultId: resultId,
+          doctorId: currentUser.id,
+          content: comment,
+        });
+        setComment("");
       }
     }
   };
@@ -106,30 +107,34 @@ export const ResultPreviewScreen = ({
           <Text style={generalStyle.titleText}>{resultTitle}</Text>
           <QueryWrapper
             queries={[resultQuery]}
-            renderSuccess={([result]) => (
-              <>
-                <QueryWrapper
-                  queries={[resultContentQuery]}
-                  temporaryTitle="Podgląd"
-                  renderSuccess={([resultContent]) => (
-                    <ImageCard
-                      title="Podgląd"
-                      imageData={resultContent.data}
-                      imageType={resultContent.type}
-                    />
-                  )}
-                />
-                <View style={generalStyle.rowSpread}>
-                  <Text style={generalStyle.titleText}>Uzyj do analizy AI</Text>
-                  <PersonalizedCheckbox
-                    checkboxInitialValue={result.aiSelected}
-                    handleValueChange={(value: boolean) =>
-                      handleCheckboxForAiSelection(result.id, value)
-                    }
+            renderSuccess={([result]) => {
+              return (
+                <>
+                  <QueryWrapper
+                    queries={[resultContentQuery]}
+                    temporaryTitle="Podgląd"
+                    renderSuccess={([resultContent]) => (
+                      <ImageCard
+                        title="Podgląd"
+                        imageData={resultContent.data}
+                        imageType={resultContent.type}
+                      />
+                    )}
                   />
-                </View>
-              </>
-            )}
+                  <View style={generalStyle.rowSpread}>
+                    <Text style={generalStyle.titleText}>
+                      Uzyj do analizy AI
+                    </Text>
+                    <PersonalizedCheckbox
+                      checkboxInitialValue={result.aiSelected}
+                      handleValueChange={(value: boolean) =>
+                        handleCheckboxForAiSelection(result.id, value)
+                      }
+                    />
+                  </View>
+                </>
+              );
+            }}
           />
           <PersonalizedTextInput
             placeholder="Wpisz nowy komentarz"

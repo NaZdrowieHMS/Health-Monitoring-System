@@ -1,7 +1,7 @@
 import { AiPrediction, AiPredictionInfo } from "properties/types/AiDataProps";
 import { axiosAiApi, axiosApi } from "./axios";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { AiSelectedChange, UserData } from "properties/types";
+import { ResultChange, UserData } from "properties/types";
 import { PaginationData } from "properties/types/api";
 import { doctorKeys } from "./utils";
 import Toast from "react-native-toast-message";
@@ -80,7 +80,7 @@ export const useFetchPrediciton = <T = AiPrediction>(
 
 export const useAddAiSelectedResults = () => {
   return useMutation({
-    mutationFn: async (AiSelectedChanges: AiSelectedChange[]) => {
+    mutationFn: async (AiSelectedChanges: ResultChange[]) => {
       const { data } = await axiosApi.put(
         "results/ai-selected",
         AiSelectedChanges,
@@ -92,7 +92,7 @@ export const useAddAiSelectedResults = () => {
 
 export const useDeleteAiSelectedResults = () => {
   return useMutation({
-    mutationFn: async (AiSelectedChanges: AiSelectedChange[]) => {
+    mutationFn: async (AiSelectedChanges: ResultChange[]) => {
       const { data } = await axiosApi.delete("results/ai-selected", {
         data: AiSelectedChanges,
       });

@@ -20,12 +20,8 @@ export const CurrentCommentDoctorCard: React.FC<
     if (comment.length > 0) {
       if (comment.trim().length > 0) {
         commentUpload.comment.content = comment;
-        try {
-          await commentUpload.sendComment.mutateAsync(commentUpload.comment);
-          setComment("");
-        } catch (error) {
-          console.error(error);
-        }
+        await commentUpload.sendComment.mutateAsync(commentUpload.comment);
+        setComment("");
       }
     }
   };

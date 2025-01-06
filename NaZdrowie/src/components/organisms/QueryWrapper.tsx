@@ -8,6 +8,7 @@ type QueryWrapperProps<T> = {
   renderSuccess: (data: T[]) => JSX.Element;
   renderLoading?: () => JSX.Element;
   renderError?: (errors: string[]) => JSX.Element;
+  loading?: boolean;
 };
 
 export const QueryWrapper = <T,>({
@@ -16,8 +17,11 @@ export const QueryWrapper = <T,>({
   renderSuccess,
   renderLoading,
   renderError,
+  loading,
 }: QueryWrapperProps<T>): JSX.Element => {
-  const areLoading = queries.some((query) => query.isLoading);
+  const areLoading = queries.some(
+    (query) => query.isLoading || query.isFetching || loading,
+  );
   const areErrors = queries
     .filter((query) => query.isError)
     .map((q) => q.error.message);

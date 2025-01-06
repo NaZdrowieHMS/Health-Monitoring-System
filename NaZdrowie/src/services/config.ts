@@ -1,5 +1,3 @@
-export const API_URL_deploy: string =
-  "https://health-monitoring-system-api-tnlc.onrender.com/api/";
 export const API_URL: string = "http://localhost:8080/api/";
 export const AI_API_URL: string = "http://localhost:8082/api/";
 export const WEB_CLIENT_ID =

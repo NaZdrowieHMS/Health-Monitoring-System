@@ -1,13 +1,13 @@
-import { UserData } from "properties/types";
+import { UserData, UserLoginDataResponse, UserRole } from "properties/types";
 import React, { createContext, useEffect, useState } from "react";
-import { setUserIdForAxios } from "services/axios";
+import { setUserIdForAxios, setUserTokenForAxios } from "services/axios";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
 import { IOS_CLIENT_ID, WEB_CLIENT_ID } from "services/config";
 import Toast from "react-native-toast-message";
 
 type UserProviderDispatch = {
   currentUser: UserData;
-  setCurrentUser: (userData: UserData) => void;
+  setCurrentUser: (userData: UserLoginDataResponse) => void;
   googleSignin: () => void;
   vanillaSignin: (email: string, password: string) => void;
 };
@@ -18,9 +18,14 @@ const UserProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const [currentUser, updateCurrentUser] = useState<UserData>(null);
-  const setCurrentUser = (userData: UserData) => {
+
+  const setCurrentUser = (userData: UserLoginDataResponse) => {
     setUserIdForAxios(userData.id);
-    updateCurrentUser(userData);
+    setUserTokenForAxios(userData.jwt);
+    updateCurrentUser({
+      id: userData.id,
+      isDoctor: userData.role === UserRole.doctor,
+    });
   };
 
   const configureGoogleSignIn = () => {

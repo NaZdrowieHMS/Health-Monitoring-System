@@ -18,8 +18,7 @@ import {
 } from "components/organisms/dataHooks";
 import primaryColors from "properties/colors";
 import { generalStyle, mainStyle } from "properties/styles";
-import React from "react";
-import { useContext } from "react";
+import React, { useContext } from "react";
 import { View, ScrollView, SafeAreaView } from "react-native";
 import Toast from "react-native-toast-message";
 

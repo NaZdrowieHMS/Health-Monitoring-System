@@ -71,7 +71,7 @@ const RNPickerSelect = ({
         key={item.value}
         label={item.label}
         value={item.value}
-        color={item.color}
+        color={primaryColors.darkGrey}
       />
     ));
   };

@@ -13,7 +13,7 @@ import {
 } from "properties/types";
 import React, { useState } from "react";
 import { Text, View } from "react-native";
-import { useScreensNavigation } from "components/organisms";
+import { useScreensNavigation } from "components/organisms/useScreenNavigation";
 
 export const CommentsCardForDoctor: React.FC<
   CommentsCardProps & {
@@ -34,12 +34,8 @@ export const CommentsCardForDoctor: React.FC<
     if (comment.length > 0) {
       if (comment.trim().length > 0) {
         commentUpload.comment.content = comment;
-        try {
-          await commentUpload.sendComment.mutateAsync(commentUpload.comment);
-          setComment("");
-        } catch (error) {
-          console.error(error);
-        }
+        await commentUpload.sendComment.mutateAsync(commentUpload.comment);
+        setComment("");
       }
     }
   };
