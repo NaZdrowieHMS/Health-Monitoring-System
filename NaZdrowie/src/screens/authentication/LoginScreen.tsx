@@ -24,7 +24,11 @@ export const LoginScreen = () => {
   };
   const { navigateToRegisterScreen, navigateToMainScreen } =
     useScreensNavigation();
-  const login = useLoginUser(navigateToMainScreen, setCurrentUser);
+  const login = useLoginUser(
+    navigateToMainScreen,
+    navigateToRegisterScreen,
+    setCurrentUser,
+  );
   const [userFormItems, setUserFormItems] = useState<UserLoginData>({
     email: "",
     password: "",
