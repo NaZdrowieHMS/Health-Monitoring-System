@@ -10,35 +10,34 @@ import {
   authenticationScreenStyle,
   registerScreenStyle,
 } from "properties/styles";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Keyboard, Text, View, SafeAreaView, ScrollView } from "react-native";
 import { useLoginUser } from "services/userData";
 import { UserLoginData } from "properties/types";
 import * as Crypto from "expo-crypto";
 import Toast from "react-native-toast-message";
+import { GoogleSignin } from "@react-native-google-signin/google-signin";
+import { WEB_CLIENT_ID, IOS_CLIENT_ID } from "services/config";
 
 export const LoginScreen = () => {
-  const { vanillaSignin, googleSignin, setCurrentUser } =
-    useContext(UserContext);
+  const { setCurrentUser } = useContext(UserContext);
   const dismissKeyboard = () => {
     Keyboard.dismiss();
   };
   const { navigateToRegisterScreen, navigateToMainScreen } =
     useScreensNavigation();
-  const login = useLoginUser(navigateToMainScreen, setCurrentUser);
+  const login = useLoginUser(
+    navigateToMainScreen,
+    navigateToRegisterScreen,
+    setCurrentUser,
+  );
   const [userFormItems, setUserFormItems] = useState<UserLoginData>({
     email: "",
     password: "",
   });
 
-  // const handleVanillaSignIn = () => {
-  //   vanillaSignin(email, password);
-  //   navigateToMainScreen();
-  // };
-  // const handleGoogleSignIn = () => {
-  //   googleSignin();
-  //   navigateToMainScreen();
   const [errors, setErrors] = useState<Partial<UserLoginData>>({});
+
   const handleFormItemChange = (
     field: keyof UserLoginData,
     value: string | null,
@@ -53,6 +52,7 @@ export const LoginScreen = () => {
       [field]: undefined,
     }));
   };
+
   const validateForm = (): boolean => {
     const newErrors: Partial<UserLoginData> = {};
 
@@ -85,7 +85,31 @@ export const LoginScreen = () => {
       });
     }
   };
+  const configureGoogleSignIn = () => {
+    GoogleSignin.configure({
+      webClientId: WEB_CLIENT_ID,
+      iosClientId: IOS_CLIENT_ID,
+    });
+  };
 
+  useEffect(() => {
+    configureGoogleSignIn();
+  });
+
+  const googleSignin = async () => {
+    try {
+      await GoogleSignin.hasPlayServices();
+      const userInfo = await GoogleSignin.signIn();
+      login.mutate({ email: userInfo.data.user.email, password: "goog" });
+    } catch (error) {
+      console.error(error);
+      Toast.show({
+        type: "error",
+        text1: "Wystąpił błąd w trakcie logowania",
+        text2: `${error.message}`,
+      });
+    }
+  };
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: primaryColors.white }}>
       <ScrollView
@@ -128,6 +152,11 @@ export const LoginScreen = () => {
              icon="google"
            /> */}
           <PrimaryButton title="Zaloguj się" handleOnClick={handleLogin} />
+          <PrimaryButton
+            title="Zaloguj się poprzez Google"
+            handleOnClick={googleSignin}
+            icon="google"
+          />
           <LinkButton
             title="Zarejestruj się"
             color={primaryColors.darkGrey}
