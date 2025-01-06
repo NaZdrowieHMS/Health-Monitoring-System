@@ -150,11 +150,13 @@ export const RegisterScreen = ({
             placeholder="Hasło"
             onChange={(value) => handleFormItemChange("password", value)}
             error={errors.password}
+            isPassword
           />
           <PersonalizedTextInput
             placeholder="Powtórz hasło"
             onChange={(value) => handleFormItemChange("password2", value)}
             error={errors.password2}
+            isPassword
           />
         </View>
         <View style={authenticationScreenStyle.buttonsContainer}>

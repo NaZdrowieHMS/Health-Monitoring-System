@@ -8,4 +8,5 @@ export type InputProps = {
   onChange?: (value: string) => void;
   value?: string;
   error?: string;
+  isPassword?: boolean;
 };

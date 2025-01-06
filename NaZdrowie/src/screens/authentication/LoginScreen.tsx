@@ -78,22 +78,6 @@ export const LoginScreen = () => {
     }
   };
 
-  // const processUserInformationAndNavigateToMainScreen = () => {
-  //   const userInfo = email.split("-");
-  //   if (userInfo.length === 2 && userInfo[1].length > 0) {
-  //     // temporary solution to try out different data
-  //     setCurrentUser({
-  //       id: parseInt(userInfo[1], 10),
-  //       isDoctor: userInfo[0] !== "p",
-  //     });
-  //   } else if (email !== "patient") {
-  //     setCurrentUser({ id: 1, isDoctor: true });
-  //   } else {
-  //     setCurrentUser({ id: 3, isDoctor: false });
-  //   }
-  //   navigateToMainScreen();
-  // };
-
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: primaryColors.white }}>
       <ScrollView
@@ -117,6 +101,7 @@ export const LoginScreen = () => {
               placeholder="Hasło"
               onChange={(value) => handleFormItemChange("password", value)}
               error={errors.password}
+              isPassword
             />
             <LinkButton
               title="Zapomniałeś hasła?"
