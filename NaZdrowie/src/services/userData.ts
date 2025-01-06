@@ -7,6 +7,7 @@ import {
 
 import { axiosApi } from "./axios";
 import Toast from "react-native-toast-message";
+import { AxiosError } from "axios";
 
 export const useRegisterUser = (navigateToLoginScreen: () => void) => {
   return useMutation({
@@ -34,6 +35,7 @@ export const useRegisterUser = (navigateToLoginScreen: () => void) => {
 
 export const useLoginUser = (
   navigateToMainScreen: () => void,
+  navigateToRegisterScreen: () => void,
   setUserData: (userData: UserLoginDataResponse) => void,
 ) => {
   return useMutation({
@@ -49,12 +51,21 @@ export const useLoginUser = (
       setUserData(userData);
       navigateToMainScreen();
     },
-    onError(error) {
-      Toast.show({
-        type: "error",
-        text1: "Bład w trakcie logowania użytkownika",
-        text2: "Wiadomość błędu: " + error.message,
-      });
+    onError(error: AxiosError) {
+      if (error.response?.status === 404) {
+        navigateToRegisterScreen();
+        Toast.show({
+          type: "error",
+          text1: "Bład w trakcie logowania użytkownika",
+          text2: "Brak konta na podany email - zalecamy rejestrację",
+        });
+      } else {
+        Toast.show({
+          type: "error",
+          text1: "Bład w trakcie logowania użytkownika",
+          text2: "Wiadomość błędu: " + error.message,
+        });
+      }
     },
   });
 };
